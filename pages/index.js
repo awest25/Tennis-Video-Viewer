@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import React, { useState, useRef } from 'react';
 
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
@@ -9,11 +10,25 @@ import PointsList from '../components/PointsList';
 export default function Home() {
   // Sample points list
   const points = [
-    { timestamp: '00:01:00', description: 'Interesting Rally' },
-    { timestamp: '00:02:30', description: 'Match Point' },
-    { timestamp: '00:03:45', description: 'Longest Rally' },
+    { timestamp: '0', description: 'Interesting Rally' },
+    { timestamp: '3', description: 'Match Point' },
+    { timestamp: '7', description: 'Longest Rally' },
     // Add more points as needed
   ];
+
+  const [currentTime, setCurrentTime] = useState(0);
+  const videoRef = useRef(null);
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(videoRef.current.currentTime);
+  };
+
+  const handleJumpToTime = (time) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = time;
+      videoRef.current.play(); // plays the video after jumping
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -40,12 +55,16 @@ export default function Home() {
         <div className={styles.mainContent}>
           {/* Video Player */}
           <div className="videoPlayer">
-            <VideoPlayer />
+            {/* <VideoPlayer /> */}
+            <video ref={videoRef} onTimeUpdate={handleTimeUpdate} width="100%" controls>
+                <source src={"../data/dummy_video.mp4"} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
           </div>
 
           {/* Points List */}
           <div className="pointsList">
-            <PointsList points={points}/>
+            <PointsList points={points} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
 
