@@ -10,9 +10,9 @@ import PointsList from '../components/PointsList';
 export default function Home() {
   // Sample points list
   const points = [
-    { timestamp: '0', description: 'Interesting Rally' },
-    { timestamp: '3', description: 'Match Point' },
-    { timestamp: '7', description: 'Longest Rally' },
+    { timestamp: '0000', description: 'Interesting Rally' },
+    { timestamp: '3000', description: 'Match Point' },
+    { timestamp: '7565', description: 'Longest Rally' },
     // Add more points as needed
   ];
 
@@ -20,12 +20,12 @@ export default function Home() {
   const videoRef = useRef(null);
 
   const handleTimeUpdate = () => {
-    setCurrentTime(videoRef.current.currentTime);
+    setCurrentTime(videoRef.current.currentTime * 1000); // seconds --> milliseconds
   };
 
   const handleJumpToTime = (time) => {
     if (videoRef.current) {
-      videoRef.current.currentTime = time;
+      videoRef.current.currentTime = time / 1000; // milliseconds --> seconds
       videoRef.current.play(); // plays the video after jumping
     }
   };
@@ -68,6 +68,7 @@ export default function Home() {
           </div>
         </div>
 
+        <p>Current Time: {(currentTime/1000).toFixed(2)} seconds</p>
 
       </main>
 
