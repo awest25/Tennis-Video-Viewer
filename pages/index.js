@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import React, { useState, useRef } from 'react';
+import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
@@ -15,7 +16,8 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef(null);
 
-  const [pointsData, setPointsData] = useState(samplePointsData);
+  const sampleMatchData = {name: "Sample Match", url: "/data/dummy_video.mp4", points: samplePointsData}
+  const [matchData, setMatchData] = useState(sampleMatchData);
 
 
   const handleTimeUpdate = () => {
@@ -47,7 +49,7 @@ export default function Home() {
 
         {/* Search Dropdown */}
         <div className="searchDropdown">
-          <SearchDropdown setPointsData={setPointsData} />
+          <SearchDropdown setMatchData={setMatchData} />
         </div>
 
         {/* Main Content Area */}
@@ -59,7 +61,7 @@ export default function Home() {
 
           {/* Points List */}
           <div className="pointsList">
-            <PointsList pointsData={pointsData} onPointSelect={handleJumpToTime}/>
+            <PointsList pointsData={matchData.points} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
 

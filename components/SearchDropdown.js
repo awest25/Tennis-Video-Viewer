@@ -1,11 +1,25 @@
 // components/SearchDropdown.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import { collection, getDocs } from 'firebase/firestore';
+import db from '../services/initializeFirebase.js';
 
-const SearchDropdown = ({ setPointsData }) => {
+const SearchDropdown = ({ setMatchData }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [options, setOptions] = useState([]);
+    const [dropdownData, setDropdownData] = useState(null);
+
+    useEffect(() => {
+        const fetchMatches = async () => {
+            const querySnapshot = await getDocs(collection(db, 'matches'));
+            const matches = querySnapshot.docs.map((doc) => doc.data());
+            setDropdownData(formatOptions(matches));
+            setOptions(formatOptions(matches));
+        };
+
+        fetchMatches();
+    }, []);
 
     const handleSearchChange = (newValue) => {
         setSearchTerm(newValue);
@@ -13,13 +27,13 @@ const SearchDropdown = ({ setPointsData }) => {
     };
 
     const handleDropdownItemClick = (selectedOption) => {
-        setPointsData(selectedOption.value);
+        setMatchData(selectedOption.value);
     };
 
     const formatOptions = (data) => {
         return data.map((item) => ({
             value: item,
-            label: item
+            label: item.name
         }));
     };
 
@@ -28,10 +42,10 @@ const SearchDropdown = ({ setPointsData }) => {
             <Select
                 placeholder="Search for a tennis match..."
                 value={searchTerm}
-                onChange={handleSearchChange}
+                onChange={handleDropdownItemClick}
                 options={options}
                 onInputChange={handleSearchChange}
-                onMenuOpen={() => setOptions(formatOptions(['Points Data 1', 'Points Data 2', 'Points Data 3']))}
+                onMenuOpen={() => setOptions(dropdownData)}
                 onMenuClose={() => setOptions([])}
             />
         </div>
