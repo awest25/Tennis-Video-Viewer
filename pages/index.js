@@ -7,17 +7,16 @@ import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import PointsList from '../components/PointsList';
 
-export default function Home() {
-  // Sample points list
-  const points = [
-    { timestamp: '0000', description: 'Interesting Rally' },
-    { timestamp: '3000', description: 'Match Point' },
-    { timestamp: '7565', description: 'Longest Rally' },
-    // Add more points as needed
-  ];
+import samplePointsData from '/public/data/dummy_point_info.json';
 
+export default function Home() {
+
+  // The currentTime state variable isn't strictly nessessary (along with handeTimeUpdate) but it's useful for debugging
   const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef(null);
+
+  const [pointsData, setPointsData] = useState(samplePointsData);
+
 
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime * 1000); // seconds --> milliseconds
@@ -48,23 +47,19 @@ export default function Home() {
 
         {/* Search Dropdown */}
         <div className="searchDropdown">
-          <SearchDropdown />
+          <SearchDropdown setPointsData={setPointsData} />
         </div>
 
         {/* Main Content Area */}
         <div className={styles.mainContent}>
           {/* Video Player */}
           <div className="videoPlayer">
-            {/* <VideoPlayer /> */}
-            <video ref={videoRef} onTimeUpdate={handleTimeUpdate} width="100%" controls>
-                <source src={"../data/dummy_video.mp4"} type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <VideoPlayer videoURL={'/data/dummy_video.mp4'} videoRef={videoRef} handleTimeUpdate={handleTimeUpdate} />
           </div>
 
           {/* Points List */}
           <div className="pointsList">
-            <PointsList points={points} onPointSelect={handleJumpToTime}/>
+            <PointsList pointsData={pointsData} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
 
