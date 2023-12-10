@@ -1,5 +1,3 @@
-// components/SearchDropdown.js
-
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { collection, getDocs } from 'firebase/firestore';
@@ -7,27 +5,28 @@ import db from '../services/initializeFirebase.js';
 
 const SearchDropdown = ({ setMatchData }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [options, setOptions] = useState([]);
-    const [dropdownData, setDropdownData] = useState(null);
+    const [dropdownData, setDropdownData] = useState([]);
 
+    // Fetch the matches from the database and format them for the dropdown
     useEffect(() => {
         const fetchMatches = async () => {
             const querySnapshot = await getDocs(collection(db, 'matches'));
             const matches = querySnapshot.docs.map((doc) => doc.data());
             setDropdownData(formatOptions(matches));
-            setOptions(formatOptions(matches));
         };
 
         fetchMatches();
     }, []);
 
     const handleSearchChange = (newValue) => {
-        setSearchTerm(newValue);
-        // You can add logic to fetch or filter videos based on the search term.
+        if (newValue) {
+            setSearchTerm(newValue);
+        }
     };
 
     const handleDropdownItemClick = (selectedOption) => {
         setMatchData(selectedOption.value);
+        setSearchTerm(selectedOption);
     };
 
     const formatOptions = (data) => {
@@ -43,10 +42,8 @@ const SearchDropdown = ({ setMatchData }) => {
                 placeholder="Search for a tennis match..."
                 value={searchTerm}
                 onChange={handleDropdownItemClick}
-                options={options}
+                options={dropdownData}
                 onInputChange={handleSearchChange}
-                onMenuOpen={() => setOptions(dropdownData)}
-                onMenuClose={() => setOptions([])}
             />
         </div>
     );

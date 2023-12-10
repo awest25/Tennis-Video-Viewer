@@ -8,26 +8,18 @@ import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import PointsList from '../components/PointsList';
 
-import samplePointsData from '/public/data/dummy_point_info.json';
-
 export default function Home() {
 
-  // The currentTime state variable isn't strictly nessessary (along with handeTimeUpdate) but it's useful for debugging
-  const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef(null);
+  const [matchData, setMatchData] = useState(null);
 
-  const sampleMatchData = {name: "Sample Match", url: "/data/dummy_video.mp4", points: samplePointsData}
-  const [matchData, setMatchData] = useState(sampleMatchData);
-
-
-  const handleTimeUpdate = () => {
-    setCurrentTime(videoRef.current.currentTime * 1000); // seconds --> milliseconds
-  };
-
+  // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
     if (videoRef.current) {
-      videoRef.current.currentTime = time / 1000; // milliseconds --> seconds
-      videoRef.current.play(); // plays the video after jumping
+      videoRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'seekTo', args: [time/1000, true] }),
+          '*'
+      );
     }
   };
 
@@ -56,16 +48,14 @@ export default function Home() {
         <div className={styles.mainContent}>
           {/* Video Player */}
           <div className="videoPlayer">
-            <VideoPlayer videoURL={'/data/dummy_video.mp4'} videoRef={videoRef} handleTimeUpdate={handleTimeUpdate} />
+            <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
           </div>
 
           {/* Points List */}
           <div className="pointsList">
-            <PointsList pointsData={matchData.points} onPointSelect={handleJumpToTime}/>
+            <PointsList pointsData={matchData ? matchData.points : []} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
-
-        <p>Current Time: {(currentTime/1000).toFixed(2)} seconds</p>
 
       </main>
 
