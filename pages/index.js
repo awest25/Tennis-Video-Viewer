@@ -1,19 +1,27 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import React, { useState, useRef } from 'react';
+import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import PointsList from '../components/PointsList';
 
 export default function Home() {
-  // Sample points list
-  const points = [
-    { timestamp: '00:01:00', description: 'Interesting Rally' },
-    { timestamp: '00:02:30', description: 'Match Point' },
-    { timestamp: '00:03:45', description: 'Longest Rally' },
-    // Add more points as needed
-  ];
+
+  const videoRef = useRef(null);
+  const [matchData, setMatchData] = useState(null);
+
+  // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
+  const handleJumpToTime = (time) => {
+    if (videoRef.current) {
+      videoRef.current.contentWindow.postMessage(
+          JSON.stringify({ event: 'command', func: 'seekTo', args: [time/1000, true] }),
+          '*'
+      );
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -33,22 +41,21 @@ export default function Home() {
 
         {/* Search Dropdown */}
         <div className="searchDropdown">
-          <SearchDropdown />
+          <SearchDropdown setMatchData={setMatchData} />
         </div>
 
         {/* Main Content Area */}
         <div className={styles.mainContent}>
           {/* Video Player */}
           <div className="videoPlayer">
-            <VideoPlayer />
+            <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
           </div>
 
           {/* Points List */}
           <div className="pointsList">
-            <PointsList points={points}/>
+            <PointsList pointsData={matchData ? matchData.points : []} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
-
 
       </main>
 

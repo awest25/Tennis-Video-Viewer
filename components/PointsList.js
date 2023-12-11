@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-const PointsList = ({ points, onPointSelect }) => {
+const PointsList = ({ pointsData, onPointSelect }) => {
     return (
         <ul>
-            {points.map((point, index) => (
-                <li key={index} onClick={() => onPointSelect(point.timestamp)}>
-                    {point.description}
+            {pointsData.map((point, index) => (
+                <li key={index} onClick={() => onPointSelect(point.Position)}>
+                    {point.Name}
                 </li>
             ))}
         </ul>
