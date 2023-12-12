@@ -6,12 +6,12 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA_7lXGGRh4eVuOcNhK1Jhp47ouFDu9u8E",
-  authDomain: "ucla-tennis-matches.firebaseapp.com",
-  projectId: "ucla-tennis-matches",
-  storageBucket: "ucla-tennis-matches.appspot.com",
-  messagingSenderId: "552976318070",
-  appId: "1:552976318070:web:aa3dbe77adabbce1612957"
+  apiKey: "AIzaSyBOvEiiwKE_Q_aTWdyOpTIDmYmbPHA9KOg",
+  authDomain: "match-viewing-dashboard.firebaseapp.com",
+  projectId: "match-viewing-dashboard",
+  storageBucket: "match-viewing-dashboard.appspot.com",
+  messagingSenderId: "276222404565",
+  appId: "1:276222404565:web:d295bf29156c4bb4a73f5c"
 };
 
 // Initialize Firebase
