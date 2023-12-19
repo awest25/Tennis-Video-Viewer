@@ -1,12 +1,13 @@
 // components/PointsList.js
 
 import React from 'react';
+import styles from '../styles/PointsList.module.css';
 
 const PointsList = ({ pointsData, onPointSelect }) => {
     return (
-        <ul>
+        <ul class={styles.pointsList}>
             {pointsData.map((point, index) => (
-                <li key={index} onClick={() => onPointSelect(point.Position)} style={{ cursor: 'pointer' }}>
+                <li class={styles.pointsListItem} key={index} onClick={() => onPointSelect(point.Position)} style={{ cursor: 'pointer' }}>
                     {point.Name}
                 </li>
             ))}

@@ -1,0 +1,56 @@
+.activeFilterListContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+}
+
+.activeFilterList {
+    padding: 0px;
+    list-style-type: none;
+    margin: 0px;
+}
+
+.activeFilterItem {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.availableFilterItem {
+    padding: 10px;
+    list-style-type: none;
+}
+
+.availableFilterSubitem {
+    list-style-type: none;
+}
+
+.availableFilterList {
+    padding: 0px;
+}
+
+.availableFilterSubitemList {
+    padding: 0px;
+    list-style-type: none;
+}
+
+.list {
+    padding: 0px;
+    list-style-type: none;
+}

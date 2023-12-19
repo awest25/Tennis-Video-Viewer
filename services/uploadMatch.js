@@ -1,5 +1,5 @@
 // Import the necessary Firebase libraries
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 import db from '../services/initializeFirebase.js';
 

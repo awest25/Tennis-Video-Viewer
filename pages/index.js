@@ -52,7 +52,7 @@ export default function Home() {
   
     return filteredPoints;
   }
-  
+
   // // This filter logic gets rid of anything that doesn't match all of the filters
   // const returnFilteredPoints = () => { // filter is an array of [key, value]
   //   let filteredPoints = matchData.points;
@@ -84,22 +84,24 @@ export default function Home() {
         </div>
 
         {/* Main Content Area */}
-        <div className={styles.mainContent}>
-          {/* Video Player */}
-          <div className="videoPlayer">
-            <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
-          </div>
+        {matchData && (
+          <div className={styles.mainContent}>
+            {/* Video Player */}
+            <div className="videoPlayer">
+              <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
+            </div>
 
-          {/* Filter List */}
-          <div className="filterList">
-            <FilterList pointsData={matchData ? matchData.points : []} filterList={filterList} setFilterList={setFilterList} />
-          </div>
+            {/* Filter List */}
+            <div className="filterList">
+              <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
+            </div>
 
-          {/* Points List */}
-          <div className="pointsList">
-          <PointsList pointsData={matchData ? returnFilteredPoints() : []} onPointSelect={handleJumpToTime}/>
+            {/* Points List */}
+            <div className="pointsList">
+            <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+            </div>
           </div>
-        </div>
+        )}
 
       </main>
 

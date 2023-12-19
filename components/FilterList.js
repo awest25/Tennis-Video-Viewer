@@ -1,6 +1,7 @@
 // components/FilterList.js
 
 import React, { useEffect, useState } from 'react';
+import styles from '../styles/FilterList.module.css';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
@@ -44,26 +45,28 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
 
     return (
         <div>
-            <div>
+            <div class={styles.activeFilterListContainer}>
                 Active Filters:
-                <ul>
+                <ul class={styles.activeFilterList}>
                     {sortedFilterList.map(([key, value]) => (
-                        <li key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                        <li class={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
                             {key}: {value}
                         </li>
                     ))}
                 </ul>
             </div>
-            <ul>
+            <ul class={styles.availableFilterList}>
                 {keys.map((key) => (
-                    <li key={key}>
-                        <strong onClick={() => toggleCollapse(key)} style={{ cursor: 'pointer' }}>{key}</strong>
-                        <ul style={{ display: collapsedKeys.includes(key) ? 'none' : 'block'}}>
-                            {uniqueValues[key].map((value) => (
-                                <li key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
-                            ))}
-                        </ul>
-                    </li>
+                    <div class={styles.availableFilterItem}>
+                        <li key={key}>
+                            <strong onClick={() => toggleCollapse(key)} style={{ cursor: 'pointer' }}>{key}</strong>
+                            <ul class={styles.list} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block'}}>
+                                {uniqueValues[key].map((value) => (
+                                    <li key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
+                                ))}
+                            </ul>
+                        </li>
+                    </div>
                 ))}
             </ul>
         </div>
