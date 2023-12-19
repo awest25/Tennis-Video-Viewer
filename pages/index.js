@@ -6,12 +6,14 @@ import '../services/initializeFirebase.js'; // Initialize Firebase on the client
 
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
+import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 
 export default function Home() {
 
   const videoRef = useRef(null);
   const [matchData, setMatchData] = useState(null);
+  const [filterList, setFilterList] = useState([]);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -22,6 +24,43 @@ export default function Home() {
       );
     }
   };
+
+  const returnFilteredPoints = () => {
+    let filteredPoints = matchData.points;
+    const filterMap = new Map();
+  
+    // Group filters by key
+    filterList.forEach(filter => {
+      const [key, value] = filter;
+      if (filterMap.has(key)) {
+        filterMap.get(key).push(value);
+      } else {
+        filterMap.set(key, [value]);
+      }
+    });
+  
+    // Apply filters
+    filterMap.forEach((values, key) => {
+      if (values.length > 1) {
+        // Multiple values for the same key, use OR logic
+        filteredPoints = filteredPoints.filter(point => values.includes(point[key]));
+      } else {
+        // Single value for the key, use AND logic
+        filteredPoints = filteredPoints.filter(point => point[key] === values[0]);
+      }
+    });
+  
+    return filteredPoints;
+  }
+  
+  // // This filter logic gets rid of anything that doesn't match all of the filters
+  // const returnFilteredPoints = () => { // filter is an array of [key, value]
+  //   let filteredPoints = matchData.points;
+  //   filterList.forEach(filter => {
+  //     filteredPoints = filteredPoints.filter(point => point[filter[0]] === filter[1]);
+  //   });
+  //   return filteredPoints;
+  // }
 
   return (
     <div className={styles.container}>
@@ -51,9 +90,14 @@ export default function Home() {
             <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
           </div>
 
+          {/* Filter List */}
+          <div className="filterList">
+            <FilterList pointsData={matchData ? matchData.points : []} filterList={filterList} setFilterList={setFilterList} />
+          </div>
+
           {/* Points List */}
           <div className="pointsList">
-            <PointsList pointsData={matchData ? matchData.points : []} onPointSelect={handleJumpToTime}/>
+          <PointsList pointsData={matchData ? returnFilteredPoints() : []} onPointSelect={handleJumpToTime}/>
           </div>
         </div>
 
@@ -92,6 +136,16 @@ export default function Home() {
         }
 
         .pointsList {
+          flex: 1; // Takes up 1/3 of the space
+          margin-top: 1rem;
+          padding: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          overflow-y: auto;
+          height: 400px;
+        }
+
+        .filterList {
           flex: 1; // Takes up 1/3 of the space
           margin-top: 1rem;
           padding: 1rem;

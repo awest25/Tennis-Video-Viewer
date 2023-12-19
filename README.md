@@ -11,3 +11,8 @@ A web app focused on tennis match playback integrating with point-level data, su
 A firestore database was created. A web app was linked in Project Settings -> Apps -> Web App. The config object was copied into the firebaseInit file.
 
 Before uploading a CSV, it must be converted to JSON. Use csvjson.com.
+
+## Deployment
+
+1. Run `npm next build` to generate production files
+2. Run `firebase deploy` to depoly to firebase

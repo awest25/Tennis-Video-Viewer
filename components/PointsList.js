@@ -6,7 +6,7 @@ const PointsList = ({ pointsData, onPointSelect }) => {
     return (
         <ul>
             {pointsData.map((point, index) => (
-                <li key={index} onClick={() => onPointSelect(point.Position)}>
+                <li key={index} onClick={() => onPointSelect(point.Position)} style={{ cursor: 'pointer' }}>
                     {point.Name}
                 </li>
             ))}
