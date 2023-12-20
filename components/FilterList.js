@@ -45,22 +45,22 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
 
     return (
         <div>
-            <div class={styles.activeFilterListContainer}>
+            <div className={styles.activeFilterListContainer}>
                 Active Filters:
-                <ul class={styles.activeFilterList}>
+                <ul clclassNameass={styles.activeFilterList}>
                     {sortedFilterList.map(([key, value]) => (
-                        <li class={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                        <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
                             {key}: {value}
                         </li>
                     ))}
                 </ul>
             </div>
-            <ul class={styles.availableFilterList}>
+            <ul claclassNamess={styles.availableFilterList}>
                 {keys.map((key) => (
-                    <div class={styles.availableFilterItem}>
+                    <div className={styles.availableFilterItem}>
                         <li key={key}>
                             <strong onClick={() => toggleCollapse(key)} style={{ cursor: 'pointer' }}>{key}</strong>
-                            <ul class={styles.list} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block'}}>
+                            <ul className={styles.list} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block'}}>
                                 {uniqueValues[key].map((value) => (
                                     <li key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
                                 ))}

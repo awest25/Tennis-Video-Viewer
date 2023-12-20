@@ -8,6 +8,7 @@ import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
+import Toolbar from '../components/Toolbar.js';
 
 export default function Home() {
 
@@ -65,42 +66,51 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Tennis Video Viewer</title>
+        <title>Match Viewer</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1 className={styles.title}>
-          Tennis Video Viewer
-        </h1>
+        {!matchData && (
+          <>
+            <h1 className={styles.title}>
+            Match Viewer
+            </h1>
 
-        <p className={styles.description}>
-          Get started by <Link href="/upload-video">uploading a video</Link>.
-        </p>
+            <p className={styles.description}>
+              Get started by <Link href="/upload-video">uploading a video</Link>.
+            </p>
 
-        {/* Search Dropdown */}
-        <div className="searchDropdown">
-          <SearchDropdown setMatchData={setMatchData} />
-        </div>
+            {/* Search Dropdown */}
+            <div className="searchDropdown">
+              <SearchDropdown setMatchData={setMatchData} />
+            </div>
+          </>
+        )}
 
         {/* Main Content Area */}
         {matchData && (
-          <div className={styles.mainContent}>
-            {/* Video Player */}
-            <div className="videoPlayer">
-              <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
-            </div>
+          <>
+            {/* Toolbar */}
+            <Toolbar setMatchData={setMatchData}/>
+            <h2>{matchData.name}</h2>
+            <div className={styles.mainContent}>
+              {/* Video Player */}
+              <div className="videoPlayer">
+                <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
+              </div>
 
-            {/* Filter List */}
-            <div className="filterList">
-              <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
-            </div>
+              {/* Filter List */}
+              <div className="filterList">
+                <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
+              </div>
 
-            {/* Points List */}
-            <div className="pointsList">
-            <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+              {/* Points List */}
+              <div className="pointsList">
+              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+              </div>
             </div>
-          </div>
+          </>
         )}
 
       </main>

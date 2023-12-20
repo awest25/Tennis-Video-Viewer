@@ -5,9 +5,9 @@ import styles from '../styles/PointsList.module.css';
 
 const PointsList = ({ pointsData, onPointSelect }) => {
     return (
-        <ul class={styles.pointsList}>
+        <ul className={styles.pointsList}>
             {pointsData.map((point, index) => (
-                <li class={styles.pointsListItem} key={index} onClick={() => onPointSelect(point.Position)} style={{ cursor: 'pointer' }}>
+                <li className={styles.pointsListItem} key={index} onClick={() => onPointSelect(point.Position)} style={{ cursor: 'pointer' }}>
                     {point.Name}
                 </li>
             ))}
