@@ -85,6 +85,13 @@ export default function Home() {
             <div className="searchDropdown">
               <SearchDropdown setMatchData={setMatchData} />
             </div>
+            {/* Always show the link to MatchList */}
+            <div>
+              <Link href="/match-list">
+                {/* Use a styled div or span to represent the link */}
+                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Go to Match List</span>
+              </Link>
+            </div>
           </>
         )}
 
@@ -203,3 +210,4 @@ export default function Home() {
     </div>
   );
 }
+

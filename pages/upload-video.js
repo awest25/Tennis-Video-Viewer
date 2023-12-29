@@ -20,14 +20,30 @@ export default function UploadVideo() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Convert JSON file to an object
-        const pointsJson = JSON.parse(await jsonFile.text());
-        // Call uploadMatch function
-        uploadMatch(matchName, videoUrl, pointsJson);
+    
+        if (!matchName || !videoUrl || !jsonFile) {
+            // Display an error message or prevent form submission if any field is empty
+            console.error("Please fill in all fields.");
+            return;
+        }
+    
+        try {
+            // Convert JSON file to an object
+            const pointsJson = JSON.parse(await jsonFile.text());
+            // Call uploadMatch function
+            await uploadMatch(matchName, videoUrl, pointsJson);
+            // Optionally, show a success message or redirect after successful upload
+        } catch (error) {
+            // Display an error message on the UI if the upload fails
+            console.error("Error uploading match:", error);
+            // You can also set state to display an error message to the user
+        }
     };
+    
 
     return (
         <div>
+            <button onClick={() => history.back()}>Home</button> {/* Home Button */}
             <h1>Upload Video</h1>
             <form onSubmit={handleSubmit}>
                 <label>
