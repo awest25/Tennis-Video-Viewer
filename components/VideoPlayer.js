@@ -1,24 +1,52 @@
-// components/VideoPlayer.js
+import React, { useEffect, useRef } from 'react';
 
-import React from 'react';
+function VideoPlayer({ videoId, setVideoObject }) {
+    const playerRef = useRef(null);
 
-function VideoPlayer({ videoURL, videoRef }) {
-    if (videoURL === '') {
-        return null;
-    }
+    useEffect(() => {
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
 
-    return (
-        <iframe 
-                ref={videoRef} 
-                width="560" 
-                height="315" 
-                src={videoURL + '?enablejsapi=1'} 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen>
-        </iframe>
-    );
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        if (!window.YT) { // Check if YT is already loaded
+            // Load the script
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }        
+
+        const onPlayerReady = (event) => {
+            // Player is ready
+        };
+
+        const initializePlayer = () => {
+            playerRef.current = new window.YT.Player('player', {
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+            setVideoObject(playerRef.current);
+        };
+
+        // Only set this once
+        if (!window.onYouTubeIframeAPIReady) {
+            window.onYouTubeIframeAPIReady = initializePlayer;
+        }
+
+        return () => {
+            // Clean up the player
+            if (playerRef.current) {
+                playerRef.current.destroy();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (playerRef.current && playerRef.current.loadVideoById) {
+            playerRef.current.loadVideoById(videoId);
+        }
+    }, [videoId]);
+
+    return <div id="player"></div>;
 }
 
 export default VideoPlayer;

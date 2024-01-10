@@ -4,8 +4,8 @@ import '../services/initializeFirebase.js'; // Initialize Firebase on the client
 import db from '../services/initializeFirebase.js';
 
 // Define the uploadMatch function
-async function uploadMatch(matchName, videoUrl, pointsJson) {
-  if (!matchName && !videoUrl && !pointsJson) {
+async function uploadMatch(matchName, videoId, pointsJson) {
+  if (!matchName && !videoId && !pointsJson) {
     console.error("All fields are empty.");
     return; // Exit the function if all fields are empty
   }
@@ -15,9 +15,9 @@ async function uploadMatch(matchName, videoUrl, pointsJson) {
     return; // Exit the function if matchName is empty
   }
 
-  if (!videoUrl) {
-    console.error("Video URL is empty.");
-    return; // Exit the function if videoUrl is empty
+  if (!videoId) {
+    console.error("Video ID is empty.");
+    return; // Exit the function if videoId is empty
   }
 
   if (!pointsJson) {
@@ -28,7 +28,7 @@ async function uploadMatch(matchName, videoUrl, pointsJson) {
   try {
     const docRef = await addDoc(collection(db, "matches"), {
       name: matchName,
-      url: videoUrl,
+      videoId: videoId,
       points: pointsJson
     });
     console.log("Document written with ID: ", docRef.id);

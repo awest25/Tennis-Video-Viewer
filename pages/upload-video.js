@@ -3,15 +3,15 @@ import uploadMatch from '../services/uploadMatch.js';
 
 export default function UploadVideo() {
     const [matchName, setMatchName] = useState('');
-    const [videoUrl, setVideoUrl] = useState('');
+    const [videoId, setVideoId] = useState('');
     const [jsonFile, setJsonFile] = useState(null);
 
     const handleMatchNameChange = (e) => {
         setMatchName(e.target.value);
     };
 
-    const handleVideoUrlChange = (e) => {
-        setVideoUrl(e.target.value);
+    const handleVideoIdChange = (e) => {
+        setVideoId(e.target.value);
     };
 
     const handleJsonFileChange = (e) => {
@@ -21,7 +21,7 @@ export default function UploadVideo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!matchName || !videoUrl || !jsonFile) {
+        if (!matchName || !videoId || !jsonFile) {
             // Display an error message or prevent form submission if any field is empty
             console.error("Please fill in all fields.");
             return;
@@ -31,7 +31,7 @@ export default function UploadVideo() {
             // Convert JSON file to an object
             const pointsJson = JSON.parse(await jsonFile.text());
             // Call uploadMatch function
-            await uploadMatch(matchName, videoUrl, pointsJson);
+            await uploadMatch(matchName, videoId, pointsJson);
             // Optionally, show a success message or redirect after successful upload
         } catch (error) {
             // Display an error message on the UI if the upload fails
@@ -52,8 +52,8 @@ export default function UploadVideo() {
                 </label>
                 <br />
                 <label>
-                    Video URL:
-                    <input type="text" value={videoUrl} onChange={handleVideoUrlChange} />
+                    Video ID:
+                    <input type="text" value={videoId} onChange={handleVideoIdChange} />
                 </label>
                 <br />
                 <label>
