@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 
 import SearchDropdown from '../components/SearchDropdown';
@@ -12,17 +12,14 @@ import Toolbar from '../components/Toolbar.js';
 
 export default function Home() {
 
-  const videoRef = useRef(null);
   const [matchData, setMatchData] = useState(null);
   const [filterList, setFilterList] = useState([]);
+  const [videoObject, setVideoObject] = useState(null);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
-    if (videoRef.current) {
-      videoRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: 'seekTo', args: [time/1000, true] }),
-          '*'
-      );
+    if (videoObject && videoObject.seekTo) {
+      videoObject.seekTo(time / 1000, true);
     }
   };
 
@@ -74,7 +71,7 @@ export default function Home() {
         {!matchData && (
           <>
             <h1 className={styles.title}>
-            Match Viewer
+              Match Viewer
             </h1>
 
             <p className={styles.description}>
@@ -97,7 +94,7 @@ export default function Home() {
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
-                <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
 
               {/* Filter List */}
