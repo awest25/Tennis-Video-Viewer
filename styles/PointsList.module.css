@@ -8,5 +8,8 @@
 }
 
 .pointsListItem {
-    padding: 10px;
+  border: 0.5px solid black; /* Add a black border */
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
 }
