@@ -4,8 +4,9 @@ import VideoPlayer from '../components/VideoPlayer';
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [startTimeList, setStartTimeList] = useState([]);
-    const [endTimeList, setEndTimeList] = useState([]);
+    const [timeList, setTimeList] = useState([])
+    // currently impossible to determine exact YouTube FPS: 24-60 FPS
+    const FPS = 30;
     
     const handleVideoIdChange = (event) => {
         setVideoId(event.target.value);
@@ -25,76 +26,91 @@ export default function TagMatch() {
                 videoObject.playVideo();
             }
         }
-        /* R: Fast forward a level (1, 2,4,8,16) */
+        /* D: Records millisecond position in column of pointStartTime, rounded to the nearest ms */ 
+        else if (event.key === "d") {
+            const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
+            if (timeList.some(pair => pair[1] === 0)) return;
+
+            setTimeList(timeList => [
+                ...timeList, [newTimestamp, 0]
+            ].sort((pair1, pair2) => pair1[0] - pair2[0]))
+        }
+        /* F: Records millisecond position in column of pointEndTime, rounded to the nearest ms */ 
+        else if (event.key === "f") {
+            const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
+            const updated = timeList.map((pair) => {
+                // find corresponding d
+                if (pair[1] === 0) {
+                  return [pair[0], newTimestamp];
+                }
+                // shouldn't happen because f should always be after d
+                return pair;
+            })
+            setTimeList(updated)
+        }
+        /* R: Fast forward a level (1,2,4,8,16) */
         else if (event.key === "r") {
             let playbackRate = videoObject.getPlaybackRate();
             console.log(playbackRate);
             if (playbackRate < 16) {
                 videoObject.setPlaybackRate(playbackRate * 2);
             }
+            // TODO: ADJUST FOR FRAME WITH YT API
+            // videoObject.seekTo(currentTime + 1/FPS, true);
         }
-        /* E: speed=1 and jump back 1 second */
+        /* E: Backtrack one level (1,2,4,8,16) */
         else if (event.key === "e") {
-            videoObject.setPlaybackRate(1);
+            let playbackRate = videoObject.getPlaybackRate();
+            if (playbackRate > 2) {
+                videoObject.setPlaybackRate(playbackRate / 2);
+            }
+            // TODO: ADJUST FOR FRAME WITH YT API
+            // videoObject.seekTo(currentTime - 1/FPS, true);
+        }
+        /* W: jump forward 5 seconds */
+        else if (event.key === "w") {
             let currentTime = videoObject.getCurrentTime();
-            videoObject.seekTo(currentTime - 1, true);
+            videoObject.seekTo(currentTime + 5, true);
         }
-        /* D: Records millisecond position in column of pointStartTime, rounded to the nearest ms */ 
-        else if (event.key === "d") {
-            const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-            setStartTimeList([...startTimeList, newTimestamp].sort((a, b) => a - b));
-            console.log(startTimeList);
+        /* Q: jump back 5 seconds */
+        else if (event.key === "q") {
+            let currentTime = videoObject.getCurrentTime();
+            videoObject.seekTo(currentTime - 5, true);
         }
-        /* F: Records millisecond position in column of pointEndTime, rounded to the nearest ms */ 
-        else if (event.key === "f") {
-            const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-            setEndTimeList([...endTimeList, newTimestamp].sort((a, b) => a - b));
-            console.log(endTimeList);
+        /* S: jump forward 10 seconds */
+        else if (event.key === "s") {
+            let currentTime = videoObject.getCurrentTime();
+            videoObject.seekTo(currentTime + 10, true);
         }
-    }
-
-    function combineLists(list1, list2) {
-        // Determine the length of the longer list
-        let maxLength = Math.max(list1.length, list2.length);
-    
-        // Create the new list with combined elements
-        let combinedList = [];
-        // For copying to clipboard
-        let dataString = "";
-    
-        for (let i = 0; i < maxLength; i++) {
-            // Access elements from both lists, use 'null' if index exceeds list length
-            let elemFromList1 = i < list1.length ? list1[i] : "";
-            let elemFromList2 = i < list2.length ? list2[i] : "";
-    
-            // Add the element pair to the combined list
-            combinedList.push([elemFromList1, elemFromList2]);
-
-            // Add the element pair to the data string for copying to clipboard
-            dataString += `${elemFromList1}\t${elemFromList2}\n`; // Tab-separated values
+        /* A: jump back 10 second */
+        else if (event.key === "a") {
+            let currentTime = videoObject.getCurrentTime();
+            videoObject.seekTo(currentTime - 10, true);
         }
-    
-        return { combinedList, dataString };
+        /* 2: speed=2 */
+        else if (event.key === "2") {
+            videoObject.setPlaybackRate(2);
+        }
+        /* 1: speed=1 */
+        else if (event.key === "1") {
+            videoObject.setPlaybackRate(1);
+        }
     }
 
     const handleStartTimeChange = (index, value) => {
-        const updatedStartTimeList = [...startTimeList];
-        updatedStartTimeList[index] = value;
-        setStartTimeList(updatedStartTimeList);
+        const updatedTimeList = [...timeList];
+        updatedTimeList[index] = [value, updatedTimeList[index][1]];
+        setTimeList(updatedTimeList);
     };
 
     const handleEndTimeChange = (index, value) => {
-        const updatedEndTimeList = [...endTimeList];
-        updatedEndTimeList[index] = value;
-        setEndTimeList(updatedEndTimeList);
+        const updatedTimeList = [...timeList];
+        updatedTimeList[index] = [updatedTimeList[index][0], value];
+        setTimeList(updatedTimeList);
     };
 
-    const handleStartTimeBlur = () => {
-        setStartTimeList(prevList => [...prevList].filter(elem => elem !== "").sort((a, b) => a - b));
-    };
-    
-    const handleEndTimeBlur = () => {
-        setEndTimeList(prevList => [...prevList].filter(elem => elem !== "").sort((a, b) => a - b));
+    const handleTimeBlur = () => {
+        setTimeList(prevList => [...prevList].filter(elem => elem !== "").sort((a, b) => a - b));
     };
 
     useEffect(() => {
@@ -102,7 +118,7 @@ export default function TagMatch() {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [videoObject, startTimeList, endTimeList])
+    }, [videoObject, timeList])
 
     return (
         <div>
@@ -111,32 +127,33 @@ export default function TagMatch() {
 
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
-            <button onClick={() => navigator.clipboard.writeText(combineLists(startTimeList, endTimeList).dataString)}>Copy Columns</button>
+            <button onClick={() => navigator.clipboard.writeText('temp')}>Copy Columns</button>
 
             { /* CSV Table */ }
             <table>
                 <tbody>
-                    { /* TODO: this won't work if lengths are different */ }
-                    {combineLists(startTimeList, endTimeList).combinedList.map(([startTime, endTime], index) => (
+                    {timeList.map((pair, index) => {
+                        return(
                         <tr key={index}>
                             <td>
                                 <input
                                     type="text"
-                                    value={startTime}
+                                    value={pair[0]}
                                     onChange={(event) => handleStartTimeChange(index, event.target.value)}
-                                    onBlur={handleStartTimeBlur}
+                                    // onBlur={handleTimeBlur}
                                 />
                             </td>
                             <td>
                                 <input
                                     type="text"
-                                    value={endTime}
+                                    value={pair[1]}
                                     onChange={(event) => handleEndTimeChange(index, event.target.value)}
-                                    onBlur={handleEndTimeBlur}
+                                    // onBlur={handleTimeBlur}
                                 />
                             </td>
                         </tr>
-                    ))}
+                        );
+                    })}
                 </tbody>
             </table>
         </div>
