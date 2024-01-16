@@ -74,28 +74,27 @@ export default function Home() {
               Match Viewer
             </h1>
 
-            <p className={styles.description}>
-              Get started by <Link href="/upload-video">uploading a video</Link>.
-            </p>
-
             {/* Search Dropdown */}
             <div className="searchDropdown">
               <SearchDropdown setMatchData={setMatchData} />
             </div>
-            {/* Always show the link to MatchList */}
-            <div>
-              <Link href="/match-list">
-                {/* Use a styled div or span to represent the link */}
-                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Go to Match List</span>
-              </Link>
+
+            {/* Other Links */}
+            <div className={styles.actionsContainer}>
+              <p>Or get started by:</p>
+              <ul>
+                <li>
+                    <Link href="/upload-video">Uploading a video</Link>.
+                </li>
+                <li>
+                  <Link href="/match-list">Viewing the list of matches</Link>
+                </li>
+                <li>
+                  <Link href="/tag-match">Tagging a match</Link>
+                </li>
+              </ul>
             </div>
-            {/* Tagging: can move */}
-            <div>
-              <Link href="/tag-match">
-                {/* Use a styled div or span to represent the link */}
-                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Tagging</span>
-              </Link>
-            </div>
+
           </>
         )}
 
