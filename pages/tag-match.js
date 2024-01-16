@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 
 export default function TagMatch() {
@@ -122,7 +123,9 @@ export default function TagMatch() {
 
     return (
         <div>
+            <Toolbar setMatchData={null}/>
             {/* temporary means to select video (should it be a form?) */}
+            <label>Input YouTube Code: </label>
             <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />

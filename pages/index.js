@@ -89,6 +89,13 @@ export default function Home() {
                 <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Go to Match List</span>
               </Link>
             </div>
+            {/* Tagging: can move */}
+            <div>
+              <Link href="/tag-match">
+                {/* Use a styled div or span to represent the link */}
+                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Tagging</span>
+              </Link>
+            </div>
           </>
         )}
 
