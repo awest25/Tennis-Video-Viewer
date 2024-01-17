@@ -120,6 +120,7 @@ export default function Home() {
               <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
               </div>
             </div>
+            {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
           </>
         )}
 

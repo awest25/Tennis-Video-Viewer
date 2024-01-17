@@ -1,37 +1,29 @@
-// Import the necessary Firebase libraries
 import { collection, addDoc } from "firebase/firestore";
-import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
-import db from '../services/initializeFirebase.js';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import storage functions
+import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
 // Define the uploadMatch function
-async function uploadMatch(matchName, videoId, pointsJson) {
-  if (!matchName && !videoId && !pointsJson) {
-    console.error("All fields are empty.");
-    return; // Exit the function if all fields are empty
-  }
-
-  if (!matchName) {
-    console.error("Match name is empty.");
-    return; // Exit the function if matchName is empty
-  }
-
-  if (!videoId) {
-    console.error("Video ID is empty.");
-    return; // Exit the function if videoId is empty
-  }
-
-  if (!pointsJson) {
-    console.error("Points JSON is empty.");
-    return; // Exit the function if pointsJson is empty
+async function uploadMatch(matchName, videoId, pointsJson, pdfFile) {
+  if (!matchName || !videoId || !pointsJson || !pdfFile) {
+    console.error("All fields are required.");
+    return; // Exit the function if any field is empty
   }
 
   try {
+    // First, upload the PDF to Firebase Storage
+    const pdfRef = ref(storage, `match-pdfs/${pdfFile.name}`);
+    const snapshot = await uploadBytes(pdfRef, pdfFile);
+    const pdfUrl = await getDownloadURL(snapshot.ref);
+
+    // Then, save the match data along with the PDF URL to Firestore
     const docRef = await addDoc(collection(db, "matches"), {
       name: matchName,
       videoId: videoId,
-      points: pointsJson
+      points: pointsJson,
+      pdfUrl: pdfUrl
     });
     console.log("Document written with ID: ", docRef.id);
+    
   } catch (e) {
     console.error("Error adding document: ", e);
   }

@@ -47,7 +47,7 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
         <div>
             <div className={styles.activeFilterListContainer}>
                 Active Filters:
-                <ul clclassNameass={styles.activeFilterList}>
+                <ul className={styles.activeFilterList}>
                     {sortedFilterList.map(([key, value]) => (
                         <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
                             {key}: {value}
@@ -55,7 +55,7 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                     ))}
                 </ul>
             </div>
-            <ul claclassNamess={styles.availableFilterList}>
+            <ul className={styles.availableFilterList}>
                 {keys.map((key) => (
                     <div className={styles.availableFilterItem}>
                         <li key={key}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { collection, getDocs } from 'firebase/firestore';
-import db from '../services/initializeFirebase.js';
+import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
 
 const SearchDropdown = ({ setMatchData }) => {

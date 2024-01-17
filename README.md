@@ -17,8 +17,8 @@ Before uploading a CSV, it must be converted to JSON. Use csvjson.com.
 1. Run `npm run build` to generate production files
 2. Run `firebase deploy` to depoly to firebase
 
-## Using Applicating
+## Uploading a Match
 
-1. Press Upload Match
-2. Use Embed link cutting off after "?"
-Example: https://www.youtube.com/embed/pZ004Pn8pFY?si=RMyyQwShIUxqHLhq (already taken from embed link) would be cut to https://www.youtube.com/embed/pZ004Pn8pFY
+1. Navigate to `/upload-match`
+2. For the Video ID, use the part after `v=` in the URL
+3. The PDF file is optional
