@@ -79,9 +79,12 @@ export default function TagMatch() {
 
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
-            <button onClick={() => navigator.clipboard.writeText('temp')}>Copy Columns</button>
+            <button onClick={() => {
+                const columns = timeList.map(pair => pair.join('\t')).join('\n');
+                navigator.clipboard.writeText(columns);
+            }}>Copy Columns</button>
 
-            { /* CSV Table */ }
+            { /* CSV Table */}
             <table>
                 <tbody>
                     {timeList.map((pair, index) => {
