@@ -19,14 +19,14 @@ export default function UploadVideo() {
         setJsonFile(e.target.files[0]);
     };
 
-    const handlePdfFileChange = (e) => { // New handler for PDF file
+    const handlePdfFileChange = (e) => {
         setPdfFile(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!matchName || !videoId || !jsonFile || !pdfFile) {
+        if (!matchName || !videoId || !jsonFile) {
             console.error("Please fill in all fields.");
             return;
         }

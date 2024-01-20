@@ -4,16 +4,19 @@ import { db, storage } from '../services/initializeFirebase.js'; // Ensure stora
 
 // Define the uploadMatch function
 async function uploadMatch(matchName, videoId, pointsJson, pdfFile) {
-  if (!matchName || !videoId || !pointsJson || !pdfFile) {
+  if (!matchName || !videoId || !pointsJson) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
 
   try {
-    // First, upload the PDF to Firebase Storage
-    const pdfRef = ref(storage, `match-pdfs/${pdfFile.name}`);
-    const snapshot = await uploadBytes(pdfRef, pdfFile);
-    const pdfUrl = await getDownloadURL(snapshot.ref);
+    let pdfUrl = null;
+    if (pdfFile) {
+      // First, upload the PDF to Firebase Storage
+      const pdfRef = ref(storage, `match-pdfs/${pdfFile.name}`);
+      const snapshot = await uploadBytes(pdfRef, pdfFile);
+      pdfUrl = await getDownloadURL(snapshot.ref);
+    }
 
     // Then, save the match data along with the PDF URL to Firestore
     const docRef = await addDoc(collection(db, "matches"), {

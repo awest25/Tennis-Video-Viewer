@@ -3,6 +3,7 @@ import Select from 'react-select';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
+import transformData from '../services/transformData.js';
 
 const SearchDropdown = ({ setMatchData }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +21,9 @@ const SearchDropdown = ({ setMatchData }) => {
     }, []);
 
     const handleDropdownItemClick = (selectedOption) => {
-        setMatchData(selectedOption.value);
+        let matchData = transformData(selectedOption.value);
+        console.log(matchData.points);
+        setMatchData(matchData);
         setSearchTerm(selectedOption);
     };
 
