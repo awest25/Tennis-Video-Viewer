@@ -40,22 +40,17 @@ const SearchDropdown = ({ setMatchData }) => {
             <Select
                 placeholder="Search for a tennis match..."
                 value={searchTerm}
-                components={{NoOptionsMessage}}
-                styles={{ noOptionsMessage: (base) => ({ ...base}) }}
+                components={{
+                    NoOptionsMessage: () => (
+                        <div className={styles.loader}></div>
+                    ),
+                }}
                 onChange={handleDropdownItemClick}
                 options={dropdownData}
                 className={styles.searchDropdown}
             />
         </div>
     );
-}
-
-const NoOptionsMessage = (props)=>{
-    return(
-        <components.NoOptionsMessage {...props}>
-            <div className={styles.loader}></div>
-        </components.NoOptionsMessage>
-    )
 }
 
 export default SearchDropdown;
