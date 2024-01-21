@@ -26,7 +26,7 @@ export default function TagMatch() {
             },
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                if (!rowList.some(row => row[pointEndTime] === 0)) {
+                if (!rowList.some(row => row['pointEndTime'] === 0)) {
                     setRowList(timeList => [...timeList, { pointStartTime: newTimestamp, pointEndTime: 0 }]); // TODO: Sort automatically
                 }
             },
@@ -49,22 +49,34 @@ export default function TagMatch() {
         if (action) action();
     };
 
-
     const handleStartTimeChange = (index, value) => {
-        const updatedTimeList = rowList.map((row, index) => 
-            index === index ? { ...row, start: parseInt(value) } : row
+        const updatedRowList = rowList.map((item, idx) => 
+            idx === index ? { ...item, start: parseInt(value) } : item
         );
-        setRowList(updatedTimeList);
+        setRowList(updatedRowList);
     };
     
     const handleEndTimeChange = (index, value) => {
-        const updatedTimeList = rowList.map((row, index) => 
-            index === index ? { ...row, end: parseInt(value) } : row
+        const updatedRowList = rowList.map((item, idx) => 
+            idx === index ? { ...item, end: parseInt(value) } : item
         );
-        setRowList(updatedTimeList);
+        setRowList(updatedRowList);
     };
-    
 
+    const convertToCSV = (data) => {
+        const headers = Object.keys(data[0]);
+        const rows = data.map(obj => 
+            headers.map(fieldName => JSON.stringify(obj[fieldName])).join(',')
+        );
+        return [headers.join(','), ...rows].join('\n');
+    };
+
+    const handleCopy = () => {
+        const csvData = convertToCSV(timeList);
+        navigator.clipboard.writeText(csvData);
+    };    
+    
+    
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
@@ -86,10 +98,7 @@ export default function TagMatch() {
 
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
-            <button onClick={() => {
-                const columns = rowList.map(pair => pair.join('\t')).join('\n');
-                navigator.clipboard.writeText(columns);
-            }}>Copy Columns</button>
+            <button onClick={handleCopy}>Copy Columns</button>
 
             <div>
                 {buttonData['Page1'].map(([label, action], index) => {
