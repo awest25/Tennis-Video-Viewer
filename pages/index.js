@@ -84,10 +84,7 @@ export default function Home() {
               <p>Or get started by:</p>
               <ul>
                 <li>
-                    <Link href="/upload-video">Uploading a video</Link>.
-                </li>
-                <li>
-                  <Link href="/match-list">Viewing the list of matches</Link>
+                    <Link href="/upload-video">Uploading a video</Link>
                 </li>
                 <li>
                   <Link href="/tag-match">Tagging a match</Link>

@@ -22,7 +22,6 @@ const SearchDropdown = ({ setMatchData }) => {
 
     const handleDropdownItemClick = (selectedOption) => {
         let matchData = transformData(selectedOption.value);
-        console.log(matchData.points);
         setMatchData(matchData);
         setSearchTerm(selectedOption);
     };
