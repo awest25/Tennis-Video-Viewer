@@ -1,9 +1,20 @@
 /* Usage: If you want to change the name of a column in the filter list, 
    add the original column name to the left side and the display name
    to the right side. */
-
+   
 const nameMap = {
+    // Data Version 0
     "Name"                   : 'Point Score',
+    "Server"                 : 'Server Name',
+    "Serve Result"           : 'Serve Result',
+    "Serve Placement"        : 'Serve Placement',
+    "firstServeZone"         : 'First Serve Zone',
+    "returnData"             : 'Return Data',
+    "Return (Forehand/Backhand)": 'Return (Forehand/Backhand)',
+    "Return Placement"       : 'Return Placement',
+    
+    // Data Version 1
+    // "Name"                   : 'Point Score',
     "Shot 1: gameScore"      : 'Game Score',
     "Shot 1: setScore"       : 'Set Score',
     "Shot 1: serverName"     : 'Server Name',
