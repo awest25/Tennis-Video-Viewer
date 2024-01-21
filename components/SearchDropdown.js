@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
+import Select, {components} from 'react-select';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
@@ -20,6 +20,7 @@ const SearchDropdown = ({ setMatchData }) => {
         fetchMatches();
     }, []);
 
+
     const handleDropdownItemClick = (selectedOption) => {
         let matchData = transformData(selectedOption.value);
         setMatchData(matchData);
@@ -35,15 +36,26 @@ const SearchDropdown = ({ setMatchData }) => {
 
     return (
         <div>
+            
             <Select
                 placeholder="Search for a tennis match..."
                 value={searchTerm}
+                components={{NoOptionsMessage}}
+                styles={{ noOptionsMessage: (base) => ({ ...base}) }}
                 onChange={handleDropdownItemClick}
                 options={dropdownData}
                 className={styles.searchDropdown}
             />
         </div>
     );
+}
+
+const NoOptionsMessage = (props)=>{
+    return(
+        <components.NoOptionsMessage {...props}>
+            <div className={styles.loader}></div>
+        </components.NoOptionsMessage>
+    )
 }
 
 export default SearchDropdown;
