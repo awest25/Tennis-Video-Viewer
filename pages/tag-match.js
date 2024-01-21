@@ -5,7 +5,7 @@ import VideoPlayer from '../components/VideoPlayer';
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [timeList, setTimeList] = useState([])
+    const [rowList, setRowList] = useState([])
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
@@ -26,16 +26,15 @@ export default function TagMatch() {
             },
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                if (!timeList.some(pair => pair[1] === 0)) {
-                    setTimeList(timeList => [...timeList, [newTimestamp, 0]]
-                        .sort((pair1, pair2) => pair1[0] - pair2[0]));
+                if (!rowList.some(row => row[pointEndTime] === 0)) {
+                    setRowList(timeList => [...timeList, { pointStartTime: newTimestamp, pointEndTime: 0 }]); // TODO: Sort automatically
                 }
             },
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                setTimeList(timeList => timeList.map(pair => 
-                    pair[1] === 0 ? [pair[0], newTimestamp] : pair));
-            },
+                setRowList(timeList => timeList.map(row => 
+                    row.pointEndTime === 0 ? { ...row, pointEndTime: newTimestamp } : row));
+            },            
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1/FRAMERATE, true),
             "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1/FRAMERATE, true),
             "w": () => videoObject.seekTo(videoObject.getCurrentTime() + 5, true),
@@ -52,23 +51,31 @@ export default function TagMatch() {
 
 
     const handleStartTimeChange = (index, value) => {
-        const updatedTimeList = [...timeList];
-        updatedTimeList[index] = [parseInt(value), updatedTimeList[index][1]];
-        setTimeList(updatedTimeList);
+        const updatedTimeList = rowList.map((row, index) => 
+            index === index ? { ...row, start: parseInt(value) } : row
+        );
+        setRowList(updatedTimeList);
     };
-
+    
     const handleEndTimeChange = (index, value) => {
-        const updatedTimeList = [...timeList];
-        updatedTimeList[index] = [updatedTimeList[index][0], parseInt(value)];
-        setTimeList(updatedTimeList);
+        const updatedTimeList = rowList.map((row, index) => 
+            index === index ? { ...row, end: parseInt(value) } : row
+        );
+        setRowList(updatedTimeList);
     };
+    
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [videoObject, timeList])
+    }, [videoObject, rowList])
+
+    let buttonData = {
+        Page1: [['0-0', () => {},],
+                ['15-0', () => {},],],
+    }
 
     return (
         <div>
@@ -80,33 +87,41 @@ export default function TagMatch() {
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
             <button onClick={() => {
-                const columns = timeList.map(pair => pair.join('\t')).join('\n');
+                const columns = rowList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
             }}>Copy Columns</button>
 
+            <div>
+                {buttonData['Page1'].map(([label, action], index) => {
+                    return (
+                        <button key={index} onClick={action}>{label}</button>
+                    );
+                })}
+            </div>
+
             { /* CSV Table */}
             <table>
-                <tbody>
-                    {timeList.map((pair, index) => {
-                        return(
+            <tbody>
+                    {rowList.map((row, index) => (
                         <tr key={index}>
+                            <td>{index + 1}</td>
                             <td>
                                 <input
                                     type="text"
-                                    value={pair[0]}
+                                    value={row.pointStartTime}
                                     onChange={(event) => handleStartTimeChange(index, event.target.value)}
                                 />
                             </td>
                             <td>
                                 <input
                                     type="text"
-                                    value={pair[1]}
+                                    value={row.pointEndTime}
                                     onChange={(event) => handleEndTimeChange(index, event.target.value)}
                                 />
                             </td>
+                            {/* Add additional cells here as needed for more columns */}
                         </tr>
-                        );
-                    })}
+                    ))}
                 </tbody>
             </table>
         </div>
