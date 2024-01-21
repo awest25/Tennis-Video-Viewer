@@ -51,15 +51,6 @@ export default function Home() {
     return filteredPoints;
   }
 
-  // // This filter logic gets rid of anything that doesn't match all of the filters
-  // const returnFilteredPoints = () => { // filter is an array of [key, value]
-  //   let filteredPoints = matchData.points;
-  //   filterList.forEach(filter => {
-  //     filteredPoints = filteredPoints.filter(point => point[filter[0]] === filter[1]);
-  //   });
-  //   return filteredPoints;
-  // }
-
   return (
     <div className={styles.container}>
       <Head>

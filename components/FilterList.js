@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/FilterList.module.css';
+// This file renammes columns to more human-readable names
+import nameMap from '../services/nameMap.js';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
@@ -50,24 +52,33 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                 <ul className={styles.activeFilterList}>
                     {sortedFilterList.map(([key, value]) => (
                         <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
-                            {key}: {value}
+                            {nameMap[key]}: {value}
                         </li>
                     ))}
                 </ul>
             </div>
             <ul className={styles.availableFilterList}>
-                {keys.map((key) => (
-                    <div className={styles.availableFilterItem}>
-                        <li key={key}>
-                            <strong onClick={() => toggleCollapse(key)} style={{ cursor: 'pointer' }}>{key}</strong>
-                            <ul className={styles.list} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block'}}>
-                                {uniqueValues[key].map((value) => (
-                                    <li key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
-                                ))}
-                            </ul>
-                        </li>
-                    </div>
-                ))}
+                {keys.map((key) => {
+                    // Check if key is in the nameMap
+                    if (nameMap.hasOwnProperty(key)) {
+                        return (
+                            <div className={styles.availableFilterItem} key={key} onClick={() => toggleCollapse(key)}>
+                                <li>
+                                    <strong>
+                                        {nameMap[key]}
+                                    </strong>
+                                    <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
+                                        {uniqueValues[key].map((value) => (
+                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            </div>
+                        );
+                    } else {
+                        return null; // Skip rendering if key is not in the map
+                    }
+                })}
             </ul>
         </div>
     );
