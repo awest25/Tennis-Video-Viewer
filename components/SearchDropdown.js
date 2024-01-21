@@ -22,12 +22,9 @@ const SearchDropdown = ({ setMatchData }) => {
 
 
     const handleDropdownItemClick = (selectedOption) => {
-        if(dropdownData.length)
-        {
             let matchData = transformData(selectedOption.value);
             setMatchData(matchData);
             setSearchTerm(selectedOption);
-        }        
     };
 
     const formatOptions = (data) => {
