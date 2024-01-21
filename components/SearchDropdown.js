@@ -22,9 +22,9 @@ const SearchDropdown = ({ setMatchData }) => {
 
 
     const handleDropdownItemClick = (selectedOption) => {
-            let matchData = transformData(selectedOption.value);
-            setMatchData(matchData);
-            setSearchTerm(selectedOption);
+        let matchData = transformData(selectedOption.value);
+        setMatchData(matchData);
+        setSearchTerm(selectedOption);
     };
 
     const formatOptions = (data) => {
