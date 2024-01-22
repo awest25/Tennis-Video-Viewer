@@ -29,7 +29,7 @@ const nameMap = {
     "Last Shot Placement"    : 'Last Shot Placement',
     "Last Shot Error Type"   : 'Last Shot Error Type',
 
-    "atNet"                  : 'At Net',
+    "atNetName"                  : 'At Net',
     "isbreakPoint"           : 'Break Point',
     "setScoreSum"            : 'Set #',
     "rallyCountFreq"         : 'Rally Length',
