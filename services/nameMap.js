@@ -5,10 +5,12 @@
 const nameMap = {
 
     // Data Version 0 (Points)
-    "serverName"             : 'Server',
+    "point_winner"           : 'Point Winner',
 
+    "serverName"             : 'Server',
     "Serve Result"           : 'Serve Result',
     "Serve Placement"        : 'Serve Placement',
+    "servingSide"            : 'Duece/Ad Side',
 
     "returnerName"           : 'Returner',
     "Return (Forehand/Backhand)": 'Return (Forehand/Backhand)',
@@ -27,13 +29,11 @@ const nameMap = {
     "Last Shot Placement"    : 'Last Shot Placement',
     "Last Shot Error Type"   : 'Last Shot Error Type',
 
-    "servingSide"            : 'Duece/Ad Side',
     "atNet"                  : 'At Net',
     "isbreakPoint"           : 'Break Point',
     "setScoreSum"            : 'Set #',
-    "isbreakPoint"           : 'Game #',
     "rallyCountFreq"         : 'Rally Length',
-    "point_winner"           : 'Point Winner',
+    
 
     // Data Version 1
     // "Name"                   : 'Point Score',
