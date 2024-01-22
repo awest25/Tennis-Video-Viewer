@@ -3,6 +3,7 @@
    to the right side. */
    
 const nameMap = {
+
     // Data Version 0 (Points)
     "serverName"             : 'Server',
 
@@ -34,14 +35,6 @@ const nameMap = {
     "rallyCountFreq"         : 'Rally Length',
     "point_winner"           : 'Point Winner',
 
-
-
-  
-
-
-
-    
-    
     // Data Version 1
     // "Name"                   : 'Point Score',
     "Shot 1: gameScore"      : 'Game Score',

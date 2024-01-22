@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 
 import SearchDropdown from '../components/SearchDropdown';
@@ -12,17 +12,14 @@ import Toolbar from '../components/Toolbar.js';
 
 export default function Home() {
 
-  const videoRef = useRef(null);
   const [matchData, setMatchData] = useState(null);
   const [filterList, setFilterList] = useState([]);
+  const [videoObject, setVideoObject] = useState(null);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
-    if (videoRef.current) {
-      videoRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: 'seekTo', args: [time/1000, true] }),
-          '*'
-      );
+    if (videoObject && videoObject.seekTo) {
+      videoObject.seekTo(time / 1000, true);
     }
   };
 
@@ -54,15 +51,6 @@ export default function Home() {
     return filteredPoints;
   }
 
-  // // This filter logic gets rid of anything that doesn't match all of the filters
-  // const returnFilteredPoints = () => { // filter is an array of [key, value]
-  //   let filteredPoints = matchData.points;
-  //   filterList.forEach(filter => {
-  //     filteredPoints = filteredPoints.filter(point => point[filter[0]] === filter[1]);
-  //   });
-  //   return filteredPoints;
-  // }
-
   return (
     <div className={styles.container}>
       <Head>
@@ -74,24 +62,27 @@ export default function Home() {
         {!matchData && (
           <>
             <h1 className={styles.title}>
-            Match Viewer
+              Match Viewer
             </h1>
-
-            <p className={styles.description}>
-              Get started by <Link href="/upload-video">uploading a video</Link>.
-            </p>
 
             {/* Search Dropdown */}
             <div className="searchDropdown">
               <SearchDropdown setMatchData={setMatchData} />
             </div>
-            {/* Always show the link to MatchList */}
-            <div>
-              <Link href="/match-list">
-                {/* Use a styled div or span to represent the link */}
-                <span style={{ cursor: 'pointer', color: 'blue', textDecoration: 'underline' }}>Go to Match List</span>
-              </Link>
+
+            {/* Other Links */}
+            <div className={styles.actionsContainer}>
+              <p>Or get started by:</p>
+              <ul>
+                <li>
+                    <Link href="/upload-video">Uploading a video</Link>
+                </li>
+                <li>
+                  <Link href="/tag-match">Tagging a match</Link>
+                </li>
+              </ul>
             </div>
+
           </>
         )}
 
@@ -104,7 +95,7 @@ export default function Home() {
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
-                <VideoPlayer videoURL={matchData ? matchData.url : ''} videoRef={videoRef} />
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
 
               {/* Filter List */}
@@ -117,6 +108,7 @@ export default function Home() {
               <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
               </div>
             </div>
+            {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
           </>
         )}
 
