@@ -3,40 +3,39 @@ import uploadMatch from '../services/uploadMatch.js';
 
 export default function UploadVideo() {
     const [matchName, setMatchName] = useState('');
-    const [videoUrl, setVideoUrl] = useState('');
+    const [videoId, setVideoId] = useState('');
     const [jsonFile, setJsonFile] = useState(null);
+    const [pdfFile, setPdfFile] = useState(null); // New state for PDF file
 
     const handleMatchNameChange = (e) => {
         setMatchName(e.target.value);
     };
 
-    const handleVideoUrlChange = (e) => {
-        setVideoUrl(e.target.value);
+    const handleVideoIdChange = (e) => {
+        setVideoId(e.target.value);
     };
 
     const handleJsonFileChange = (e) => {
         setJsonFile(e.target.files[0]);
     };
 
+    const handlePdfFileChange = (e) => {
+        setPdfFile(e.target.files[0]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!matchName || !videoUrl || !jsonFile) {
-            // Display an error message or prevent form submission if any field is empty
+        if (!matchName || !videoId || !jsonFile) {
             console.error("Please fill in all fields.");
             return;
         }
     
         try {
-            // Convert JSON file to an object
             const pointsJson = JSON.parse(await jsonFile.text());
-            // Call uploadMatch function
-            await uploadMatch(matchName, videoUrl, pointsJson);
-            // Optionally, show a success message or redirect after successful upload
+            await uploadMatch(matchName, videoId, pointsJson, pdfFile);
         } catch (error) {
-            // Display an error message on the UI if the upload fails
             console.error("Error uploading match:", error);
-            // You can also set state to display an error message to the user
         }
     };
     
@@ -52,13 +51,18 @@ export default function UploadVideo() {
                 </label>
                 <br />
                 <label>
-                    Video URL:
-                    <input type="text" value={videoUrl} onChange={handleVideoUrlChange} />
+                    Video ID:
+                    <input type="text" value={videoId} onChange={handleVideoIdChange} />
                 </label>
                 <br />
                 <label>
                     JSON File:
                     <input type="file" accept=".json" onChange={handleJsonFileChange} />
+                </label>
+                <br />
+                <label>
+                    PDF File:
+                    <input type="file" accept="application/pdf" onChange={handlePdfFileChange} />
                 </label>
                 <br />
                 <button type="submit">Upload</button>

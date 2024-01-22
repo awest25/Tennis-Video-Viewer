@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
+import Select, {components} from 'react-select';
 import { collection, getDocs } from 'firebase/firestore';
-import db from '../services/initializeFirebase.js';
+import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
+import transformData from '../services/transformData.js';
 
 const SearchDropdown = ({ setMatchData }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,8 +20,10 @@ const SearchDropdown = ({ setMatchData }) => {
         fetchMatches();
     }, []);
 
+
     const handleDropdownItemClick = (selectedOption) => {
-        setMatchData(selectedOption.value);
+        let matchData = transformData(selectedOption.value);
+        setMatchData(matchData);
         setSearchTerm(selectedOption);
     };
 
@@ -33,9 +36,15 @@ const SearchDropdown = ({ setMatchData }) => {
 
     return (
         <div>
+            
             <Select
                 placeholder="Search for a tennis match..."
                 value={searchTerm}
+                components={{
+                    NoOptionsMessage: () => (
+                        <div className={styles.loader}></div>
+                    ),
+                }}
                 onChange={handleDropdownItemClick}
                 options={dropdownData}
                 className={styles.searchDropdown}

@@ -7,7 +7,7 @@ const Toolbar = ({ setMatchData }) => {
         <div className={styles.toolbar}>
             {/* Toolbar content goes here */}
             <a className={styles.name} href="/">Match Viewer</a>
-            <SearchDropdown setMatchData={setMatchData} />
+            {setMatchData!==null && <SearchDropdown setMatchData={setMatchData} />}
             {/* Add more links or content as needed */}
         </div>
     );
