@@ -3,15 +3,44 @@
    to the right side. */
    
 const nameMap = {
-    // Data Version 0
-    "Name"                   : 'Point Score',
-    "Server"                 : 'Server Name',
+    // Data Version 0 (Points)
+    "serverName"             : 'Server',
+
     "Serve Result"           : 'Serve Result',
     "Serve Placement"        : 'Serve Placement',
-    "firstServeZone"         : 'First Serve Zone',
-    "returnData"             : 'Return Data',
+
+    "returnerName"           : 'Returner',
     "Return (Forehand/Backhand)": 'Return (Forehand/Backhand)',
     "Return Placement"       : 'Return Placement',
+    "Return Error Type"      : 'Return Error Type',
+
+    "Serve +1 Forehand/Backhand" : 'Serve +1 Forehand/Backhand',
+    "Serve +1 Placement"     : 'Serve +1 Placement',
+    "Serve +1 Error Type"    : 'Serve +1 Error Type',
+
+   //  "Return +1 Forehand/Backhand" : 'Return +1 Forehand/Backhand',
+   //  "Return +1 Placement"    : 'Return +1 Placement',
+   //  "Return +1 Error Type"   : 'Return +1 Error Type',
+
+    "Last Shot Forehand/Backhand" : 'Last Shot Forehand/Backhand',
+    "Last Shot Placement"    : 'Last Shot Placement',
+    "Last Shot Error Type"   : 'Last Shot Error Type',
+
+    "servingSide"            : 'Duece/Ad Side',
+    "atNet"                  : 'At Net',
+    "isbreakPoint"           : 'Break Point',
+    "setScoreSum"            : 'Set #',
+    "isbreakPoint"           : 'Game #',
+    "rallyCountFreq"         : 'Rally Length',
+    "point_winner"           : 'Point Winner',
+
+
+
+  
+
+
+
+    
     
     // Data Version 1
     // "Name"                   : 'Point Score',
