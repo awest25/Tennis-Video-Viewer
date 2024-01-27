@@ -64,7 +64,7 @@ export default function TagMatch() {
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 setTimeList(timeList => timeList.map(pair => 
-                    pair[1] === 0 ? [pair[0], newTimestamp] : pair));
+                    (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp] : pair));
             },
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1/FRAMERATE, true),
             "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1/FRAMERATE, true),
