@@ -2,6 +2,30 @@ import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 
+const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
+    return (
+        <div>
+            <button onClick={() => handleRemoveTime(index)}></button>
+            <tr key={index}>
+                <td>
+                    <input
+                        type="text"
+                        value={pair[0]}
+                        onChange={(event) => handleStartTimeChange(index, event.target.value)}
+                    />
+                </td>
+                <td>
+                    <input
+                        type="text"
+                        value={pair[1]}
+                        onChange={(event) => handleEndTimeChange(index, event.target.value)}
+                    />
+                </td>
+            </tr>
+        </div>
+    );
+}
+
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
@@ -63,6 +87,11 @@ export default function TagMatch() {
         setTimeList(updatedTimeList);
     };
 
+    const handleRemoveTime = (index) => {
+        const updatedTimeList = [...timeList].filter((item, i) => i !== index);
+        setTimeList(updatedTimeList);
+    }
+
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => {
@@ -89,23 +118,14 @@ export default function TagMatch() {
                 <tbody>
                     {timeList.map((pair, index) => {
                         return(
-                        <tr key={index}>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={pair[0]}
-                                    onChange={(event) => handleStartTimeChange(index, event.target.value)}
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={pair[1]}
-                                    onChange={(event) => handleEndTimeChange(index, event.target.value)}
-                                />
-                            </td>
-                        </tr>
-                        );
+                            <TagTable
+                                pair={pair}
+                                index={index}
+                                handleStartTimeChange={handleStartTimeChange}
+                                handleEndTimeChange={handleEndTimeChange}
+                                handleRemoveTime={handleRemoveTime}
+                            />
+                        )
                     })}
                 </tbody>
             </table>
