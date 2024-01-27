@@ -30,7 +30,11 @@ const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, han
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [timeList, setTimeList] = useState([])
+    const [timeList, setTimeList] = useState([]);
+    // tracks current timestamp to display at top: we can't use timeList[timeList.length-1] because we sort
+    // when the tagger goes back in time to update a value, the "current time" is the LATEST time not the CURRENT time.
+    // point_start_time should always be unique when tagging!
+    const [curTimeStart, setCurTimeStart] = useState(0);
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
@@ -54,6 +58,7 @@ export default function TagMatch() {
                 if (!timeList.some(pair => pair[1] === 0)) {
                     setTimeList(timeList => [...timeList, [newTimestamp, 0]]
                         .sort((pair1, pair2) => pair1[0] - pair2[0]));
+                    setCurTimeStart(newTimestamp);
                 }
             },
             "f": () => {
@@ -121,13 +126,17 @@ export default function TagMatch() {
                     <tr>
                         <td colSpan="2">Current Timestamp</td>
                     </tr>
-                    {timeList.length !== 0 && <TagTable
-                                pair={timeList[timeList.length - 1]}
-                                index={timeList.length - 1}
-                                handleStartTimeChange={handleStartTimeChange}
-                                handleEndTimeChange={handleEndTimeChange}
-                                handleRemoveTime={handleRemoveTime}
-                            />}
+                    {timeList.length !== 0 && timeList.map((pair, index) => {
+                        if (curTimeStart === pair[0]) {
+                            return <TagTable
+                                        pair={timeList[index]}
+                                        index={index}
+                                        handleStartTimeChange={handleStartTimeChange}
+                                        handleEndTimeChange={handleEndTimeChange}
+                                        handleRemoveTime={handleRemoveTime}
+                                    />
+                        } else return null;
+                    })}
                 </tbody>
                 <tbody>
                     <tr>
