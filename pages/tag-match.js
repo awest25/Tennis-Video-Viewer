@@ -116,18 +116,23 @@ export default function TagMatch() {
 
             { /* CSV Table */}
             <hr/>
-            <p>Current Timestamp</p>
             <table>
                 <tbody>
-                    {timeList.length > 1 && <TagTable
-                            pair={timeList[timeList.length - 1]}
-                            index={timeList.length - 1}
-                            handleStartTimeChange={handleStartTimeChange}
-                            handleEndTimeChange={handleEndTimeChange}
-                            handleRemoveTime={handleRemoveTime}
-                        />}
-
-                    <p>All Timestamps</p>
+                    <tr>
+                        <td colSpan="2">Current Timestamp</td>
+                    </tr>
+                    {timeList.length !== 0 && <TagTable
+                                pair={timeList[timeList.length - 1]}
+                                index={timeList.length - 1}
+                                handleStartTimeChange={handleStartTimeChange}
+                                handleEndTimeChange={handleEndTimeChange}
+                                handleRemoveTime={handleRemoveTime}
+                            />}
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colSpan="2">All Timestamps</td>
+                    </tr>
                     {timeList.map((pair, index) => {
                         return(
                             <TagTable
