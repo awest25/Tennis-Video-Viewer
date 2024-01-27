@@ -5,25 +5,25 @@ import styles from '../styles/tag-match.module.css';
 
 const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
     return (
-        <div className={styles.table}>
-            <tr key={index}>
-                <td>
-                    <input
-                        type="text"
-                        value={pair[0]}
-                        onChange={(event) => handleStartTimeChange(index, event.target.value)}
-                    />
-                </td>
-                <td>
-                    <input
-                        type="text"
-                        value={pair[1]}
-                        onChange={(event) => handleEndTimeChange(index, event.target.value)}
-                    />
-                </td>
-            </tr>
-            <button className={styles.deleteButton} onClick={() => handleRemoveTime(index)}>X</button>
-        </div>
+        <tr key={index}>
+            <td>
+                <input
+                    type="text"
+                    value={pair[0]}
+                    onChange={(event) => handleStartTimeChange(index, event.target.value)}
+                />
+            </td>
+            <td>
+                <input
+                    type="text"
+                    value={pair[1]}
+                    onChange={(event) => handleEndTimeChange(index, event.target.value)}
+                />
+            </td>
+            <td>
+                <button className={styles.deleteButton} onClick={() => handleRemoveTime(index)}>X</button>
+            </td>
+        </tr>
     );
 }
 
@@ -129,6 +129,7 @@ export default function TagMatch() {
                     {timeList.length !== 0 && timeList.map((pair, index) => {
                         if (curTimeStart === pair[0]) {
                             return <TagTable
+                                        key = {index}
                                         pair={timeList[index]}
                                         index={index}
                                         handleStartTimeChange={handleStartTimeChange}
@@ -145,6 +146,7 @@ export default function TagMatch() {
                     {timeList.map((pair, index) => {
                         return(
                             <TagTable
+                                key = {index}
                                 pair={pair}
                                 index={index}
                                 handleStartTimeChange={handleStartTimeChange}
