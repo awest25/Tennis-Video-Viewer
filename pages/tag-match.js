@@ -115,8 +115,19 @@ export default function TagMatch() {
             }}>Copy Columns</button>
 
             { /* CSV Table */}
+            <hr/>
+            <p>Current Timestamp</p>
             <table>
                 <tbody>
+                    {timeList.length > 1 && <TagTable
+                            pair={timeList[timeList.length - 1]}
+                            index={timeList.length - 1}
+                            handleStartTimeChange={handleStartTimeChange}
+                            handleEndTimeChange={handleEndTimeChange}
+                            handleRemoveTime={handleRemoveTime}
+                        />}
+
+                    <p>All Timestamps</p>
                     {timeList.map((pair, index) => {
                         return(
                             <TagTable
