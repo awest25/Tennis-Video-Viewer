@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
+import styles from '../styles/tag-match.module.css';
 
 const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
     return (
-        <div>
-            <button onClick={() => handleRemoveTime(index)}></button>
+        <div className={styles.table}>
             <tr key={index}>
                 <td>
                     <input
@@ -22,6 +22,7 @@ const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, han
                     />
                 </td>
             </tr>
+            <button className={styles.deleteButton} onClick={() => handleRemoveTime(index)}>X</button>
         </div>
     );
 }
