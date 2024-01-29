@@ -150,6 +150,28 @@ export default function TagMatch() {
     // This pulls the button data from the taggerButtonData.js file
     const buttonData = getTaggerButtonData(updateTable, setCurrentPage);
 
+    const handleImageClick = (event) => {
+        const courtWidthInInches = 432;
+        const courtHeightInInches = 936;
+        
+        // Get the bounding rectangle of the target (image)
+        const rect = event.target.getBoundingClientRect();
+
+        const widthOfCourt = rect.right - rect.left;
+        const heightOfCourt = rect.bottom - rect.top;
+
+        // Calculate the click position relative to the image
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Calculate the click position relative to the court
+        const xInches = Math.round(( x / widthOfCourt ) * courtWidthInInches);
+        const yInches = Math.round(( y / heightOfCourt ) * courtHeightInInches);
+        
+        console.log("xInches: " + xInches + " yInches: " + yInches);
+        return { 'x': xInches, 'y': yInches };
+    }
+
 
     return (
         <div>
@@ -165,14 +187,32 @@ export default function TagMatch() {
 
             <div>
                 {buttonData[currentPage].map((button, index) => {
-                    return (
+                    return button.courtImage === true ? (
+                        <div>
+                            <p>{button.label}</p>
+                            <img 
+                                src="/images/Tennis_Court_Full.png" 
+                                alt="tennis court" 
+                                onClick={(event) => {
+                                    saveToHistory();
+                                    let data = handleImageClick(event); // returns data.x and data.y coordinates
+                                    button.action(data);
+                                }} 
+                                style={{width: "10%"}}
+                            />
+                        </div>
+                    ) : (
                         <button key={index} onClick={() => {
                             saveToHistory();
                             button.action();
-                        }}>{button.label}</button>
+                        }}>
+                            {button.label}
+                        </button>
                     );
                 })}
             </div>
+
+
 
             { /* CSV Table */}
             <table>

@@ -1,14 +1,31 @@
-/* Usage:
-    This is a JSON object that has the names of pages as keys and arrays of buttons as values.
-    Each button has a label and an action.
-    The labels are displayed on the buttons.
-    The actions are provided by the parent component (tag-match.js) and are passed to this component.
-        - updateTable: to the last row, adds a value (second argument) to the column name (first argument)
-        - setCurrentPage: updates the currentPage to the page specified in the argument
+/* ======== Usage: =========
 
-        updateTable('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
-        setCurrentPage('FirstServeResult'); // sets the currentPage to 'FirstServeResult'
-*/
+The 'getTaggerButtonData' function generates a JSON object used for creating a dynamic user interface with buttons. This object maps page names to arrays of button objects, each defined with specific properties and actions.
+
+Structure:
+- Each button object has a 'label' property, which specifies the text to be displayed on the button.
+- The 'action' property of each button is a function that handles all logic for the button and can call the following functions (passed from tag-match.js) in any amount/order:
+  - 'updateTable': This action adds a value to a specified column in the last row of the table. The column name is the first argument, and the value to add is the second argument.
+  - 'setCurrentPage': This action updates the 'currentPage' state with the name of the page passed as an argument.
+
+For images it's a little different:
+    - To bring in a court image, the following property must be set: { courtImage: true }
+    - The label sits above the image
+    - The action takes a data argument
+    - The x coordinate is stored in: data.x
+    - The y coordinate is sotred in: data.y
+You can then use this x and y coordinate to update the table.
+
+For example, if the coordinates are really high, you know the serve was long, and you write the logic to record it:
+if (data.y > 800) {
+    updateTable('isErrorLong', '1'); // sets the isErrorLong column to '1' for the last row
+}
+
+Other examples:
+updateTable('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
+setCurrentPage('FirstServeResult'); // sets the currentPage to 'FirstServeResult'
+
+======== Developed by Alex West ======== */
 
 export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
     'PointScore': [
@@ -129,6 +146,18 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
             label: '40-40 (Deuce Side)',
             action: () => {
                 updateTable('pointScore', 'Deuce');
+                setCurrentPage('CourtImage');
+            }
+        },
+    ],
+
+    'CourtImage': [
+        {
+            courtImage: true,
+            label: 'Select First Serve Position',
+            action: (data) => {
+                updateTable('firstServeXCoord', data.x);
+                updateTable('firstServeYCoord', data.y);
                 setCurrentPage('FirstServeResult');
             }
         },
