@@ -49,19 +49,13 @@ export default function TagMatch() {
         if (action) action();
     };
 
-    const handleStartTimeChange = (index, value) => {
-        const updatedRowList = rowList.map((item, idx) => 
-            idx === index ? { ...item, start: parseInt(value) } : item
+    const handleChange = (rowIndex, key, value) => {
+        setRowList(currentList =>
+            currentList.map((row, idx) => 
+                idx === rowIndex ? { ...row, [key]: value } : row
+            )
         );
-        setRowList(updatedRowList);
-    };
-    
-    const handleEndTimeChange = (index, value) => {
-        const updatedRowList = rowList.map((item, idx) => 
-            idx === index ? { ...item, end: parseInt(value) } : item
-        );
-        setRowList(updatedRowList);
-    };
+    };    
 
     const convertToCSV = (data) => {
         const headers = Object.keys(data[0]);
@@ -84,9 +78,38 @@ export default function TagMatch() {
         }
     }, [videoObject, rowList])
 
+    const updateRowList = (key, value) => {
+        setRowList(currentList => {
+            const newList = [...currentList];
+            const lastIndex = newList.length - 1;
+            if (lastIndex >= 0) {
+                newList[lastIndex] = { ...newList[lastIndex], [key]: value };
+            }
+            return newList;
+        });
+    }
+
     let buttonData = {
-        Page1: [['0-0', () => {},],
-                ['15-0', () => {},],],
+        Page1:
+            [
+
+                ['0-0', () => {
+                    updateRowList('pointScore', '0-0');
+                },],
+
+                ['15-0', () => {
+                    updateRowList('pointScore', '15-0');
+                }],
+
+                ['30-0', () => {
+                    updateRowList('pointScore', '30-0');
+                },],
+
+                ['40-0', () => {
+                    updateRowList('pointScore', '40-0');
+                },],
+                
+            ],
     }
 
     return (
@@ -114,21 +137,17 @@ export default function TagMatch() {
                     {rowList.map((row, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={row.pointStartTime}
-                                    onChange={(event) => handleStartTimeChange(index, event.target.value)}
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={row.pointEndTime}
-                                    onChange={(event) => handleEndTimeChange(index, event.target.value)}
-                                />
-                            </td>
-                            {/* Add additional cells here as needed for more columns */}
+                            {Object.keys(row).map((key, keyIndex) => {
+                                return (
+                                    <td key={keyIndex}>
+                                        <input
+                                            type="text"
+                                            value={row[key]}
+                                            onChange={(event) => handleChange(index, key, event.target.value)}
+                                        />
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>
