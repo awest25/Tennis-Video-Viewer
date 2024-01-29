@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
-import { getTaggerButtonData } from '../services/taggerButtonData.js';
+import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
 
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
@@ -30,17 +30,30 @@ export default function TagMatch() {
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 // Check if it's appropriate to add a new start timestamp
-                const lastPoint = table[table.length - 1];
-                if (table.length === 0 || lastPoint.hasOwnProperty('pointEndTime')) {
+                const lastPoint = table.length > 0 ? table[table.length - 1] : null;
+                if (!lastPoint || lastPoint['pointEndTime'] !== '') {
+                  saveToHistory();
+              
+                  // Create a new row with all columns, only pointStartTime has a value
+                  const newRow = columnNames.reduce((acc, columnName) => {
+                    acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
+                    return acc;
+                  }, {});
+              
+                  setTable(table => [...table, newRow]);
+                } else { // If the last point doesn't have an end timestamp, overwrite the start timestamp
                     saveToHistory();
-                    setTable(table => [...table, { pointStartTime: newTimestamp }]);
+                    // Update the last row with the new pointStartTime
+                    setTable(table => table.map((row, index) => 
+                        index === table.length - 1 ? { ...row, pointStartTime: newTimestamp } : row
+                    ));
                 }
-            },
+              },
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 // Check if it's appropriate to set the end timestamp for the last point
                 const lastPoint = table[table.length - 1];
-                if (table.length > 0 && !lastPoint.hasOwnProperty('pointEndTime')) {
+                if (table.length > 0 && lastPoint['pointStartTime'] !== '') {
                     saveToHistory();
                     setTable(table => table.map((row, index) => 
                         index === table.length - 1 ? { ...row, pointEndTime: newTimestamp } : row
@@ -62,6 +75,7 @@ export default function TagMatch() {
     };
 
     const handleChange = (rowIndex, key, value) => {
+        saveToHistory();
         setTable(currentList =>
             currentList.map((row, idx) => 
                 idx === rowIndex ? { ...row, [key]: value } : row
@@ -107,9 +121,9 @@ export default function TagMatch() {
             const updatedHistory = [...taggerHistory, { table: table, page: currentPage }];
 
             // Check if the history exceeds the maximum length
-            if (updatedHistory.length > 20) {
+            if (updatedHistory.length > 30) {
                 // Remove the oldest entry (at the beginning of the array)
-                return updatedHistory.slice(-20);
+                return updatedHistory.slice(-30);
             }
 
             return updatedHistory;
@@ -162,25 +176,29 @@ export default function TagMatch() {
 
             { /* CSV Table */}
             <table>
-            <tbody>
-                    {table.map((row, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            {Object.keys(row).map((key, keyIndex) => {
-                                return (
-                                    <td key={keyIndex}>
-                                        <input
-                                            type="text"
-                                            value={row[key]}
-                                            onChange={(event) => handleChange(index, key, event.target.value)}
-                                        />
-                                    </td>
-                                );
-                            })}
-                        </tr>
+                <thead>
+                    <tr>
+                    {columnNames.map((columnName, index) => (
+                        <th key={index}>{columnName}</th>
+                    ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {table.map((row, rowIndex) => (
+                    <tr key={rowIndex}>
+                        {columnNames.map((columnName, colIndex) => (
+                        <td key={colIndex}>
+                            <input
+                            type="text"
+                            value={row[columnName] || ''}
+                            onChange={(event) => handleChange(rowIndex, columnName, event.target.value)}
+                            />
+                        </td>
+                        ))}
+                    </tr>
                     ))}
                 </tbody>
-            </table>
+                </table>
         </div>
     );
 }
