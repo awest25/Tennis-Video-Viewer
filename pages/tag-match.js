@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
+import { getTaggerButtonData } from '../services/taggerButtonData.js';
 
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [rowList, setRowList] = useState([])
+    const [table, setTable] = useState([]);
+    const [currentPage, setCurrentPage] = useState('PointScore'); // TODO: the default should continue from what was filled in last
+    const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
@@ -26,15 +29,24 @@ export default function TagMatch() {
             },
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                if (!rowList.some(row => row['pointEndTime'] === 0)) {
-                    setRowList(timeList => [...timeList, { pointStartTime: newTimestamp, pointEndTime: 0 }]); // TODO: Sort automatically
+                // Check if it's appropriate to add a new start timestamp
+                const lastPoint = table[table.length - 1];
+                if (table.length === 0 || lastPoint.hasOwnProperty('pointEndTime')) {
+                    saveToHistory();
+                    setTable(table => [...table, { pointStartTime: newTimestamp }]);
                 }
             },
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                setRowList(timeList => timeList.map(row => 
-                    row.pointEndTime === 0 ? { ...row, pointEndTime: newTimestamp } : row));
-            },            
+                // Check if it's appropriate to set the end timestamp for the last point
+                const lastPoint = table[table.length - 1];
+                if (table.length > 0 && !lastPoint.hasOwnProperty('pointEndTime')) {
+                    saveToHistory();
+                    setTable(table => table.map((row, index) => 
+                        index === table.length - 1 ? { ...row, pointEndTime: newTimestamp } : row
+                    ));
+                }
+            },
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1/FRAMERATE, true),
             "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1/FRAMERATE, true),
             "w": () => videoObject.seekTo(videoObject.getCurrentTime() + 5, true),
@@ -50,7 +62,7 @@ export default function TagMatch() {
     };
 
     const handleChange = (rowIndex, key, value) => {
-        setRowList(currentList =>
+        setTable(currentList =>
             currentList.map((row, idx) => 
                 idx === rowIndex ? { ...row, [key]: value } : row
             )
@@ -76,10 +88,10 @@ export default function TagMatch() {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [videoObject, rowList])
+    }, [videoObject, table, currentPage]) // TODO: the buttons should be in a different component
 
-    const updateRowList = (key, value) => {
-        setRowList(currentList => {
+    const updateTable = (key, value) => {
+        setTable(currentList => {
             const newList = [...currentList];
             const lastIndex = newList.length - 1;
             if (lastIndex >= 0) {
@@ -89,28 +101,41 @@ export default function TagMatch() {
         });
     }
 
-    let buttonData = {
-        Page1:
-            [
+    const saveToHistory = () => {
+        setTaggerHistory(taggerHistory => {
+            // Add the new state to the history
+            const updatedHistory = [...taggerHistory, { table: table, page: currentPage }];
 
-                ['0-0', () => {
-                    updateRowList('pointScore', '0-0');
-                },],
+            // Check if the history exceeds the maximum length
+            if (updatedHistory.length > 20) {
+                // Remove the oldest entry (at the beginning of the array)
+                return updatedHistory.slice(-20);
+            }
 
-                ['15-0', () => {
-                    updateRowList('pointScore', '15-0');
-                }],
-
-                ['30-0', () => {
-                    updateRowList('pointScore', '30-0');
-                },],
-
-                ['40-0', () => {
-                    updateRowList('pointScore', '40-0');
-                },],
-                
-            ],
+            return updatedHistory;
+        });
     }
+
+    const undoLastAction = () => {
+        if (taggerHistory.length === 0) {
+            // Nothing to undo
+            return;
+        }
+        
+        // Get the last state from the history
+        const lastState = taggerHistory[taggerHistory.length - 1];
+        
+        // Update the current state to the last state from the history
+        setTable(lastState.table);
+        setCurrentPage(lastState.page);
+        
+        // Remove the last state from the history
+        setTaggerHistory(taggerHistory.slice(0, -1));
+    };
+
+    // This pulls the button data from the taggerButtonData.js file
+    const buttonData = getTaggerButtonData(updateTable, setCurrentPage);
+
 
     return (
         <div>
@@ -122,11 +147,15 @@ export default function TagMatch() {
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
             <button onClick={handleCopy}>Copy Columns</button>
+            <button onClick={undoLastAction}>Undo</button>
 
             <div>
-                {buttonData['Page1'].map(([label, action], index) => {
+                {buttonData[currentPage].map((button, index) => {
                     return (
-                        <button key={index} onClick={action}>{label}</button>
+                        <button key={index} onClick={() => {
+                            saveToHistory();
+                            button.action();
+                        }}>{button.label}</button>
                     );
                 })}
             </div>
@@ -134,7 +163,7 @@ export default function TagMatch() {
             { /* CSV Table */}
             <table>
             <tbody>
-                    {rowList.map((row, index) => (
+                    {table.map((row, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             {Object.keys(row).map((key, keyIndex) => {
