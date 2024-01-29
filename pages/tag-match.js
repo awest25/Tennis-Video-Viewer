@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
+import styles from '../styles/TagMatch.module.css';
 
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
@@ -196,15 +197,18 @@ export default function TagMatch() {
                                 onClick={(event) => {
                                     saveToHistory();
                                     let data = handleImageClick(event); // returns data.x and data.y coordinates
+                                    data.table = table;
                                     button.action(data);
                                 }} 
                                 style={{width: "10%"}}
                             />
                         </div>
                     ) : (
-                        <button key={index} onClick={() => {
+                        <button className={styles.customButton} key={index} onClick={() => {
                             saveToHistory();
-                            button.action();
+                            let data = {};
+                            data.table = table;
+                            button.action(data);
                         }}>
                             {button.label}
                         </button>

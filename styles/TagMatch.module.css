@@ -1,0 +1,15 @@
+/* TagMatch.module.css */
+
+.customButton {
+    background-color: #2774AE; /* Example background color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.customButton:hover {
+    background-color: #195982; /* Darker shade for hover */
+}

@@ -7,6 +7,7 @@ Structure:
 - The 'action' property of each button is a function that handles all logic for the button and can call the following functions (passed from tag-match.js) in any amount/order:
   - 'updateTable': This action adds a value to a specified column in the last row of the table. The column name is the first argument, and the value to add is the second argument.
   - 'setCurrentPage': This action updates the 'currentPage' state with the name of the page passed as an argument.
+  - All table data is stored in the 'data' argument of the action function, accessed with 'data.table'.
 
 For images it's a little different:
     - To bring in a court image, the following property must be set: { courtImage: true }
@@ -31,9 +32,10 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
     'PointScore': [
         {
             label: '0-0',
-            action: () => {
+            action: (data) => {
                 updateTable('pointScore', '0-0');
                 setCurrentPage('FirstServeResult');
+                console.log(data.table[action.table.length - 1]); // logs the last row of the table
             }
         },
         {
