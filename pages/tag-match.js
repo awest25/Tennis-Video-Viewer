@@ -5,32 +5,36 @@ import styles from '../styles/tag-match.module.css';
 
 const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
     return (
-        <div className={styles.table}>
-            <tr key={index}>
-                <td>
-                    <input
-                        type="text"
-                        value={pair[0]}
-                        onChange={(event) => handleStartTimeChange(index, event.target.value)}
-                    />
-                </td>
-                <td>
-                    <input
-                        type="text"
-                        value={pair[1]}
-                        onChange={(event) => handleEndTimeChange(index, event.target.value)}
-                    />
-                </td>
-            </tr>
-            <button className={styles.deleteButton} onClick={() => handleRemoveTime(index)}>X</button>
-        </div>
+        <tr key={index}>
+            <td>
+                <input
+                    type="text"
+                    value={pair[0]}
+                    onChange={(event) => handleStartTimeChange(index, event.target.value)}
+                />
+            </td>
+            <td>
+                <input
+                    type="text"
+                    value={pair[1]}
+                    onChange={(event) => handleEndTimeChange(index, event.target.value)}
+                />
+            </td>
+            <td>
+                <button className={styles.deleteButton} onClick={() => handleRemoveTime(index)}>X</button>
+            </td>
+        </tr>
     );
 }
 
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [timeList, setTimeList] = useState([])
+    const [timeList, setTimeList] = useState([]);
+    // tracks current timestamp to display at top: we can't use timeList[timeList.length-1] because we sort
+    // when the tagger goes back in time to update a value, the "current time" is the LATEST time not the CURRENT time.
+    // point_start_time should always be unique when tagging!
+    const [curTimeStart, setCurTimeStart] = useState(0);
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
@@ -54,12 +58,13 @@ export default function TagMatch() {
                 if (!timeList.some(pair => pair[1] === 0)) {
                     setTimeList(timeList => [...timeList, [newTimestamp, 0]]
                         .sort((pair1, pair2) => pair1[0] - pair2[0]));
+                    setCurTimeStart(newTimestamp);
                 }
             },
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 setTimeList(timeList => timeList.map(pair => 
-                    pair[1] === 0 ? [pair[0], newTimestamp] : pair));
+                    (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp] : pair));
             },
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1/FRAMERATE, true),
             "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1/FRAMERATE, true),
@@ -115,11 +120,33 @@ export default function TagMatch() {
             }}>Copy Columns</button>
 
             { /* CSV Table */}
+            <hr/>
             <table>
                 <tbody>
+                    <tr>
+                        <td colSpan="2">Current Timestamp</td>
+                    </tr>
+                    {timeList.length !== 0 && timeList.map((pair, index) => {
+                        if (curTimeStart === pair[0]) {
+                            return <TagTable
+                                        key = {index}
+                                        pair={timeList[index]}
+                                        index={index}
+                                        handleStartTimeChange={handleStartTimeChange}
+                                        handleEndTimeChange={handleEndTimeChange}
+                                        handleRemoveTime={handleRemoveTime}
+                                    />
+                        } else return null;
+                    })}
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td colSpan="2">All Timestamps</td>
+                    </tr>
                     {timeList.map((pair, index) => {
                         return(
                             <TagTable
+                                key = {index}
                                 pair={pair}
                                 index={index}
                                 handleStartTimeChange={handleStartTimeChange}
