@@ -42,6 +42,15 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
         setFilterList(updatedFilterList);
     };
 
+    // checks whether a [key, value] array is in sortedFilterList or not.
+    const inSortedList = (arr) => {
+        for(let i=0;i<sortedFilterList.length;i++)
+        {
+            if(JSON.stringify(sortedFilterList[i])===JSON.stringify(arr)) {return true;}
+        }
+        return false;
+    }
+
     // Sort the filterList array in alphabetical order
     const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -69,7 +78,12 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                     </strong>
                                     <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
                                         {uniqueValues[key].map((value) => (
-                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
+                                            <>
+                                            {!  inSortedList([key, value])?
+                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>:
+                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' , backgroundColor: '#4BB543'}} onClick={() => addFilter(key, value)}>{value}</li>
+                                            }
+                                            </>
                                         ))}
                                     </ul>
                                 </li>
