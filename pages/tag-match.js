@@ -27,6 +27,45 @@ const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, han
     );
 }
 
+const KeybindingsTable = () => {
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <td><b>Key</b></td>
+                    <td><b>Action</b></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>[space]</td>
+                    <td>Pause/Play</td>
+                </tr>
+                <tr>
+                    <td>[d] [f]</td>
+                    <td>Start Timestamp / End Timestamp</td>
+                </tr>
+                <tr>
+                    <td>[r] [e]</td>
+                    <td>Forward/Backward 1s</td>
+                </tr>
+                <tr>
+                    <td>[w] [q]</td>
+                    <td>Forward/Backward 5s</td>
+                </tr>
+                <tr>
+                    <td>[s] [a]</td>
+                    <td>Forward/Backward 10s</td>
+                </tr>
+                <tr>
+                    <td>[1] [2]</td>
+                    <td>Speed x1 / x2</td>
+                </tr>
+            </tbody>
+        </table>
+    );
+};
+
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
@@ -118,6 +157,8 @@ export default function TagMatch() {
                 const columns = timeList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
             }}>Copy Columns</button>
+
+            <KeybindingsTable/>
 
             { /* CSV Table */}
             <hr/>
