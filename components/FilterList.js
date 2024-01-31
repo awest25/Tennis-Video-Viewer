@@ -8,6 +8,7 @@ import nameMap from '../services/nameMap.js';
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
     const uniqueValues = {};
+    
 
     // Gather unique values for each key
     keys.forEach((key) => {
@@ -17,16 +18,34 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
     // State for collapsed keys
     const [collapsedKeys, setCollapsedKeys] = useState(keys);
 
+    // State for previously opened key
+    const [openKey, setOpenKey] = useState(null);
+
     // Effect to reset collapsed keys when pointsData changes
     useEffect(() => {
         setCollapsedKeys(keys);
     }, [pointsData]);
 
+
     const toggleCollapse = (key) => {
         if (collapsedKeys.includes(key)) {
-            setCollapsedKeys(collapsedKeys.filter((k) => k !== key));
+            
+             
+            if (openKey !== null) {
+
+                //add old key and remove new
+                setCollapsedKeys([...collapsedKeys.filter((k) => k !== key), openKey]); 
+            }
+            else
+            {
+                setCollapsedKeys(collapsedKeys.filter((k) => k !== key));
+            }
+            setOpenKey(key); // Update openKey state    
+            
+           
         } else {
             setCollapsedKeys([...collapsedKeys, key]);
+            setOpenKey(null);
         }
     };
 
