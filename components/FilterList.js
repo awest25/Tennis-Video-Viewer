@@ -6,12 +6,15 @@ import styles from '../styles/FilterList.module.css';
 import nameMap from '../services/nameMap.js';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
-    const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
+    const keys = Object.keys(nameMap); // Sort the keys array
     const uniqueValues = {};
 
     // Gather unique values for each key
     keys.forEach((key) => {
-        uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
+        uniqueValues[key] = [];
+        if (pointsData && pointsData.length > 0 && pointsData.some(point => point.hasOwnProperty(key))) {
+            uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
+        }
     });
     
     // State for collapsed keys
