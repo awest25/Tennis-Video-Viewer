@@ -164,11 +164,21 @@ export default function TagMatch() {
                         start: s,
                         end: e
                       }));
+                    console.log(columns);
                     await saveTaggingData(videoId, columns);
                 } catch (error) {
                     console.error("Error saving data:", error);
                 }
             }}>Save Columns</button>
+            <button onClick={async () => {
+                try {
+                    const points = await loadTaggingData(videoId);
+                    const ts = points[0].map((pair => [pair.start, pair.end]));
+                    setTimeList(ts)
+                } catch (error) {
+                    console.error("Error saving data:", error);
+                }
+            }}>Load</button>
             <KeybindingsTable/>
 
             { /* CSV Table */}

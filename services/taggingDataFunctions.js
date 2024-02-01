@@ -24,5 +24,30 @@ async function saveTaggingData(videoId, timeJson) {
     }
 }
 
+async function loadTaggingData(videoId) {
+  if (!videoId) {
+    alert("Please input a video ID");
+    return;
+  }
+
+  try {
+    const querySnapshot = await getDocs(query(collection(db, "tag-match"), where("videoId", "==", videoId)));
+    if (querySnapshot.empty) {
+      alert("Previous data does not exist; time to start working :(")
+      return [];
+    }
+    console.log("Document fetched with ID: ", querySnapshot.id);
+
+    const pointsArray = [];
+    querySnapshot.forEach((doc) => {
+        const points = doc.data().points;
+        pointsArray.push(points);
+    });
+    return pointsArray;
+  } catch (e) {
+    console.error("Error loading: ", e);
+  }
+}
+
   
-export { saveTaggingData };
+export { saveTaggingData, loadTaggingData };
