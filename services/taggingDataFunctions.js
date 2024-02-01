@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, updateDoc } from "firebase/firestore";
 import { db } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
 async function saveTaggingData(videoId, timeJson) {
@@ -11,7 +11,15 @@ async function saveTaggingData(videoId, timeJson) {
       // Save data in tag-match.js to Firestore
       const querySnapshot = await getDocs(query(collection(db, "tag-match"), where("videoId", "==", videoId)));
       if (!querySnapshot.empty) {
-        alert("Doc with same videoID exists! Someone worked on this: try loading it in!")
+        alert("Doc with same videoID exists! Try loading in old data or overwriting!");
+        const confirmed = window.confirm("Overwrite old data?")
+        if (confirmed) {
+          const docRef = querySnapshot.docs[0].ref;
+          await updateDoc(docRef, {
+            points: timeJson
+          });
+          console.log("Document overwritten with ID: ", docRef.id);
+        }
         return;
       }
       const docRef = await addDoc(collection(db, "tag-match"), {
