@@ -21,4 +21,4 @@ Before uploading a CSV, it must be converted to JSON. Use csvjson.com.
 
 1. Navigate to `/upload-match`
 2. For the Video ID, use the part after `v=` in the URL
-3. The PDF file is optional
+3. The PDF file is optional 
