@@ -86,6 +86,8 @@
     border-radius: 4px; /* Rounded corners for the items */
     cursor: pointer; /* Cursor changes to pointer to indicate clickability */
     transition: background-color 0.2s ease-in-out; /* Smooth transition for hover effect */
+    display: flex;
+    justify-content: space-between;
 }
 
 .filterValueItem:hover {
@@ -104,3 +106,4 @@
     border-left: 4px solid #007bff; /* Blue border for active item */
     padding-left: 8px; /* Adjust padding to accommodate the border */
 }
+

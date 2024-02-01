@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../styles/FilterList.module.css';
 // This file renammes columns to more human-readable names
 import nameMap from '../services/nameMap.js';
+import { filter } from 'd3';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
@@ -42,6 +43,10 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
         setFilterList(updatedFilterList);
     };
 
+    //count filtered points
+    const countFilteredPointsForValue = (key, value) => {
+        return pointsData.filter(point => point[key] === value).length;
+    };
     // Sort the filterList array in alphabetical order
     const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -51,7 +56,7 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                 Active Filters:
                 <ul className={styles.activeFilterList}>
                     {sortedFilterList.map(([key, value]) => (
-                        <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                        <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
                             {nameMap[key]}: {value}
                         </li>
                     ))}
@@ -69,7 +74,13 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                     </strong>
                                     <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
                                         {uniqueValues[key].map((value) => (
-                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
+                                            <div className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>
+                                                <li >{value}</li>
+                                                {value && (
+                                                    <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
+                                                )}
+                                            </div>
+                                                
                                         ))}
                                     </ul>
                                 </li>

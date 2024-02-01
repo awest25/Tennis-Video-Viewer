@@ -47,7 +47,6 @@ export default function Home() {
         filteredPoints = filteredPoints.filter(point => point[key] === values[0]);
       }
     });
-  
     return filteredPoints;
   }
 
