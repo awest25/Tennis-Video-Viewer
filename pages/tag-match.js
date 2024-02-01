@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 import styles from '../styles/tag-match.module.css';
+import { saveTaggingData, loadTaggingData } from '../services/taggingDataFunctions.js';
 
 const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
     return (
@@ -157,7 +158,17 @@ export default function TagMatch() {
                 const columns = timeList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
             }}>Copy Columns</button>
-
+            <button onClick={async () => {
+                try {
+                    const columns = timeList.map(([s, e]) => ({
+                        start: s,
+                        end: e
+                      }));
+                    await saveTaggingData(videoId, columns);
+                } catch (error) {
+                    console.error("Error saving data:", error);
+                }
+            }}>Save Columns</button>
             <KeybindingsTable/>
 
             { /* CSV Table */}
