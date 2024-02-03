@@ -9,18 +9,26 @@ import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
+import ScoreBoard from '../components/ScoreBoard.js';
 
 export default function Home() {
 
   const [matchData, setMatchData] = useState(null);
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
+  const [selectedPoint, setSelectedPoint] = useState(null);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
+  var arr = [];
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
       videoObject.seekTo(time / 1000, true);
     }
+  };
+
+  const handlePointClick = (point) => {
+    handleJumpToTime(point.Position);
+    setSelectedPoint([point.Position, point.setScore, point.Name]);
   };
 
   const returnFilteredPoints = () => {
@@ -105,10 +113,16 @@ export default function Home() {
 
               {/* Points List */}
               <div className="pointsList">
-              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} onPointClick={handlePointClick}/>
               </div>
             </div>
+            {/* Point display */}
+            <br></br>
+            <div className="scoreboard">
+              <ScoreBoard pointsData = {selectedPoint}/>
+              </div>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
+            <br></br>
           </>
         )}
 

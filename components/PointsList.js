@@ -3,11 +3,11 @@
 import React from 'react';
 import styles from '../styles/PointsList.module.css';
 
-const PointsList = ({ pointsData, onPointSelect }) => {
+const PointsList = ({ pointsData, onPointSelect, onPointClick}) => {
     return (
         <ul className={styles.pointsList}>
             {pointsData.map((point, index) => (
-                <li className={styles.pointsListItem} key={index} onClick={() => onPointSelect(point.Position)}>
+                <li className={styles.pointsListItem} key={index} onClick={() => {onPointSelect(point.Position); onPointClick(point);}} >
                     {point.Name}
                 </li>
             ))}
