@@ -48,7 +48,7 @@ const KeybindingsTable = () => {
                 </tr>
                 <tr>
                     <td>[r] [e]</td>
-                    <td>Forward/Backward 1s</td>
+                    <td>Forward/Backward 1 frame</td>
                 </tr>
                 <tr>
                     <td>[w] [q]</td>
@@ -70,7 +70,12 @@ const KeybindingsTable = () => {
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
+    // old times loaded from DB
     const [timeList, setTimeList] = useState([]);
+    // new times to be added to DB
+    const [addTimeList, setAddTimeList] = useState([]);
+    // new times to be deleted to DB
+    const [delTimeList, setDelTimeList] = useState([]);
     // tracks current timestamp to display at top: we can't use timeList[timeList.length-1] because we sort
     // when the tagger goes back in time to update a value, the "current time" is the LATEST time not the CURRENT time.
     // point_start_time should always be unique when tagging!
@@ -96,14 +101,14 @@ export default function TagMatch() {
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 if (!timeList.some(pair => pair[1] === 0)) {
-                    setTimeList(timeList => [...timeList, [newTimestamp, 0]]
+                    setAddTimeList(addTimeList => [...addTimeList, [newTimestamp, 0]]
                         .sort((pair1, pair2) => pair1[0] - pair2[0]));
                     setCurTimeStart(newTimestamp);
                 }
             },
             "f": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                setTimeList(timeList => timeList.map(pair => 
+                setAddTimeList(addTimeList => addTimeList.map(pair => 
                     (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp] : pair));
             },
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1/FRAMERATE, true),
@@ -135,6 +140,8 @@ export default function TagMatch() {
 
     const handleRemoveTime = (index) => {
         const updatedTimeList = [...timeList].filter((item, i) => i !== index);
+        const delList = [...delTimeList, ...timeList.filter((item, i) => i === index)]
+        setDelTimeList(delList);
         setTimeList(updatedTimeList);
     }
 
@@ -158,23 +165,38 @@ export default function TagMatch() {
                 const columns = timeList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
             }}>Copy Columns</button>
+            <button onClick={() => {
+                setTimeList([])
+                setAddTimeList([])
+            }}>Clear Columns</button>
             <button onClick={async () => {
+                // hide current timestamp when saving/loading
+                setCurTimeStart(-1)
+                setAddTimeList([])
                 try {
-                    const columns = timeList.map(([s, e]) => ({
+                    console.log(delTimeList)
+                    const newTimes = addTimeList.map(([s, e]) => ({
                         start: s,
                         end: e
                       }));
-                    console.log(columns);
-                    await saveTaggingData(videoId, columns);
+                    const delTimes = delTimeList.map(([s, e]) => ({
+                        start: s,
+                        end: e
+                      }));
+                    await saveTaggingData(videoId, newTimes, delTimes);
                 } catch (error) {
                     console.error("Error saving data:", error);
                 }
             }}>Save Columns</button>
             <button onClick={async () => {
+                // hide current timestamp when saving/loading
+                setCurTimeStart(-1)
                 try {
                     const points = await loadTaggingData(videoId);
-                    const ts = points[0].map((pair => [pair.start, pair.end]));
-                    setTimeList(ts)
+                    if (points) {
+                        const ts = points.map((pair => [pair.start, pair.end]));
+                        setTimeList(ts)
+                    }
                 } catch (error) {
                     console.error("Error saving data:", error);
                 }
