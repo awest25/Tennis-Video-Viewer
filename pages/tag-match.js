@@ -5,8 +5,9 @@ import VideoPlayer from '../components/VideoPlayer';
 export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
-    const [timeList, setTimeList] = useState([])
-
+    const [timeList, setTimeList] = useState([]);
+    const [timerValue, setTimerValue] = useState(0);
+// issue with the timer: When no video code, gives a value error. Fix this
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
     
@@ -32,7 +33,7 @@ export default function TagMatch() {
                 }
             },
             "f": () => {
-                const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
+                const newTimestamp = Math.round(videoObject.getCurrentTime());
                 setTimeList(timeList => timeList.map(pair => 
                     pair[1] === 0 ? [pair[0], newTimestamp] : pair));
             },
@@ -57,21 +58,30 @@ export default function TagMatch() {
         setTimeList(updatedTimeList);
     };
 
+
     const handleEndTimeChange = (index, value) => {
         const updatedTimeList = [...timeList];
         updatedTimeList[index] = [updatedTimeList[index][0], parseInt(value)];
         setTimeList(updatedTimeList);
     };
 
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
+    const updateTimer = () => {
+        if (videoObject && typeof videoObject.getCurrentTime === 'function') {
+          const currentTime = videoObject.getCurrentTime();
+          setTimerValue(Math.round(currentTime));
         }
-    }, [videoObject, timeList])
+    };
 
-    return (
-        <div>
+    useEffect(() => {
+            window.addEventListener('keydown', handleKeyDown);
+            const timerInterval = setInterval(updateTimer, 100);
+            return () => {
+                window.removeEventListener('keydown', handleKeyDown);
+                clearInterval(timerInterval); 
+            };
+    }, [videoObject, timeList])
+return (
+        <div style={{ marginTop: '100px' }}>
             <Toolbar setMatchData={null}/>
             {/* temporary means to select video (should it be a form?) */}
             <label>Input YouTube Code: </label>
@@ -87,8 +97,7 @@ export default function TagMatch() {
             { /* CSV Table */}
             <table>
                 <tbody>
-                    {timeList.map((pair, index) => {
-                        return(
+                    {timeList.map((pair, index) => (
                         <tr key={index}>
                             <td>
                                 <input
@@ -105,10 +114,38 @@ export default function TagMatch() {
                                 />
                             </td>
                         </tr>
-                        );
-                    })}
+                    ))}
                 </tbody>
             </table>
+
+            {/* Timer and Jump-to-Time Input */}
+            <div>
+                <p>Current Time: {Math.floor(timerValue / 60)}m {timerValue % 60}s</p>
+                <div style={{ display: 'flex' }}>
+                    <input
+                        type="number"
+                        placeholder="Minutes"
+                        value={Math.floor(timerValue / 60)}
+                        onChange={(event) => {
+                            const minutes = parseFloat(event.target.value);
+                            const newTime = (minutes * 60) + (timerValue % 60);
+                            videoObject.seekTo(newTime, true);
+                        }}
+                        style={{ marginRight: '10px' }}
+                    />
+                    <input
+                        type="number"
+                        placeholder="Seconds"
+                        value={timerValue % 60}
+                        onChange={(event) => {
+                            const seconds = parseFloat(event.target.value);
+                            const newTime = (Math.floor(timerValue / 60) * 60) + seconds;
+                            videoObject.seekTo(newTime, true);
+                        }}
+                    />
+                </div>
+            </div>
+
         </div>
     );
 }
