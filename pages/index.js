@@ -28,8 +28,13 @@ export default function Home() {
 
   const handlePointClick = (point) => {
     handleJumpToTime(point.Position);
-    setSelectedPoint([point.Position, point.setScore, point.Name]);
+    console.log(point)
+    setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName]);
   };
+
+  // const load_board = (point) => {
+
+  // };
 
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
@@ -55,7 +60,7 @@ export default function Home() {
         filteredPoints = filteredPoints.filter(point => point[key] === values[0]);
       }
     });
-  
+
     return filteredPoints;
   }
 
@@ -116,11 +121,11 @@ export default function Home() {
               <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} onPointClick={handlePointClick}/>
               </div>
             </div>
-            {/* Point display */}
-            <br></br>
+            {/* Score display */}
             <div className="scoreboard">
               <ScoreBoard pointsData = {selectedPoint}/>
-              </div>
+            </div>
+            <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
             <br></br>
           </>

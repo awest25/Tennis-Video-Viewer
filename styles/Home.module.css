@@ -97,38 +97,31 @@
   flex: 1;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
 }
 
-/* .scoreboard {
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  overflow-y: auto;
-  height: 400px;
+.scoreboard {
+  width: 50%; 
+  min-width: 400px; 
+  height: 100%;
+  display: fixed;
+  margin-right: 30vw; 
 }
 
-.scoreboard table {
-  width: 100%;
-  border-collapse: collapse;
+.scoreboard table{
+  background-color: rgb(226, 203, 86);
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
 }
 
-.scoreboard th,
-.scoreboard td {
-  padding: 0.5rem;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
+/* .scoreboard tr {
+  border-bottom: 1vw;
+} */
 
-.scoreboard th {
+/* .scoreboard th {
   background-color: #f2f2f2;
   font-weight: bold;
-}
-
-.scoreboard tr:hover {
-  background-color: #f2f2f2;
 } */
 
 .pdfView {
