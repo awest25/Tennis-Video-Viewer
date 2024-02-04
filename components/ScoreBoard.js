@@ -41,12 +41,17 @@ const ScoreBoard = ({ pointsData }) => {
         </thead>
         <tbody>
                 <tr>
-                  <td>{p1}</td>
+                  <td className={p1 === s ? styles.highlight : ''}>
+                  {p1 === s && <span className={styles.arrow}>&rarr;</span>}
+                    {p1}</td>
                   <td>{set1}</td>
-                  <td>{row1}</td>
+                  <td>{row1}
+                  </td>
                 </tr>
                 <tr>
-                  <td>{p2}</td>
+                  <td className={p2 === s ? styles.highlight : ''}>
+                  {p2 === s && <span className={styles.arrow}>&rarr;</span>}
+                    {p2}</td>
                   <td>{set2}</td>
                   <td>{row2}</td>
                 </tr>
