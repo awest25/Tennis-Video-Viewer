@@ -38,11 +38,6 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
         }
     }
     
-    const removeFilter = (key, value) => {
-        const updatedFilterList = filterList.filter(([filterKey, filterValue]) => !(filterKey === key && filterValue === value));
-        setFilterList(updatedFilterList);
-    };
-
     //count filtered points
     const countFilteredPointsForValue = (key, value) => {
         return pointsData.filter(point => point[key] === value).length;
@@ -51,47 +46,39 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
     return (
-        <div>
-            <div className={styles.activeFilterListContainer}>
-                Active Filters:
-                <ul className={styles.activeFilterList}>
-                    {sortedFilterList.map(([key, value]) => (
-                        <li className={styles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
-                            {nameMap[key]}: {value}
-                        </li>
-                    ))}
+        <>
+            <div>
+                <ul className={styles.availableFilterList}>
+                    {keys.map((key) => {
+                        // Check if key is in the nameMap
+                        if (nameMap.hasOwnProperty(key)) {
+                            return (
+                                <div className={styles.availableFilterItem} key={key} onClick={() => toggleCollapse(key)}>
+                                    <li>
+                                        <strong>
+                                            {nameMap[key]}
+                                        </strong>
+                                        <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
+                                            {uniqueValues[key].map((value) => (
+                                                <div className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>
+                                                    <li >{value}</li>
+                                                    {value && (
+                                                        <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
+                                                    )}
+                                                </div>
+                                                    
+                                            ))}
+                                        </ul>
+                                    </li>
+                                </div>
+                            );
+                        } else {
+                            return null; // Skip rendering if key is not in the map
+                        }
+                    })}
                 </ul>
             </div>
-            <ul className={styles.availableFilterList}>
-                {keys.map((key) => {
-                    // Check if key is in the nameMap
-                    if (nameMap.hasOwnProperty(key)) {
-                        return (
-                            <div className={styles.availableFilterItem} key={key} onClick={() => toggleCollapse(key)}>
-                                <li>
-                                    <strong>
-                                        {nameMap[key]}
-                                    </strong>
-                                    <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
-                                        {uniqueValues[key].map((value) => (
-                                            <div className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>
-                                                <li >{value}</li>
-                                                {value && (
-                                                    <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
-                                                )}
-                                            </div>
-                                                
-                                        ))}
-                                    </ul>
-                                </li>
-                            </div>
-                        );
-                    } else {
-                        return null; // Skip rendering if key is not in the map
-                    }
-                })}
-            </ul>
-        </div>
+        </>
     );
 }
 

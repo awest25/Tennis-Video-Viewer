@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import filterStyles from '../styles/FilterList.module.css';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import nameMap from '../services/nameMap.js';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
 
 import SearchDropdown from '../components/SearchDropdown';
@@ -50,6 +52,14 @@ export default function Home() {
     return filteredPoints;
   }
 
+  //Active Filter
+  const removeFilter = (key, value) => {
+    const updatedFilterList = filterList.filter(([filterKey, filterValue]) => !(filterKey === key && filterValue === value));
+    setFilterList(updatedFilterList);
+  };
+
+  const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
+
   return (
     <div className={styles.container}>
       <Head>
@@ -96,16 +106,34 @@ export default function Home() {
               <div className="videoPlayer">
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
-
+              
               {/* Filter List */}
-              <div className="filterList">
-                <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
+              <div>
+                <div className={filterStyles.activeFilterListContainer}>
+                  Active Filters:
+                    <ul className={filterStyles.activeFilterList}>
+                      {sortedFilterList.map(([key, value]) => (
+                        <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
+                          {nameMap[key]}: {value}
+                        </li>
+                      ))}
+                    </ul>
+                </div>
+
+                {/* List Holders */}
+                <div className='listHolder'>
+                  {/* Filter List */}
+                  <div className="filterList">
+                      <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
+                  </div>
+
+                    {/* Points List */}
+                  <div className="pointsList">
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+                  </div>
+                </div>
               </div>
 
-              {/* Points List */}
-              <div className="pointsList">
-              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
-              </div>
             </div>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
           </>
@@ -147,22 +175,26 @@ export default function Home() {
 
         .pointsList {
           flex: 1; // Takes up 1/3 of the space
-          margin-top: 1rem;
+          margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
           border-radius: 5px;
           overflow-y: auto;
-          height: 400px;
+          height: 350px;
         }
 
         .filterList {
           flex: 1; // Takes up 1/3 of the space
-          margin-top: 1rem;
+          margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
           border-radius: 5px;
           overflow-y: auto;
-          height: 400px;
+          height: 350px;
+        }
+        
+        .listHolder {
+          display: flex; 
         }
 
         footer {
