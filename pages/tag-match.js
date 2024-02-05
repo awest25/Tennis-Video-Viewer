@@ -65,50 +65,62 @@ export default function TagMatch() {
         setTimeList(updatedTimeList);
     };
 
+
+    const handleMinutesSecondsChange = (minutes, seconds) => {
+        const newTime = (minutes * 60) + seconds;
+        videoObject.seekTo(newTime, true);
+    };
+
     const updateTimer = () => {
         if (videoObject && typeof videoObject.getCurrentTime === 'function') {
-          const currentTime = videoObject.getCurrentTime();
-          setTimerValue(Math.round(currentTime));
+            const currentTime = Math.round(videoObject.getCurrentTime() * 1000);
+            setTimerValue(currentTime);
         }
     };
 
+    const handleMillisecondsChange = (value) => {
+        const milliseconds = parseInt(value);
+        videoObject.seekTo(milliseconds / 1000, true); 
+    };
+
     useEffect(() => {
-            window.addEventListener('keydown', handleKeyDown);
-            const timerInterval = setInterval(updateTimer, 100);
-            return () => {
-                window.removeEventListener('keydown', handleKeyDown);
-                clearInterval(timerInterval); 
-            };
-    }, [videoObject, timeList])
-return (
+        window.addEventListener('keydown', handleKeyDown);
+        const timerInterval = setInterval(updateTimer, 100);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            clearInterval(timerInterval);
+        };
+    }, [videoObject, timeList]);
+    return (
         <div style={{ marginTop: '100px' }}>
-            <Toolbar setMatchData={null}/>
-            {/* temporary means to select video (should it be a form?) */}
-            <label>Input YouTube Code: </label>
+            <Toolbar setMatchData={null} />
+    
+            <label>Enter YouTube Code: </label>
             <input type="text" value={videoId} onChange={handleVideoIdChange} />
-
+    
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-
             <button onClick={() => {
                 const columns = timeList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
-            }}>Copy Columns</button>
-
-            { /* CSV Table */}
+            }}>
+                Copy Columns
+            </button>
+    
+            {/* CSV Table */}
             <table>
                 <tbody>
                     {timeList.map((pair, index) => (
                         <tr key={index}>
                             <td>
                                 <input
-                                    type="text"
+                                    type="number" 
                                     value={pair[0]}
                                     onChange={(event) => handleStartTimeChange(index, event.target.value)}
                                 />
                             </td>
                             <td>
                                 <input
-                                    type="text"
+                                    type="number" 
                                     value={pair[1]}
                                     onChange={(event) => handleEndTimeChange(index, event.target.value)}
                                 />
@@ -117,35 +129,52 @@ return (
                     ))}
                 </tbody>
             </table>
-
-            {/* Timer and Jump-to-Time Input */}
+    
             <div>
-                <p>Current Time: {Math.floor(timerValue / 60)}m {timerValue % 60}s</p>
-                <div style={{ display: 'flex' }}>
-                    <input
-                        type="number"
-                        placeholder="Minutes"
-                        value={Math.floor(timerValue / 60)}
-                        onChange={(event) => {
-                            const minutes = parseFloat(event.target.value);
-                            const newTime = (minutes * 60) + (timerValue % 60);
-                            videoObject.seekTo(newTime, true);
-                        }}
-                        style={{ marginRight: '10px' }}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Seconds"
-                        value={timerValue % 60}
-                        onChange={(event) => {
-                            const seconds = parseFloat(event.target.value);
-                            const newTime = (Math.floor(timerValue / 60) * 60) + seconds;
-                            videoObject.seekTo(newTime, true);
-                        }}
-                    />
+                <p>Current Time: {timerValue}ms</p>
+                <p>Jump to time in milliseconds:</p>
+                <div>
+                    <div style={{ display: 'flex' }}>
+                        <input
+                            type="number" 
+                            placeholder="Milliseconds"
+                            value={timerValue}
+                            onChange={(event) => handleMillisecondsChange(event.target.value)}
+                            style={{ marginRight: '10px' }}
+                        />
+                        <span>ms</span>
+                    </div>
+                    <p>Or enter time in minutes and seconds:</p>
+                    <div>
+                        <input
+                            type="number" 
+                            placeholder="Minutes"
+                            value={Math.floor(timerValue / 60000)}
+                            onChange={(event) => {
+                                const minutes = parseFloat(event.target.value);
+                                const seconds = timerValue % 60000 / 1000;
+                                handleMinutesSecondsChange(minutes, seconds);
+                            }}
+                            style={{ marginRight: '10px' }}
+                        />
+                        <span>mins. </span>
+                        <input
+                            type="number"
+                            placeholder="Seconds"
+                            value={Math.round((timerValue % 60000) / 1000)}
+                            onChange={(event) => {
+                                const seconds = parseFloat(event.target.value);
+                                const minutes = Math.floor(timerValue / 60000);
+                                handleMinutesSecondsChange(minutes, seconds);
+                            }}
+                        />
+                        <span> secs. </span>
+                    </div>
                 </div>
             </div>
-
         </div>
     );
+    
+    
+    
 }
