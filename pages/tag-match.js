@@ -33,7 +33,7 @@ export default function TagMatch() {
                 }
             },
             "f": () => {
-                const newTimestamp = Math.round(videoObject.getCurrentTime());
+                const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
                 setTimeList(timeList => timeList.map(pair => 
                     pair[1] === 0 ? [pair[0], newTimestamp] : pair));
             },
