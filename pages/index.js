@@ -123,7 +123,7 @@ export default function Home() {
             </div>
             {/* Score display */}
             <div className="scoreboard">
-              <ScoreBoard pointsData = {selectedPoint}/>
+              <ScoreBoard pointsData = {selectedPoint} names = {matchData.name}/>
             </div>
             <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
