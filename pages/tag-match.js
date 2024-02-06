@@ -100,7 +100,7 @@ export default function TagMatch() {
             },
             "d": () => {
                 const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                if (!timeList.some(pair => pair[1] === 0)) {
+                if (!addTimeList.some(pair => pair[1] === 0)) {
                     setAddTimeList(addTimeList => [...addTimeList, [newTimestamp, 0]]
                         .sort((pair1, pair2) => pair1[0] - pair2[0]));
                     setCurTimeStart(newTimestamp);
@@ -166,15 +166,16 @@ export default function TagMatch() {
                 navigator.clipboard.writeText(columns);
             }}>Copy Columns</button>
             <button onClick={() => {
-                setTimeList([])
-                setAddTimeList([])
+                setTimeList([]);
+                setAddTimeList([]);
+                setDelTimeList([...timeList]);
             }}>Clear Columns</button>
             <button onClick={async () => {
                 // hide current timestamp when saving/loading
-                setCurTimeStart(-1)
-                setAddTimeList([])
+                setCurTimeStart(-1);
+                setAddTimeList([]);
+                setDelTimeList([]);
                 try {
-                    console.log(delTimeList)
                     const newTimes = addTimeList.map(([s, e]) => ({
                         start: s,
                         end: e
@@ -214,7 +215,19 @@ export default function TagMatch() {
                         if (curTimeStart === pair[0]) {
                             return <TagTable
                                         key = {index}
-                                        pair={timeList[index]}
+                                        pair={pair}
+                                        index={index}
+                                        handleStartTimeChange={handleStartTimeChange}
+                                        handleEndTimeChange={handleEndTimeChange}
+                                        handleRemoveTime={handleRemoveTime}
+                                    />
+                        } else return null;
+                    })}
+                    {addTimeList.length !== 0 && addTimeList.map((pair, index) => {
+                        if (curTimeStart === pair[0]) {
+                            return <TagTable
+                                        key = {index}
+                                        pair={pair}
                                         index={index}
                                         handleStartTimeChange={handleStartTimeChange}
                                         handleEndTimeChange={handleEndTimeChange}
@@ -228,6 +241,18 @@ export default function TagMatch() {
                         <td colSpan="2">All Timestamps</td>
                     </tr>
                     {timeList.map((pair, index) => {
+                        return(
+                            <TagTable
+                                key = {index}
+                                pair={pair}
+                                index={index}
+                                handleStartTimeChange={handleStartTimeChange}
+                                handleEndTimeChange={handleEndTimeChange}
+                                handleRemoveTime={handleRemoveTime}
+                            />
+                        )
+                    })}
+                    {addTimeList.map((pair, index) => {
                         return(
                             <TagTable
                                 key = {index}
