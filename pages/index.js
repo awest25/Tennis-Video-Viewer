@@ -9,6 +9,7 @@ import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
+import TennisButtons from '../pages/tennisButtons.js'
 
 export default function Home() {
 
@@ -64,6 +65,8 @@ export default function Home() {
             <h1 className={styles.title}>
               Match Viewer
             </h1>
+
+            <TennisButtons/>
 
             {/* Search Dropdown */}
             <div className="searchDropdown">
