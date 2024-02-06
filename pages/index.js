@@ -13,7 +13,7 @@ import Toolbar from '../components/Toolbar.js';
 
 export default function Home() {
 
-  const [matchData, setMatchData] = useState(null);
+  const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
 
