@@ -68,8 +68,12 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                         {nameMap[key]}
                                     </strong>
                                     <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
-                                        {uniqueValues[key].map((value) => (
-                                            <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>{value}</li>
+                                        {uniqueValues[key]
+                                            .filter((value) => value || value === 0) 
+                                            .map((value) => (
+                                                <li className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>
+                                                    {value}
+                                                </li>
                                         ))}
                                     </ul>
                                 </li>
