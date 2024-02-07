@@ -7,27 +7,30 @@ import nameMap from '../services/nameMap.js';
 import { filter } from 'd3';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
-    const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
+    const keys = Object.keys(nameMap); // Sort the keys array
     const uniqueValues = {};
 
     // Gather unique values for each key
     keys.forEach((key) => {
-        uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
+        uniqueValues[key] = [];
+        if (pointsData && pointsData.length > 0 && pointsData.some(point => point.hasOwnProperty(key))) {
+            uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
+        }
     });
     
-    // State for collapsed keys
-    const [collapsedKeys, setCollapsedKeys] = useState(keys);
+    // State for the open key
+    const [openKey, setOpenKey] = useState(null);
 
-    // Effect to reset collapsed keys when pointsData changes
+    // Effect to reset open key when pointsData changes
     useEffect(() => {
-        setCollapsedKeys(keys);
+        setOpenKey(null);
     }, [pointsData]);
 
-    const toggleCollapse = (key) => {
-        if (collapsedKeys.includes(key)) {
-            setCollapsedKeys(collapsedKeys.filter((k) => k !== key));
+    const toggleOpen = (key) => {
+        if (openKey === key) {
+            setOpenKey(null);
         } else {
-            setCollapsedKeys([...collapsedKeys, key]);
+            setOpenKey(key);
         }
     };
 
@@ -42,6 +45,12 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const countFilteredPointsForValue = (key, value) => {
         return pointsData.filter(point => point[key] === value).length;
     };
+
+    // Function to determine if the value is an active filter
+    const isActiveFilter = (key, value) => {
+        return filterList.some(([filterKey, filterValue]) => filterKey === key && filterValue === value);
+    };
+
     // Sort the filterList array in alphabetical order
     const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -53,21 +62,33 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                         // Check if key is in the nameMap
                         if (nameMap.hasOwnProperty(key)) {
                             return (
-                                <div className={styles.availableFilterItem} key={key} onClick={() => toggleCollapse(key)}>
+                                <div className={styles.availableFilterItem} key={key} onClick={() => toggleOpen(key)}>
                                     <li>
                                         <strong>
                                             {nameMap[key]}
                                         </strong>
-                                        <ul className={styles.filterValuesList} style={{ display: collapsedKeys.includes(key) ? 'none' : 'block' }}>
+                                        <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
                                             {uniqueValues[key].map((value) => (
-                                                <div className={styles.filterValueItem} key={value} style={{ cursor: 'pointer' }} onClick={() => addFilter(key, value)}>
+                                                value !== '' && (
+                                                <div className={styles.filterValueItem} key={value} style={{
+                                                    cursor: 'pointer',
+                                                    backgroundColor: isActiveFilter(key, value) ? '#8BB8E8' : ''
+                                                }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent the click from toggling the open key
+                                                        if (isActiveFilter(key, value)) {
+                                                            removeFilter(key, value);
+                                                        } else {
+                                                            addFilter(key, value);
+                                                        }
+                                                    }}>
                                                     <li >{value}</li>
                                                     {value && (
                                                         <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
                                                     )}
                                                 </div>
                                                     
-                                            ))}
+                                                )))}
                                         </ul>
                                     </li>
                                 </div>
