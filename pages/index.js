@@ -17,6 +17,7 @@ export default function Home() {
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
   const [selectedPoint, setSelectedPoint] = useState(null);
+  const [currentTime, setCurrentTime] = useState(0);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   var arr = [];
@@ -28,12 +29,21 @@ export default function Home() {
 
   const handlePointClick = (point) => {
     handleJumpToTime(point.Position);
-    console.log(point)
-    setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName]);
+    // console.log(point)
+    setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName, point.gameScore]);
   };
 
-  // const load_board = (point) => {
-
+  // const play_vid = (time) => {
+  //   console.log(time)
+  //   const points = returnFilteredPoints()
+  //   const epsilon = 0.0001;
+  //   const currentPoint = points.find(point =>
+  //     Math.abs(point.Position - time) < epsilon
+  //   );
+  //   // console.log(currentPoint)
+  //   if (currentPoint) {
+  //     setSelectedPoint([currentPoint.setScore, currentPoint.Name, currentPoint.serverName, currentPoint.returnerName]);
+  //   } 
   // };
 
   const returnFilteredPoints = () => {
