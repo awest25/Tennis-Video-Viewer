@@ -4,9 +4,8 @@ import React, { useEffect, useState } from 'react';
 import styles from '../styles/FilterList.module.css';
 // This file renammes columns to more human-readable names
 import nameMap from '../services/nameMap.js';
-import { filter } from 'd3';
 
-const FilterList = ({ pointsData, filterList, setFilterList }) => {
+const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCount }) => {
     const keys = Object.keys(nameMap); // Sort the keys array
     const uniqueValues = {};
 
@@ -41,7 +40,7 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
         }
     }
     
-    //count filtered points
+    //Counts points for each filter
     const countFilteredPointsForValue = (key, value) => {
         return pointsData.filter(point => point[key] === value).length;
     };
@@ -83,11 +82,15 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                                         }
                                                     }}>
                                                     <li >{value}</li>
-                                                    {value && (
+                                                    {/* Point Percentage */}
+                                                    {!showCount && showPercent && value && (
                                                         <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
                                                     )}
-                                                </div>
-                                                    
+                                                    {/* Point Count */}
+                                                    {showCount && showPercent && value && (
+                                                        <li>{countFilteredPointsForValue(key, value)} / {pointsData.length}</li> 
+                                                    )}                                                 
+                                                </div>  
                                                 )))}
                                         </ul>
                                     </li>

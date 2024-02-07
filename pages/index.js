@@ -5,18 +5,21 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import nameMap from '../services/nameMap.js';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
-
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
+import Select, {components} from 'react-select';
 
 export default function Home() {
 
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
+  const [showOptions, setShowOptions] = useState(false);
+  const [showPercent, setShowPercent] = useState(false);
+  const [showCount, setShowCount] = useState(false);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -106,25 +109,70 @@ export default function Home() {
               <div className="videoPlayer">
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
-              
-              {/* Filter List */}
               <div>
-                <div className={filterStyles.activeFilterListContainer}>
-                  Active Filters:
-                    <ul className={filterStyles.activeFilterList}>
-                      {sortedFilterList.map(([key, value]) => (
-                        <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
-                          {nameMap[key]}: {value}
-                        </li>
-                      ))}
-                    </ul>
-                </div>
-
+                {/* Options Container */}
+                <div className={filterStyles.optionsContainer}>
+                      <svg 
+                        className={filterStyles.optionsToggle}
+                        onClick={() => setShowOptions(!showOptions)}
+                        viewBox="0 0 24 24" 
+                        fill="black" 
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0">
+                        </g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                        </g>
+                        <g id="SVGRepo_iconCarrier"> 
+                          <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                          </path> 
+                          <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                          </path> 
+                          <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                          </path> 
+                        </g>
+                      </svg>
+                    <div className={filterStyles.optionsList}>
+                      {showOptions && (
+                          <>
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="showOptionsCheckbox"
+                                checked={showPercent}
+                                onChange={() => setShowPercent(!showPercent)} 
+                              />
+                              <label htmlFor="showOptionsCheckbox">Show Percentage</label>
+                            </div>
+                            {showPercent && (
+                              <Select 
+                                onChange={(selectedOption) => setShowCount(selectedOption.value === "option2")}
+                                options={[
+                                  { value: "option1", label: "Percent" },
+                                  { value: "option2", label: "Count" }
+                                ]}
+                                isSearchable={false}
+                            />
+                            )}
+                          </>
+                        )}
+                    </div>
+                  </div>
+                {/* Filter List */}
+                  <div className={filterStyles.activeFilterListContainer}>
+                    Active Filters:
+                      <ul className={filterStyles.activeFilterList}>
+                        {sortedFilterList.map(([key, value]) => (
+                          <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
+                            {nameMap[key]}: {value}
+                          </li>
+                        ))}
+                      </ul>
+                  </div>
                 {/* List Holders */}
                 <div className='listHolder'>
                   {/* Filter List */}
                   <div className="filterList">
-                      <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
+                      <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                   </div>
 
                     {/* Points List */}
@@ -133,7 +181,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
             </div>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
           </>
