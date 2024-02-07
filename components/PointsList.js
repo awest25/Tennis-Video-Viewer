@@ -16,6 +16,7 @@ const PointsList = ({ pointsData, onPointSelect }) => {
                 <li className={styles.pointsListItem} key={index} onClick={() => onPointSelect(point.Position)}>
                     {point.Name}
                 </li>
+                
             ))}
         </ul>
     );

@@ -1,20 +1,25 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import filterStyles from '../styles/FilterList.module.css';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import nameMap from '../services/nameMap.js';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
-
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
+import Select from 'react-select';
 
 export default function Home() {
 
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
+  const [showOptions, setShowOptions] = useState(false);
+  const [showPercent, setShowPercent] = useState(false);
+  const [showCount, setShowCount] = useState(false);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -26,7 +31,7 @@ export default function Home() {
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
-  
+
     // Group filters by key
     filterList.forEach(filter => {
       const [key, value] = filter;
@@ -36,7 +41,7 @@ export default function Home() {
         filterMap.set(key, [value]);
       }
     });
-  
+
     // Apply filters
     filterMap.forEach((values, key) => {
       if (values.length > 1) {
@@ -47,9 +52,16 @@ export default function Home() {
         filteredPoints = filteredPoints.filter(point => point[key] === values[0]);
       }
     });
-  
     return filteredPoints;
   }
+
+  //Active Filter
+  const removeFilter = (key, value) => {
+    const updatedFilterList = filterList.filter(([filterKey, filterValue]) => !(filterKey === key && filterValue === value));
+    setFilterList(updatedFilterList);
+  };
+
+  const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
     <div className={styles.container}>
@@ -75,7 +87,7 @@ export default function Home() {
               <p>Or get started by:</p>
               <ul>
                 <li>
-                    <Link href="/upload-video">Uploading a video</Link>
+                  <Link href="/upload-video">Uploading a video</Link>
                 </li>
                 <li>
                   <Link href="/tag-match">Tagging a match</Link>
@@ -90,22 +102,88 @@ export default function Home() {
         {matchData && (
           <>
             {/* Toolbar */}
-            <Toolbar setMatchData={setMatchData}/>
-            <h2>{matchData.name}</h2>
+            <Toolbar setMatchData={setMatchData} />
+            <div className={styles.headerRow}>
+              <div className={styles.titleContainer}>
+                <h2>{matchData.name}</h2>
+              </div>
+              {/* Options Container */}
+              <div className={filterStyles.optionsContainer}>
+                <svg
+                  className={filterStyles.optionsToggle}
+                  onClick={() => setShowOptions(!showOptions)}
+                  viewBox="0 0 24 24"
+                  fill="black"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0">
+                  </g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                  </g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                  </g>
+                </svg>
+                <div className={filterStyles.optionsList}>
+                  {showOptions && (
+                    <>
+                      <div>
+                        <input
+                          type="checkbox"
+                          id="showOptionsCheckbox"
+                          checked={showPercent}
+                          onChange={() => setShowPercent(!showPercent)}
+                        />
+                        <label htmlFor="showOptionsCheckbox">Show Percentage</label>
+                      </div>
+                      {showPercent && (
+                        <Select
+                          onChange={(selectedOption) => setShowCount(selectedOption.value === "option2")}
+                          options={[
+                            { value: "option1", label: "Percent" },
+                            { value: "option2", label: "Count" }
+                          ]}
+                          isSearchable={false}
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
+              <div>
+                {/* Filter List */}
+                <div className={filterStyles.activeFilterListContainer}>
+                  Active Filters:
+                  <ul className={filterStyles.activeFilterList}>
+                    {sortedFilterList.map(([key, value]) => (
+                      <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                        {nameMap[key]}: {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {/* List Holders */}
+                <div className='listHolder'>
+                  {/* Filter List */}
+                  <div className="filterList">
+                    <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
+                  </div>
 
-              {/* Filter List */}
-              <div className="filterList">
-                <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} />
-              </div>
-
-              {/* Points List */}
-              <div className="pointsList">
-              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+                  {/* Points List */}
+                  <div className="pointsList">
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                  </div>
+                </div>
               </div>
             </div>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
@@ -115,7 +193,7 @@ export default function Home() {
       </main>
 
       <footer>
-      Developed by Bruin Sports Analytics for use by UCLA Tennis
+        Developed by Bruin Sports Analytics for use by UCLA Tennis
       </footer>
 
 
@@ -148,22 +226,26 @@ export default function Home() {
 
         .pointsList {
           flex: 1; // Takes up 1/3 of the space
-          margin-top: 1rem;
+          margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
           border-radius: 5px;
           overflow-y: auto;
-          height: 400px;
+          height: 350px;
         }
 
         .filterList {
           flex: 1; // Takes up 1/3 of the space
-          margin-top: 1rem;
+          margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
           border-radius: 5px;
           overflow-y: auto;
-          height: 400px;
+          height: 350px;
+        }
+        
+        .listHolder {
+          display: flex; 
         }
 
         footer {
