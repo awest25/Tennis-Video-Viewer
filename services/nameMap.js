@@ -4,7 +4,6 @@
    
 const nameMap = {
    // New Player1 Focused Map
-   //Group 1: Serve
     "player1ServePlacement"  : 'Serve Placement',
     "player1ServeResult"     : 'Serve Result',
 
