@@ -5,7 +5,6 @@ const ScoreBoard = ({ pointsData, names}) => {
   // Check if pointsData is null or undefined and provide a default value
   var row1, row2, set1, set2, p1, p2, s, r, players, game1, game2, g;
   var team1, team2;
-  console.log(pointsData)
   players = names.split(' ')
   p1 = players[0]+' '+ players[1]
   p2 = players[3]+ ' '+ players[4]
@@ -20,7 +19,6 @@ const ScoreBoard = ({ pointsData, names}) => {
   }
   else{
     let name_var = Object.values(pointsData)[1].split(' ')
-    console.log(name_var)
     let points = name_var[3].split('-')
     row1 = points[0]
     row2=points[1]
