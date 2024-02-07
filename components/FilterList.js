@@ -77,19 +77,20 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                     </strong>
                                     <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
                                         {uniqueValues[key].map((value) => (
-                                            <li className={styles.filterValueItem} key={value} style={{
-                                                cursor: 'pointer',
-                                                backgroundColor: isActiveFilter(key, value) ? '#8BB8E8' : ''
-                                            }}
-                                            onClick={(e) => {
-                                                    e.stopPropagation(); // Prevent the click from toggling the open key
-                                                    if (isActiveFilter(key, value)) {
-                                                        removeFilter(key, value);
-                                                    } else {
-                                                        addFilter(key, value);
-                                                    }
-                                                }}>{value}</li>
-                                        ))}
+                                            value !== '' && (
+                                                <li className={styles.filterValueItem} key={value} style={{
+                                                    cursor: 'pointer',
+                                                    backgroundColor: isActiveFilter(key, value) ? '#8BB8E8' : ''
+                                                }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // Prevent the click from toggling the open key
+                                                        if (isActiveFilter(key, value)) {
+                                                            removeFilter(key, value);
+                                                        } else {
+                                                            addFilter(key, value);
+                                                        }
+                                                    }}>{value}</li>
+                                            )))}
                                     </ul>
                                 </li>
                             </div>
