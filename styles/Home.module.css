@@ -101,6 +101,21 @@
   align-items: flex-start;
 }
 
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.titleContainer {
+  flex-grow: 1; /* This allows the container to grow and take up available space */
+  display: flex;
+  justify-content: center; /* This centers the title horizontally within the title container */
+  align-items: center; /* This centers the title vertically */
+  margin: 0 auto; /* This may help maintain the centering if other elements are taking up space */
+}
+
 .pdfView {
   width: 100%;
   border: 1px solid #eaeaea;

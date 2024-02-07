@@ -10,7 +10,7 @@ import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
-import Select, {components} from 'react-select';
+import Select from 'react-select';
 
 export default function Home() {
 
@@ -31,7 +31,7 @@ export default function Home() {
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
-  
+
     // Group filters by key
     filterList.forEach(filter => {
       const [key, value] = filter;
@@ -41,7 +41,7 @@ export default function Home() {
         filterMap.set(key, [value]);
       }
     });
-  
+
     // Apply filters
     filterMap.forEach((values, key) => {
       if (values.length > 1) {
@@ -87,7 +87,7 @@ export default function Home() {
               <p>Or get started by:</p>
               <ul>
                 <li>
-                    <Link href="/upload-video">Uploading a video</Link>
+                  <Link href="/upload-video">Uploading a video</Link>
                 </li>
                 <li>
                   <Link href="/tag-match">Tagging a match</Link>
@@ -102,82 +102,86 @@ export default function Home() {
         {matchData && (
           <>
             {/* Toolbar */}
-            <Toolbar setMatchData={setMatchData}/>
-            <h2>{matchData.name}</h2>
+            <Toolbar setMatchData={setMatchData} />
+            <div className={styles.headerRow}>
+              <div className={styles.titleContainer}>
+                <h2>{matchData.name}</h2>
+              </div>
+              {/* Options Container */}
+              <div className={filterStyles.optionsContainer}>
+                <svg
+                  className={filterStyles.optionsToggle}
+                  onClick={() => setShowOptions(!showOptions)}
+                  viewBox="0 0 24 24"
+                  fill="black"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0">
+                  </g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                  </g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    </path>
+                  </g>
+                </svg>
+                <div className={filterStyles.optionsList}>
+                  {showOptions && (
+                    <>
+                      <div>
+                        <input
+                          type="checkbox"
+                          id="showOptionsCheckbox"
+                          checked={showPercent}
+                          onChange={() => setShowPercent(!showPercent)}
+                        />
+                        <label htmlFor="showOptionsCheckbox">Show Percentage</label>
+                      </div>
+                      {showPercent && (
+                        <Select
+                          onChange={(selectedOption) => setShowCount(selectedOption.value === "option2")}
+                          options={[
+                            { value: "option1", label: "Percent" },
+                            { value: "option2", label: "Count" }
+                          ]}
+                          isSearchable={false}
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
               <div>
-                {/* Options Container */}
-                <div className={filterStyles.optionsContainer}>
-                      <svg 
-                        className={filterStyles.optionsToggle}
-                        onClick={() => setShowOptions(!showOptions)}
-                        viewBox="0 0 24 24" 
-                        fill="black" 
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0">
-                        </g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                        </g>
-                        <g id="SVGRepo_iconCarrier"> 
-                          <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                          </path> 
-                          <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                          </path> 
-                          <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                          </path> 
-                        </g>
-                      </svg>
-                    <div className={filterStyles.optionsList}>
-                      {showOptions && (
-                          <>
-                            <div>
-                              <input
-                                type="checkbox"
-                                id="showOptionsCheckbox"
-                                checked={showPercent}
-                                onChange={() => setShowPercent(!showPercent)} 
-                              />
-                              <label htmlFor="showOptionsCheckbox">Show Percentage</label>
-                            </div>
-                            {showPercent && (
-                              <Select 
-                                onChange={(selectedOption) => setShowCount(selectedOption.value === "option2")}
-                                options={[
-                                  { value: "option1", label: "Percent" },
-                                  { value: "option2", label: "Count" }
-                                ]}
-                                isSearchable={false}
-                            />
-                            )}
-                          </>
-                        )}
-                    </div>
-                  </div>
                 {/* Filter List */}
-                  <div className={filterStyles.activeFilterListContainer}>
-                    Active Filters:
-                      <ul className={filterStyles.activeFilterList}>
-                        {sortedFilterList.map(([key, value]) => (
-                          <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer'}} onClick={() => removeFilter(key, value)}>
-                            {nameMap[key]}: {value}
-                          </li>
-                        ))}
-                      </ul>
-                  </div>
+                <div className={filterStyles.activeFilterListContainer}>
+                  Active Filters:
+                  <ul className={filterStyles.activeFilterList}>
+                    {sortedFilterList.map(([key, value]) => (
+                      <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                        {nameMap[key]}: {value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 {/* List Holders */}
                 <div className='listHolder'>
                   {/* Filter List */}
                   <div className="filterList">
-                      <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
+                    <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                   </div>
 
-                    {/* Points List */}
+                  {/* Points List */}
                   <div className="pointsList">
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
                   </div>
                 </div>
               </div>
@@ -189,7 +193,7 @@ export default function Home() {
       </main>
 
       <footer>
-      Developed by Bruin Sports Analytics for use by UCLA Tennis
+        Developed by Bruin Sports Analytics for use by UCLA Tennis
       </footer>
 
 
