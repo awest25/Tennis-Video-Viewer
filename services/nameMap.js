@@ -65,14 +65,14 @@ const nameMap = {
     
     // Data Version 1
     // "Name"                   : 'Point Score',
-    "Shot 1: gameScore"      : 'Game Score',
-    "Shot 1: setScore"       : 'Set Score',
-    "Shot 1: serverName"     : 'Server Name',
-    "Shot 1: firstServeIn"   : 'First Serve In',
-    "Shot 1: firstServeZone" : 'First Serve Zone',
-    "Shot 1: secondServeIn"  : 'Second Serve In',
-    "Shot 1: secondServeZone": 'Second Serve Zone',
-    "Shot 2: returnData"     : 'Return Data',
+   //  "Shot 1: gameScore"      : 'Game Score',
+   //  "Shot 1: setScore"       : 'Set Score',
+   //  "Shot 1: serverName"     : 'Server Name',
+   //  "Shot 1: firstServeIn"   : 'First Serve In',
+   //  "Shot 1: firstServeZone" : 'First Serve Zone',
+   //  "Shot 1: secondServeIn"  : 'Second Serve In',
+   //  "Shot 1: secondServeZone": 'Second Serve Zone',
+   //  "Shot 2: returnData"     : 'Return Data',
   };  
 
 /* Available keys for data format 1
