@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import styles from '../styles/FilterList.module.css';
 // This file renammes columns to more human-readable names
 import nameMap from '../services/nameMap.js';
-import { filter } from 'd3';
 
 const FilterList = ({ pointsData, filterList, setFilterList }) => {
     const keys = Object.keys(pointsData[0] || {}).sort(); // Sort the keys array
