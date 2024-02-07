@@ -17,8 +17,13 @@ const ScoreBoard = ({ pointsData, names, playData, clearclickpoint}) => {
     Data = pointsData
   }
   // to handle load as all data is null on load
-  if(pointsData === null && playData === null){
-    row1, row2, set1, set2, p1, p2 = 0
+  if(Data === null){
+    row1= 0
+    row2= 0
+    set1= 0
+    set2= 0
+    game1 = 0
+    game2 = 0
   }
   else{
     let points = Object.values(Data)[0].split('-')
