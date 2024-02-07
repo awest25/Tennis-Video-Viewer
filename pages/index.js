@@ -17,8 +17,8 @@ export default function Home() {
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
   const [selectedPoint, setSelectedPoint] = useState(null);
+  const [playingpoint, setPlayingPoint] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
-
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   var arr = [];
   const handleJumpToTime = (time) => {
@@ -28,23 +28,32 @@ export default function Home() {
   };
 
   const handlePointClick = (point) => {
-    handleJumpToTime(point.Position);
-    // console.log(point)
-    setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName, point.gameScore]);
+    if(point===null){
+      setSelectedPoint(null)
+    }
+    else{
+      setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName, point.gameScore]);
+    }
   };
 
-  // const play_vid = (time) => {
-  //   console.log(time)
-  //   const points = returnFilteredPoints()
-  //   const epsilon = 0.0001;
-  //   const currentPoint = points.find(point =>
-  //     Math.abs(point.Position - time) < epsilon
-  //   );
-  //   // console.log(currentPoint)
-  //   if (currentPoint) {
-  //     setSelectedPoint([currentPoint.setScore, currentPoint.Name, currentPoint.serverName, currentPoint.returnerName]);
-  //   } 
-  // };
+  useEffect(() => {
+    const updateScoreboardWithTime = (time) => {
+      const points = returnFilteredPoints();
+      const currentPoint = points.find((point) => point.Position+500 >= time && point.Position-500 >= time);
+
+      if (currentPoint) {
+        setPlayingPoint([currentPoint.setScore, currentPoint.Name, currentPoint.serverName, currentPoint.returnerName, currentPoint.gameScore]);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      if (videoObject && videoObject.getCurrentTime) {
+        const currentTime = videoObject.getCurrentTime() * 1000;
+        updateScoreboardWithTime(currentTime);
+      }
+    }, 1000); // Update every second (adjust as needed)
+    return () => clearInterval(intervalId);
+  }, [videoObject]);
 
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
@@ -118,7 +127,7 @@ export default function Home() {
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject}/>
               </div>
 
               {/* Filter List */}
@@ -133,7 +142,7 @@ export default function Home() {
             </div>
             {/* Score display */}
             <div className="scoreboard">
-              <ScoreBoard pointsData = {selectedPoint} names = {matchData.name}/>
+              <ScoreBoard pointsData = {selectedPoint} names = {matchData.name} playData = {playingpoint} clearclickpoint = {handlePointClick}/>
             </div>
             <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}

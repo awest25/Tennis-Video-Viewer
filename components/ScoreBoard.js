@@ -1,35 +1,45 @@
 import React from 'react';
 import styles from '../styles/Home.module.css';
 
-const ScoreBoard = ({ pointsData, names}) => {
+const ScoreBoard = ({ pointsData, names, playData, clearclickpoint}) => {
   // Check if pointsData is null or undefined and provide a default value
   var row1, row2, set1, set2, p1, p2, s, r, players, game1, game2, g;
-  var team1, team2;
+  var Data;
   players = names.split(' ')
   p1 = players[0]+' '+ players[1]
   p2 = players[3]+ ' '+ players[4]
-  // default for now, game score not available
+  // playData is the data from the video which will always be available but
+  // we only want it after the point has been selected
   if(pointsData==null){
-    row1 = 0
-    row2 = 0
-    set1 = 0
-    set2=0
-    game1 = 0
-    game2 =0
+    Data = playData
   }
   else{
-    let name_var = Object.values(pointsData)[1].split(' ')
-    let points = name_var[3].split('-')
-    row1 = points[0]
-    row2=points[1]
-    points = Object.values(pointsData)[0].split('-')
+    Data = pointsData
+  }
+  // to handle load as all data is null on load
+  if(pointsData === null && playData === null){
+    row1, row2, set1, set2, p1, p2 = 0
+  }
+  else{
+    let points = Object.values(Data)[0].split('-')
     set1 = points[0]
     set2 = points[1]
-    s= Object.values(pointsData)[2]
-    r= Object.values(pointsData)[3]
+    s= Object.values(Data)[2]
+    r= Object.values(Data)[3]
+    let name_var = Object.values(Data)[1].split(' ')
+    points = name_var[3].split('-')
+    if(s == p1){  
+      row1 = points[0]
+      row2 = points[1]
+    }
+    else{
+      row1 = points[1]
+      row2 = points[0]
+    }
     g = name_var[2].split('-')
     game1 = g[0]
     game2 = g[1].replace(',', '');
+    clearclickpoint(null)
   }
   
   return (
