@@ -39,9 +39,13 @@ export default function Home() {
   useEffect(() => {
     const updateScoreboardWithTime = (time) => {
       const points = returnFilteredPoints();
-      const currentPoint = points.find((point) => point.Position+500 >= time && point.Position-500 >= time);
+      const currentPoint = points
+  .sort((a, b) => b.Position - a.Position) // Sort in descending order
+  .find((point) => point.Position <= time);
 
       if (currentPoint) {
+        console.log(time)
+        console.log(currentPoint.Position)
         setPlayingPoint([currentPoint.setScore, currentPoint.Name, currentPoint.serverName, currentPoint.returnerName, currentPoint.gameScore]);
       }
     };
@@ -51,7 +55,7 @@ export default function Home() {
         const currentTime = videoObject.getCurrentTime() * 1000;
         updateScoreboardWithTime(currentTime);
       }
-    }, 1000); // Update every second (adjust as needed)
+    }, 100); // Update every second (adjust as needed)
     return () => clearInterval(intervalId);
   }, [videoObject]);
 
