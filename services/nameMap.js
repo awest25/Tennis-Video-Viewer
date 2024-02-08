@@ -7,15 +7,19 @@ const nameMap = {
     "player1ServePlacement"  : 'Serve Placement',
     "player1ServeResult"     : 'Serve Result',
 
-    "player1ReturnPlacement" : 'Return Placement',
+    //Group 2: Return
     "player1ReturnFhBh"      : 'Return Forehand/Backhand',
-    "player1LastShotResult"  : 'Winner/Error',
+    "player1ReturnPlacement" : 'Return Placement',
+    
+    "player1LastShotResult"  : 'Point Ends with Winner/Error',// Include in Group 2 and 3
 
+    //Group 3: Last Shot
+    "player1LastShotFhBh" : 'Last Shot Forehand/Backhand',
     "player1LastShotPlacement" : 'Last Shot Placement',
-    "player1LastShotPlacementFhBh" : 'Last Shot Forehand/Backhand',
-
+    
+    //Group 4: Point Information
     "rallyCountFreq"         : 'Rally Length',
-    "atNetPlayer1"           : 'At Net',
+    "atNetPlayer1"           : 'Player At Net',
     "pointWonBy"             : 'Point Won By',
     "side"                   : 'Duece/Ad Side',
     "setNum"                 : 'Set Number',
@@ -65,14 +69,14 @@ const nameMap = {
     
     // Data Version 1
     // "Name"                   : 'Point Score',
-    "Shot 1: gameScore"      : 'Game Score',
-    "Shot 1: setScore"       : 'Set Score',
-    "Shot 1: serverName"     : 'Server Name',
-    "Shot 1: firstServeIn"   : 'First Serve In',
-    "Shot 1: firstServeZone" : 'First Serve Zone',
-    "Shot 1: secondServeIn"  : 'Second Serve In',
-    "Shot 1: secondServeZone": 'Second Serve Zone',
-    "Shot 2: returnData"     : 'Return Data',
+   //  "Shot 1: gameScore"      : 'Game Score',
+   //  "Shot 1: setScore"       : 'Set Score',
+   //  "Shot 1: serverName"     : 'Server Name',
+   //  "Shot 1: firstServeIn"   : 'First Serve In',
+   //  "Shot 1: firstServeZone" : 'First Serve Zone',
+   //  "Shot 1: secondServeIn"  : 'Second Serve In',
+   //  "Shot 1: secondServeZone": 'Second Serve Zone',
+   //  "Shot 2: returnData"     : 'Return Data',
   };  
 
 /* Available keys for data format 1
