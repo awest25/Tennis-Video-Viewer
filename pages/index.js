@@ -16,7 +16,6 @@ export default function Home() {
   const [matchData, setMatchData] = useState(null);
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
-  const [selectedPoint, setSelectedPoint] = useState(null);
   const [playingpoint, setPlayingPoint] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
@@ -26,16 +25,7 @@ export default function Home() {
       videoObject.seekTo(time / 1000, true);
     }
   };
-
-  const handlePointClick = (point) => {
-    if(point===null){
-      setSelectedPoint(null)
-    }
-    else{
-      setSelectedPoint([point.setScore, point.Name, point.serverName, point.returnerName, point.gameScore]);
-    }
-  };
-
+  
   useEffect(() => {
     const updateScoreboardWithTime = (time) => {
       const points = returnFilteredPoints();
@@ -141,12 +131,12 @@ export default function Home() {
 
               {/* Points List */}
               <div className="pointsList">
-              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} onPointClick={handlePointClick}/>
+              <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime}/>
               </div>
             </div>
             {/* Score display */}
             <div className="scoreboard">
-              <ScoreBoard pointsData = {selectedPoint} names = {matchData.name} playData = {playingpoint} clearclickpoint = {handlePointClick}/>
+              <ScoreBoard names = {matchData.name} playData = {playingpoint}/>
             </div>
             <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}

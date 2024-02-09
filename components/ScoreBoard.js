@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/Home.module.css';
 
-const ScoreBoard = ({ pointsData, names, playData, clearclickpoint}) => {
+const ScoreBoard = ({names, playData}) => {
   // Check if pointsData is null or undefined and provide a default value
   var row1, row2, set1, set2, p1, p2, s, r, players, game1, game2, g;
   var Data;
@@ -10,12 +10,7 @@ const ScoreBoard = ({ pointsData, names, playData, clearclickpoint}) => {
   p2 = players[3]+ ' '+ players[4]
   // playData is the data from the video which will always be available but
   // we only want it after the point has been selected
-  if(pointsData==null){
-    Data = playData
-  }
-  else{
-    Data = pointsData
-  }
+  Data = playData;
   // to handle load as all data is null on load
   if(Data === null){
     row1= 0
@@ -44,7 +39,6 @@ const ScoreBoard = ({ pointsData, names, playData, clearclickpoint}) => {
     g = name_var[2].split('-')
     game1 = g[0]
     game2 = g[1].replace(',', '');
-    clearclickpoint(null)
   }
   
   return (
