@@ -5,7 +5,7 @@ const ScoreBoard = ({names, playData}) => {
   // Check if pointsData is null or undefined and provide a default value
   var row1, row2, set1, set2, p1, p2, server, players, game1, game2, g;
   var Data;
-  var PointLabel  ;
+  var PointLabel = "Point" ;
   Data = playData;
   // to handle load as all data is null on load
   if(Data === null){
