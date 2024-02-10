@@ -20,15 +20,15 @@ const ScoreBoard = ({names, playData}) => {
     p2 = players[3]+ ' '+ players[4]
   }
   else{
-    if(playData.tiebreakScore != ""){
-      PointLabel = "Point (Tiebreaker)"
-      row1 = Data.player1TiebreakScore
-      row2 = Data.player2TiebreakScore
-    }
-    else{
+    if(playData.pointScore){
       PointLabel = "Point"
       row1 = Data.player1PointScore
       row2 = Data.player2PointScore
+    }
+    else{
+      PointLabel = "Point (Tiebreaker)"
+      row1 = Data.player1TiebreakScore
+      row2 = Data.player2TiebreakScore
     }
     p1 = Data.player1Name
     p2 = Data.player2Name
@@ -36,6 +36,8 @@ const ScoreBoard = ({names, playData}) => {
     set2 = Data.player2SetScore
     game1 = Data.player1GameScore
     game2 = Data.player2GameScore
+    console.log(Data)
+    server = Data.serverName
   }
   
   return (

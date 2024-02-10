@@ -44,7 +44,6 @@ export default function Home() {
     const intervalId = setInterval(() => {
       if (videoObject && videoObject.getCurrentTime) {
         const currentTime = videoObject.getCurrentTime() * 1000;
-        console.log(currentTime);
         updateScoreboardWithTime(currentTime);
       }
     }, 100); // Update every second (adjust as needed)
