@@ -26,23 +26,25 @@ export default function Home() {
     }
   };
   
+  
   useEffect(() => {
+    var points;
+    var sorted_points;
+    if(matchData){
+      points = returnFilteredPoints();
+      sorted_points = points.sort((a, b) => b.Position - a.Position);
+    }
     const updateScoreboardWithTime = (time) => {
-      const points = returnFilteredPoints();
-      const currentPoint = points
-  .sort((a, b) => b.Position - a.Position) // Sort in descending order
-  .find((point) => point.Position <= time);
-
+      const currentPoint = sorted_points.find((point) => point.Position <= time);
       if (currentPoint) {
-        console.log(time)
-        console.log(currentPoint.Position)
-        setPlayingPoint([currentPoint.setScore, currentPoint.Name, currentPoint.serverName, currentPoint.returnerName, currentPoint.gameScore]);
+        setPlayingPoint(currentPoint);
       }
     };
 
     const intervalId = setInterval(() => {
       if (videoObject && videoObject.getCurrentTime) {
         const currentTime = videoObject.getCurrentTime() * 1000;
+        console.log(currentTime);
         updateScoreboardWithTime(currentTime);
       }
     }, 100); // Update every second (adjust as needed)

@@ -3,13 +3,9 @@ import styles from '../styles/Home.module.css';
 
 const ScoreBoard = ({names, playData}) => {
   // Check if pointsData is null or undefined and provide a default value
-  var row1, row2, set1, set2, p1, p2, s, r, players, game1, game2, g;
+  var row1, row2, set1, set2, p1, p2, server, players, game1, game2, g;
   var Data;
-  players = names.split(' ')
-  p1 = players[0]+' '+ players[1]
-  p2 = players[3]+ ' '+ players[4]
-  // playData is the data from the video which will always be available but
-  // we only want it after the point has been selected
+  var PointLabel  ;
   Data = playData;
   // to handle load as all data is null on load
   if(Data === null){
@@ -19,26 +15,27 @@ const ScoreBoard = ({names, playData}) => {
     set2= 0
     game1 = 0
     game2 = 0
+    players = names.split(' ')
+    p1 = players[0]+' '+ players[1]
+    p2 = players[3]+ ' '+ players[4]
   }
   else{
-    let points = Object.values(Data)[0].split('-')
-    set1 = points[0]
-    set2 = points[1]
-    s= Object.values(Data)[2]
-    r= Object.values(Data)[3]
-    let name_var = Object.values(Data)[1].split(' ')
-    points = name_var[3].split('-')
-    if(s == p1){  
-      row1 = points[0]
-      row2 = points[1]
+    if(playData.tiebreakScore != ""){
+      PointLabel = "Point (Tiebreaker)"
+      row1 = Data.player1TiebreakScore
+      row2 = Data.player2TiebreakScore
     }
     else{
-      row1 = points[1]
-      row2 = points[0]
+      PointLabel = "Point"
+      row1 = Data.player1PointScore
+      row2 = Data.player2PointScore
     }
-    g = name_var[2].split('-')
-    game1 = g[0]
-    game2 = g[1].replace(',', '');
+    p1 = Data.player1Name
+    p2 = Data.player2Name
+    set1 = Data.player1SetScore
+    set2 = Data.player2SetScore
+    game1 = Data.player1GameScore
+    game2 = Data.player2GameScore
   }
   
   return (
@@ -49,13 +46,13 @@ const ScoreBoard = ({names, playData}) => {
             <th>Players</th>
             <th>Set</th>
             <th>Game</th>
-            <th>Point</th>
+            <th>{PointLabel}</th>
           </tr>
         </thead>
         <tbody>
                 <tr>
-                  <td className={p1 === s ? styles.highlight : ''}>
-                  {p1 === s && <span className={styles.arrow}>&rarr;</span>}
+                  <td className={p1 === server ? styles.highlight : ''}>
+                  {p1 === server && <span className={styles.arrow}>&rarr;</span>}
                     {p1}</td>
                   <td>{set1}</td>
                   <td>{game1}</td>
@@ -63,8 +60,8 @@ const ScoreBoard = ({names, playData}) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className={p2 === s ? styles.highlight : ''}>
-                  {p2 === s && <span className={styles.arrow}>&rarr;</span>}
+                  <td className={p2 === server ? styles.highlight : ''}>
+                  {p2 === server && <span className={styles.arrow}>&rarr;</span>}
                     {p2}</td>
                   <td>{set2}</td>
                   <td>{game2}</td>
