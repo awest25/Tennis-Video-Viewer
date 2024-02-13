@@ -36,7 +36,7 @@ const ScoreBoard = ({names, playData}) => {
     set2 = Data.player2SetScore
     game1 = Data.player1GameScore
     game2 = Data.player2GameScore
-    console.log(Data)
+    // console.log(Data)
     server = Data.serverName
   }
   

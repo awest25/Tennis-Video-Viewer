@@ -34,13 +34,14 @@ export default function Home() {
   
   useEffect(() => {
     var points;
-    var sorted_points;
+    var sortedPoints;
     if(matchData){
       points = returnFilteredPoints();
-      sorted_points = points.sort((a, b) => b.Position - a.Position);
+      sortedPoints = [...points];
+      sortedPoints.sort((a, b) => b.Position - a.Position);
     }
     const updateScoreboardWithTime = (time) => {
-      const currentPoint = sorted_points.find((point) => point.Position <= time);
+      const currentPoint = sortedPoints.find((point) => point.Position <= time);
       if (currentPoint) {
         setPlayingPoint(currentPoint);
       }
