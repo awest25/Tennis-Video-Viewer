@@ -29,7 +29,7 @@ const MatchPage = () => {
                         const newMatchData = docSnap.data();
                         setMatchData(newMatchData);
 
-                        // Store matchData in localStorage (client-side only)
+                        // Store matchData in localStorage ***THIS IS FOR CLIENT SIDE ONLY***)
                         if (typeof window !== 'undefined') {
                             localStorage.setItem('matchData', JSON.stringify(newMatchData));
                         }
@@ -44,8 +44,7 @@ const MatchPage = () => {
             fetchMatchData();
         }
     }, [matchName]);
-
-    // Load matchData from localStorage if available
+    // Load matchData from localStorage
     useEffect(() => {
         if (!matchData && typeof window !== 'undefined') {
             const storedMatchData = localStorage.getItem('matchData');

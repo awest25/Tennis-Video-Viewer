@@ -34,9 +34,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow */
 }
 
-/* Style for an active or selected filter item */
-.activeFilterItem.active {
-    background-color: #d1eaff; /* A light blue to indicate active status */
+.activeFilterItem.selected {
+    background-color: #d1eaff; /* A light blue to indicate selected status */
     color: #0056b3; /* A darker blue to match */
     border-color: #0056b3; /* Same dark blue for the border */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent with hover state */
@@ -93,14 +92,4 @@
     /* Optional: Add a shadow or change the font weight to indicate hover state */
     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     /* font-weight: 500; */
-}
-
-/* If you have an active state to indicate a selected filter value */
-.filterValueItem.active {
-    background-color: #d0e0f0; /* Different background color for active state */
-    color: #104070; /* Darker color for the text */
-    font-weight: bold; /* Make the active item text bold */
-    /* Optionally, add a left border to highlight the active state */
-    border-left: 4px solid #007bff; /* Blue border for active item */
-    padding-left: 8px; /* Adjust padding to accommodate the border */
 }
