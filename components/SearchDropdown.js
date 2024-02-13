@@ -5,20 +5,22 @@ import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
 import transformData from '../services/transformData.js';
 
-const SearchDropdown = ({ setMatchData }) => {
+const SearchDropdown = ({ setMatchData,searchFor}) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [dropdownData, setDropdownData] = useState([]);
 
     // Fetch the matches from the database and format them for the dropdown
     useEffect(() => {
         const fetchMatches = async () => {
-            const querySnapshot = await getDocs(collection(db, 'matches'));
+            console.log(searchFor);//tempcheck
+            const querySnapshot = await getDocs(collection(db, searchFor));
             const matches = querySnapshot.docs.map((doc) => doc.data());
             setDropdownData(formatOptions(matches));
+            console.log(dropdownData);
         };
 
         fetchMatches();
-    }, []);
+    }, [searchFor]);
 
 
     const handleDropdownItemClick = (selectedOption) => {

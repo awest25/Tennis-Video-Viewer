@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../styles/Toolbar.module.css';
 import SearchDropdown from './SearchDropdown';
 
-const Toolbar = ({ setMatchData }) => {
+const Toolbar = ({ setMatchData, teamToSearch}) => {
     return (
         <div className={styles.toolbar}>
             {/* Toolbar content goes here */}

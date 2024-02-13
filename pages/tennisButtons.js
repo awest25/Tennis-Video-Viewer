@@ -1,16 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-function TennisButtons() {
-    // Functions to handle button clicks (you can customize these)
-    const handleMensTennisClick = () => {
-        console.log('UCLA Men\'s Tennis button clicked');
-        // Add your logic here
+const TennisButtons = ({buttonVal,buttonName,onClick}) => {
+    const [val, setVal] = useState(buttonVal);
+    
+    const handleClick = () => {
+        onClick(buttonVal);
     };
+    
 
-    const handleWomensTennisClick = () => {
-        console.log('UCLA Women\'s Tennis button clicked');
-        // Add your logic here
-    };
 
     // Style object for the buttons
     const buttonStyle = {
@@ -26,8 +23,7 @@ function TennisButtons() {
 
     return (
         <div>
-            <button style={buttonStyle} onClick={handleMensTennisClick}>UCLA Men's Tennis</button>
-            <button style={buttonStyle} onClick={handleWomensTennisClick}>UCLA Women's Tennis</button>
+            <button style={buttonStyle} onClick={handleClick}>{buttonName}</button>
         </div>
     );
 }

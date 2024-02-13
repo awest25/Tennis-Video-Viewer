@@ -16,12 +16,18 @@ export default function Home() {
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
+  const [teamToSearch, setTeamToSearch] = useState(null);
+  const [searchType,setSearchType] = useState('matches');
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
       videoObject.seekTo(time / 1000, true);
     }
+  };
+  const changeMatches = (newSearchType) => {
+    console.log(newSearchType);
+    setSearchType(newSearchType);
   };
 
   const returnFilteredPoints = () => {
@@ -66,11 +72,16 @@ export default function Home() {
               Match Viewer
             </h1>
 
-            <TennisButtons/>
+            <div className="tennisButtonsContainer">
+              <TennisButtons buttonVal={"uclamens"} buttonName={"UCLA Men's Tennis"} onClick={() => changeMatches("uclamens")}/>
+              <TennisButtons buttonVal={"uclawomens"} buttonName={"UCLA Women's Tennis"} onClick={() => changeMatches("uclawomens")}/>
+            </div>
+
+            
 
             {/* Search Dropdown */}
             <div className="searchDropdown">
-              <SearchDropdown setMatchData={setMatchData} />
+              <SearchDropdown setMatchData={setMatchData} searchFor={searchType}/>
             </div>
 
             {/* Other Links */}
@@ -202,6 +213,15 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
+      <style jsx>{`
+        .tennisButtonsContainer {
+            display: flex;
+            justify-content: center; // This centers the buttons horizontally
+            align-items: center; // This centers the buttons vertically (optional)
+            gap: 10px; // This adds some space between the buttons
+        }`
+      }</style>
+
     </div>
   );
 }
