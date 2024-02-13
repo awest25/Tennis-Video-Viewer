@@ -70,11 +70,12 @@ export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
     const [timeList, setTimeList] = useState([]);
+    const [timerValue, setTimerValue] = useState(0);
+// issue with the timer: When no video code, gives a value error. Fix this
     // tracks current timestamp to display at top: we can't use timeList[timeList.length-1] because we sort
     // when the tagger goes back in time to update a value, the "current time" is the LATEST time not the CURRENT time.
     // point_start_time should always be unique when tagging!
     const [curTimeStart, setCurTimeStart] = useState(0);
-
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
     
@@ -126,10 +127,28 @@ export default function TagMatch() {
         setTimeList(updatedTimeList);
     };
 
+
     const handleEndTimeChange = (index, value) => {
         const updatedTimeList = [...timeList];
         updatedTimeList[index] = [updatedTimeList[index][0], parseInt(value)];
         setTimeList(updatedTimeList);
+    };
+
+    const handleMinutesSecondsChange = (minutes, seconds) => {
+        const newTime = (minutes * 60) + seconds;
+        videoObject.seekTo(newTime, true);
+    };
+
+    const updateTimer = () => {
+        if (videoObject && typeof videoObject.getCurrentTime === 'function') {
+            const currentTime = Math.round(videoObject.getCurrentTime() * 1000);
+            setTimerValue(currentTime);
+        }
+    };
+
+    const handleMillisecondsChange = (value) => {
+        const milliseconds = parseInt(value);
+        videoObject.seekTo(milliseconds / 1000, true); 
     };
 
     const handleRemoveTime = (index) => {
@@ -139,25 +158,75 @@ export default function TagMatch() {
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
+        const timerInterval = setInterval(updateTimer, 100);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
-        }
-    }, [videoObject, timeList])
-
+            clearInterval(timerInterval);
+        };
+    }, [videoObject, timeList]);
     return (
-        <div>
-            <Toolbar setMatchData={null}/>
-            {/* temporary means to select video (should it be a form?) */}
-            <label>Input YouTube Code: </label>
+        <div style={{ marginTop: '50px' }}>
+            <Toolbar setMatchData={null} />
+    
+            <label>Enter YouTube Code: </label>
             <input type="text" value={videoId} onChange={handleVideoIdChange} />
-
+    
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-
             <button onClick={() => {
                 const columns = timeList.map(pair => pair.join('\t')).join('\n');
                 navigator.clipboard.writeText(columns);
-            }}>Copy Columns</button>
-
+            }}>
+                Copy Columns
+            </button>
+            <table>
+                <tbody>
+                    <tr>
+                        <td colSpan="2">Current Time: {timerValue}ms</td>
+                    </tr>
+                    <tr>Jump to: </tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="number" 
+                                placeholder="Milliseconds"
+                                value={timerValue}
+                                onChange={(event) => handleMillisecondsChange(event.target.value)}
+                                style={{ marginRight: '10px' }}
+                            />
+                        </td>
+                        <td>ms</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input
+                                type="number" 
+                                placeholder="Minutes"
+                                value={Math.floor(timerValue / 60000)}
+                                onChange={(event) => {
+                                    const minutes = parseFloat(event.target.value);
+                                    const seconds = timerValue % 60000 / 1000;
+                                    handleMinutesSecondsChange(minutes, seconds);
+                                }}
+                                style={{ marginRight: '10px' }}
+                            />
+                        </td>
+                        <td>minutes</td>
+                        <td>
+                            <input
+                                type="number"
+                                placeholder="Seconds"
+                                value={Math.round((timerValue % 60000) / 1000)}
+                                onChange={(event) => {
+                                    const seconds = parseFloat(event.target.value);
+                                    const minutes = Math.floor(timerValue / 60000);
+                                    handleMinutesSecondsChange(minutes, seconds);
+                                }}
+                            />
+                        </td>
+                        <td>seconds</td>
+                    </tr>
+                </tbody>
+            </table>
             <KeybindingsTable/>
 
             { /* CSV Table */}
@@ -198,6 +267,11 @@ export default function TagMatch() {
                     })}
                 </tbody>
             </table>
+
+
         </div>
     );
+    
+    
+    
 }
