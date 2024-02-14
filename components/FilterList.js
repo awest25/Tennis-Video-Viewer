@@ -78,7 +78,10 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                     <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
                                         {uniqueValues[key].map((value) => (
                                             value !== '' && (
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                                             <li className={styles.filterValueItem} key={value} style={{
                                                 cursor: 'pointer',
                                                 backgroundColor: isActiveFilter(key, value) ? '#8BB8E8' : ''
@@ -91,7 +94,10 @@ const FilterList = ({ pointsData, filterList, setFilterList }) => {
                                                         addFilter(key, value);
                                                     }
                                                 }}>{value}</li>
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                                             )
                                         ))}
                                     </ul>
