@@ -39,6 +39,10 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
             setFilterList([...filterList, [key, value]]);
         }
     }
+    const removeFilter = (key, value) => {
+        const updatedFilterList = filterList.filter(([filterKey, filterValue]) => !(filterKey === key && filterValue === value));
+        setFilterList(updatedFilterList);
+      };
     
     //Counts points for each filter
     const countFilteredPointsForValue = (key, value) => {
