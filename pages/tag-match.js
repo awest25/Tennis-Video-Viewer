@@ -3,8 +3,13 @@ import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
 import styles from '../styles/TagMatch.module.css';
+import { useRouter } from 'next/router';
+import getMatchInfo from '../services/getMatchInfo.js';
 
 export default function TagMatch() {
+    const router = useRouter();
+    const { matchId } = router.query;
+    
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
     const [table, setTable] = useState([]);
@@ -13,6 +18,13 @@ export default function TagMatch() {
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
+
+    useEffect(() => {
+        console.log("line 23");
+        getMatchInfo(matchId).then((matchInfo) => {
+            setVideoId(matchInfo.videoId)
+        });
+    }, [matchId]);
     
     const handleVideoIdChange = (event) => {
         setVideoId(event.target.value);
@@ -103,7 +115,7 @@ export default function TagMatch() {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    }, [videoObject, table, currentPage]) // TODO: the buttons should be in a different component
+    }, [videoObject, videoId, table, currentPage]) // TODO: the buttons should be in a different component
 
     const updateTable = (key, value) => {
         setTable(currentList => {
@@ -152,8 +164,8 @@ export default function TagMatch() {
     const buttonData = getTaggerButtonData(updateTable, setCurrentPage);
 
     const handleImageClick = (event) => {
-        const courtWidthInInches = 432;
-        const courtHeightInInches = 936;
+        const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
+        const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
         
         // Get the bounding rectangle of the target (image)
         const rect = event.target.getBoundingClientRect();

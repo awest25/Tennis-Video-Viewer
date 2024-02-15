@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../services/initializeFirebase.js';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 function MatchList() {
   const [matchData, setMatchData] = useState([]);
+  const router = useRouter();
+
+  const navigateToTagMatch = (matchId) => {
+    router.push({
+      pathname: '/tag-match',
+      query: { matchId: matchId },
+    });
+  };  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +37,9 @@ function MatchList() {
         <ul>
           {matchData.map((match) => (
             <li key={match.id}>
-              {match.name} <button onClick={() => handleDelete(match.id)}>Delete</button>
+              {match.name}
+              <button onClick={() => handleDelete(match.id)}>Delete</button>
+              <button onClick={() => navigateToTagMatch(match.id)}>Tag Match</button>
             </li>
           ))}
         </ul>
