@@ -10,21 +10,19 @@ import VideoPlayer from '../components/VideoPlayer';
 import FilterList from '../components/FilterList';
 import PointsList from '../components/PointsList';
 import Toolbar from '../components/Toolbar.js';
-import ScoreBoard from '../components/ScoreBoard.js';
+import ScoreBoard from '../components/ScoreBoard.js'; // Ensure ScoreBoard is correctly imported
 import Select from 'react-select';
 
 export default function Home() {
-
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
-  const [playingpoint, setPlayingPoint] = useState(null);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [playingPoint, setPlayingPoint] = useState(null);
+
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
-  var arr = [];
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
       videoObject.seekTo(time / 1000, true);
@@ -32,36 +30,37 @@ export default function Home() {
   };
   
   
-  useEffect(() => {
-    var points;
-    var sortedPoints;
-    if(matchData){
-      points = returnFilteredPoints();
-      sortedPoints = [...points];
-      sortedPoints.sort((a, b) => b.Position - a.Position);
-    }
-    const updateScoreboardWithTime = (time) => {
-      const currentPoint = sortedPoints.find((point) => point.Position <= time);
-      if (currentPoint) {
-        setPlayingPoint(currentPoint);
-      }
-    };
+  
 
-    const intervalId = setInterval(() => {
-      if (videoObject && videoObject.getCurrentTime) {
-        const currentTime = videoObject.getCurrentTime() * 1000;
-        updateScoreboardWithTime(currentTime);
-      }
-    }, 100); // Update every second (adjust as needed)
-    return () => clearInterval(intervalId);
-  }, [videoObject]);
+  
+  useEffect(() => {
+    if (matchData) {
+      const points = returnFilteredPoints();
+      const sortedPoints = [...points].sort((a, b) => b.Position - a.Position);
+
+      const updateScoreboardWithTime = (time) => {
+        const currentPoint = sortedPoints.find((point) => point.Position <= time);
+        if (currentPoint) {
+          setPlayingPoint(currentPoint);
+        }
+      };
+
+      const intervalId = setInterval(() => {
+        if (videoObject && videoObject.getCurrentTime) {
+          const currentTime = videoObject.getCurrentTime() * 1000;
+          updateScoreboardWithTime(currentTime);
+        }
+      }, 1000);
+
+      return () => clearInterval(intervalId); // Cleanup to avoid memory leaks
+    }
+  }, [videoObject, matchData]);
 
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
 
-    // Group filters by key
-    filterList.forEach(filter => {
+    filterList.forEach((filter) => {
       const [key, value] = filter;
       if (filterMap.has(key)) {
         filterMap.get(key).push(value);
@@ -70,19 +69,14 @@ export default function Home() {
       }
     });
 
-    // Apply filters
     filterMap.forEach((values, key) => {
-      if (values.length > 1) {
-        // Multiple values for the same key, use OR logic
-        filteredPoints = filteredPoints.filter(point => values.includes(point[key]));
-      } else {
-        // Single value for the key, use AND logic
-        filteredPoints = filteredPoints.filter(point => point[key] === values[0]);
-      }
+      filteredPoints = filteredPoints.filter(point => 
+        values.length > 1 ? values.includes(point[key]) : point[key] === values[0]
+      );
     });
 
     return filteredPoints;
-  }
+  };
 
   //Active Filter
   const removeFilter = (key, value) => {
@@ -123,7 +117,6 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-
           </>
         )}
 
@@ -144,17 +137,12 @@ export default function Home() {
                   viewBox="0 0 24 24"
                   fill="black"
                   xmlns="http://www.w3.org/2000/svg">
-                  <g id="SVGRepo_bgCarrier" stroke-width="0">
-                  </g>
-                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                  </g>
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                   <g id="SVGRepo_iconCarrier">
-                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                    </path>
-                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                    </path>
-                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round">
-                    </path>
+                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
+                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
                   </g>
                 </svg>
                 <div className={filterStyles.optionsList}>
@@ -217,14 +205,13 @@ export default function Home() {
             </div>
             {/* Score display */}
             <div className="scoreboard">
-              <ScoreBoard names = {matchData.name} playData = {playingpoint}/>
+              <ScoreBoard names={matchData.name} playData={playingPoint}/>
             </div>
             <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
             <br></br>
           </>
         )}
-
       </main>
 
       <footer>
