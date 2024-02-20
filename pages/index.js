@@ -50,7 +50,7 @@ export default function Home() {
           const currentTime = videoObject.getCurrentTime() * 1000;
           updateScoreboardWithTime(currentTime);
         }
-      }, 1000);
+      }, 200);
 
       return () => clearInterval(intervalId); // Cleanup to avoid memory leaks
     }
@@ -175,7 +175,14 @@ export default function Home() {
             <div className={styles.mainContent}>
               {/* Video Player */}
               <div className="videoPlayer">
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject}/>
+                <div>
+                  <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject}/>
+                </div>
+                
+                {/* Score display */}
+                <div className="scoreboard">
+                  <ScoreBoard names={matchData.name} playData={playingPoint}/>
+                </div>
               </div>
               <div>
                 {/* Filter List */}
@@ -202,10 +209,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </div>
-            {/* Score display */}
-            <div className="scoreboard">
-              <ScoreBoard names={matchData.name} playData={playingPoint}/>
             </div>
             <br></br>
             {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
