@@ -29,10 +29,6 @@ export default function Home() {
     }
   };
   
-  
-  
-
-  
   useEffect(() => {
     if (matchData) {
       const points = returnFilteredPoints();

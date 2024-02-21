@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Scoreboard.module.css';
 
 const ScoreBoard = ({ names, playData }) => {
   // Ensures playData is not null/undefined, to safely access its properties.
