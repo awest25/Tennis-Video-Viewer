@@ -8,51 +8,51 @@ import styles from '../styles/SearchDropdown.module.css';
 import transformData from '../services/transformData.js';
 
 const SearchDropdown = ({ setMatchData }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [dropdownData, setDropdownData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [dropdownData, setDropdownData] = useState([]);
 
-    // Fetch the matches from the database and format them for the dropdown
-    useEffect(() => {
-        const fetchMatches = async () => {
-            const querySnapshot = await getDocs(collection(db, 'matches'));
-            const matches = querySnapshot.docs.map((doc) => doc.data());
-            setDropdownData(formatOptions(matches));
-        };
-
-        fetchMatches();
-    }, []);
-
-
-    const handleDropdownItemClick = (selectedOption) => {
-        let matchData = transformData(selectedOption.value);
-        setMatchData(matchData);
-        setSearchTerm(selectedOption);
+  // Fetch the matches from the database and format them for the dropdown
+  useEffect(() => {
+    const fetchMatches = async () => {
+      const querySnapshot = await getDocs(collection(db, 'matches'));
+      const matches = querySnapshot.docs.map((doc) => doc.data());
+      setDropdownData(formatOptions(matches));
     };
 
-    const formatOptions = (data) => {
-        return data.map((item) => ({
-            value: item,
-            label: item.name
-        }));
-    };
+    fetchMatches();
+  }, []);
 
-    return (
-        <div>
+
+  const handleDropdownItemClick = (selectedOption) => {
+    let matchData = transformData(selectedOption.value);
+    setMatchData(matchData);
+    setSearchTerm(selectedOption);
+  };
+
+  const formatOptions = (data) => {
+    return data.map((item) => ({
+      value: item,
+      label: item.name
+    }));
+  };
+
+  return (
+    <div>
             
-            <Select
-                placeholder="Search for a tennis match..."
-                value={searchTerm}
-                components={{
-                    NoOptionsMessage: () => (
-                        <div className={styles.loader}></div>
-                    ),
-                }}
-                onChange={handleDropdownItemClick}
-                options={dropdownData}
-                className={styles.searchDropdown}
-            />
-        </div>
-    );
+      <Select
+        placeholder="Search for a tennis match..."
+        value={searchTerm}
+        components={{
+          NoOptionsMessage: () => (
+            <div className={styles.loader}></div>
+          ),
+        }}
+        onChange={handleDropdownItemClick}
+        options={dropdownData}
+        className={styles.searchDropdown}
+      />
+    </div>
+  );
 }
 
 export default SearchDropdown;

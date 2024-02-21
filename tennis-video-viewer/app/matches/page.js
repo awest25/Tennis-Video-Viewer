@@ -26,20 +26,20 @@ const AllMatchList = () => {
       <h1>2024 Season Matches</h1>
       <p>Filters: </p>
       {categories.map((category, idx) => (
-      <button className={`${category.includes(curCategory) ? 'font-weight: bold;' : ''}`} key={idx} onClick={() => setCategory(category)}>
-        {category}
-      </button>
+        <button className={`${category.includes(curCategory) ? 'font-weight: bold;' : ''}`} key={idx} onClick={() => setCategory(category)}>
+          {category}
+        </button>
       ))}
       {matchData.length > 0 ? (
-          <ul>
+        <ul>
           {matchData.map((match) => (
-              <li key={match.id}>
-               <Link href={'/matches/' + match.videoId}> {match.name} </Link>
-              </li>
+            <li key={match.id}>
+              <Link href={'/matches/' + match.videoId}> {match.name} </Link>
+            </li>
           ))}
-          </ul>
+        </ul>
       ) : (
-          <p>Loading...</p>
+        <p>Loading...</p>
       )}
     </div>
   )
