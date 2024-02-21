@@ -1,0 +1,22 @@
+.toolbar {
+    background-color: #2774AE; /* Example background color */
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.toolbar a {
+    color: white;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.toolbar a:hover {
+    color: #ddd;
+}
+
+.name {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
