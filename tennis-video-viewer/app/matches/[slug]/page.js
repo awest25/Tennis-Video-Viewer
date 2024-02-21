@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
 import filterStyles from '../../styles/FilterList.module.css'
@@ -11,8 +12,9 @@ import PointsList from '../../components/PointsList';
 import ScoreBoard from '@/app/components/ScoreBoard';
 
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../services/initializeFirebase.js';
-import transformData from '../../services/transformData.js';
+import { db } from '../../services/initializeFirebase';
+import transformData from '../../services/transformData';
+import nameMap from '../../services/nameMap';
 
 // export async function generateStaticParams() {
 //     const querySnapshot = await getDocs(collection(db, 'matches'));
@@ -35,7 +37,6 @@ const MatchPage = () => {
   const router = useRouter();
   const pathname = usePathname()
   const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
-  console.log(videoId);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
