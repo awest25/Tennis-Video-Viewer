@@ -1,44 +1,12 @@
 .searchDropdown {
     color: black;
+    position: static;
 }
 
 /* add media tag for mobile for "@media only" for the phone */
 .hidden {
   display: none;
 }
-
-/* Existing styles */
-.searchDropdown {
-  color: black;
-  transition: top 0.3s; /* Smooth transition for sliding up */
-}
-
-/* Add media tag for mobile "@media only" for the phone */
-@media only screen and (max-width: 600px) {
-  /* Your mobile-specific styles here */
-}
-
-<script>
-window.onscroll = function() {
-    var header = document.querySelector('.searchDropdown'); // Adjust this if the class name is different
-    var sticky = header.offsetTop; // Get the offset position of the navbar
-
-    if (window.pageYOffset > sticky) {
-        header.classList.add('hidden');
-    } else {
-        header.classList.remove('hidden');
-    }
-};
-</script>
-
-
-
-
-
-
-
-
-
 
 .loader {
     margin: auto;

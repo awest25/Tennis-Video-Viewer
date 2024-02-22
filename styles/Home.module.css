@@ -1,7 +1,7 @@
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
-  padding-top: 50px; /* Adjust this value based on the height of your toolbar */
+ /* padding-top: 50px;  Adjust this value based on the height of your toolbar */
   display: flex;
   flex-direction: column;
   justify-content: center;
