@@ -54,7 +54,6 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
     const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
     return (
-        <>
             <div>
                 <ul className={styles.availableFilterList}>
                     {keys.map((key) => {
@@ -102,7 +101,6 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                     })}
                 </ul>
             </div>
-        </>
     );
 }
 
