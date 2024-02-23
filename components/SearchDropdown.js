@@ -7,6 +7,7 @@ import styles from '../styles/SearchDropdown.module.css';
 
 const SearchDropdown = ({ setMatchData }) => {
     const [dropdownData, setDropdownData] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null); // State to keep track of the selected option
     const router = useRouter();
 
     useEffect(() => {
@@ -15,23 +16,31 @@ const SearchDropdown = ({ setMatchData }) => {
             const matches = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
                 return {
-                    id: doc.id, // Set the id property to the document ID
+                    value: doc.id, // Use 'value' to adhere to react-select convention
                     label: data.name,
                     ...data
                 };
             });
             setDropdownData(matches);
+            
+            // Find the selected match based on the URL and set it as selected
+            const matchIdFromURL = router.query.matchId; // This should match the URL query parameter name for match ID
+            if (matchIdFromURL) {
+                const selectedMatch = matches.find(match => match.value === matchIdFromURL);
+                setSelectedOption(selectedMatch);
+            }
         };
 
         fetchMatches();
-    }, []);
+    }, [router.query.matchId]); // Depend on the matchId URL parameter
 
-    const handleDropdownItemClick = async (selectedOption) => {
-        const matchId = selectedOption.id; // Access the id property directly
-        // Navigate to the match page with the selected match ID as a URL parameter
+    // ... (other code remains unchanged)
+
+    const handleDropdownItemClick = async (option) => {
+        setSelectedOption(option); // Update the selected option state
+        const matchId = option.value; // Access the value property directly
         await router.push(`/matches/${matchId}`);
-        // Set the match data in the parent component (Home.js)
-        setMatchData(selectedOption);
+        setMatchData(option);
     };
 
     return (
@@ -39,6 +48,7 @@ const SearchDropdown = ({ setMatchData }) => {
             <Select
                 placeholder="Search for a tennis match..."
                 onChange={handleDropdownItemClick}
+                value={selectedOption} // Set the selected option based on the URL
                 options={dropdownData}
                 className={styles.searchDropdown}
             />

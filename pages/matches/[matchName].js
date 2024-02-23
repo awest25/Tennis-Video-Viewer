@@ -84,9 +84,6 @@ const MatchPage = () => {
             </Head>
 
             <main>
-                <div className="searchDropdown">
-                    <SearchDropdown setMatchData={setMatchData} />
-                </div>
 
                 {matchData && (
                     <>
