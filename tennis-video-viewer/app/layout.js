@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import Toolbar from "./components/Toolbar"
+import Footer from "./components/Footer"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,12 +17,9 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <Toolbar/>
+        {/* <Toolbar/> */}
         {children}
-        <footer>
-          <hr/>
-          <p>Developed by Bruin Sports Analytics for use by UCLA Tennis</p>
-        </footer>
+        <Footer/>
       </body>
     </html>
   );

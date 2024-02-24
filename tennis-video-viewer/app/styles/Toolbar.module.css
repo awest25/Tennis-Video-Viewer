@@ -3,7 +3,9 @@
     color: white;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    padding: 10px 10rem;
 }
 
 .toolbar a {
@@ -18,5 +20,5 @@
 
 .name {
     font-size: 1.6rem;
-    font-weight: bold;
+    font-weight: 700;
 }

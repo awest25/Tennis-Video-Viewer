@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-import { db } from '../services/initializeFirebase.js';
+import { db } from '../../services/initializeFirebase.js';
 import { collection, getDocs } from 'firebase/firestore';
 
 const AllMatchList = () => {

@@ -4,17 +4,17 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 
-import filterStyles from '../../styles/FilterList.module.css'
-import styles from '../../styles/Home.module.css';
-import VideoPlayer from '../../components/VideoPlayer';
-import FilterList from '../../components/FilterList';
-import PointsList from '../../components/PointsList';
-import ScoreBoard from '@/app/components/ScoreBoard';
+import filterStyles from '../../../styles/FilterList.module.css'
+import styles from '../../../styles/Match.module.css';
+import VideoPlayer from '../../../components/VideoPlayer';
+import FilterList from '../../../components/FilterList';
+import PointsList from '../../../components/PointsList';
+import ScoreBoard from '../../../components/ScoreBoard';
 
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../services/initializeFirebase';
-import transformData from '../../services/transformData';
-import nameMap from '../../services/nameMap';
+import { db } from '../../../services/initializeFirebase';
+import transformData from '../../../services/transformData';
+import nameMap from '../../../services/nameMap';
 
 // export async function generateStaticParams() {
 //     const querySnapshot = await getDocs(collection(db, 'matches'));
@@ -259,15 +259,6 @@ const MatchPage = () => {
         
         .listHolder {
           display: flex; 
-        }
-
-        footer {
-          width: 100%;
-          height: 70px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
         }
       `}</style>
 

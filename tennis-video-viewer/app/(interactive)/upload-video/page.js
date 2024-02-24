@@ -1,13 +1,15 @@
 'use client'
 
 import React, { useState } from 'react';
-import uploadMatch from '../services/uploadMatch.js';
+import uploadMatch from '../../services/uploadMatch.js';
+
+import styles from '../../styles/Upload.module.css'
 
 export default function UploadVideo() {
   const [matchName, setMatchName] = useState('');
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
-  const [pdfFile, setPdfFile] = useState(null); // New state for PDF file
+  const [pdfFile, setPdfFile] = useState(null);
 
   const handleMatchNameChange = (e) => {
     setMatchName(e.target.value);
@@ -43,29 +45,25 @@ export default function UploadVideo() {
     
 
   return (
-    <div>
-      <h1>Upload Video</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Upload Video</h1>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label>
-                    Match Name:
+          Match Name: 
           <input type="text" value={matchName} onChange={handleMatchNameChange} />
         </label>
-        <br />
         <label>
-                    Video ID:
+          Video ID: 
           <input type="text" value={videoId} onChange={handleVideoIdChange} />
         </label>
-        <br />
         <label>
-                    JSON File:
+          JSON File: 
           <input type="file" accept=".json" onChange={handleJsonFileChange} />
         </label>
-        <br />
         <label>
-                    PDF File:
+          PDF File: 
           <input type="file" accept="application/pdf" onChange={handlePdfFileChange} />
         </label>
-        <br />
         <button type="submit">Upload</button>
       </form>
     </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { db } from '../services/initializeFirebase.js';
+import { db } from '../../services/initializeFirebase.js';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 export default function MatchList() {

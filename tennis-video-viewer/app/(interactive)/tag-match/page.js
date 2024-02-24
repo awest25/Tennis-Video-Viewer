@@ -1,9 +1,8 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import Toolbar from '../components/Toolbar';
-import VideoPlayer from '../components/VideoPlayer';
-import styles from '../styles/tag-match.module.css';
+import VideoPlayer from '../../components/VideoPlayer';
+import styles from '../../styles/Tagging.module.css';
 
 const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
   return (
@@ -167,7 +166,7 @@ export default function TagMatch() {
     };
   }, [videoObject, timeList]);
   return (
-    <div style={{ marginTop: '20px' }}>
+    <div className={styles.container}>
       <label>Enter YouTube Code: </label>
       <input type="text" value={videoId} onChange={handleVideoIdChange} />
     
@@ -176,9 +175,9 @@ export default function TagMatch() {
         const columns = timeList.map(pair => pair.join('\t')).join('\n');
         navigator.clipboard.writeText(columns);
       }}>
-                Copy Columns
+        Copy Columns
       </button>
-      <table>
+      <table className={styles.table}>
         <tbody>
           <tr>
             <td colSpan="2">Current Time: {timerValue}ms</td>
