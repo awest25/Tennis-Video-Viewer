@@ -6,15 +6,13 @@ import styles from '../styles/FilterList.module.css';
 import nameMap from '../services/nameMap.js';
 
 const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCount }) => {
-  const keys = Object.keys(nameMap); // Sort the keys array
+  // only keep relevant keys
+  const keys = Object.keys(nameMap).filter(key => pointsData && pointsData.some(point => point.hasOwnProperty(key)));
   const uniqueValues = {};
 
-  // Gather unique values for each key
+  // Iterate through filtered keys and populate uniqueValues
   keys.forEach((key) => {
-    uniqueValues[key] = [];
-    if (pointsData && pointsData.length > 0 && pointsData.some(point => point.hasOwnProperty(key))) {
       uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
-    }
   });
     
   // State for the open key
@@ -63,7 +61,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
         <ul className={styles.availableFilterList}>
           {keys.map((key) => {
             // Check if key is in the nameMap
-            if (nameMap.hasOwnProperty(key)) {
+            // if (nameMap.hasOwnProperty(key)) {
               return (
                 <div className={styles.availableFilterItem} key={key} onClick={() => toggleOpen(key)}>
                   <li>
@@ -100,9 +98,9 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                   </li>
                 </div>
               );
-            } else {
-              return null; // Skip rendering if key is not in the map
-            }
+            // } else {
+            //   return null; // Skip rendering if key is not in the map
+            // }
           })}
         </ul>
       </div>
