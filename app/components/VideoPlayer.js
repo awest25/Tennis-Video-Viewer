@@ -47,7 +47,7 @@ function VideoPlayer({ videoId, setVideoObject }) {
     }
   }, [videoId]);
 
-  const onPlayerReady = (event) => {
+  const onPlayerReady = () => {
     console.log('player is ready')
   };
 

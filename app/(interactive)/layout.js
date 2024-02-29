@@ -1,8 +1,8 @@
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import Toolbar from "../components/Toolbar"
-import Footer from "../components/Footer"
+// import Footer from "../components/Footer"
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Tennis Video Viewer",

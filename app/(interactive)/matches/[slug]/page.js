@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 import filterStyles from '../../../styles/FilterList.module.css'
 import styles from '../../../styles/Match.module.css';
@@ -34,7 +34,7 @@ const MatchPage = () => {
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
 
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname()
   const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
