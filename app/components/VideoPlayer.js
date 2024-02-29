@@ -11,7 +11,7 @@ function VideoPlayer({ videoId, setVideoObject }) {
           'onReady': onPlayerReady
         },
         playerVars: {
-            'origin': 'http://localhost:3000' 
+          'origin': 'http://localhost:3000' 
         },
       });
       setVideoObject(playerRef.current);
