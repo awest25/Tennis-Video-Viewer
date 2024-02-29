@@ -7,7 +7,7 @@ import nameMap from '../services/nameMap.js';
 
 const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCount }) => {
   // only keep relevant keys
-  const keys = Object.keys(nameMap).filter(key => pointsData && pointsData.some(point => point.hasOwnProperty(key)));
+  const keys = Object.keys(nameMap).filter(key => pointsData && pointsData.some(point => Object.prototype.hasOwnProperty.call(point, key)));
   const uniqueValues = {};
 
   // Iterate through filtered keys and populate uniqueValues
@@ -53,7 +53,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
   };
 
   // Sort the filterList array in alphabetical order
-  const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
+  // const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
     <>
