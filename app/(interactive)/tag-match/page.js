@@ -182,7 +182,9 @@ export default function TagMatch() {
           <tr>
             <td colSpan="2">Current Time: {timerValue}ms</td>
           </tr>
-          <tr>Jump to: </tr>
+          <tr>
+            <td>Jump to: </td>
+          </tr>
           <tr>
             <td>
               <input
