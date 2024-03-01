@@ -1,8 +1,11 @@
 /* Usage: If you want to change the name of a column in the filter list, 
    add the original column name to the left side and the display name
    to the right side. */
-   
+ 
 const nameMap = {
+
+   
+
   // New Player1 Focused Map
   "player1ServePlacement"  : 'Serve Placement',
   "player1ServeResult"     : 'Serve Result',
@@ -19,11 +22,16 @@ const nameMap = {
     
   //Group 4: Point Information
   "rallyCountFreq"         : 'Rally Length',
-  "atNetPlayer1"           : 'Player At Net',
+  "atNetPlayer1"           : 'Player Comes to Net',
   "pointWonBy"             : 'Point Won By',
-  "side"                   : 'Duece/Ad Side',
+  "side"                   : 'Deuce/Ad Side',
   "setNum"                 : 'Set Number',
-   
+
+  //Group 5: Special Requests
+  "isPressurePoint"        : " Pressure Point",
+  "isUnforcedError"        : "Unforced Error",
+  "isSecondServeAttacked"  : "Second Serve Attacked",
+  "isAggressiveServePlusOne"  : "Aggressive Serve +1",
 
 
 
