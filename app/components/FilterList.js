@@ -6,15 +6,16 @@ import styles from '../styles/FilterList.module.css';
 import nameMap from '../services/nameMap.js';
 
 const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCount }) => {
-  // only keep relevant keys
-  const keys = Object.keys(nameMap).filter(key => pointsData && pointsData.some(point => Object.prototype.hasOwnProperty.call(point, key)));
-  const uniqueValues = {};
 
-  // Iterate through filtered keys and populate uniqueValues
-  keys.forEach((key) => {
+  // only keep relevant keys 
+  const keys = Object.keys(nameMap).filter(key => pointsData && pointsData.some(point => point.hasOwnProperty(key))); 
+  const uniqueValues = {}; 
+  
+  // Iterate through filtered keys and populate uniqueValues 
+  keys.forEach((key) => { 
     uniqueValues[key] = [...new Set(pointsData.map((point) => point[key]))].sort();
   });
-    
+
   // State for the open key
   const [openKey, setOpenKey] = useState(null);
 
