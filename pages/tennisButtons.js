@@ -8,7 +8,6 @@ const TennisButtons = ({buttonVal,buttonName,onClick}) => {
     };
     
 
-
     // Style object for the buttons
     const buttonStyle = {
         backgroundColor: '#0FADF7', // Cerulean blue color

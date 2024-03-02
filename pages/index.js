@@ -3,6 +3,8 @@ import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import '../services/initializeFirebase.js'; // Initialize Firebase on the client side
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../services/initializeFirebase.js';
 
 import SearchDropdown from '../components/SearchDropdown';
 import VideoPlayer from '../components/VideoPlayer';
@@ -18,6 +20,17 @@ export default function Home() {
   const [videoObject, setVideoObject] = useState(null);
   const [teamToSearch, setTeamToSearch] = useState(null);
   const [searchType,setSearchType] = useState('matches');
+  const [teamButtons, setTeamButtons] = useState([]);
+  useEffect(() => {
+    const fetchMatches = async () => {
+        console.log("finding");//tempcheck
+        const querySnapshot = await getDocs(collection(db, "teams"));
+        const matches = querySnapshot.docs.map((doc) => doc.data());
+        setTeamButtons(matches);
+    };
+
+    fetchMatches();
+  }, [])
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -73,8 +86,12 @@ export default function Home() {
             </h1>
 
             <div className="tennisButtonsContainer">
-              <TennisButtons buttonVal={"uclamens"} buttonName={"UCLA Men's Tennis"} onClick={() => changeMatches("uclamens")}/>
-              <TennisButtons buttonVal={"uclawomens"} buttonName={"UCLA Women's Tennis"} onClick={() => changeMatches("uclawomens")}/>
+              {teamButtons.map(({ id, val, name }) => {
+                console.log(`Debug - val: ${val}, name: ${name}`);
+                return (
+                  <TennisButtons key={id} buttonVal={val} buttonName={name} onClick={() => changeMatches(val)} />
+                );
+              })}
             </div>
 
             
