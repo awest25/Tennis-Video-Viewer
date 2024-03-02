@@ -4,6 +4,7 @@
     left: 0;
     width: 100%;
     background-color: #2774AE; /* Example background color */
+    /* box-sizing: border-box; */
     color: white;
     display: flex;
     justify-content: space-between;
