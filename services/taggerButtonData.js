@@ -5,8 +5,9 @@ The 'getTaggerButtonData' function generates a JSON object used for creating a d
 Structure:
 - Each button object has a 'label' property, which specifies the text to be displayed on the button.
 - The 'action' property of each button is a function that handles all logic for the button and can call the following functions (passed from tag-match.js) in any amount/order:
-  - 'updateTable': This action adds a value to a specified column in the last row of the table. The column name is the first argument, and the value to add is the second argument.
+  - 'updateLastRow': This action adds a value to a specified column in the last row of the table. The column name is the first argument, and the value to add is the second argument.
   - 'setCurrentPage': This action updates the 'currentPage' state with the name of the page passed as an argument.
+  - 'addNewRow': Calling this function with no arguments adds a new row to the table.
   - All table data is stored in the 'data' argument of the action function, accessed with 'data.table'.
 
 For images it's a little different:
@@ -19,43 +20,52 @@ You can then use this x and y coordinate to update the table.
 
 For example, if the coordinates are really high, you know the serve was long, and you write the logic to record it:
 if (data.y > 800) {
-    updateTable('isErrorLong', '1'); // sets the isErrorLong column to '1' for the last row
+    updateLastRow('isErrorLong', '1'); // sets the isErrorLong column to '1' for the last row
 }
 
 Other examples:
-updateTable('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
+updateLastRow('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
 setCurrentPage('FirstServeResult'); // sets the currentPage to 'FirstServeResult'
+newRow(); // adds a new row to the table
 
 ======== Developed by Alex West ======== */
 
-export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
+export const getTaggerButtonData = (updateLastRow, addNewRow, setCurrentPage) => ({
     'PointScore': [
         {
             label: '0-0',
             action: (data) => {
-                updateTable('pointScore', '0-0');
+                updateLastRow('pointScore', '0-0');
                 setCurrentPage('FirstServeResult');
-                console.log(data.table[action.table.length - 1]); // logs the last row of the table
+                console.log(data.table[data.table.length - 1]); // logs the last row of the table
+            }
+        },
+        {
+            label: 'add new row',
+            action: (data) => {
+                addNewRow();
+                setCurrentPage('PointScore');
+                console.log(data.table[data.table.length - 1]);
             }
         },
         {
             label: '15-0',
             action: () => {
-                updateTable('pointScore', '15-0');
+                updateLastRow('pointScore', '15-0');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '30-0',
             action: () => {
-                updateTable('pointScore', '30-0');
+                updateLastRow('pointScore', '30-0');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '40-0',
             action: () => {
-                updateTable('pointScore', '40-0');
+                updateLastRow('pointScore', '40-0');
                 setCurrentPage('FirstServeResult');
             }
         },
@@ -63,91 +73,91 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
         {
             label: '0-15',
             action: () => {
-                updateTable('pointScore', '0-15');
+                updateLastRow('pointScore', '0-15');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '15-15',
             action: () => {
-                updateTable('pointScore', '15-15');
+                updateLastRow('pointScore', '15-15');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '30-15',
             action: () => {
-                updateTable('pointScore', '30-15');
+                updateLastRow('pointScore', '30-15');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '40-15',
             action: () => {
-                updateTable('pointScore', '40-15');
+                updateLastRow('pointScore', '40-15');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '0-30',
             action: () => {
-                updateTable('pointScore', '0-30');
+                updateLastRow('pointScore', '0-30');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '15-30',
             action: () => {
-                updateTable('pointScore', '15-30');
+                updateLastRow('pointScore', '15-30');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '30-30',
             action: () => {
-                updateTable('pointScore', '30-30');
+                updateLastRow('pointScore', '30-30');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '40-30',
             action: () => {
-                updateTable('pointScore', '40-30');
+                updateLastRow('pointScore', '40-30');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '0-40',
             action: () => {
-                updateTable('pointScore', '0-40');
+                updateLastRow('pointScore', '0-40');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '15-40',
             action: () => {
-                updateTable('pointScore', '15-40');
+                updateLastRow('pointScore', '15-40');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '30-40',
             action: () => {
-                updateTable('pointScore', '30-40');
+                updateLastRow('pointScore', '30-40');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '40-40 (Ad Side)',
             action: () => {
-                updateTable('pointScore', 'Ad');
+                updateLastRow('pointScore', 'Ad');
                 setCurrentPage('FirstServeResult');
             }
         },
         {
             label: '40-40 (Deuce Side)',
             action: () => {
-                updateTable('pointScore', 'Deuce');
+                updateLastRow('pointScore', 'Deuce');
                 setCurrentPage('CourtImage');
             }
         },
@@ -158,8 +168,8 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
             courtImage: true,
             label: 'Select First Serve Position',
             action: (data) => {
-                updateTable('firstServeXCoord', data.x);
-                updateTable('firstServeYCoord', data.y);
+                updateLastRow('firstServeXCoord', data.x);
+                updateLastRow('firstServeYCoord', data.y);
                 setCurrentPage('FirstServeResult');
             }
         },
@@ -169,14 +179,14 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
         {
             label: 'In',
             action: () => {
-                updateTable('firstServeIn', '1');
+                updateLastRow('firstServeIn', '1');
                 setCurrentPage('FirstServeZone');
             }
         },
         {
             label: 'Fault',
             action: () => {
-                updateTable('firstServeIn', '0');
+                updateLastRow('firstServeIn', '0');
                 setCurrentPage('FirstServeZone');
             }
         },
@@ -186,21 +196,21 @@ export const getTaggerButtonData = (updateTable, setCurrentPage) => ({
         {
             label: 'T',
             action: () => {
-                updateTable('firstServeZone', 'T');
+                updateLastRow('firstServeZone', 'T');
                 // setCurrentPage('SecondServeResult');
             }
         },
         {
             label: 'Wide',
             action: () => {
-                updateTable('firstServeZone', 'Wide');
+                updateLastRow('firstServeZone', 'Wide');
                 // setCurrentPage('SecondServeResult');
             }
         },
         {
             label: 'Body',
             action: () => {
-                updateTable('firstServeZone', 'Body');
+                updateLastRow('firstServeZone', 'Body');
                 // setCurrentPage('SecondServeResult');
             }
         },
