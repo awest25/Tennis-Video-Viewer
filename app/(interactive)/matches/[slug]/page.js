@@ -10,6 +10,7 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
+import ExtendedList from '../../../components/ExtendedList';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -203,6 +204,9 @@ const MatchPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+          <div className={styles.ExtendedList}>
+            <ExtendedList pointsData={returnFilteredPoints()} />
           </div>
           <br></br>
           {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
