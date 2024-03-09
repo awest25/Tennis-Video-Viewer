@@ -1,29 +1,78 @@
 .pointsList {
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.pointsList th,
+.pointsList td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #dddddd; /* Add border between rows */
+}
+
+.pointsList th {
+  background-color: #ffffff;
+  text-align: center;
+  font-weight: normal; /* Remove bold styling */
 }
 
 .pointsListItem {
-  background-color: #f1f1f1;
-  color: #333; /* Dark grey text for better contrast and readability */
-  border: 1px solid #ddd; /* Lighter border */
-  border-radius: 4px; /* Rounded corners */
-  padding: 8px 16px; /* Increased padding for a larger click area */
-  margin: 8px 4px; /* Consistent margin */
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.1s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .pointsListItem:hover {
-  background-color: #e9e9e9; /* Slightly darker background on hover */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  background-color: #e9e9e9;
 }
 
-.pointsListItem:active {
-  background-color: #d9d9d9; /* Even darker for click feedback */
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Smaller shadow for depth */
+.pointsList tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.pointsList tbody tr:hover {
+  background-color: #e2e2e2;
+}
+
+.expandButtonCell {
+  text-align: left;
+  vertical-align: middle; /* Align content vertically center */
+}
+
+.expandButton {
+  padding: 8px 16px;
+  margin: 4px 0;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: none;
+  font-weight: bold;
+}
+
+.expandButton:hover {
+  background-color: #f0f0f0;
+}
+
+.collapseButton {
+  padding: 8px 16px;
+  margin: 4px 0;
+  cursor: pointer;
+  background-color: #ffffff;
+  border: none;
+  font-weight: bold;
+}
+
+.collapseButton:hover {
+  background-color: #f0f0f0;
+}
+.circularButton {
+  background-color: white; /* Set button background color to white */
+  border: 4px solid dimgray; /* Set button border */
+  border-radius: 50%; /* Make button circular */
+  width: 28px; /* Set button width 30% smaller */
+  height: 28px; /* Set button height 30% smaller */
+  font-size: 17px; /* Set font size 30% smaller */
+  display: flex; /* Align icon in the center */
+  justify-content: center; /* Align icon in the center */
+  align-items: center; /* Align icon in the center */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  text-align: center; /* Center-align the text */
 }
