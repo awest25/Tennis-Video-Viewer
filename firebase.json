@@ -1,14 +1,13 @@
 {
   "hosting": {
-    "public": "out",
+    "source": ".",
     "ignore": ["firebase.json","**/.*","**/node_modules/**"],
     "cleanUrls": true,
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
+          "destination": "/matches/[slug]/index.html",
+          "regex": "^/user/([^/]+?)(?:/)?$"
+      }],
     "frameworksBackend": {
       "region": "us-central1"
     }
