@@ -1,5 +1,5 @@
 # Tennis-Video-Viewer
-A web app focused on tennis match playback integrating with point-level data, supporting filtering the match by point attributes.
+A web app focused on tennis match playback integrating with point-level data, supporting filtering the match by point attributes. 
 
 # Getting Started
 1. Clone the repo
