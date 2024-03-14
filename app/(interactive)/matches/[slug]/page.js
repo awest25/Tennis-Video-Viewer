@@ -10,6 +10,7 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
+import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -119,6 +120,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
+        <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo} matchDetails={matchData.matchDetails}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
