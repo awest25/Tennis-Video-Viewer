@@ -1,6 +1,5 @@
 'use client'
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VideoPlayer from '../../components/VideoPlayer';
 import styles from '../../styles/Tagging.module.css';
 
@@ -72,20 +71,23 @@ export default function TagMatch() {
   const [videoId, setVideoId] = useState('');
   const [timeList, setTimeList] = useState([]);
   const [timerValue, setTimerValue] = useState(0);
-  // issue with the timer: When no video code, gives a value error. Fix this
-  // tracks current timestamp to display at top: we can't use timeList[timeList.length-1] because we sort
-  // when the tagger goes back in time to update a value, the "current time" is the LATEST time not the CURRENT time.
-  // point_start_time should always be unique when tagging!
   const [curTimeStart, setCurTimeStart] = useState(0);
-  // currently impossible to determine exact YouTube FPS: 24-60 FPS
   const FRAMERATE = 30;
-    
+  const inputRef = useRef(null);
+  
   const handleVideoIdChange = (event) => {
     setVideoId(event.target.value);
   };
 
   const handleKeyDown = (event) => {
     if (!videoObject) {
+      return;
+    }
+
+    if (inputRef.current === document.activeElement) {
+      if (event.key === " ") {
+        event.preventDefault();
+      }
       return;
     }
 
@@ -121,13 +123,11 @@ export default function TagMatch() {
     if (action) action();
   };
 
-
   const handleStartTimeChange = (index, value) => {
     const updatedTimeList = [...timeList];
     updatedTimeList[index] = [parseInt(value), updatedTimeList[index][1]];
     setTimeList(updatedTimeList);
   };
-
 
   const handleEndTimeChange = (index, value) => {
     const updatedTimeList = [...timeList];
@@ -165,6 +165,22 @@ export default function TagMatch() {
       clearInterval(timerInterval);
     };
   }, [videoObject, timeList]);
+
+  useEffect(() => {
+    const handleArrowKeys = (event) => {
+      if (event.key === "ArrowRight") {
+        videoObject.seekTo(videoObject.getCurrentTime() + 10, true);
+      } else if (event.key === "ArrowLeft") {
+        videoObject.seekTo(videoObject.getCurrentTime() - 10, true);
+      }
+    };
+
+    document.addEventListener('keydown', handleArrowKeys);
+    return () => {
+      document.removeEventListener('keydown', handleArrowKeys);
+    };
+  }, [videoObject]);
+
   return (
     <div className={styles.container}>
       <label>Enter YouTube Code: </label>
@@ -230,7 +246,6 @@ export default function TagMatch() {
       </table>
       <KeybindingsTable/>
 
-      { /* CSV Table */}
       <hr/>
       <table>
         <tbody>
@@ -240,7 +255,7 @@ export default function TagMatch() {
           {timeList.length !== 0 && timeList.map((pair, index) => {
             if (curTimeStart === pair[0]) {
               return <TagTable
-                key = {index}
+                key={index}
                 pair={timeList[index]}
                 index={index}
                 handleStartTimeChange={handleStartTimeChange}
@@ -257,7 +272,7 @@ export default function TagMatch() {
           {timeList.map((pair, index) => {
             return(
               <TagTable
-                key = {index}
+                key={index}
                 pair={pair}
                 index={index}
                 handleStartTimeChange={handleStartTimeChange}
@@ -268,8 +283,6 @@ export default function TagMatch() {
           })}
         </tbody>
       </table>
-
-
     </div>
   );   
 }
