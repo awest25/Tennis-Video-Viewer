@@ -120,7 +120,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-        <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo} matchDetails={matchData.matchDetails}/>
+          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo} matchDetails={matchData.matchDetails}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
