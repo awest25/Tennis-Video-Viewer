@@ -3,8 +3,9 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import s
 import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
 // Define the uploadMatch function
-async function uploadMatch(matchName, videoId, pointsJson, pdfFile) {
-  if (!matchName || !videoId || !pointsJson) {
+async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientLogo, opponentLogo) {
+  console.log(clientLogo)
+  if (!matchName || !videoId || !pointsJson || !clientLogo || !opponentLogo) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
@@ -23,7 +24,9 @@ async function uploadMatch(matchName, videoId, pointsJson, pdfFile) {
       name: matchName,
       videoId: videoId,
       points: pointsJson,
-      pdfUrl: pdfUrl
+      pdfUrl: pdfUrl,
+      clientLogo: clientLogo,
+      opponentLogo: opponentLogo
     });
     console.log("Document written with ID: ", docRef.id);
     

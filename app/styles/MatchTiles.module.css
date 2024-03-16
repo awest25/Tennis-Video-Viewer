@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.matchTilesContainer {
+    display: flex;
+    width: 100%;
+}
+
+.matchInfoContainer {
+    border: 1px solid #DEDEDE;
+    border-radius: 24px;
+    font-family: 'DM Sans', sans-serif;
+    width: 38%;
+    margin: 8px;
+    padding: 1em;
+}
+
+.containerTitle {
+    font-size: 1.1vw;
+    font-weight: 350;
+    padding-bottom: 2px;
+}
+
+.containerInfo {
+    font-size: 1.8vw;
+    font-weight: 600;
+}
+
+.playerInfo {
+    display: flex;
+    font-size: 1.8vw;
+    font-weight: 600;
+    position: relative;
+}
+
+.playerInfoName {
+    padding-left: 1em;
+    padding-right: 5em;
+    display: flex;
+    font-size: 1.8vw;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.playerInfoScore {
+    position: absolute;
+    display: flex;
+    font-size: 1.8vw;
+    font-weight: 600;
+    left: 85%;
+    letter-spacing: .5em;
+}
+
+.playerSchoolImg {
+    width: 1.5em;
+    padding: 0;
+}
