@@ -9,29 +9,26 @@
     border: 1px solid #DEDEDE;
     border-radius: 24px;
     font-family: 'DM Sans', sans-serif;
-    height: 160px;
     width: 38%;
     margin: 8px;
+    padding: 1em;
 }
 
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;
-    padding: 1em;
-    padding-bottom: 1.3em;
+    padding-bottom: 2px;
 }
 
 .containerInfo {
     font-size: 1.8vw;
     font-weight: 600;
-    padding-left: .6em;
 }
 
 .playerInfo {
     display: flex;
     font-size: 1.8vw;
     font-weight: 600;
-    padding-left: .6em;
     position: relative;
 }
 
@@ -50,7 +47,7 @@
     display: flex;
     font-size: 1.8vw;
     font-weight: 600;
-    left: 80%;
+    left: 85%;
     letter-spacing: .5em;
 }
 
