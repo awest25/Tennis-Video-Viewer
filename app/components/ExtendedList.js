@@ -3,6 +3,7 @@ import styles from '../styles/ExtendedList.module.css';
 
 //create a table with dynamic width and height
 function createDynamicTable(data) {
+    console.log(data);
     const table = document.createElement("table");
     table.style.width = "100%";
     table.classList.add("dynamic-table");
@@ -16,9 +17,9 @@ function createDynamicTable(data) {
     keys_headers.forEach((key) => {
         const th = document.createElement("th");
         th.textContent = key;
-        th.style.fontSize = '16px';
-        th.style.textAlign= 'center';
-        th.style.padding = "8px";
+        th.style.fontSize = '20px';
+        th.style.fontWeight = 'normal';
+        th.style.textAlign= 'left';
         headerRow.appendChild(th);
     });
 
@@ -31,10 +32,17 @@ function createDynamicTable(data) {
     data.forEach((item) => {
         const row = document.createElement("tr");
         keys.forEach((key) => {
-            const td = document.createElement("td");
+            const td = document.createElement("td");            
             td.textContent = item[key];
+            if(item[key] == item['player1Name']){
+                td.content = <img src = {data.clientLogo}></img>
+            }
+            else{
+                td.content = <img src = {data.opponentLogo}></img>
+            }
             td.style.fontSize='20px';
-            td.style.textAlign= 'center';
+            td.style.fontWeight = 'bold';
+            td.style.textAlign= 'left';
             td.style.padding = "8px";
             row.appendChild(td);
         });
