@@ -13,7 +13,7 @@ export default function TagMatch() {
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
     const [table, setTable] = useState([]);
-    const [currentPage, setCurrentPage] = useState('PointScore'); // TODO: the default should continue from what was filled in last
+    const [currentPage, setCurrentPage] = useState('ServerName'); // TODO: the default should continue from what was filled in last
     const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
