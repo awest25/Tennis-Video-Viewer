@@ -29,7 +29,7 @@ function createDynamicTable(data) {
     //ADD DIV?
     const tbody = document.createElement("tbody");
 
-    data.forEach((item) => {
+    data.forEach((item, index) => {
         const row = document.createElement("tr");
         keys.forEach((key) => {
             const td = document.createElement("td");            
@@ -44,9 +44,13 @@ function createDynamicTable(data) {
             td.style.fontWeight = 'bold';
             td.style.textAlign= 'left';
             td.style.padding = "8px";
+            td.style.borderBottom="solid 0.2px #EDEDED";
+            td.style.padding = "20px";
             row.appendChild(td);
         });
-
+        // if (index !== data.length - 1) {
+            // row.style.border='5px';
+        // }
         tbody.appendChild(row);
     });
 
