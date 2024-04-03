@@ -176,6 +176,28 @@ function doubleFault(serverName) {
     } 
     }
 }
+function ace(serverName) {
+    if (serverScore < 30) {
+        serverScore += 15;
+    }
+    else if (serverScore < 40) {
+        serverScore += 10;
+    }
+    else {
+    if (serverName == 'Player1') {
+        player1GameScore += 1;
+        serverScore = 0;
+        returnerScore = 0;
+    }
+    else
+    {
+        player2GameScore += 1;
+        serverScore = 0;
+        returnerScore = 0;
+    }
+    }
+ }
+ 
 // function endPoint() {
 //     if (serverScore == 40 && returnerScore == 40) {
 //         setCurrentPage('PointScore');
@@ -783,7 +805,16 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
     ],
 
     'FirstServe': [
-        {
+    {
+    label: 'Ace',
+    action: () => {
+        updateActiveRow('isAce', '1');
+        updateActiveRow('isPointEnd', '1');
+        updateActiveRow('isWinner', '1');
+        //setCurrentPage('PointScore')
+        }
+    },
+    {
             courtImage: true,
             label: 'Select First Serve Position',
             action: (data) => {
@@ -791,7 +822,6 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 updateActiveRow('firstServeYCoord', data.y);
                 // Depending on coordinates, fill location of serve, etc...
                 if (data.table[data.table.length - 1]['serverFarNear'] == 'Near') {
-                    console.log('Here');
                     if ((data.table[data.table.length - 1])['side'] == 'Deuce') // split by side
                     {
                             // Assuming coordinate range of x: 75 -215, y: 220-470
