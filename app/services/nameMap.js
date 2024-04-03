@@ -32,6 +32,7 @@ const nameMap = {
   "isUnforcedError"        : "Unforced Error",
   "isSecondServeAttacked"  : "Second Serve Attacked",
   "isAggressiveServePlusOne"  : "Aggressive Serve +1",
+  "pointScore"             : "Point Score",
 
 
 
