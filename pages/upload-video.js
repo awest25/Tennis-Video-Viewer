@@ -26,13 +26,16 @@ export default function UploadVideo() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!matchName || !videoId || !jsonFile) {
+        if (!matchName || !videoId) {
             console.error("Please fill in all fields.");
             return;
         }
-    
+
         try {
-            const pointsJson = JSON.parse(await jsonFile.text());
+            let pointsJson = []; // Default not tagged yet
+            if (jsonFile) {
+                pointsJson = JSON.parse(await jsonFile.text());
+            }
             await uploadMatch(matchName, videoId, pointsJson, pdfFile);
         } catch (error) {
             console.error("Error uploading match:", error);

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
 import styles from '../styles/TagMatch.module.css';
 import { useRouter } from 'next/router';
 import getMatchInfo from '../services/getMatchInfo.js';
+import updateMatchDocument from '../services/updateMatchDocument.js';
 
 export default function TagMatch() {
     const router = useRouter();
@@ -15,14 +16,28 @@ export default function TagMatch() {
     const [table, setTable] = useState([]);
     const [currentPage, setCurrentPage] = useState('PointScore'); // TODO: the default should continue from what was filled in last
     const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
+    const [isPublished, setIsPublished] = useState(false); // TODO: impliment this functionality (only show published matches)
+    const [activeRowIndex, setActiveRowIndex] = useState(null); // Index of the current row being edited, before it's uploaded
 
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
 
     useEffect(() => {
         console.log("line 23");
-        getMatchInfo(matchId).then((matchInfo) => {
-            setVideoId(matchInfo.videoId)
+        getMatchInfo(matchId).then((matchDocument) => {
+            setVideoId(matchDocument.videoId);
+
+            if (matchDocument.published) {
+                setIsPublished(true);
+            } else {
+                setIsPublished(false);
+            }
+
+            if (matchDocument.points) {
+                setTable(matchDocument.points);
+            } else {
+                setTable([]);
+            }
         });
     }, [matchId]);
 
@@ -41,36 +56,27 @@ export default function TagMatch() {
                 playing ? videoObject.pauseVideo() : videoObject.playVideo();
             },
             "d": () => {
-                const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                // Check if it's appropriate to add a new start timestamp
-                const lastPoint = table.length > 0 ? table[table.length - 1] : null;
-                if (!lastPoint || lastPoint['pointEndTime'] !== '') {
-                    saveToHistory();
+                // Get the video timestamp
+                const newTimestamp = getVideoTimestamp();
 
-                    // Create a new row with all columns, only pointStartTime has a value
-                    const newRow = columnNames.reduce((acc, columnName) => {
-                        acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
-                        return acc;
-                    }, {});
-
-                    setTable(table => [...table, newRow]);
-                } else { // If the last point doesn't have an end timestamp, overwrite the start timestamp
+                // If there is an active row and it has a start timestamp but no end timestamp, update the start to the current video timestamp
+                // Otherwise, add a new row with the current video timestamp
+                if (activeRowIndex !== null && table[activeRowIndex].pointStartTime !== '' && table[activeRowIndex].pointEndTime === '') {
                     saveToHistory();
-                    // Update the last row with the new pointStartTime
-                    setTable(table => table.map((row, index) =>
-                        index === table.length - 1 ? { ...row, pointStartTime: newTimestamp } : row
-                    ));
+                    changeRowValue(activeRowIndex, 'pointStartTime', newTimestamp);
+                } else {
+                    saveToHistory();
+                    addNewRowAndSync();
                 }
+
+                sortTable();
             },
             "f": () => {
-                const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-                // Check if it's appropriate to set the end timestamp for the last point
-                const lastPoint = table[table.length - 1];
-                if (table.length > 0 && lastPoint['pointStartTime'] !== '') {
+                const newTimestamp = getVideoTimestamp();
+                // If there is an active row, update the end timestamp to the current video timestamp
+                if (activeRowIndex !== null) {
                     saveToHistory();
-                    setTable(table => table.map((row, index) =>
-                        index === table.length - 1 ? { ...row, pointEndTime: newTimestamp } : row
-                    ));
+                    changeRowValue(activeRowIndex, 'pointEndTime', newTimestamp);
                 }
             },
             "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1 / FRAMERATE, true),
@@ -87,8 +93,7 @@ export default function TagMatch() {
         if (action) action();
     };
 
-    const handleChange = (rowIndex, key, value) => {
-        saveToHistory();
+    const changeRowValue = (rowIndex, key, value) => {
         setTable(currentList =>
             currentList.map((row, idx) =>
                 idx === rowIndex ? { ...row, [key]: value } : row
@@ -117,25 +122,46 @@ export default function TagMatch() {
         }
     }, [videoObject, videoId, table, currentPage]) // TODO: the buttons should be in a different component
 
-    const updateLastRow = (key, value) => {
+    const updateActiveRow = (key, value) => {
         setTable(currentList => {
             const newList = [...currentList];
-            const lastIndex = newList.length - 1;
-            if (lastIndex >= 0) {
-                newList[lastIndex] = { ...newList[lastIndex], [key]: value };
+            if (activeRowIndex !== null) {
+                newList[activeRowIndex] = { ...newList[activeRowIndex], [key]: value };
             }
             return newList;
         });
     }
 
-    const addNewRow = () => {
-        // Create a new row with all columns, only pointStartTime has a value
-        const newRow = columnNames.reduce((acc, columnName) => {
-            acc[columnName] = '';
-            return acc;
-        }, {});
+const addNewRowAndSync = () => {
+    pullAndPushRows();
 
-        setTable(table => [...table, newRow]);
+    const newTimestamp = getVideoTimestamp();
+
+    // Create a new row object with required structure
+    const newRow = columnNames.reduce((acc, columnName) => {
+        acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
+        return acc;
+    }, {});
+
+    // Add new row and sort
+    setTable(prevTable => {
+        const updatedTable = [...prevTable, newRow];
+        // Sort the table by 'pointStartTime'
+        updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
+
+        // After sorting, find the index of the new row
+        const newIndex = updatedTable.findIndex(row => row.pointStartTime === newTimestamp);
+
+        // Update the current row index state
+        setActiveRowIndex(newIndex);
+
+        return updatedTable;
+    });
+};
+
+
+    const getVideoTimestamp = () => {
+        return Math.round(videoObject.getCurrentTime() * 1000);
     }
 
     const saveToHistory = () => {
@@ -150,6 +176,71 @@ export default function TagMatch() {
             }
 
             return updatedHistory;
+        });
+    }
+
+    const pullAndPushRows = async () => {
+        try {
+            const tableSnapshot = [...table]; // Snapshot of the table before fetching updates
+            // Fetch the current document state from the database
+            const matchDocument = await getMatchInfo(matchId);
+            const incomingRows = matchDocument.points ?? [];
+    
+            // Combine local snapshot and incoming rows
+            const combinedRows = [...tableSnapshot, ...incomingRows];
+    
+            // Filter out duplicates based on pointStartTime, keeping the last occurrence
+            const uniqueRows = combinedRows.reduceRight((acc, row) => {
+                acc.pointStartTimes.add(row.pointStartTime);
+                if (acc.pointStartTimes.has(row.pointStartTime) && !acc.added.has(row.pointStartTime)) {
+                    acc.rows.unshift(row); // Add the row to the beginning to maintain order
+                    acc.added.add(row.pointStartTime);
+                }
+                return acc;
+            }, { rows: [], pointStartTimes: new Set(), added: new Set() }).rows;
+    
+            // Update the document in Firestore with the unique rows
+            await updateMatchDocument(matchId, {
+                points: uniqueRows
+            });
+    
+            // Update local state with the merged result
+            setTable(currentTable => {
+                console.log("Current table: ", currentTable);
+                // Merge the unique rows with current local changes that might have occurred during the async operation
+                // First, filter out any outdated rows from the current table state
+                const currentTableWithOutdatedRemoved = currentTable.filter(row => 
+                    !uniqueRows.some(uniqueRow => uniqueRow.pointStartTime === row.pointStartTime)
+                );
+                console.log(currentTableWithOutdatedRemoved);
+                // Return the merged result
+                return [...currentTableWithOutdatedRemoved, ...uniqueRows];
+            });
+            sortTable();
+        } catch (error) {
+            console.error("Error pulling and pushing rows: ", error);
+        }
+    };    
+
+    // Toggle the publushed state of the match
+    const togglePublish = async () => {
+        pullAndPushRows();
+        try {
+            await updateMatchDocument(matchId, {
+                published: !isPublished
+            });
+            setIsPublished(!isPublished);
+        } catch (error) {
+            console.error("Error toggling published state: ", error);
+        }
+        // TODO: Add CSV conversion function
+    };
+
+    const sortTable = () => {
+        setTable(table => {
+            return table.sort((a, b) => {
+                return a.pointStartTime - b.pointStartTime;
+            });
         });
     }
 
@@ -171,7 +262,7 @@ export default function TagMatch() {
     };
 
     // This pulls the button data from the taggerButtonData.js file
-    const buttonData = getTaggerButtonData(updateLastRow, addNewRow, setCurrentPage);
+    const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage);
 
     const handleImageClick = (event) => {
         const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
@@ -207,6 +298,7 @@ export default function TagMatch() {
 
             <button onClick={handleCopy}>Copy Columns</button>
             <button onClick={undoLastAction}>Undo</button>
+            <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
 
             <div>
                 {buttonData[currentPage].map((button, index) => {
@@ -220,6 +312,8 @@ export default function TagMatch() {
                                     saveToHistory();
                                     let data = handleImageClick(event); // returns data.x and data.y coordinates
                                     data.table = table;
+                                    data.activeRowIndex = activeRowIndex;
+                                    data.videoTimestamp = getVideoTimestamp();
                                     button.action(data);
                                 }}
                                 style={{ width: "10%" }}
@@ -230,6 +324,8 @@ export default function TagMatch() {
                             saveToHistory();
                             let data = {};
                             data.table = table;
+                            data.activeRowIndex = activeRowIndex;
+                            data.videoTimestamp = getVideoTimestamp();
                             button.action(data);
                         }}>
                             {button.label}
@@ -257,7 +353,12 @@ export default function TagMatch() {
                                     <input
                                         type="text"
                                         value={row[columnName] || ''}
-                                        onChange={(event) => handleChange(rowIndex, columnName, event.target.value)}
+                                        onChange={(event) => {
+                                            saveToHistory(); // Save the current state to history first
+                                            changeRowValue(rowIndex, columnName, event.target.value); // Then handle the change
+                                        }}
+                                        // If the current row is the one being edited, highlight it
+                                        style={{ backgroundColor: activeRowIndex === rowIndex ? 'yellow' : 'white' }}
                                     />
                                 </td>
                             ))}
