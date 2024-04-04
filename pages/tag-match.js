@@ -124,6 +124,7 @@ export default function TagMatch() {
 
     const updateActiveRow = (key, value) => {
         setTable(currentList => {
+            console.log("Active row index (update): ", activeRowIndex);
             const newList = [...currentList];
             if (activeRowIndex !== null) {
                 newList[activeRowIndex] = { ...newList[activeRowIndex], [key]: value };
@@ -132,32 +133,32 @@ export default function TagMatch() {
         });
     }
 
-const addNewRowAndSync = () => {
-    pullAndPushRows();
+    const addNewRowAndSync = () => {
+        pullAndPushRows();
 
-    const newTimestamp = getVideoTimestamp();
+        const newTimestamp = getVideoTimestamp();
 
-    // Create a new row object with required structure
-    const newRow = columnNames.reduce((acc, columnName) => {
-        acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
-        return acc;
-    }, {});
+        // Create a new row object with required structure
+        const newRow = columnNames.reduce((acc, columnName) => {
+            acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
+            return acc;
+        }, {});
 
-    // Add new row and sort
-    setTable(prevTable => {
-        const updatedTable = [...prevTable, newRow];
-        // Sort the table by 'pointStartTime'
-        updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
+        // Add new row and sort
+        setTable(prevTable => {
+            const updatedTable = [...prevTable, newRow];
+            // Sort the table by 'pointStartTime'
+            updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
 
-        // After sorting, find the index of the new row
-        const newIndex = updatedTable.findIndex(row => row.pointStartTime === newTimestamp);
+            // After sorting, find the index of the new row
+            const newIndex = updatedTable.findIndex(row => row.pointStartTime === newTimestamp);
 
-        // Update the current row index state
-        setActiveRowIndex(newIndex);
-
-        return updatedTable;
-    });
-};
+            // Update the current row index state
+            setActiveRowIndex(newIndex);
+            console.log("adding new row, new index: ", newIndex);
+            return updatedTable;
+        });
+    };
 
 
     const getVideoTimestamp = () => {
@@ -167,7 +168,7 @@ const addNewRowAndSync = () => {
     const saveToHistory = () => {
         setTaggerHistory(taggerHistory => {
             // Add the new state to the history
-            const updatedHistory = [...taggerHistory, { table: table, page: currentPage }];
+            const updatedHistory = [...taggerHistory, { table: table, page: currentPage, activeRowIndex: activeRowIndex}];
 
             // Check if the history exceeds the maximum length
             if (updatedHistory.length > 30) {
@@ -206,15 +207,29 @@ const addNewRowAndSync = () => {
     
             // Update local state with the merged result
             setTable(currentTable => {
-                console.log("Current table: ", currentTable);
                 // Merge the unique rows with current local changes that might have occurred during the async operation
                 // First, filter out any outdated rows from the current table state
                 const currentTableWithOutdatedRemoved = currentTable.filter(row => 
                     !uniqueRows.some(uniqueRow => uniqueRow.pointStartTime === row.pointStartTime)
                 );
-                console.log(currentTableWithOutdatedRemoved);
+
+                let updatedTable = [...currentTableWithOutdatedRemoved, ...uniqueRows];
+                
+                // Sort the table by 'pointStartTime'
+                updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
+
+                // Update the current row index state
+                setActiveRowIndex(oldIndex => {
+                    // Save the old timestamp of the active row
+                    const oldActiveRowTimestamp = currentTable[oldIndex]?.pointStartTime;
+                    // After sorting, find the index of the new row
+                    const newIndex = updatedTable.findIndex(row => row.pointStartTime === oldActiveRowTimestamp);
+                    console.log("New index: ", newIndex);
+                    return newIndex;
+                });
+
                 // Return the merged result
-                return [...currentTableWithOutdatedRemoved, ...uniqueRows];
+                return updatedTable;
             });
             sortTable();
         } catch (error) {
@@ -256,6 +271,7 @@ const addNewRowAndSync = () => {
         // Update the current state to the last state from the history
         setTable(lastState.table);
         setCurrentPage(lastState.page);
+        setActiveRowIndex(lastState.activeRowIndex);
 
         // Remove the last state from the history
         setTaggerHistory(taggerHistory.slice(0, -1));
