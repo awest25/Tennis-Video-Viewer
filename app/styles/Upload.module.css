@@ -19,6 +19,7 @@
   flex-direction: column;
 }
 
+.form label select,
 .form label input{
   margin-left: 0.5rem; /* Adjust the margin-left as needed */
 }
