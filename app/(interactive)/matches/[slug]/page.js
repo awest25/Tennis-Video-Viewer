@@ -151,7 +151,7 @@ const MatchPage = () => {
                         checked={showPercent}
                         onChange={() => setShowPercent(!showPercent)}
                       />
-                      <label htmlFor="showOptionsCheckbox">Show Percentage</label>
+                      <label htmlFor="showOptionsCheckbox">Show Stats</label>
                     </div>
                     {showPercent && (
                       <Select
