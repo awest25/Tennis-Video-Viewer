@@ -88,32 +88,6 @@ const MatchTiles = ({
   const setObjects = [firstSetObject, secondSetObject, thirdSetObject];
   // // Extract Scores and type of Each Set
   const setScores = [extractSetScore(firstSetObject), extractSetScore(secondSetObject), extractSetScore(thirdSetObject)];
-  console.log(setScores)
-/**
-   // Extract Scores and type of Each Set
-   const firstSetScore =
-   firstSetObject.tiebreakScore !== null &&
-       firstSetObject.tiebreakScore !== "" &&
-       firstSetObject.tiebreakScore !== undefined
-     ? { score: firstSetObject.gameScore, type: "tiebreakScore" }
-     : { score: firstSetObject.gameScore, type: "gameScore" };
-  const secondSetScore =
-    secondSetObject.tiebreakScore !== null &&
-        secondSetObject.tiebreakScore !== "" &&
-        secondSetObject.tiebreakScore !== undefined
-      ? { score: secondSetObject.gameScore, type: "tiebreakScore" }
-      : { score: secondSetObject.gameScore, type: "gameScore" };
-  //Check if a third set was played, then extract score.
-  const thirdSetScore = thirdSetObject
-  ? thirdSetObject.tiebreakScore !== null &&
-        thirdSetObject.tiebreakScore !== "" &&
-        thirdSetObject.tiebreakScore !== undefined
-  ? { score: thirdSetObject.tiebreakScore, type: "tiebreakScore" }
-  : { score: thirdSetObject.gameScore, type: "gameScore" }
-  : { score: "", type: "" };
-  const setScores = [firstSetScore, secondSetScore, thirdSetScore];
-  console.log(setScores)
- */
 
   // Extract Player Names and Assign Scores for Each Player
   // player1 is client, player2 is opponent
@@ -121,36 +95,6 @@ const MatchTiles = ({
   const playerTwoName = firstSetObject.player2Name;
   const playerOneFinalScores = extractPlayerFinalScores(setScores, playerOneName, 0);
   const playerTwoFinalScores = extractPlayerFinalScores(setScores, playerTwoName, 2);
-  /**
-  const playerOneFinalScores = [
-    {
-      score: parseInt(setScores[0].score[0]),
-      playerName: playerOneName,
-    },
-    {
-      score: parseInt(setScores[1].score[0]),
-      playerName: playerOneName,
-    },
-    {
-      score: parseInt(setScores[2].score[0]),
-      playerName: playerOneName,
-    },
-  ];
-  const playerTwoFinalScores = [
-    {
-      score: parseInt(setScores[0].score[2]),
-      playerName: playerTwoName,
-    },
-    {
-      score: parseInt(setScores[1].score[2]),
-      playerName: playerTwoName,
-    },
-    {
-      score: parseInt(setScores[2].score[2]),
-      playerName: playerTwoName,
-    },
-  ];
-   */
 
   //Tiebreaker scores array
   const playerOneTieScores = Array(3);
