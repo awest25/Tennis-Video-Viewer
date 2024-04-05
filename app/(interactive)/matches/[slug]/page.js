@@ -200,7 +200,11 @@ const MatchPage = () => {
                 {/* Points List */}
                 <div className="pointsList">
                   <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                 
                 </div>
+
+              
+                
               </div>
             </div>
           </div>
@@ -241,8 +245,9 @@ const MatchPage = () => {
           flex: 1; // Takes up 1/3 of the space
           margin-top: 0rem;
           padding: 1rem;
+          margin-left: 1rem;
           border: 1px solid #ddd;
-          border-radius: 5px;
+          border-radius: 15px;
           overflow-y: auto;
           height: 350px;
         }
@@ -252,11 +257,11 @@ const MatchPage = () => {
           margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
-          border-radius: 5px;
+          border-radius: 15px;
           overflow-y: auto;
           height: 350px;
         }
-        
+
         .listHolder {
           display: flex; 
         }

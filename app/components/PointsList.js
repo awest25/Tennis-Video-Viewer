@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/PointsList.module.css';
 
+
 const PointsList = ({ pointsData, onPointSelect }) => {
     const [expanded, setExpanded] = useState(false); // State to track whether rows are expanded
 
@@ -36,14 +37,14 @@ const PointsList = ({ pointsData, onPointSelect }) => {
 
                     return (
                         <tr className={styles.pointsListItem} key={index}>
-                            <td>{serverName}</td>
-                            <td>{set}</td>
-                            <td>{gameScore}</td>
-                            <td>{pointScore}</td>
+                            <td><b>{serverName}</b></td>
+                            <td><b>{set}</b></td>
+                            <td><b>{gameScore}</b></td>
+                            <td><b>{pointScore}</b></td>
                             <td>
                                 {/* Display resized play button image */}
                                 <button
-                                  className={styles.circularButton}
+                                   class="button button5"
                                   onClick={(event) => {
                                       event.stopPropagation();
                                       onPointSelect(index);
@@ -52,7 +53,7 @@ const PointsList = ({ pointsData, onPointSelect }) => {
                         </tr>
                     );
                 })}
-                {!expanded && (
+                {!expanded && pointsData.length >= 5 && ( // Only render the expand button if there are 5 or more points
                     <tr>
                         <td colSpan="5" className={styles.expandButtonCell}>
                             <button className={styles.expandButton} onClick={() => setExpanded(true)}>Expand</button>

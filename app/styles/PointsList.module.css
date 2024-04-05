@@ -2,6 +2,8 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  border-radius: 15px; /* Increase border-radius for more rounded corners */
+  overflow: hidden; /* Ensure the border radius is applied correctly */
 }
 
 .pointsList th,
@@ -63,16 +65,19 @@
 .collapseButton:hover {
   background-color: #f0f0f0;
 }
-.circularButton {
-  background-color: white; /* Set button background color to white */
-  border: 4px solid dimgray; /* Set button border */
-  border-radius: 50%; /* Make button circular */
-  width: 28px; /* Set button width 30% smaller */
-  height: 28px; /* Set button height 30% smaller */
-  font-size: 17px; /* Set font size 30% smaller */
-  display: flex; /* Align icon in the center */
-  justify-content: center; /* Align icon in the center */
-  align-items: center; /* Align icon in the center */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  text-align: center; /* Center-align the text */
+
+
+
+.button {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
 }
+
+.button5 {border-radius: 50%;}
