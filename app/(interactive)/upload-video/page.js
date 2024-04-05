@@ -11,8 +11,8 @@ export default function UploadVideo() {
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientLogo, setClientLogo] = useState('a&m');
-  const [opponentLogo, setOpponentLogo] = useState('a&m');
+  const [clientLogo, setClientLogo] = useState('arizona_state');
+  const [opponentLogo, setOpponentLogo] = useState('arizona_state');
   const [logos, setLogos] = useState([]);
 
   useEffect(() => {
@@ -30,8 +30,6 @@ export default function UploadVideo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(clientLogo)
-    console.log(opponentLogo)
     
     if (!matchName || !videoId || !jsonFile || !clientLogo || !opponentLogo) {
       console.error("Please fill in all fields.");
@@ -54,8 +52,6 @@ export default function UploadVideo() {
       <option key={index} value={option.name}>{option.name}</option>
     ));
   }, [logos]);
-
-  console.log(logos)
 
   return (
     <div className={styles.container}>
