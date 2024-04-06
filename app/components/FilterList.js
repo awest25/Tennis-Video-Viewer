@@ -48,7 +48,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
     return pointsData.filter(point => point[key] === value).length;
   };
 
-  const countFilteredPointsTotal = (key, value) => {
+  const countFilteredPointsTotal = (key) => {
     return pointsData.reduce((total, point) => {
       // Check if the value attribute is not an empty string
       if (point[key] !== '') {
