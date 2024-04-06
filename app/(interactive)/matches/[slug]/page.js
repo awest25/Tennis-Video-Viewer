@@ -199,7 +199,7 @@ const MatchPage = () => {
 
                 {/* Points List */}
                 <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo}  matchDetails={matchData.matchDetails}/>
                  
                 </div>
 

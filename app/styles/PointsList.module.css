@@ -4,17 +4,23 @@
   margin-bottom: 20px;
   border-radius: 15px; /* Increase border-radius for more rounded corners */
   overflow: hidden; /* Ensure the border radius is applied correctly */
+  white-space: nowrap; /* Prevent wrapping */
 }
+
 
 .pointsList th,
 .pointsList td {
-  padding: 8px;
+  padding: 8px 4px; /* Adjust padding as needed */
+  white-space: nowrap; /* Prevent wrapping */
   text-align: center;
+  border-bottom: 5px;
+  font-size: 14px; /* Adjust font size as needed */
   border-bottom: 1px solid #dddddd; /* Add border between rows */
 }
 
 .pointsList th {
   background-color: #ffffff;
+  white-space: nowrap; /* Prevent wrapping */
   text-align: center;
   font-weight: normal; /* Remove bold styling */
 }
@@ -66,8 +72,6 @@
   background-color: #f0f0f0;
 }
 
-
-
 .button {
   background-color: #04AA6D;
   border: none;
@@ -80,4 +84,6 @@
   margin: 4px 2px;
 }
 
-.button5 {border-radius: 50%;}
+.button5 {
+  border-radius: 50%;
+}
