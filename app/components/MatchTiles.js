@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/MatchTiles.module.css";
+import getTeams from '@/app/services/getTeams.js';
 
 const extractSetScore = (setObject) => {
   // no third set
@@ -57,7 +58,6 @@ const extractDateFromString = (inputString) => {
     const month = parseInt(dateParts[0]);
     const day = parseInt(dateParts[1]);
     const year = parseInt(dateParts[2]);
-    console.log(month, day, year)
 
     // Create a new Date object with the extracted components
     const dateObject = new Date(year + 2000, month - 1, day);
@@ -66,12 +66,9 @@ const extractDateFromString = (inputString) => {
       day: "numeric",
       year: "numeric",
     });
-    console.log(formattedDate)
 
     return formattedDate;
   } else {
-    console.log(inputString.match(regexDash))
-    console.log('unmatched')
     return null;
   }
 };
@@ -79,12 +76,31 @@ const extractDateFromString = (inputString) => {
 const MatchTiles = ({
   matchName,
   finalScore,
-  clientLogo,
-  opposingLogo,
+  clientTeam,
+  opponentTeam,
   matchDetails,
 }) => {
-  //Tile heights
+  const [clientLogo, setClientLogo] = useState('');
+  const [opponentLogo, setOpponentLogo] = useState('');
   const [isUnfinished, setIsUnfinished] = useState(false);
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+        console.log(clientTeam);
+        console.log(opponentTeam);
+        const allTeams = await getTeams();
+        const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
+        const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
+        setClientLogo(clientLogoURL);
+        setOpponentLogo(opponentLogoURL);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchLogos();
+  });
 
   //Extract Final Scores from Each Set
   const firstSetObject = finalScore.filter((score) => score.setNum === 1).pop();
@@ -223,7 +239,7 @@ const MatchTiles = ({
         </div>
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImg}>
-            <img src={opposingLogo}></img>
+            <img src={opponentLogo}></img>
           </div>
           <div
             className={styles.playerInfoName}

@@ -24,6 +24,9 @@ const Home = () => {
             <Link href="/upload-video">Uploading a video</Link>
           </li>
           <li>
+            <Link href="/upload-team">Adding a Team</Link>
+          </li>
+          <li>
             <Link href="/tag-match">Tagging a match</Link>
           </li>
         </ul>

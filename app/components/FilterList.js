@@ -81,7 +81,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                     {nameMap[key]}
                   </strong>
                   <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
-                    { console.log(uniqueValues)}
+                    {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map((value) => (
                       value !== '' && (
                         <div className={styles.filterValueItem} key={value} style={{

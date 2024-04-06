@@ -1,17 +1,21 @@
 .container {
     /* min-height: 100vh; */
-    padding: 0 1.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     padding-top: 5rem;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;
 }
   
 .title {
+  text-align: center;
   margin: 0 0 1rem;
   line-height: 1.15;
   font-size: 2.4rem;
+}
+
+.container > div {
+  margin: 0 24px; /* Adjust the value as needed */
 }
   
 .form{
