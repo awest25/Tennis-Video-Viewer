@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react';
-import uploadMatch from '../../services/upload.js';
+import { uploadMatch } from '../../services/upload.js';
 import getTeams from '@/app/services/getTeams.js';
 
 import styles from '../../styles/Upload.module.css'
@@ -11,15 +11,16 @@ export default function UploadVideo() {
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientTeam, setClientTeam] = useState('arizona_state');
-  const [opponentTeam, setOpponentTeam] = useState('arizona_state');
+  const [clientTeam, setClientTeam] = useState('Arizona State (M)');
+  const [opponentTeam, setOpponentTeam] = useState('Arizona State (M)');
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
         const allTeams = await getTeams();
-        setTeams(allTeams);
+        const sortedTeams = allTeams.slice().sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+        setTeams(sortedTeams);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

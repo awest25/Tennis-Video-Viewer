@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, useEffect, useMemo } from 'react';
-import uploadTeam from '../../services/upload.js';
+import React, { useState, useEffect } from 'react';
+import { uploadTeam } from '../../services/upload.js';
 import getTeams from '@/app/services/getTeams.js';
 
 import styles from '../../styles/Upload.module.css'
@@ -56,7 +56,7 @@ export default function UploadVideo() {
         <h1 className={styles.title}>Add Team</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
-            Team Name (M/W): 
+            Team Name: 
             <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
           </label>
           <label>

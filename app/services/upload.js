@@ -49,15 +49,21 @@ async function uploadTeam(teamName, logoFile) {
     }
 
     // Then, save the match data along with the PDF URL to Firestore
-    const docRef = await addDoc(collection(db, "teams"), {
-      name: teamName,
+    const mens = teamName + " (M)";
+    const womens = teamName + " (W)";
+    const docRefM = await addDoc(collection(db, "teams"), {
+      name: mens,
       logoUrl: logoUrl,
     });
-    console.log("Team Document written with ID: ", docRef.id);
+    const docRefW = await addDoc(collection(db, "teams"), {
+      name: womens,
+      logoUrl: logoUrl,
+    });
+    console.log("Team Document(M) written with ID: ", docRefM.id, " and (W): ", docRefW.id);
     
   } catch (e) {
     console.error("Error adding Team Document: ", e);
   }
 }
 
-export default {uploadMatch, uploadTeam};
+export { uploadMatch, uploadTeam };
