@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react';
-import uploadMatch from '../../services/uploadMatch.js';
-import getLogos from '@/app/services/getLogos.js';
+import uploadMatch from '../../services/upload.js';
+import getTeams from '@/app/services/getTeams.js';
 
 import styles from '../../styles/Upload.module.css'
 
@@ -11,82 +11,82 @@ export default function UploadVideo() {
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientLogo, setClientLogo] = useState('arizona_state');
-  const [opponentLogo, setOpponentLogo] = useState('arizona_state');
-  const [logos, setLogos] = useState([]);
+  const [clientTeam, setClientTeam] = useState('arizona_state');
+  const [opponentTeam, setOpponentTeam] = useState('arizona_state');
+  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    const fetchLogos = async () => {
+    const fetchTeams = async () => {
       try {
-        const logos = await getLogos();
-        setLogos(logos);
+        const allTeams = await getTeams();
+        setTeams(allTeams);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchLogos();
+    fetchTeams();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchName || !videoId || !jsonFile || !clientLogo || !opponentLogo) {
+    if (!matchName || !videoId || !jsonFile || !clientTeam || !opponentTeam) {
       console.error("Please fill in all fields.");
       return;
     }
     
     try {
       const pointsJson = JSON.parse(await jsonFile.text());
-      const clientLogoURL = logos.find((logo) => logo.name === clientLogo).downloadURL;
-      const opponentLogoURL = logos.find((logo) => logo.name === opponentLogo).downloadURL;
-      await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientLogoURL, opponentLogoURL);
+      await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
     }
   };
 
-  const logosOptions = useMemo(() => {
-    return logos.map((option, index) => (
+  const teamOptions = useMemo(() => {
+    return teams.map((option, index) => (
       <option key={index} value={option.name}>{option.name}</option>
     ));
-  }, [logos]);
+  }, [teams]);
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Upload Video</h1>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <label>
-          Match Name: 
-          <input type="text" value={matchName} onChange={(e) => setMatchName(e.target.value)} />
-        </label>
-        <label>
-          Video ID: 
-          <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
-        </label>
-        <label>
-          Client Team: 
-          <select id="search" onChange={(e) => setClientLogo(e.target.value)}>
-            {logosOptions}
-          </select>
-        </label>
-        <label>
-          Opponent Team: 
-          <select id="search" onChange={(e) => setOpponentLogo(e.target.value)}>
-            {logosOptions}
-          </select>
-        </label>
-        <label>
-          JSON File: 
-          <input type="file" accept=".json" onChange={(e) => setJsonFile(e.target.files[0])} />
-        </label>
-        <label>
-          PDF File: 
-          <input type="file" accept="application/pdf" onChange={(e) => setPdfFile(e.target.files[0])} />
-        </label>
-        <button type="submit">Upload</button>
-      </form>
+      <div>
+        <h1 className={styles.title}>Upload Video</h1>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <label>
+            Match Name: 
+            <input type="text" value={matchName} onChange={(e) => setMatchName(e.target.value)} />
+          </label>
+          <label>
+            Video ID: 
+            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
+          </label>
+          <label>
+            Client Team: 
+            <select id="search" onChange={(e) => setClientTeam(e.target.value)}>
+              {teamOptions}
+            </select>
+          </label>
+          <label>
+            Opponent Team: 
+            <select id="search" onChange={(e) => setOpponentTeam(e.target.value)}>
+              {teamOptions}
+            </select>
+          </label>
+          <label>
+            JSON File: 
+            <input type="file" accept=".json" onChange={(e) => setJsonFile(e.target.files[0])} />
+          </label>
+          <label>
+            PDF File: 
+            <input type="file" accept="application/pdf" onChange={(e) => setPdfFile(e.target.files[0])} />
+          </label>
+          <button type="submit">Upload</button>
+        </form>
+      </div>
     </div>
   );
 }
