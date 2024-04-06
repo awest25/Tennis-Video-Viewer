@@ -25,16 +25,13 @@ function createDynamicTable(data, client, opp) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
-    //ADD DIV?
-    console.log(data)
-    console.log(client)
-    console.log(opp)
     const tbody = document.createElement("tbody");
     data.forEach((item) => {
         const row = document.createElement("tr");
         keys.forEach((key, index) => {
             const td = document.createElement("td");            
             const img = document.createElement("img");
+            //NOTE: the player1 is always client historically. THIS CODE IS LEGACY CHANGE IF NEEDED
             if(index==0){
             console.log(item['player1Name'])
                 if(item['player1Name']===item['serverName']){
