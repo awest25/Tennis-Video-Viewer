@@ -36,6 +36,7 @@ const MatchPage = () => {
   const [playingPoint, setPlayingPoint] = useState(null);
 
   // const router = useRouter();
+  console.log(matchData)
   const pathname = usePathname()
   const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
@@ -206,7 +207,7 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.ExtendedList}>
-            <ExtendedList pointsData={returnFilteredPoints()} />
+            <ExtendedList pointsData={returnFilteredPoints()} client ={matchData.clientLogo} opp = {matchData.opponentLogo} />
           </div>
           <br></br>
           {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
