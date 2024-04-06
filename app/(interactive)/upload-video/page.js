@@ -19,8 +19,7 @@ export default function UploadVideo() {
     const fetchTeams = async () => {
       try {
         const allTeams = await getTeams();
-        const sortedTeams = allTeams.slice().sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
-        setTeams(sortedTeams);
+        setTeams(allTeams);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
