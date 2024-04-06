@@ -1,4 +1,4 @@
-import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
+import { storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 import { ref, listAll, getDownloadURL } from "firebase/storage"; // Import storage functions
 
 const logosRef = ref(storage, 'logos');
