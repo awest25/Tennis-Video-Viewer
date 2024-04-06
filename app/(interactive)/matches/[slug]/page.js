@@ -10,6 +10,7 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
+import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
 import ExtendedList from '../../../components/ExtendedList';
 
 import { collection, getDocs } from 'firebase/firestore';
@@ -121,6 +122,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
+          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo} matchDetails={matchData.matchDetails}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
@@ -151,7 +153,7 @@ const MatchPage = () => {
                         checked={showPercent}
                         onChange={() => setShowPercent(!showPercent)}
                       />
-                      <label htmlFor="showOptionsCheckbox">Show Percentage</label>
+                      <label htmlFor="showOptionsCheckbox">Show Stats</label>
                     </div>
                     {showPercent && (
                       <Select
