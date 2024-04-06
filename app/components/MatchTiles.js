@@ -46,27 +46,32 @@ const isWomensTeam = (match) => {
 
 //Retrieve Match Date
 const extractDateFromString = (inputString) => {
-  const regex = /\b(\d{1,2}\/\d{1,2}\/\d{2,4})\b/g;
+  const regexSlash = /\b(\d{1,2}\/\d{1,2}\/\d{2,4})\b/g;
+  const regexDash = /\b(\d{1,2}-\d{1,2}-?\d{0,4})\b/g;
+  const regex = new RegExp(`${regexSlash.source}|${regexDash.source}`, "g");
   const matches = inputString.match(regex);
   if (matches) {
     // Assuming there might be multiple date patterns in the string, return an array of matches
     const firstMatch = matches[0]; // Assuming you want to pick the first matched date
-    const dateParts = firstMatch.split("/");
+    const dateParts = firstMatch.includes('/') ? firstMatch.split('/') : firstMatch.split('-');
     const month = parseInt(dateParts[0]);
     const day = parseInt(dateParts[1]);
     const year = parseInt(dateParts[2]);
+    console.log(month, day, year)
 
     // Create a new Date object with the extracted components
     const dateObject = new Date(year + 2000, month - 1, day);
-
     const formattedDate = dateObject.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
     });
+    console.log(formattedDate)
 
     return formattedDate;
   } else {
+    console.log(inputString.match(regexDash))
+    console.log('unmatched')
     return null;
   }
 };
