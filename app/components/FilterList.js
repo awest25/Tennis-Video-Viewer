@@ -100,12 +100,12 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                           {/* Point Percentage */}
 
                           {/* {console.log(value)}  */}
-                          {!showCount && showPercent && value && (
+                          {showPercent && value && (
                             // make a sum
                             <li>{Math.round((countFilteredPointsForValue(key, value) / Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */ ) * 100)}%</li>                                                    
                           )}
                           {/* Point Count */}
-                          {showCount && showPercent && value && (
+                          {showCount && value && (
                             <li>{countFilteredPointsForValue(key, value)} / {Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */}</li> 
                           )}                                                 
                         </div>  

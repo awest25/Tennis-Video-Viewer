@@ -142,7 +142,43 @@ const MatchPage = () => {
                 </g>
               </svg>
               <div className={filterStyles.optionsList}>
-                {showOptions && (
+                <div>
+                  <input
+                    type="radio"
+                    id="defaultRadio"
+                    checked={!showCount && !showPercent}
+                    onChange={() => {
+                      setShowPercent(false);
+                      setShowCount(false);
+                    }}
+                  />
+                  <label htmlFor="defaultRadio">Default</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="percentRadio"
+                    checked={showPercent}
+                    onChange={() => {
+                      setShowPercent(true);
+                      setShowCount(false);
+                    }}
+                  />
+                  <label htmlFor="percentRadio">Show Percent</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="countRadio"
+                    checked={showCount}
+                    onChange={() => {
+                      setShowPercent(false);
+                      setShowCount(true);
+                    }}
+                  />
+                  <label htmlFor="countRadio">Show Count</label>
+                </div>
+                {/* {showOptions && (
                   <>
                     <div>
                       <input
@@ -164,7 +200,7 @@ const MatchPage = () => {
                       />
                     )}
                   </>
-                )}
+                )} */}
               </div>
             </div>
           </div>
