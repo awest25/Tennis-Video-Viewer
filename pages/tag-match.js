@@ -98,7 +98,7 @@ export default function TagMatch() {
 
     const changeRowValue = (rowIndex, key, value) => {
         setTableState(oldTableState => {
-            newRows = [...oldTableState.rows];
+            let newRows = [...oldTableState.rows];
             newRows[rowIndex] = { ...newRows[rowIndex], [key]: value };
             return { ...oldTableState, rows: newRows };
         });
@@ -169,6 +169,17 @@ export default function TagMatch() {
         });
     };
 
+    const deleteRowAndSync = (rowIndex) => {
+        const rowToDeleteTimestamp = tableState.rows[rowIndex].pointStartTime;
+        setTableState(oldTableState => {
+            // Filter out the row to delete and sort the table
+            const updatedTable = oldTableState.rows.filter((row, index) => index !== rowIndex)
+            const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
+            return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
+        });
+        pullAndPushRows(rowToDeleteTimestamp);
+    }
+
 
     const getVideoTimestamp = () => {
         return Math.round(videoObject.getCurrentTime() * 1000);
@@ -189,7 +200,7 @@ export default function TagMatch() {
         });
     }
 
-    const pullAndPushRows = async () => {
+    const pullAndPushRows = async (rowToDeleteTimestamp = null) => {
         try {
             const tableSnapshot = [...tableState.rows]; // Snapshot of the table before fetching updates
             // Fetch the current document state from the database
@@ -197,7 +208,12 @@ export default function TagMatch() {
             const incomingRows = matchDocument.points ?? [];
     
             // Combine local snapshot and incoming rows
-            const combinedRows = [...tableSnapshot, ...incomingRows];
+            let combinedRows = [...tableSnapshot, ...incomingRows];
+
+            // If a `rowToDeleteTimestamp` is provided, filter out that row
+            combinedRows = rowToDeleteTimestamp != null
+            ? combinedRows.filter(row => row.pointStartTime !== rowToDeleteTimestamp)
+            : combinedRows;
     
             // Filter out duplicates based on pointStartTime, keeping the last occurrence
             const uniqueRows = combinedRows.reduceRight((acc, row) => {
@@ -362,6 +378,7 @@ export default function TagMatch() {
             <table>
                 <thead>
                     <tr>
+                        <th key={"delete_button"}>Delete</th>
                         {columnNames.map((columnName, index) => (
                             <th key={index}>{columnName}</th>
                         ))}
@@ -370,6 +387,13 @@ export default function TagMatch() {
                 <tbody>
                     {tableState.rows.map((row, rowIndex) => (
                         <tr key={rowIndex}>
+                            <td key={"delete_button_row"}>
+                                <button
+                                    onClick={() => deleteRowAndSync(rowIndex)}
+                                >
+                                    <i className="fa fa-trash" aria-hidden="true">X</i>
+                                </button>
+                            </td>
                             {columnNames.map((columnName, colIndex) => (
                                 <td key={colIndex}>
                                     <input
