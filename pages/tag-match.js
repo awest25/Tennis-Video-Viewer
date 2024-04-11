@@ -101,7 +101,7 @@ export default function TagMatch() {
 
     const changeRowValue = (rowIndex, key, value) => {
         setTableState(oldTableState => {
-            newRows = [...oldTableState.rows];
+            let newRows = [...oldTableState.rows];
             newRows[rowIndex] = { ...newRows[rowIndex], [key]: value };
             return { ...oldTableState, rows: newRows };
         });
@@ -145,10 +145,19 @@ export default function TagMatch() {
     const addNewRowAndSync = () => {
         pullAndPushRows();
 
-        const newTimestamp = getVideoTimestamp();
+        let newTimestamp = getVideoTimestamp();
 
-        // Create a new row object with required structure
+        // Create a new row object with the required structure
         const newRow = columnNames.reduce((acc, columnName) => {
+            // Check if a row already exists with the new timestamp
+            let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+
+            while (existingRow !== undefined) {
+                // If a row already exists, increment the timestamp by 1
+                newTimestamp += 1;
+                existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+            }
+
             acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
             return acc;
         }, {});
@@ -166,6 +175,17 @@ export default function TagMatch() {
             return { rows: updatedTable, activeRowIndex: newIndex };
         });
     };
+
+    const deleteRowAndSync = (rowIndex) => {
+        const rowToDeleteTimestamp = tableState.rows[rowIndex].pointStartTime;
+        setTableState(oldTableState => {
+            // Filter out the row to delete and sort the table
+            const updatedTable = oldTableState.rows.filter((row, index) => index !== rowIndex)
+            const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
+            return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
+        });
+        pullAndPushRows(rowToDeleteTimestamp);
+    }
 
 
     const getVideoTimestamp = () => {
@@ -226,7 +246,7 @@ export default function TagMatch() {
     }, [displayPopUp]);
 
 
-    const pullAndPushRows = async () => {
+    const pullAndPushRows = async (rowToDeleteTimestamp = null) => {
         try {
             const tableSnapshot = [...tableState.rows]; // Snapshot of the table before fetching updates
             // Fetch the current document state from the database
@@ -234,7 +254,12 @@ export default function TagMatch() {
             const incomingRows = matchDocument.points ?? [];
     
             // Combine local snapshot and incoming rows
-            const combinedRows = [...tableSnapshot, ...incomingRows];
+            let combinedRows = [...tableSnapshot, ...incomingRows];
+
+            // If a `rowToDeleteTimestamp` is provided, filter out that row
+            combinedRows = rowToDeleteTimestamp != null
+            ? combinedRows.filter(row => row.pointStartTime !== rowToDeleteTimestamp)
+            : combinedRows;
     
             // Filter out duplicates based on pointStartTime, keeping the last occurrence
             const uniqueRows = combinedRows.reduceRight((acc, row) => {
@@ -347,12 +372,17 @@ export default function TagMatch() {
 
 
     return (
-        <div>
-            <Toolbar setMatchData={null} />
-            {/* temporary means to select video (should it be a form?) */}
-            <label>Input YouTube Code: </label>
-            <input type="text" value={videoId} onChange={handleVideoIdChange} />
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Toolbar setMatchData={null} />
+                    <p>Spacer</p>
+                    <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
+                    {/* temporary means to select video (should it be a form?) */}
+                    <label>Input YouTube Code: </label>
+                    <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
+<<<<<<< HEAD
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
 
             <button onClick={handleCopy}>Copy Columns</button>
@@ -405,6 +435,47 @@ export default function TagMatch() {
                         </button>
                     );
                 })}
+=======
+                    <button onClick={handleCopy}>Copy Columns</button>
+                    <button onClick={undoLastAction}>Undo</button>
+                    <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
+                </div>
+                <div>
+                    <p>This is a spacer usually hidden behind the toolbar</p>
+                    <p>{currentPage}</p>
+                    {buttonData[currentPage].map((button, index) => {
+                        return button.courtImage === true ? (
+                            <div>
+                                <p>{button.label}</p>
+                                <img
+                                    src="/images/Tennis_Court_Full.png"
+                                    alt="tennis court"
+                                    onClick={(event) => {
+                                        saveToHistory();
+                                        let data = handleImageClick(event); // returns data.x and data.y coordinates
+                                        data.table = tableState.rows;
+                                        data.activeRowIndex = tableState.activeRowIndex;
+                                        data.videoTimestamp = getVideoTimestamp();
+                                        button.action(data);
+                                    }}
+                                    style={{ width: "10%" }}
+                                />
+                            </div>
+                        ) : (
+                            <button className={styles.customButton} key={index} onClick={() => {
+                                saveToHistory();
+                                let data = {};
+                                data.table = tableState.rows;
+                                data.activeRowIndex = tableState.activeRowIndex;
+                                data.videoTimestamp = getVideoTimestamp();
+                                button.action(data);
+                            }}>
+                                {button.label}
+                            </button>
+                        );
+                    })}
+                </div>
+>>>>>>> 2b31552e113c18cb6a6384ae1e2d172cb53cbf94
             </div>
 
 
@@ -413,6 +484,7 @@ export default function TagMatch() {
             <table>
                 <thead>
                     <tr>
+                        <th key={"delete_button"}>Delete</th>
                         {columnNames.map((columnName, index) => (
                             <th key={index}>{columnName}</th>
                         ))}
@@ -421,6 +493,13 @@ export default function TagMatch() {
                 <tbody>
                     {tableState.rows.map((row, rowIndex) => (
                         <tr key={rowIndex}>
+                            <td key={"delete_button_row"}>
+                                <button
+                                    onClick={() => deleteRowAndSync(rowIndex)}
+                                >
+                                    <i className="fa fa-trash" aria-hidden="true">X</i>
+                                </button>
+                            </td>
                             {columnNames.map((columnName, colIndex) => (
                                 <td key={colIndex}>
                                     <input
