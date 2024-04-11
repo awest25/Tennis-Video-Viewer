@@ -330,6 +330,7 @@ export default function TagMatch() {
             <div style={{display: 'flex', flexDirection: 'row'}}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <Toolbar setMatchData={null} />
+                    <p>Spacer</p>
                     <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
                     {/* temporary means to select video (should it be a form?) */}
                     <label>Input YouTube Code: </label>
