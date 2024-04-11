@@ -326,50 +326,54 @@ export default function TagMatch() {
 
 
     return (
-        <div>
-            <Toolbar setMatchData={null} />
-            {/* temporary means to select video (should it be a form?) */}
-            <label>Input YouTube Code: </label>
-            <input type="text" value={videoId} onChange={handleVideoIdChange} />
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <Toolbar setMatchData={null} />
+                    <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
+                    {/* temporary means to select video (should it be a form?) */}
+                    <label>Input YouTube Code: </label>
+                    <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
-            <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-
-            <button onClick={handleCopy}>Copy Columns</button>
-            <button onClick={undoLastAction}>Undo</button>
-            <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
-
-            <div>
-                {buttonData[currentPage].map((button, index) => {
-                    return button.courtImage === true ? (
-                        <div>
-                            <p>{button.label}</p>
-                            <img
-                                src="/images/Tennis_Court_Full.png"
-                                alt="tennis court"
-                                onClick={(event) => {
-                                    saveToHistory();
-                                    let data = handleImageClick(event); // returns data.x and data.y coordinates
-                                    data.table = tableState.rows;
-                                    data.activeRowIndex = tableState.activeRowIndex;
-                                    data.videoTimestamp = getVideoTimestamp();
-                                    button.action(data);
-                                }}
-                                style={{ width: "10%" }}
-                            />
-                        </div>
-                    ) : (
-                        <button className={styles.customButton} key={index} onClick={() => {
-                            saveToHistory();
-                            let data = {};
-                            data.table = tableState.rows;
-                            data.activeRowIndex = tableState.activeRowIndex;
-                            data.videoTimestamp = getVideoTimestamp();
-                            button.action(data);
-                        }}>
-                            {button.label}
-                        </button>
-                    );
-                })}
+                    <button onClick={handleCopy}>Copy Columns</button>
+                    <button onClick={undoLastAction}>Undo</button>
+                    <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
+                </div>
+                <div>
+                    <p>This is a spacer usually hidden behind the toolbar</p>
+                    <p>{currentPage}</p>
+                    {buttonData[currentPage].map((button, index) => {
+                        return button.courtImage === true ? (
+                            <div>
+                                <p>{button.label}</p>
+                                <img
+                                    src="/images/Tennis_Court_Full.png"
+                                    alt="tennis court"
+                                    onClick={(event) => {
+                                        saveToHistory();
+                                        let data = handleImageClick(event); // returns data.x and data.y coordinates
+                                        data.table = tableState.rows;
+                                        data.activeRowIndex = tableState.activeRowIndex;
+                                        data.videoTimestamp = getVideoTimestamp();
+                                        button.action(data);
+                                    }}
+                                    style={{ width: "10%" }}
+                                />
+                            </div>
+                        ) : (
+                            <button className={styles.customButton} key={index} onClick={() => {
+                                saveToHistory();
+                                let data = {};
+                                data.table = tableState.rows;
+                                data.activeRowIndex = tableState.activeRowIndex;
+                                data.videoTimestamp = getVideoTimestamp();
+                                button.action(data);
+                            }}>
+                                {button.label}
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
 
