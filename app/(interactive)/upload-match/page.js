@@ -54,7 +54,7 @@ export default function UploadVideo() {
   return (
     <div className={styles.container}>
       <div>
-        <h1 className={styles.title}>Upload Video</h1>
+        <h1 className={styles.title}>Upload Match</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Match Name: 
