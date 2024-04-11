@@ -138,10 +138,19 @@ export default function TagMatch() {
     const addNewRowAndSync = () => {
         pullAndPushRows();
 
-        const newTimestamp = getVideoTimestamp();
+        let newTimestamp = getVideoTimestamp();
 
-        // Create a new row object with required structure
+        // Create a new row object with the required structure
         const newRow = columnNames.reduce((acc, columnName) => {
+            // Check if a row already exists with the new timestamp
+            let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+
+            while (existingRow !== undefined) {
+                // If a row already exists, increment the timestamp by 1
+                newTimestamp += 1;
+                existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+            }
+
             acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
             return acc;
         }, {});
