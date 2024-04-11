@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Toolbar from '../components/Toolbar';
 import VideoPlayer from '../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
@@ -10,14 +10,17 @@ import updateMatchDocument from '../services/updateMatchDocument.js';
 export default function TagMatch() {
     const router = useRouter();
     const { matchId } = router.query;
-
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
     const [tableState, setTableState] = useState({ rows: [], activeRowIndex: null });
     const [currentPage, setCurrentPage] = useState('ServerName'); // TODO: the default should continue from what was filled in last
     const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
     const [isPublished, setIsPublished] = useState(false); // TODO: impliment this functionality (only show published matches)
-
+    const [popUp, setPopUp] = useState([]);
+    const [isVisible, setIsVisible] = useState(false);
+    const [displayPopUp, setDisplayPopUp] = useState(false);
+    const popUpTimerId = useRef(null);
+    const popUpRef = useRef(null);
     // currently impossible to determine exact YouTube FPS: 24-60 FPS
     const FRAMERATE = 30;
 
@@ -126,9 +129,13 @@ export default function TagMatch() {
     }, [videoObject, videoId, tableState.rows, currentPage]) // TODO: the buttons should be in a different component
 
     const updateActiveRow = (key, value) => {
+        setPopUp(popUp => {
+            const message = `Updating: ${key} = ${value}`;
+            return [...popUp, message]; // Directly return the updated array
+        });
         setTableState(oldTableState => {
             let newRows = [...oldTableState.rows];
-            if (oldTableState.activeRowIndex !== null) {
+            if (oldTableState.activeRowIndex !== null) {       
                 newRows[oldTableState.activeRowIndex] = { ...newRows[oldTableState.activeRowIndex], [key]: value };
             }
             return { ...oldTableState, rows: newRows };
@@ -179,6 +186,45 @@ export default function TagMatch() {
             return updatedHistory;
         });
     }
+    const showPopUp = () => {
+        if(displayPopUp)
+        {
+            if (popUpTimerId.current) {
+                clearTimeout(popUpTimerId.current);
+            }
+            setIsVisible(true);
+            popUpTimerId.current = setTimeout(() => {
+                setPopUp(prevState => ({ ...prevState, isVisible: false }));
+            }, 3000);
+        }
+        else{
+            setIsVisible(false)
+        }
+    };
+    //Change Font Size Based On Text Size
+    useEffect(() => { 
+        const adjustFontSize = () => {
+            const popUpDiv = popUpRef.current;
+            if (!popUpDiv) return;
+            let currentFontSize = 16; 
+            popUpDiv.style.fontSize = `${currentFontSize}px`;
+            while (popUpDiv.scrollHeight > popUpDiv.offsetHeight && currentFontSize > 8) {
+                currentFontSize--;
+                popUpDiv.style.fontSize = `${currentFontSize}px`;
+            }
+        };
+        adjustFontSize();
+    }, [popUp]); // Rerun when popUp changes
+
+    const revealPopUp = async () => {
+        setDisplayPopUp(current => !current);  // Toggle the state
+    }
+    useEffect(() => {
+        if (displayPopUp) {
+            showPopUp();  // Call showPopUp only after displayPopUp has changed
+        }
+    }, [displayPopUp]);
+
 
     const pullAndPushRows = async () => {
         try {
@@ -312,7 +358,16 @@ export default function TagMatch() {
             <button onClick={handleCopy}>Copy Columns</button>
             <button onClick={undoLastAction}>Undo</button>
             <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
+            <button onClick={revealPopUp}>{displayPopUp ? "Hide Last Command" : "Show Last Commmand"}</button>
 
+            {isVisible && popUp.length > 0 && (
+                <div className={styles.popUp} ref={popUpRef}>
+                    <h2>Altered Rows:</h2>
+                    {popUp.map((message, index) => (
+                        <p key={index}>{message}</p>
+                    ))}
+                </div>
+            )}
             <div>
                 {buttonData[currentPage].map((button, index) => {
                     return button.courtImage === true ? (
@@ -321,25 +376,30 @@ export default function TagMatch() {
                             <img
                                 src="/images/Tennis_Court_Full.png"
                                 alt="tennis court"
-                                onClick={(event) => {
+                                onClick={async (event) => {
+                                    setPopUp([]);
                                     saveToHistory();
                                     let data = handleImageClick(event); // returns data.x and data.y coordinates
                                     data.table = tableState.rows;
                                     data.activeRowIndex = tableState.activeRowIndex;
                                     data.videoTimestamp = getVideoTimestamp();
-                                    button.action(data);
-                                }}
+                                    button.action(data); // Wait for this to complete
+                                    showPopUp()   
+                                   
+                                    }}
                                 style={{ width: "10%" }}
                             />
                         </div>
                     ) : (
-                        <button className={styles.customButton} key={index} onClick={() => {
+                        <button className={styles.customButton} key={index} onClick={async () => {
+                            setPopUp([]);
                             saveToHistory();
                             let data = {};
                             data.table = tableState.rows;
                             data.activeRowIndex = tableState.activeRowIndex;
                             data.videoTimestamp = getVideoTimestamp();
-                            button.action(data);
+                            button.action(data); // Wait for this to complete
+                            showPopUp()  
                         }}>
                             {button.label}
                         </button>
