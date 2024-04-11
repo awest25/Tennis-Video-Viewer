@@ -382,63 +382,10 @@ export default function TagMatch() {
                     <label>Input YouTube Code: </label>
                     <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
-<<<<<<< HEAD
-            <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-
-            <button onClick={handleCopy}>Copy Columns</button>
-            <button onClick={undoLastAction}>Undo</button>
-            <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
-            <button onClick={revealPopUp}>{displayPopUp ? "Hide Last Command" : "Show Last Commmand"}</button>
-
-            {isVisible && popUp.length > 0 && (
-                <div className={styles.popUp} ref={popUpRef}>
-                    <h2>Altered Rows:</h2>
-                    {popUp.map((message, index) => (
-                        <p key={index}>{message}</p>
-                    ))}
-                </div>
-            )}
-            <div>
-                {buttonData[currentPage].map((button, index) => {
-                    return button.courtImage === true ? (
-                        <div>
-                            <p>{button.label}</p>
-                            <img
-                                src="/images/Tennis_Court_Full.png"
-                                alt="tennis court"
-                                onClick={async (event) => {
-                                    setPopUp([]);
-                                    saveToHistory();
-                                    let data = handleImageClick(event); // returns data.x and data.y coordinates
-                                    data.table = tableState.rows;
-                                    data.activeRowIndex = tableState.activeRowIndex;
-                                    data.videoTimestamp = getVideoTimestamp();
-                                    button.action(data); // Wait for this to complete
-                                    showPopUp()   
-                                   
-                                    }}
-                                style={{ width: "10%" }}
-                            />
-                        </div>
-                    ) : (
-                        <button className={styles.customButton} key={index} onClick={async () => {
-                            setPopUp([]);
-                            saveToHistory();
-                            let data = {};
-                            data.table = tableState.rows;
-                            data.activeRowIndex = tableState.activeRowIndex;
-                            data.videoTimestamp = getVideoTimestamp();
-                            button.action(data); // Wait for this to complete
-                            showPopUp()  
-                        }}>
-                            {button.label}
-                        </button>
-                    );
-                })}
-=======
                     <button onClick={handleCopy}>Copy Columns</button>
                     <button onClick={undoLastAction}>Undo</button>
                     <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
+                    <button onClick={revealPopUp}>{displayPopUp ? "Hide Last Command" : "Show Last Commmand"}</button>
                 </div>
                 <div>
                     <p>This is a spacer usually hidden behind the toolbar</p>
@@ -451,31 +398,45 @@ export default function TagMatch() {
                                     src="/images/Tennis_Court_Full.png"
                                     alt="tennis court"
                                     onClick={(event) => {
+                                        setPopUp([])
                                         saveToHistory();
                                         let data = handleImageClick(event); // returns data.x and data.y coordinates
                                         data.table = tableState.rows;
                                         data.activeRowIndex = tableState.activeRowIndex;
                                         data.videoTimestamp = getVideoTimestamp();
                                         button.action(data);
+                                        showPopUp()
                                     }}
                                     style={{ width: "10%" }}
                                 />
                             </div>
                         ) : (
                             <button className={styles.customButton} key={index} onClick={() => {
+                                setPopUp([])
                                 saveToHistory();
                                 let data = {};
                                 data.table = tableState.rows;
                                 data.activeRowIndex = tableState.activeRowIndex;
                                 data.videoTimestamp = getVideoTimestamp();
                                 button.action(data);
+                                showPopUp()
                             }}>
                                 {button.label}
                             </button>
                         );
                     })}
                 </div>
->>>>>>> 2b31552e113c18cb6a6384ae1e2d172cb53cbf94
+                <div>
+                    {isVisible && popUp.length > 0 && (
+                    <div className={styles.popUp} ref={popUpRef}>
+                        <h2 style={{ fontSize: '20px' }}>Altered Rows:</h2>
+                        {popUp.map((message, index) => (
+                            <p key={index}>{message}</p>
+                        ))}
+                    </div>
+                    )}
+                </div>
+                
             </div>
 
 
