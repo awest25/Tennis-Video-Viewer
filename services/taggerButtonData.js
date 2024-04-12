@@ -803,7 +803,6 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
             }
         },
     ],
-
     'FirstServe': [
     {
     label: 'Ace',
@@ -1820,8 +1819,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                         updateActiveRow('serverFarNear', data.table[data.table.length - 1]['serverFarNear']);
                         updateActiveRow('serverName', data.table[data.table.length - 1]['serverName']);
                         updateActiveRow('pointScore', serverScore + '-' + returnerScore);
-                        updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
-                        updateActiveRow('setScore', player1SetScore + '-' + player2SetScore);
+                        updateActiveRow('gameScore', data.table[data.table.length - 1]['gameScore']);
+                        updateActiveRow('setScore', data.table[data.table.length - 1]['setScore']);
                         updateActiveRow('isPointStart', 1);
                         updateActiveRow('shotInRally', 1);
                         updateActiveRow('side', chooseSide());
