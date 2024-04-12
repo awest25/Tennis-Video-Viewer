@@ -63,6 +63,7 @@ const MatchPage = () => {
 
   useEffect(() => {
     if (matchData) {
+      console.log('Match Data:', matchData);
       const points = returnFilteredPoints();
       const sortedPoints = [...points].sort((a, b) => b.Position - a.Position);
 
@@ -242,7 +243,7 @@ const MatchPage = () => {
         }
 
         .pointsList {
-          flex: 1; // Takes up 1/3 of the space
+          flex: 1; /* Takes up 1/3 of the space */
           margin-top: 0rem;
           padding: 1rem;
           margin-left: 1rem;
@@ -250,6 +251,7 @@ const MatchPage = () => {
           border-radius: 15px;
           overflow-y: auto;
           height: 350px;
+          background-color: #fafafa; /* Light gray background color for padding */
         }
 
         .filterList {

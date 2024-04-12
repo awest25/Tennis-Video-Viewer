@@ -1,89 +1,60 @@
 .pointsList {
   width: 100%;
+  background-color: #fafafa; /* Light gray background color */
   border-collapse: collapse;
-  margin-bottom: 20px;
-  border-radius: 15px; /* Increase border-radius for more rounded corners */
-  overflow: hidden; /* Ensure the border radius is applied correctly */
-  white-space: nowrap; /* Prevent wrapping */
+  border-radius: 15px;
+  overflow: hidden;
 }
-
 
 .pointsList th,
 .pointsList td {
-  padding: 8px 4px; /* Adjust padding as needed */
-  white-space: nowrap; /* Prevent wrapping */
+  padding: 12px 8px;
   text-align: center;
-  border-bottom: 5px;
-  font-size: 14px; /* Adjust font size as needed */
-  border-bottom: 1px solid #dddddd; /* Add border between rows */
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #333; /* Text color */
 }
 
 .pointsList th {
-  background-color: #ffffff;
-  white-space: nowrap; /* Prevent wrapping */
-  text-align: center;
-  font-weight: normal; /* Remove bold styling */
+  background-color: #fafafa;
+  font-weight: normal;
 }
 
 .pointsListItem {
   transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .pointsListItem:hover {
   background-color: #e9e9e9;
 }
 
-.pointsList tbody tr:nth-child(odd) {
-  background-color: #ffffff;
-}
+
 
 .pointsList tbody tr:hover {
   background-color: #e2e2e2;
 }
 
-.expandButtonCell {
-  text-align: left;
-  vertical-align: middle; /* Align content vertically center */
-}
-
-.expandButton {
-  padding: 8px 16px;
-  margin: 4px 0;
+.buttonn {
+  padding: 5px 20px;
   cursor: pointer;
-  background-color: #ffffff;
-  border: none;
-  font-weight: bold;
+  background-color: #fafafa;
+  border: none; /* Remove the default border */
+  border-left: 5px solid #b0b0b0; /* Add left border */
+  border-bottom: 5px solid #b0b0b0; /* Add bottom border */
+  font-weight: 400;
+  font-size: 0.89rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.expandButton:hover {
-  background-color: #f0f0f0;
+.buttonn:hover {
+  background-color: #e9ecef;
+  border-color: #b8c2cc;
 }
 
-.collapseButton {
-  padding: 8px 16px;
-  margin: 4px 0;
-  cursor: pointer;
-  background-color: #ffffff;
-  border: none;
-  font-weight: bold;
-}
-
-.collapseButton:hover {
-  background-color: #f0f0f0;
-}
-
-.button {
-  background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-}
-
-.button5 {
-  border-radius: 50%;
+.buttonn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
