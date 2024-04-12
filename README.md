@@ -1,4 +1,6 @@
 # Tennis-Video-Viewer
+[![Deploy to Firebase Hosting on merge](https://github.com/awest25/Tennis-Video-Viewer/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/awest25/Tennis-Video-Viewer/actions/workflows/firebase-hosting-merge.yml)
+
 A web app focused on tennis match playback integrating with point-level data, supporting filtering the match by point attributes.
 
 # Getting Started

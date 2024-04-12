@@ -16,6 +16,10 @@
     padding: 0;
     list-style-type: none;
     margin: 0;
+    overflow-y: scroll;
+    max-height: 65px; 
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .activeFilterItem {
@@ -86,6 +90,8 @@
     border-radius: 4px; /* Rounded corners for the items */
     cursor: pointer; /* Cursor changes to pointer to indicate clickability */
     transition: background-color 0.2s ease-in-out; /* Smooth transition for hover effect */
+    display: flex;
+    justify-content: space-between;
 }
 
 .filterValueItem:hover {
@@ -103,4 +109,33 @@
     /* Optionally, add a left border to highlight the active state */
     border-left: 4px solid #007bff; /* Blue border for active item */
     padding-left: 8px; /* Adjust padding to accommodate the border */
+}
+
+/* Styles for options menu */
+.optionsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 2px;
+    margin: 5px 0;
+    background-color: #ffffff;
+}
+
+.optionsList {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.optionsToggle{
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; 
+    height: 30px;
+    width: 30px;
 }
