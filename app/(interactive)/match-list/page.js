@@ -3,19 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { db } from '../../services/initializeFirebase.js';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-// import { useRouter } from 'next/router';
+import { collection, getDocs, deleteDoc, setDoc, doc } from 'firebase/firestore';
 
-const MatchList = () => {
+export default function MatchList() {
   const [matchData, setMatchData] = useState([]);
-  // const router = useRouter();
-
-  const navigateToTagMatch = (matchId) => {
-    // router.push({
-    //   pathname: '/tag-match',
-    //   query: { matchId: matchId },
-    // });
-  };  
+  const [newName, setNewName] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,19 +23,33 @@ const MatchList = () => {
     await deleteDoc(doc(db, "matches", id));
     setMatchData(matchData.filter(match => match.id !== id));
   };
+  const handleRename = async (id) => {
+    const docRef = doc(db, "matches", id);
+    setDoc(docRef, {name:newName}, { merge: true })
+      .then(() => {
+        console.log("Document successfully updated!");
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+      });
+    setMatchData(matchData.map(match => match.id === id ? {...match, name:newName} : match));
+  };
 
   return (
     <div>
-      <button onClick={() => history.back()}>Home</button> {/* Home Button */}
       <h1>Match List</h1>
       {matchData.length > 0 ? (
         <ul>
           {matchData.map((match) => (
-            <li key={match.id}>
-              {match.name}
-              <button onClick={() => handleDelete(match.id)}>Delete</button>
-              <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
-            </li>
+            <div>
+              <li key={match.id}>
+                <span>{match.name}<button onClick={() => handleDelete(match.id)}>Delete</button></span>
+                <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
+                <br/>
+                <input onChange={(e) => setNewName(e.target.value)}/>
+                <button onClick={() => handleRename(match.id)}>Rename</button>
+              </li>
+            </div>
           ))}
         </ul>
       ) : (
@@ -52,5 +58,3 @@ const MatchList = () => {
     </div>
   );
 }
-
-export default MatchList;
