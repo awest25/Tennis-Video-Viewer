@@ -6,12 +6,19 @@ import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
 export default function MatchList() {
   const [matchData, setMatchData] = useState([]);
+  const[ teamData, setTeamData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "matches"));
-      const matches = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const MatchQuerySnapshot = await getDocs(collection(db, "matches"));
+      const matches = MatchQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setMatchData(matches);
+
+
+      const TeamQuerySnapshot = await getDocs(collection(db, "teams"));
+      const teams = TeamQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTeamData(teams);
+      
     };
 
     fetchData();

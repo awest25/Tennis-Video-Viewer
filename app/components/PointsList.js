@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import styles from '../styles/PointsList.module.css';
 
-const PointsList = ({ pointsData, onPointSelect, clientLogo, opposingLogo }) => {
+const PointsList = ({ teamsData, pointsData, onPointSelect, clientLogo, opposingLogo }) => {
     const [expanded, setExpanded] = useState(false);
+    console.log('Teams Data:', teamsData);
+    console.log('Points Data:', pointsData);
 
     // Utility function to parse individual point data
     const parsePointData = (pointName) => {

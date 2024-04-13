@@ -33,6 +33,7 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
+  const [teamData, setTeamData] = useState();
 
   // const router = useRouter();
   const pathname = usePathname()
@@ -48,11 +49,20 @@ const MatchPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'matches'));
-        const matches = querySnapshot.docs.map((doc) => doc.data());
+        const MatchQuerySnapshot = await getDocs(collection(db, 'matches'));
+
+        const matches = MatchQuerySnapshot.docs.map((doc) => doc.data());
         const match = matches.find((match) => match.videoId === videoId);
         const matchv2 = transformData(match);
+
+
         setMatchData(matchv2);
+
+        const TeamQuerySnapshot = await getDocs(collection(db, 'teams'));
+        const teams = TeamQuerySnapshot.docs.map((doc) => doc.data());
+        setTeamData(teams);
+
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -64,6 +74,7 @@ const MatchPage = () => {
   useEffect(() => {
     if (matchData) {
       console.log('Match Data:', matchData);
+      console.log('Team Data:', teamData);
       const points = returnFilteredPoints();
       const sortedPoints = [...points].sort((a, b) => b.Position - a.Position);
 
@@ -83,7 +94,7 @@ const MatchPage = () => {
 
       return () => clearInterval(intervalId); // Cleanup to avoid memory leaks
     }
-  }, [videoObject, matchData]);
+  }, [videoObject, matchData, teamData]);
 
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
@@ -198,9 +209,10 @@ const MatchPage = () => {
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
 
+
                 {/* Points List */}
                 <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo}  matchDetails={matchData.matchDetails}/>
+                  <PointsList teamsData = {teamData} pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo}  matchDetails={matchData.matchDetails}/>
                  
                 </div>
 
