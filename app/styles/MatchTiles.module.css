@@ -55,3 +55,8 @@
     width: 1.5em;
     padding: 0;
 }
+
+.playerSchoolImg img {
+    width: 100%; /* Set the width of the image to 100% of its container */
+    height: auto; /* Automatically adjust the height to maintain aspect ratio */
+  }

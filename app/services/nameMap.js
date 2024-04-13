@@ -24,7 +24,7 @@ const nameMap = {
   "rallyCountFreq"         : 'Rally Length',
   "atNetPlayer1"           : 'Player Comes to Net',
   "pointWonBy"             : 'Point Won By',
-  "side"                   : 'Deuce/Ad Side',
+  "side"                   : 'Deuce/Ad Serve',
   "setNum"                 : 'Set Number',
 
   //Group 5: Special Requests
