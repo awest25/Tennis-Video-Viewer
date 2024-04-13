@@ -7,11 +7,11 @@ import { updateDoc, doc } from 'firebase/firestore';
  * @param {Object} updates - An object containing the fields to update and their new values.
  */
 export default async function updateMatchDocument(matchDocumentId, updates) {
-    const matchDocRef = doc(db, "matches", matchDocumentId);
-    try {
-        await updateDoc(matchDocRef, updates);
-        console.log("Match document successfully updated!");
-    } catch (error) {
-        console.error("Error updating match document: ", error);
-    }
-};
+  const matchDocRef = doc(db, "matches", matchDocumentId);
+  try {
+    await updateDoc(matchDocRef, updates);
+    console.log("Match document successfully updated!");
+  } catch (error) {
+    console.error("Error updating match document: ", error);
+  }
+}
