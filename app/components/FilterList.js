@@ -48,6 +48,17 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
     return pointsData.filter(point => point[key] === value).length;
   };
 
+  const countFilteredPointsTotal = (key) => {
+    return pointsData.reduce((total, point) => {
+      // Check if the value attribute is not an empty string
+      if (point[key] !== '') {
+        return total + 1; // Add 1 to the total if this point has a value specific to this category (key)
+      }
+      // Otherwise, just return the current total without adding anything
+      return total;
+    }, 0);
+  };
+
   // Function to determine if the value is an active filter
   const isActiveFilter = (key, value) => {
     return filterList.some(([filterKey, filterValue]) => filterKey === key && filterValue === value);
@@ -70,6 +81,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                     {nameMap[key]}
                   </strong>
                   <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
+                    {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map((value) => (
                       value !== '' && (
                         <div className={styles.filterValueItem} key={value} style={{
@@ -86,12 +98,15 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                         }}>
                           <li >{value}</li>
                           {/* Point Percentage */}
-                          {!showCount && showPercent && value && (
-                            <li>{Math.round((countFilteredPointsForValue(key, value) / pointsData.length) * 100)}%</li>                                                    
+
+                          {/* {console.log(value)}  */}
+                          {showPercent && value && (
+                            // make a sum
+                            <li>{Math.round((countFilteredPointsForValue(key, value) / Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */ ) * 100)}%</li>                                                    
                           )}
                           {/* Point Count */}
-                          {showCount && showPercent && value && (
-                            <li>{countFilteredPointsForValue(key, value)} / {pointsData.length}</li> 
+                          {showCount && value && (
+                            <li>{countFilteredPointsForValue(key, value)} / {Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */}</li> 
                           )}                                                 
                         </div>  
                       )))}
