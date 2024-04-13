@@ -40,8 +40,8 @@ export default function MatchList() {
       {matchData.length > 0 ? (
         <ul>
           {matchData.map((match) => (
-            <div>
-              <li key={match.id}>
+            <div key={match.id}>
+              <li>
                 <span>{match.name}<button onClick={() => handleDelete(match.id)}>Delete</button></span>
                 <br/>
                 <input onChange={(e) => setNewName(e.target.value)}/>
