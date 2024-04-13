@@ -1,15 +1,19 @@
+'use client'
+
 import React, { useState, useEffect, useRef } from 'react';
-import Toolbar from '../components/Toolbar';
-import VideoPlayer from '../components/VideoPlayer';
-import { getTaggerButtonData, columnNames } from '../services/taggerButtonData.js';
-import styles from '../styles/TagMatch.module.css';
-import { useRouter } from 'next/router';
-import getMatchInfo from '../services/getMatchInfo.js';
-import updateMatchDocument from '../services/updateMatchDocument.js';
+import VideoPlayer from '../../../components/VideoPlayer';
+import { getTaggerButtonData, columnNames } from '../../../services/taggerButtonData.js';
+import styles from '../../../styles/TagMatch.module.css';
+// import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation'
+import getMatchInfo from '../../../services/getMatchInfo.js';
+import updateMatchDocument from '../../../services/updateMatchDocument.js';
 
 export default function TagMatch() {
-    const router = useRouter();
-    const { matchId } = router.query;
+    // const router = useRouter();
+    // const { matchId } = router.query;
+    const pathname = usePathname()
+    const matchId = pathname.substring(pathname.lastIndexOf('/') + 1);
     const [videoObject, setVideoObject] = useState(null);
     const [videoId, setVideoId] = useState('');
     const [tableState, setTableState] = useState({ rows: [], activeRowIndex: null });
@@ -375,8 +379,6 @@ export default function TagMatch() {
         <div style={{display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', flexDirection: 'row'}}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <Toolbar setMatchData={null} />
-                    <p>Spacer</p>
                     <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
                     {/* temporary means to select video (should it be a form?) */}
                     <label>Input YouTube Code: </label>
@@ -388,7 +390,6 @@ export default function TagMatch() {
                     <button onClick={revealPopUp}>{displayPopUp ? "Hide Last Command" : "Show Last Commmand"}</button>
                 </div>
                 <div>
-                    <p>This is a spacer usually hidden behind the toolbar</p>
                     <p>{currentPage}</p>
                     {buttonData[currentPage].map((button, index) => {
                         return button.courtImage === true ? (

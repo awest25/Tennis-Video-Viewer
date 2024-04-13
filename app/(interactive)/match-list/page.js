@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { db } from '../services/initializeFirebase.js';
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
+'use client'
 
-function MatchList() {
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { db } from '../../services/initializeFirebase.js';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+// import { useRouter } from 'next/router';
+
+const MatchList = () => {
   const [matchData, setMatchData] = useState([]);
-  const router = useRouter();
+  // const router = useRouter();
 
   const navigateToTagMatch = (matchId) => {
-    router.push({
-      pathname: '/tag-match',
-      query: { matchId: matchId },
-    });
+    // router.push({
+    //   pathname: '/tag-match',
+    //   query: { matchId: matchId },
+    // });
   };  
 
   useEffect(() => {
@@ -39,7 +42,7 @@ function MatchList() {
             <li key={match.id}>
               {match.name}
               <button onClick={() => handleDelete(match.id)}>Delete</button>
-              <button onClick={() => navigateToTagMatch(match.id)}>Tag Match</button>
+              <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
             </li>
           ))}
         </ul>
