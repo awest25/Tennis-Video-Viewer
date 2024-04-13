@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { db } from '../../services/initializeFirebase.js';
 import { collection, getDocs, deleteDoc, setDoc, doc } from 'firebase/firestore';
 
@@ -43,6 +44,7 @@ export default function MatchList() {
             <div key={match.id}>
               <li>
                 <span>{match.name}<button onClick={() => handleDelete(match.id)}>Delete</button></span>
+                <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
                 <br/>
                 <input onChange={(e) => setNewName(e.target.value)}/>
                 <button onClick={() => handleRename(match.id)}>Rename</button>
