@@ -209,7 +209,7 @@ const MatchPage = () => {
 
                 {/* Points List */}
                 <div className="pointsList">
-                  <PointsList teamsData = {teamData} pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientLogo={matchData.clientLogo} opposingLogo={matchData.opponentLogo}  matchDetails={matchData.matchDetails}/>
+                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} matchDetails={matchData.matchDetails}  clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchData = {matchData}/>
                  
                 </div>
 
