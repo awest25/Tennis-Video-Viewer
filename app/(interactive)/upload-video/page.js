@@ -31,13 +31,13 @@ export default function UploadVideo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchName || !videoId || !jsonFile || !clientTeam || !opponentTeam) {
+    if (!matchName || !videoId || !clientTeam || !opponentTeam) {
       console.error("Please fill in all fields.");
       return;
     }
     
     try {
-      const pointsJson = JSON.parse(await jsonFile.text());
+      const pointsJson = jsonFile? JSON.parse(await jsonFile.text()) : [];
       await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
       alert('done!')
     } catch (error) {

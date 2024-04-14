@@ -3,7 +3,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import s
 import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
 async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam) {
-  if (!matchName || !videoId || !pointsJson || !clientTeam || !opponentTeam) {
+  if (!matchName || !videoId || !clientTeam || !opponentTeam) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
@@ -21,7 +21,7 @@ async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, 
     const docRef = await addDoc(collection(db, "matches"), {
       name: matchName,
       videoId: videoId,
-      points: pointsJson,
+      points: pointsJson? pointsJson : [],
       pdfUrl: pdfUrl,
       clientTeam,
       opponentTeam
