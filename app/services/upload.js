@@ -25,7 +25,7 @@ async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, 
     const docRef = await addDoc(collection(db, "matches"), {
       name: matchName,
       videoId: videoId,
-      points: pointsJson,
+      points: pointsJson? pointsJson : [],
       pdfUrl: pdfUrl,
       clientTeam,
       opponentTeam,

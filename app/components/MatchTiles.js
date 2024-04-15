@@ -40,11 +40,6 @@ const calculateWinner = (playerOne, playerTwo) => {
   return playerOneTotal > playerTwoTotal;
 };
 
-// Retrieve team information
-const isWomensTeam = (match) => {
-  return match.includes("(W)");
-};
-
 //Retrieve Match Date
 const extractDateFromString = (inputString) => {
   const regexSlash = /\b(\d{1,2}\/\d{1,2}\/\d{2,4})\b/g;
@@ -298,10 +293,10 @@ const MatchTiles = ({
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerTitle}>Matchup</div>
         <div className={styles.containerInfo}>
-          UCLA {isWomensTeam(matchName) && "(Womens)"}
+          {clientTeam}
         </div>
         <div className={styles.containerInfo}>
-          {finalScore[0].opponentTeam} {isWomensTeam(matchName) && "(Womens)"}
+          {opponentTeam}
         </div>
       </div>
     </div>

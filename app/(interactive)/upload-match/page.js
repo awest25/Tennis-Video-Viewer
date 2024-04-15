@@ -37,12 +37,11 @@ export default function UploadVideo() {
     }
     
     try {
-      let pointsJson = null;
-      if (jsonFile === null) {
+      const pointsJson = jsonFile? JSON.parse(await jsonFile.text()) : [];
+      console.log(pointsJson)
+      if (pointsJson.length === 0) {
         const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
         if (!result) throw new Error("Upload cancelled by user.");
-      } else {
-        pointsJson = JSON.parse(await jsonFile.text());
       }
       await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
       alert('done!')
