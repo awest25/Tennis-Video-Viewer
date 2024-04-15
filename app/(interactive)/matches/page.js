@@ -46,12 +46,12 @@ const AllMatchList = () => {
             } else if (
               (category === 'Untagged (M)' && !match.published && match.clientTeam.endsWith('(M)')) || 
               (category === 'Untagged (W)' && !match.published && match.clientTeam.endsWith('(W)'))) {
-                return (
-                  <li key={match.id}>
-                    <a href={'https://www.youtube.com/watch?v=' + match.videoId} target="_blank"> {match.name} </a>
-                  </li>
-                );
-              }
+              return (
+                <li key={match.id}>
+                  <a href={'https://www.youtube.com/watch?v=' + match.videoId} target="_blank"> {match.name} </a>
+                </li>
+              );
+            }
             
             else {
               return null; // If match does not belong to the category, don't render it
