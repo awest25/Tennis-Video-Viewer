@@ -17,6 +17,10 @@ async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, 
       pdfUrl = await getDownloadURL(snapshot.ref);
     }
 
+    // untagged matches
+    let published = true;
+    if (pointsJson === null) published = false;
+
     // Then, save the match data along with the PDF URL to Firestore
     const docRef = await addDoc(collection(db, "matches"), {
       name: matchName,
@@ -24,7 +28,8 @@ async function uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, 
       points: pointsJson? pointsJson : [],
       pdfUrl: pdfUrl,
       clientTeam,
-      opponentTeam
+      opponentTeam,
+      published
     });
     console.log("Match Document written with ID: ", docRef.id);
     
