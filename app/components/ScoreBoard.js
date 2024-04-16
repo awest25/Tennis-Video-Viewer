@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/Scoreboard.module.css';
 
-const ScoreBoard = ({ names, playData }) => {
-  // Ensures playData is not null/undefined, to safely access its properties.
-  const data = playData || {};
-
+const ScoreBoard = ({ playData }) => {
   const {
-    player1Name = '',
-    player2Name = '',
-    player1SetScore = 0,
-    player2SetScore = 0,
+    player1Name = 'Player 1',
+    player2Name = 'Player 2',
     player1GameScore = 0,
     player2GameScore = 0,
     player1PointScore = 0,
@@ -18,48 +13,69 @@ const ScoreBoard = ({ names, playData }) => {
     player2TiebreakScore = 0,
     serverName = '',
     pointScore = true,
-  } = data;
+  } = playData || {};
 
-  const players = names.split(' ');
-  const defaultP1 = `${players[0]} ${players[1]}`;
-  const defaultP2 = `${players[3]} ${players[4]}`;
-  const p1 = player1Name || defaultP1;
-  const p2 = player2Name || defaultP2;
+  // State to track finished sets
+  const [finishedSets, setFinishedSets] = useState([[6,4]]); // Example initial value
 
-  // Determines point label based on the current score mode (regular or tiebreaker).
-  const PointLabel = pointScore ? "Point" : "Point (Tiebreaker)";
-  const row1 = pointScore ? player1PointScore : player1TiebreakScore;
-  const row2 = pointScore ? player2PointScore : player2TiebreakScore;
+  // Effect to update finished sets based on game score
+  useEffect(() => {
+    console.log('Current Scores:', player1GameScore, player2GameScore);
+    console.log('Current finishedSets:', finishedSets);
+    // Define the conditions for winning a set
+    const isSetWon = (score1, score2) => (
+      (score1 >= 6 && score2 < score1 && score2 >= 4) || // Win by two games at least, ensuring the opponent has at least 4 to account for a potential win by 2 condition
+      (score1 === 7 && (score2 === 5 || score2 === 6)) // Win by tie-break or if the opponent has 5 or 6
+    );
+
+    // Check if the current game score indicates a won set
+    if (isSetWon(player1GameScore, player2GameScore) || isSetWon(player2GameScore, player1GameScore)) {
+      // Check to avoid adding the same score multiple times
+      const lastSet = finishedSets[finishedSets.length - 1];
+      if (!lastSet || player1GameScore !== lastSet[0] || player2GameScore !== lastSet[1]) {
+        // Update the finishedSets state with the current game score as a new set
+        setFinishedSets(prevSets => [...prevSets, [player1GameScore, player2GameScore]]);
+      }
+    }
+    console.log('Updated finishedSets:', finishedSets);
+  }, [player1GameScore, player2GameScore, finishedSets]);
 
   return (
     <div className={styles.scoreboard}>
+      <div className={styles.liveScoreHeader}>Live Score</div>
       <table>
         <thead>
           <tr>
-            <th>Players</th>
-            <th>Set</th>
+            <th>Player</th>
+            {finishedSets.map((set, index) => (
+              <th key={`set-${index}`}>Set {index + 1} ({set[0]}-{set[1]})</th>
+            ))}
             <th>Game</th>
-            <th>{PointLabel}</th>
+            <th>{pointScore ? 'Point' : 'Tiebreak'}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className={p1 === serverName ? styles.highlight : ''}>
-              {p1 === serverName && <span className={styles.arrow}>&rarr;</span>}
-              {p1}
+            <td className={player1Name === serverName ? styles.highlight : ''}>
+              {player1Name === serverName && <span className={styles.arrow}>&rarr;</span>}
+              {player1Name}
             </td>
-            <td>{player1SetScore}</td>
+            {finishedSets.map((set, index) => (
+              <td key={`player1-set-score-${index}`}>{set[0]}</td>
+            ))}
             <td>{player1GameScore}</td>
-            <td>{row1}</td>
+            <td>{pointScore ? player1PointScore : player1TiebreakScore}</td>
           </tr>
           <tr>
-            <td className={p2 === serverName ? styles.highlight : ''}>
-              {p2 === serverName && <span className={styles.arrow}>&rarr;</span>}
-              {p2}
+            <td className={player2Name === serverName ? styles.highlight : ''}>
+              {player2Name === serverName && <span className={styles.arrow}>&rarr;</span>}
+              {player2Name}
             </td>
-            <td>{player2SetScore}</td>
+            {finishedSets.map((set, index) => (
+              <td key={`player2-set-score-${index}`}>{set[1]}</td>
+            ))}
             <td>{player2GameScore}</td>
-            <td>{row2}</td>
+            <td>{pointScore ? player2PointScore : player2TiebreakScore}</td>
           </tr>
         </tbody>
       </table>

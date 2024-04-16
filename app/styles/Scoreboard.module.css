@@ -1,31 +1,41 @@
 .scoreboard {
-    width: 100%; 
-    height: 100%;
-    display: flex;
-  }
-  
-  .scoreboard table{
-    background-color: gainsboro;
-    /* border: 1px solid #eaeaea;
-    border-radius: 10px; */
-    width: 100%; /* Make the table fill the available space */
-    border-collapse: collapse; /* Remove default cell spacing */
-    margin: 20px; /* Add margin for spacing */
-  }
-  
-  .highlight {
-    font-weight: bold; 
-  }
-  
-  .arrow {
-    /* Define styles for an arrow here, for example: */
-    content: "\2192"; /* Unicode arrow right character */
-    margin-left: 5px; /* Adjust spacing as needed */
-    /* Add any other styles for the arrow here */
-  }
-  
-  .scoreboard tr{
-    padding: 10px; /* Add padding for spacing within cells */
-    text-align: center; /* Center text within cells */
-    border: 1px solid #ddd; /* Add border for clarity */
-  }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: auto;
+  background-color: transparent;
+}
+
+.liveScoreHeader {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 0.8em;
+  color: #333;
+}
+
+/* Add or adjust existing styles below as needed */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.td {
+  text-align: center;
+  padding: 5px 10px; /* Adjust the padding to control spacing */
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.arrow {
+  display: inline-block;
+  margin-left: 5px;
+}
