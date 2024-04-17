@@ -56,13 +56,13 @@ const MatchTiles = ({
   clientTeam,
   opponentTeam,
   matchDetails,
+  playerOneName, playerTwoName, 
+    playerOneFinalScores, playerTwoFinalScores,
+    playerOneTieScores, playerTwoTieScores,
+    isUnfinished
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
-  const { playerOneName, playerTwoName, 
-    playerOneFinalScores, playerTwoFinalScores,
-    playerOneTieScores, playerTwoTieScores,
-    isUnfinished } = extractSetScores(finalScore);
 
   useEffect(() => {
     const fetchLogos = async () => {

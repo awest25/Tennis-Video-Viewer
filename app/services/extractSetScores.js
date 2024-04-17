@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const extractSingleSetScore = (setObject) => {
   // no third set
   if (!setObject) return { score: "", type: "" };
@@ -20,8 +18,7 @@ const extractPlayerFinalScores = (setScores, playerName, i) => {
 };
 
 const extractSetScores = (finalScore) => {
-  const [isUnfinished, setIsUnfinished] = useState(false);
-
+  let isUnfinished = false;
   //Extract Final Scores from Each Set
   const firstSetObject = finalScore.filter((score) => score.setNum === 1).pop();
   const secondSetObject = finalScore.filter((score) => score.setNum === 2).pop();
@@ -29,7 +26,7 @@ const extractSetScores = (finalScore) => {
   const setObjects = [firstSetObject, secondSetObject, thirdSetObject];
   // // Extract Scores and type of Each Set
   const setScores = [extractSingleSetScore(firstSetObject), extractSingleSetScore(secondSetObject), extractSingleSetScore(thirdSetObject)];
-  console.log(setScores)
+
   // Extract Player Names and Assign Scores for Each Player
   // player1 is client, player2 is opponent
   const playerOneName = firstSetObject.player1Name;
@@ -55,7 +52,7 @@ const extractSetScores = (finalScore) => {
     if (setScores[index].type == "gameScore") {
       //Check if unfinished match
       if (playerOneFinalScores[index].score < 5 && playerTwoFinalScores[index].score < 5 && !isUnfinished) {
-        setIsUnfinished(true);
+        isUnfinished = true;
       }
       //Increment winners score by 1
       if (playerOneFinalScores[index].score > playerTwoFinalScores[index].score) {
@@ -69,7 +66,7 @@ const extractSetScores = (finalScore) => {
       playerTwoTieScores[index] = parseInt(setObjects[index].tiebreakScore[2]);
       //check if unfinished match
       if (playerOneFinalScores[index].score < 5 && playerTwoFinalScores[index].score < 5 && !isUnfinished) {
-        setIsUnfinished(true);
+        isUnfinished = true;
       }
       if (playerOneTieScores[index] > playerTwoTieScores[index]) {
         playerOneFinalScores[index].score++;
@@ -104,7 +101,7 @@ const extractSetScores = (finalScore) => {
   return { playerOneName, playerTwoName, 
     playerOneFinalScores, playerTwoFinalScores,
     playerOneTieScores, playerTwoTieScores,
-    isUnfinished }
+    isUnfinished };
 }
 
 export default extractSetScores

@@ -9,7 +9,8 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
-import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
+import MatchTiles from '@/app/components/MatchTiles';
+import extractSetScores from '@/app/services/extractSetScores';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -33,6 +34,8 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
+
+  const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
   // const router = useRouter();
   const pathname = usePathname()
@@ -119,7 +122,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} />
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
