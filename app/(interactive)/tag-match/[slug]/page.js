@@ -8,6 +8,7 @@ import styles from '../../../styles/TagMatch.module.css';
 import { usePathname } from 'next/navigation'
 import getMatchInfo from '../../../services/getMatchInfo.js';
 import updateMatchDocument from '../../../services/updateMatchDocument.js';
+import TennisCourtSVG from '@/app/components/TennisCourtSVG';
 
 export default function TagMatch() {
   // const router = useRouter();
@@ -355,23 +356,23 @@ export default function TagMatch() {
     const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
     const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
 
-    // Get the bounding rectangle of the target (image)
-    const rect = event.target.getBoundingClientRect();
+    // Get the bounding rectangle of the SVG container
+    const rect = event.currentTarget.getBoundingClientRect();
 
-    const widthOfCourt = rect.right - rect.left;
-    const heightOfCourt = rect.bottom - rect.top;
+    const widthOfCourt = rect.width; // Using rect.width is more reliable
+    const heightOfCourt = rect.height;
 
-    // Calculate the click position relative to the image
+    // Calculate the click position relative to the SVG container
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Calculate the click position relative to the court
+    // Calculate the click position in inches
     const xInches = Math.round((x / widthOfCourt) * courtWidthInInches);
     const yInches = Math.round((y / heightOfCourt) * courtHeightInInches);
 
     console.log("xInches: " + xInches + " yInches: " + yInches);
-    return { 'x': xInches, 'y': yInches };
-  }
+    return { x: xInches, y: yInches };
+  };
 
 
   return (
@@ -394,10 +395,7 @@ export default function TagMatch() {
             return button.courtImage === true ? (
               <div>
                 <p>{button.label}</p>
-                <img
-                  src="/images/Tennis_Court_Full.png"
-                  alt="tennis court"
-                  onClick={(event) => {
+                <TennisCourtSVG className={styles.courtImage} handleImageClick={(event) => {
                     setPopUp([])
                     saveToHistory();
                     let data = handleImageClick(event); // returns data.x and data.y coordinates
@@ -406,9 +404,7 @@ export default function TagMatch() {
                     data.videoTimestamp = getVideoTimestamp();
                     button.action(data);
                     showPopUp()
-                  }}
-                  style={{ width: "10%" }}
-                />
+                  }} />
               </div>
             ) : (
               <button className={styles.customButton} key={index} onClick={() => {
