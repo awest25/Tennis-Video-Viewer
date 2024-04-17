@@ -136,7 +136,7 @@ const MatchPage = () => {
               </div>
               {/* Score display */}
               <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint} />
+                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
               </div>
             </div>
             <div>

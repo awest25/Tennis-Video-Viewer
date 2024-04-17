@@ -4,22 +4,22 @@ import getTeams from '@/app/services/getTeams.js';
 import extractSetScores from "../services/extractSetScores";
 
 //Calculate winner of match
-const calculateWinner = (playerOne, playerTwo) => {
-  const playerOneTotal = playerOne.reduce((total, current) => {
+const calculateWinner = (player1, player2) => {
+  const player1Total = player1.reduce((total, current) => {
     if (!isNaN(current.score)) {
       return total + current.score;
     } else {
       return total;
     }
   }, 0);
-  const playerTwoTotal = playerTwo.reduce((total, current) => {
+  const player2Total = player2.reduce((total, current) => {
     if (!isNaN(current.score)) {
       return total + current.score;
     } else {
       return total;
     }
   }, 0);
-  return playerOneTotal > playerTwoTotal;
+  return player1Total > player2Total;
 };
 
 //Retrieve Match Date
@@ -52,13 +52,12 @@ const extractDateFromString = (inputString) => {
 
 const MatchTiles = ({
   matchName,
-  finalScore,
   clientTeam,
   opponentTeam,
   matchDetails,
-  playerOneName, playerTwoName, 
-    playerOneFinalScores, playerTwoFinalScores,
-    playerOneTieScores, playerTwoTieScores,
+  player1Name, player2Name, 
+    player1FinalScores, player2FinalScores,
+    player1TieScores, player2TieScores,
     isUnfinished
 }) => {
   const [clientLogo, setClientLogo] = useState('');
@@ -67,8 +66,6 @@ const MatchTiles = ({
   useEffect(() => {
     const fetchLogos = async () => {
       try {
-        console.log(clientTeam);
-        console.log(opponentTeam);
         const allTeams = await getTeams();
         const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
         const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
@@ -95,27 +92,27 @@ const MatchTiles = ({
             className={styles.playerInfoName}
             style={
               isUnfinished ? { opacity: "40%" }
-                : !calculateWinner(playerOneFinalScores, playerTwoFinalScores)
+                : !calculateWinner(player1FinalScores, player2FinalScores)
                   ? { opacity: "40%" }
                   : { opacity: "100%" }
             }
           >
-            {playerOneName} {isUnfinished && "(UF)"}
+            {player1Name} {isUnfinished && "(UF)"}
           </div>
           <div
             className={styles.playerInfoScore}
             style={
               isUnfinished ? { opacity: "40%" }
-                : !calculateWinner(playerOneFinalScores, playerTwoFinalScores)
+                : !calculateWinner(player1FinalScores, player2FinalScores)
                   ? { opacity: "40%" }
                   : { opacity: "100%" }
             }
           >
             {/* Check if tie break, if so add exponent */}
-            {playerOneFinalScores.map((score, index) =>
+            {player1FinalScores.map((score, index) =>
               isNaN(score.score) ? null : (
                 <div key={index} style={{ position: "relative" }}>
-                  {playerOneTieScores[index] ? (
+                  {player1TieScores[index] ? (
                     <span key={index}>
                       {score.score}
                       <sup
@@ -127,7 +124,7 @@ const MatchTiles = ({
                           letterSpacing: "1px",
                         }}
                       >
-                        {playerOneTieScores[index]}
+                        {player1TieScores[index]}
                       </sup>
                     </span>
                   ) : (
@@ -145,25 +142,25 @@ const MatchTiles = ({
           <div
             className={styles.playerInfoName}
             style={
-              calculateWinner(playerOneFinalScores, playerTwoFinalScores)
+              calculateWinner(player1FinalScores, player2FinalScores)
                 ? { opacity: "40%" }
                 : { opacity: "100%" }
             }
           >
-            {playerTwoName}
+            {player2Name}
           </div>
           <div
             className={styles.playerInfoScore}
             style={
-              calculateWinner(playerOneFinalScores, playerTwoFinalScores)
+              calculateWinner(player1FinalScores, player2FinalScores)
                 ? { opacity: "40%" }
                 : { opacity: "100%" }
             }
           >
-            {playerTwoFinalScores.map((score, index) =>
+            {player2FinalScores.map((score, index) =>
               isNaN(score.score) ? null : (
                 <div key={index} style={{ position: "relative" }}>
-                  {playerTwoTieScores[index] ? (
+                  {player2TieScores[index] ? (
                     <div key={index}>
                       {score.score}
                       <sup
@@ -175,7 +172,7 @@ const MatchTiles = ({
                           letterSpacing: "1px",
                         }}
                       >
-                        {playerTwoTieScores[index]}
+                        {player2TieScores[index]}
                       </sup>
                     </div>
                   ) : (

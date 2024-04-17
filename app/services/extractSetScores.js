@@ -29,56 +29,56 @@ const extractSetScores = (finalScore) => {
 
   // Extract Player Names and Assign Scores for Each Player
   // player1 is client, player2 is opponent
-  const playerOneName = firstSetObject.player1Name;
-  const playerTwoName = firstSetObject.player2Name;
-  const playerOneFinalScores = extractPlayerFinalScores(setScores, playerOneName, 0);
-  const playerTwoFinalScores = extractPlayerFinalScores(setScores, playerTwoName, 2);
+  const player1Name = firstSetObject.player1Name;
+  const player2Name = firstSetObject.player2Name;
+  const player1FinalScores = extractPlayerFinalScores(setScores, player1Name, 0);
+  const player2FinalScores = extractPlayerFinalScores(setScores, player2Name, 2);
 
   //Tiebreaker scores array
-  const playerOneTieScores = Array(3);
-  const playerTwoTieScores = Array(3);
+  const player1TieScores = Array(3);
+  const player2TieScores = Array(3);
 
   // Check if sets are tiebreaks
   // Non tiebreak score winners are given winning point
   const processSet = (
     setScores,
     setObjects,
-    playerOneFinalScores,
-    playerTwoFinalScores,
-    playerOneTieScores,
-    playerTwoTieScores,
+    player1FinalScores,
+    player2FinalScores,
+    player1TieScores,
+    player2TieScores,
     index
   ) => {
     if (setScores[index].type == "gameScore") {
       //Check if unfinished match
-      if (playerOneFinalScores[index].score < 5 && playerTwoFinalScores[index].score < 5 && !isUnfinished) {
+      if (player1FinalScores[index].score < 5 && player2FinalScores[index].score < 5 && !isUnfinished) {
         isUnfinished = true;
       }
       //Increment winners score by 1
-      if (playerOneFinalScores[index].score > playerTwoFinalScores[index].score) {
-        playerOneFinalScores[index].score++;
+      if (player1FinalScores[index].score > player2FinalScores[index].score) {
+        player1FinalScores[index].score++;
       } else {
-        playerTwoFinalScores[index].score++;
+        player2FinalScores[index].score++;
       }
     } else if (setScores[index].type == "tiebreakScore") {
       //Compare tiebreak scores and increment winner
-      playerOneTieScores[index] = parseInt(setObjects[index].tiebreakScore[0]);
-      playerTwoTieScores[index] = parseInt(setObjects[index].tiebreakScore[2]);
+      player1TieScores[index] = parseInt(setObjects[index].tiebreakScore[0]);
+      player2TieScores[index] = parseInt(setObjects[index].tiebreakScore[2]);
       //check if unfinished match
-      if (playerOneFinalScores[index].score < 5 && playerTwoFinalScores[index].score < 5 && !isUnfinished) {
+      if (player1FinalScores[index].score < 5 && player2FinalScores[index].score < 5 && !isUnfinished) {
         isUnfinished = true;
       }
-      if (playerOneTieScores[index] > playerTwoTieScores[index]) {
-        playerOneFinalScores[index].score++;
+      if (player1TieScores[index] > player2TieScores[index]) {
+        player1FinalScores[index].score++;
         // Tiebreak more than 7 points
-        if (playerTwoTieScores[index] >= 6) {
-          playerOneTieScores[index]++;
+        if (player2TieScores[index] >= 6) {
+          player1TieScores[index]++;
         }
       } else {
-        if (playerOneTieScores[index] >= 6) {
-          playerTwoTieScores[index]++;
+        if (player1TieScores[index] >= 6) {
+          player2TieScores[index]++;
         }
-        playerTwoFinalScores[index].score++;
+        player2FinalScores[index].score++;
       }
     } else {
       return;
@@ -90,17 +90,17 @@ const extractSetScores = (finalScore) => {
     processSet(
       setScores,
       setObjects,
-      playerOneFinalScores,
-      playerTwoFinalScores,
-      playerOneTieScores,
-      playerTwoTieScores,
+      player1FinalScores,
+      player2FinalScores,
+      player1TieScores,
+      player2TieScores,
       index
     );
   });
 
-  return { playerOneName, playerTwoName, 
-    playerOneFinalScores, playerTwoFinalScores,
-    playerOneTieScores, playerTwoTieScores,
+  return { player1Name, player2Name, 
+    player1FinalScores, player2FinalScores,
+    player1TieScores, player2TieScores,
     isUnfinished };
 }
 
