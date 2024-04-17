@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useEffect, useState } from 'react';
-import { db } from '../services/initializeFirebase.js';
+import { db } from '../../services/initializeFirebase.js';
 import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 
-function MatchList() {
+export default function MatchList() {
   const [matchData, setMatchData] = useState([]);
 
   useEffect(() => {
@@ -22,7 +24,6 @@ function MatchList() {
 
   return (
     <div>
-      <button onClick={() => history.back()}>Home</button> {/* Home Button */}
       <h1>Match List</h1>
       {matchData.length > 0 ? (
         <ul>
@@ -38,5 +39,3 @@ function MatchList() {
     </div>
   );
 }
-
-export default MatchList;

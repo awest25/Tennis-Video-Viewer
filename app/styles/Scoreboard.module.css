@@ -1,0 +1,41 @@
+.scoreboard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid gray;
+  border-radius: 10px;
+  padding: 10px;
+  margin: auto;
+  background-color: transparent;
+}
+
+.liveScoreHeader {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 0.8em;
+  color: #333;
+}
+
+/* Add or adjust existing styles below as needed */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.td {
+  text-align: center;
+  padding: 5px 10px; /* Adjust the padding to control spacing */
+}
+
+.highlight {
+  font-weight: bold;
+}
+
+.arrow {
+  display: inline-block;
+  margin-left: 5px;
+}

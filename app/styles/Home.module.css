@@ -1,0 +1,15 @@
+.container {
+  /* min-height: 100vh; */
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5rem;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.title {
+  margin: 0 0 1rem;
+  line-height: 1.15;
+  font-size: 3.6rem;
+}
