@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
 import { usePathname } from 'next/navigation'
 
 import filterStyles from '../../../styles/FilterList.module.css'
@@ -10,6 +9,7 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
+import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -19,7 +19,7 @@ import nameMap from '../../../services/nameMap';
 // export async function generateStaticParams() {
 //     const querySnapshot = await getDocs(collection(db, 'matches'));
 //     const matches = querySnapshot.docs.map((doc) => doc.data());
-   
+
 //     return matches.map((match) => ({
 //       slug: match.slug,
 //     }))
@@ -29,7 +29,7 @@ const MatchPage = () => {
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
-  const [showOptions, setShowOptions] = useState(false);
+  // const [showOptions, setShowOptions] = useState(false);
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
@@ -57,7 +57,7 @@ const MatchPage = () => {
         console.error('Error fetching data:', error);
       }
     };
-  
+
     fetchData(); // Call the fetchData function when the component mounts or when videoId changes
   }, []);
 
@@ -98,7 +98,7 @@ const MatchPage = () => {
     });
 
     filterMap.forEach((values, key) => {
-      filteredPoints = filteredPoints.filter(point => 
+      filteredPoints = filteredPoints.filter(point =>
         values.length > 1 ? values.includes(point[key]) : point[key] === values[0]
       );
     });
@@ -119,69 +119,27 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
+          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} />
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
-            </div>
-            {/* Options Container */}
-            <div className={filterStyles.optionsContainer}>
-              <svg
-                className={filterStyles.optionsToggle}
-                onClick={() => setShowOptions(!showOptions)}
-                viewBox="0 0 24 24"
-                fill="black"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                  <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
-                  <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
-                  <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round"></path>
-                </g>
-              </svg>
-              <div className={filterStyles.optionsList}>
-                {showOptions && (
-                  <>
-                    <div>
-                      <input
-                        type="checkbox"
-                        id="showOptionsCheckbox"
-                        checked={showPercent}
-                        onChange={() => setShowPercent(!showPercent)}
-                      />
-                      <label htmlFor="showOptionsCheckbox">Show Percentage</label>
-                    </div>
-                    {showPercent && (
-                      <Select
-                        onChange={(selectedOption) => setShowCount(selectedOption.value === "option2")}
-                        options={[
-                          { value: "option1", label: "Percent" },
-                          { value: "option2", label: "Count" }
-                        ]}
-                        isSearchable={false}
-                      />
-                    )}
-                  </>
-                )}
-              </div>
             </div>
           </div>
           <div className={styles.mainContent}>
             {/* Video Player */}
             <div className="videoPlayer">
               <div>
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject}/>
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
-                
               {/* Score display */}
               <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint}/>
+                <ScoreBoard names={matchData.name} playData={playingPoint} />
               </div>
             </div>
             <div>
               {/* Filter List */}
               <div className={filterStyles.activeFilterListContainer}>
-                  Active Filters:
+                Active Filters:
                 <ul className={filterStyles.activeFilterList}>
                   {sortedFilterList.map(([key, value]) => (
                     <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
@@ -194,6 +152,45 @@ const MatchPage = () => {
               <div className='listHolder'>
                 {/* Filter List */}
                 <div className="filterList">
+                  {/* Radio Options */}
+                  <div className={filterStyles.optionsList}>
+                    <div>
+                      <input
+                        type="radio"
+                        id="defaultRadio"
+                        checked={!showCount && !showPercent}
+                        onChange={() => {
+                          setShowPercent(false);
+                          setShowCount(false);
+                        }}
+                      />
+                      <label htmlFor="defaultRadio">Default</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="percentRadio"
+                        checked={showPercent}
+                        onChange={() => {
+                          setShowPercent(true);
+                          setShowCount(false);
+                        }}
+                      />
+                      <label htmlFor="percentRadio">Show Percent</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="countRadio"
+                        checked={showCount}
+                        onChange={() => {
+                          setShowPercent(false);
+                          setShowCount(true);
+                        }}
+                      />
+                      <label htmlFor="countRadio">Show Count</label>
+                    </div>
+                  </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
 

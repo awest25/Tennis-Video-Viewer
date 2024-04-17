@@ -18,7 +18,9 @@ const SearchDropdown = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       const querySnapshot = await getDocs(collection(db, 'matches'));
-      const matches = querySnapshot.docs.map((doc) => {
+      const matches = querySnapshot.docs
+      .filter((doc) => doc.data().published)
+      .map((doc) => {
         const data = doc.data();
         return {
           value: data.videoId, // Use 'value' to adhere to react-select convention
