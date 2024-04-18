@@ -11,7 +11,7 @@ import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
 import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
 
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
 import transformData from '../../../services/transformData';
 import nameMap from '../../../services/nameMap';
@@ -36,7 +36,7 @@ const MatchPage = () => {
 
   // const router = useRouter();
   const pathname = usePathname()
-  const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
+  const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -48,11 +48,10 @@ const MatchPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'matches'));
-        const matches = querySnapshot.docs.map((doc) => doc.data());
-        const match = matches.find((match) => match.videoId === videoId);
-        const matchv2 = transformData(match);
-        setMatchData(matchv2);
+        const documentRef = doc(db, 'matches', docId);
+        const documentSnapshot = await getDoc(documentRef);
+        const transformedData = transformData(documentSnapshot.data());
+        setMatchData(transformedData)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
