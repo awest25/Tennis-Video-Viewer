@@ -9,15 +9,23 @@
   padding: 10px;
   margin: auto;
   background-color: transparent;
+  /* width: 100%; 
+  height: 100%; */
 }
 
-.liveScoreHeader {
+.scoreboard td{
+  padding: 6px; /* Add padding for spacing within cells */
+  text-align: center; /* Center text within cells */
+  /* border: 1px solid #ddd; Add border for clarity */
+}
+
+/* .liveScoreHeader {
   position: absolute;
   top: 10px;
   left: 15px;
   font-size: 0.8em;
   color: #333;
-}
+} */
 
 /* Add or adjust existing styles below as needed */
 

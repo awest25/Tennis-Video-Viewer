@@ -56,9 +56,9 @@ const MatchTiles = ({
   opponentTeam,
   matchDetails,
   player1Name, player2Name, 
-    player1FinalScores, player2FinalScores,
-    player1TieScores, player2TieScores,
-    isUnfinished
+  player1FinalScores, player2FinalScores,
+  player1TieScores, player2TieScores,
+  isUnfinished
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');

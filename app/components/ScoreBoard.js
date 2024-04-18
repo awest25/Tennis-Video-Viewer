@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Scoreboard.module.css';
+import extractSetScores from '../services/extractSetScores';
 
 const ScoreBoard = ({ playData, 
   player1Name, player2Name, 
-    player1FinalScores, player2FinalScores,
-    player1TieScores, player2TieScores,
-    isUnfinished }) => {
+  player1FinalScores, player2FinalScores,
+  player1TieScores, player2TieScores,
+  isUnfinished }) => {
   const {
     player1GameScore = 0,
     player2GameScore = 0,
@@ -16,19 +17,17 @@ const ScoreBoard = ({ playData,
     serverName = '',
     pointScore = true,
   } = playData || {};
-  console.log(player1TieScores)
+
+  // console.log(playData)
+
   return (
     <div className={styles.scoreboard}>
-      <div className={styles.liveScoreHeader}>Live Score {isUnfinished && "(UF)"}</div>
       <table>
         <thead>
           <tr>
-            <th>Player</th>
-            {/* {finishedSets.map((set, index) => (
-              <th key={`set-${index}`}>Set {index + 1} ({set[0]}-{set[1]})</th>
-            ))} */}
+            <th>Live Score {isUnfinished && "(UF)"}</th>
             {player1FinalScores.map((item, index) => {
-              if (!isNaN(item.score)) {
+              if (!isNaN(item.score) && playData && index + 1 < playData.setNum) {
                 return <th key={index}>Set {index + 1}</th>;
               }
             })}
@@ -42,34 +41,33 @@ const ScoreBoard = ({ playData,
               {player1Name === serverName && <span className={styles.arrow}>&rarr;</span>}
               {player1Name}
             </td>
-            {/* {finishedSets.map((set, index) => (
-              <td key={`player1-set-score-${index}`}>{set[0]}</td>
-            ))} */}
+            {/* FINISHED SETS using data from parent! */}
             {/* Check if tie break, if so add exponent */}
             {player1FinalScores.map((score, index) =>
-              isNaN(score.score) ? null : (
+              (playData && (!isNaN(score.score) && index + 1 < playData.setNum)) ? (
                 <td key={index} style={{ position: "relative" }}>
                   {player1TieScores[index] ? (
-                    <span key={index}>
+                    <div key={index}>
                       {score.score}
                       <sup
                         style={{
                           position: "absolute",
                           fontSize: "0.6em",
-                          top: "-0.3em",
-                          left: "0.9em",
+                          top: "0.3em",
+                          right: "0.9em",
                           letterSpacing: "1px",
                         }}
                       >
                         {player1TieScores[index]}
                       </sup>
-                    </span>
+                    </div>
                   ) : (
                     <span key={index}>{score.score}</span>
                   )}
                 </td>
-              )
+              ) : null
             )}
+            {/* Current Set */}
             <td>{player1GameScore}</td>
             <td>{pointScore ? player1PointScore : player1TiebreakScore}</td>
           </tr>
@@ -78,11 +76,9 @@ const ScoreBoard = ({ playData,
               {player2Name === serverName && <span className={styles.arrow}>&rarr;</span>}
               {player2Name}
             </td>
-            {/* {finishedSets.map((set, index) => (
-              <td key={`player2-set-score-${index}`}>{set[1]}</td>
-            ))} */}
+            {/* FINISHED SETS using data from parent! */}
             {player2FinalScores.map((score, index) =>
-              isNaN(score.score) ? null : (
+              (playData && (!isNaN(score.score) && index + 1 < playData.setNum)) ? (
                 <td key={index} style={{ position: "relative" }}>
                   {player2TieScores[index] ? (
                     <div key={index}>
@@ -91,8 +87,8 @@ const ScoreBoard = ({ playData,
                         style={{
                           position: "absolute",
                           fontSize: "0.6em",
-                          top: "-0.3em",
-                          left: "0.9em",
+                          top: "0.3em",
+                          right: "0.9em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -103,8 +99,9 @@ const ScoreBoard = ({ playData,
                     <span key={index}>{score.score}</span>
                   )}
                 </td>
-              )
+              ) : null
             )}
+            {/* Current Set */}
             <td>{player2GameScore}</td>
             <td>{pointScore ? player2PointScore : player2TiebreakScore}</td>
           </tr>
