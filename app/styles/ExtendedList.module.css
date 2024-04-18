@@ -1,0 +1,33 @@
+.table{
+    width: 100%;
+}
+
+.TH{
+    font-size: 18px;
+    font-weight: normal;
+    text-align: center;
+    color: grey;
+}
+
+.IMG{
+    width: 35;
+    text-align: center !important; 
+}
+
+.TD{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+    padding: 8px;
+    border-bottom: solid 0.2px #EDEDED;
+}
+
+.button{
+    background-color: white;
+    border: none;
+}
+.playButton{
+    width: 20px;
+    height: 20px;
+}
+
