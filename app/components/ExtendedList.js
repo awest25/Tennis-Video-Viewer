@@ -1,8 +1,55 @@
 import React from 'react';
 import styles from '../styles/ExtendedList.module.css';
 import playButtonImage from '../play_circle.jpg';
+import getTeams from '@/app/services/getTeams.js';
 
-const ExtendedList = ({ pointsData, client_logo, opponent_logo }) => {
+const Logos = ({
+    clientTeam,
+    opponentTeam,
+  }) => {
+    const [clientLogo, setClientLogo] = useState('');
+    const [opponentLogo, setOpponentLogo] = useState('');
+    const [isUnfinished, setIsUnfinished] = useState(false);
+  
+    useEffect(() => {
+      const fetchLogos = async () => {
+        try {
+          console.log(clientTeam);
+          console.log(opponentTeam);
+          const allTeams = await getTeams();
+          const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
+          const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
+          setClientLogo(clientLogoURL);
+          setOpponentLogo(opponentLogoURL);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchLogos();
+    });}
+
+const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
+    const [client_logo, setClientLogo] = useState('');
+    const [opponent_logo, setOpponentLogo] = useState('');
+  
+    useEffect(() => {
+      const fetchLogos = async () => {
+        try {
+          console.log(clientTeam);
+          console.log(opponentTeam);
+          const allTeams = await getTeams();
+          const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
+          const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
+          setClientLogo(clientLogoURL);
+          setOpponentLogo(opponentLogoURL);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchLogos();
+    });
     let keys = ["", "serverName", "setScore", "gameScore", "pointScore", "pointWonBy", "lastShotResult", "rallyCount"];
     let keys_headers = ["", "Server", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Duration"];
     
