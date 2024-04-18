@@ -3,10 +3,11 @@
 }
 
 .TH{
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal;
     text-align: center;
     color: grey;
+    padding-left: 5px;
 }
 
 .IMG{
