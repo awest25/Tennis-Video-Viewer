@@ -4,7 +4,7 @@ function transformData(matchData) {
   let dataVersion = -1;
     
   // This is the original Dartfish format we used.
-  if (pointsData[0].hasOwnProperty('Position')) {
+  if (Object.prototype.hasOwnProperty.call(pointsData[0], 'Position')) {
     dataVersion = 0;
   }
   // This is the new format Leo made.
