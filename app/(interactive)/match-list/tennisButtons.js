@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 const TennisButtons = ({buttonVal,buttonName,onClick}) => {
-  const [val, setVal] = useState(buttonVal);
+  // const [val, setVal] = useState(buttonVal);
     
   const handleClick = () => {
     onClick(buttonVal);

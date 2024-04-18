@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/MatchTiles.module.css";
 import getTeams from '@/app/services/getTeams.js';
-import extractSetScores from "../services/extractSetScores";
 
 //Calculate winner of match
 const calculateWinner = (player1, player2) => {

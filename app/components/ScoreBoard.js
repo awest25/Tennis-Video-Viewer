@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from '../styles/Scoreboard.module.css';
-import extractSetScores from '../services/extractSetScores';
 
 const ScoreBoard = ({ playData, 
   player1Name, player2Name, 
@@ -25,20 +24,12 @@ const ScoreBoard = ({ playData,
       <table>
         <thead>
           <tr>
-            <th>Live Score {isUnfinished && "(UF)"}</th>
-            {player1FinalScores.map((item, index) => {
-              if (!isNaN(item.score) && playData && index + 1 < playData.setNum) {
-                return <th key={index}>Set {index + 1}</th>;
-              }
-            })}
-            <th>Game</th>
-            <th>{pointScore ? 'Point' : 'Tiebreak'}</th>
+            <th className={styles.live}>Live Score {isUnfinished && "(UF)"}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className={player1Name === serverName ? styles.highlight : ''}>
-              {player1Name === serverName && <span className={styles.arrow}>&rarr;</span>}
+            <td className={styles.highlight}>
               {player1Name}
             </td>
             {/* FINISHED SETS using data from parent! */}
@@ -53,8 +44,8 @@ const ScoreBoard = ({ playData,
                         style={{
                           position: "absolute",
                           fontSize: "0.6em",
-                          top: "0.3em",
-                          right: "0.9em",
+                          top: "0.1em",
+                          right: "0.25em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -69,13 +60,11 @@ const ScoreBoard = ({ playData,
             )}
             {/* Current Set */}
             <td>{player1GameScore}</td>
-            <td>{pointScore ? player1PointScore : player1TiebreakScore}</td>
+            <td className={styles.pointScore}>{pointScore ? player1PointScore : player1TiebreakScore}
+            {player1Name === serverName && <span>     &bull;</span>}</td>
           </tr>
           <tr>
-            <td className={player2Name === serverName ? styles.highlight : ''}>
-              {player2Name === serverName && <span className={styles.arrow}>&rarr;</span>}
-              {player2Name}
-            </td>
+            <td className={styles.highlight}>{player2Name}</td>
             {/* FINISHED SETS using data from parent! */}
             {player2FinalScores.map((score, index) =>
               (playData && (!isNaN(score.score) && index + 1 < playData.setNum)) ? (
@@ -87,8 +76,8 @@ const ScoreBoard = ({ playData,
                         style={{
                           position: "absolute",
                           fontSize: "0.6em",
-                          top: "0.3em",
-                          right: "0.9em",
+                          top: "0.1em",
+                          right: "0.25em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -103,7 +92,8 @@ const ScoreBoard = ({ playData,
             )}
             {/* Current Set */}
             <td>{player2GameScore}</td>
-            <td>{pointScore ? player2PointScore : player2TiebreakScore}</td>
+            <td className={styles.pointScore}>{pointScore ? player2PointScore : player2TiebreakScore}
+            {player2Name === serverName && <span>     &bull;</span>}</td>
           </tr>
         </tbody>
       </table>

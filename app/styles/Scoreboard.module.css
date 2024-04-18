@@ -2,48 +2,44 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid gray;
+  border: 1px solid #eaeaea;
   border-radius: 10px;
-  padding: 10px;
-  margin: auto;
+  padding: 8px;
+  margin-top: 8px;
   background-color: transparent;
-  /* width: 100%; 
-  height: 100%; */
-}
-
-.scoreboard td{
-  padding: 6px; /* Add padding for spacing within cells */
-  text-align: center; /* Center text within cells */
-  /* border: 1px solid #ddd; Add border for clarity */
-}
-
-/* .liveScoreHeader {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 0.8em;
-  color: #333;
-} */
-
-/* Add or adjust existing styles below as needed */
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.td {
-  text-align: center;
-  padding: 5px 10px; /* Adjust the padding to control spacing */
-}
-
-.highlight {
   font-weight: bold;
 }
 
-.arrow {
-  display: inline-block;
-  margin-left: 5px;
+.scoreboard th,
+.scoreboard td{
+  text-align: left;
+  /* margin: 10px; */
+  padding-top: 6px; /* Add padding for spacing within cells */
+  padding-bottom: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.scoreboard th{
+  font-weight: normal;
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.pointScore {
+  font-weight: bold;
+  color: #8BB8E8;
+}
+
+.live {
+  font-size: small;
+  font-weight: normal;
+}
+
+.bullet {
+  color: #8BB8E8;
+  font-weight:bolder;
+  /* font-size: large; */
 }

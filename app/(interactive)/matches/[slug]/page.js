@@ -134,10 +134,6 @@ const MatchPage = () => {
               <div>
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
-              {/* Score display */}
-              <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
-              </div>
             </div>
             <div>
               {/* Filter List */}
@@ -196,10 +192,15 @@ const MatchPage = () => {
                   </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
-
-                {/* Points List */}
-                <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                <div className='jumpList'>
+                  {/* Points List */}
+                  <div className="pointsList">
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                  </div>
+                  {/* Score display */}
+                  <div className="scoreboard">
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -248,7 +249,7 @@ const MatchPage = () => {
         }
 
         .filterList {
-          flex: 1; // Takes up 1/3 of the space
+          flex: 2; // Takes up 1/3 of the space
           margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
@@ -256,9 +257,14 @@ const MatchPage = () => {
           overflow-y: auto;
           height: 350px;
         }
+
+        .jumpList {
+          width: 325px;
+        }
         
         .listHolder {
-          display: flex; 
+          display: flex;
+          gap: 10px;
         }
       `}</style>
 
