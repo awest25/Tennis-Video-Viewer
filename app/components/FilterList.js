@@ -48,7 +48,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
     return pointsData.filter(point => point[key] === value).length;
   };
 
-  const countFilteredPointsTotal = (key, value) => {
+  const countFilteredPointsTotal = (key) => {
     return pointsData.reduce((total, point) => {
       // Check if the value attribute is not an empty string
       if (point[key] !== '') {
@@ -81,7 +81,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                     {nameMap[key]}
                   </strong>
                   <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
-                    { console.log(uniqueValues)}
+                    {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map((value) => (
                       value !== '' && (
                         <div className={styles.filterValueItem} key={value} style={{
@@ -100,12 +100,12 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                           {/* Point Percentage */}
 
                           {/* {console.log(value)}  */}
-                          {!showCount && showPercent && value && (
+                          {showPercent && value && (
                             // make a sum
                             <li>{Math.round((countFilteredPointsForValue(key, value) / Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */ ) * 100)}%</li>                                                    
                           )}
                           {/* Point Count */}
-                          {showCount && showPercent && value && (
+                          {showCount && value && (
                             <li>{countFilteredPointsForValue(key, value)} / {Math.round(countFilteredPointsTotal(key,value)) /* ERROR IS HERE */}</li> 
                           )}                                                 
                         </div>  

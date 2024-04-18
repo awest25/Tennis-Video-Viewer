@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/MatchTiles.module.css";
+import getTeams from '@/app/services/getTeams.js';
 
 const extractSetScore = (setObject) => {
   // no third set
@@ -39,26 +40,22 @@ const calculateWinner = (playerOne, playerTwo) => {
   return playerOneTotal > playerTwoTotal;
 };
 
-// Retrieve team information
-const isWomensTeam = (match) => {
-  return match.includes("(W)");
-};
-
 //Retrieve Match Date
 const extractDateFromString = (inputString) => {
-  const regex = /\b(\d{1,2}\/\d{1,2}\/\d{2,4})\b/g;
+  const regexSlash = /\b(\d{1,2}\/\d{1,2}\/\d{2,4})\b/g;
+  const regexDash = /\b(\d{1,2}-\d{1,2}-?\d{0,4})\b/g;
+  const regex = new RegExp(`${regexSlash.source}|${regexDash.source}`, "g");
   const matches = inputString.match(regex);
   if (matches) {
     // Assuming there might be multiple date patterns in the string, return an array of matches
     const firstMatch = matches[0]; // Assuming you want to pick the first matched date
-    const dateParts = firstMatch.split("/");
+    const dateParts = firstMatch.includes('/') ? firstMatch.split('/') : firstMatch.split('-');
     const month = parseInt(dateParts[0]);
     const day = parseInt(dateParts[1]);
     const year = parseInt(dateParts[2]);
 
     // Create a new Date object with the extracted components
     const dateObject = new Date(year + 2000, month - 1, day);
-
     const formattedDate = dateObject.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
@@ -74,12 +71,31 @@ const extractDateFromString = (inputString) => {
 const MatchTiles = ({
   matchName,
   finalScore,
-  clientLogo,
-  opposingLogo,
+  clientTeam,
+  opponentTeam,
   matchDetails,
 }) => {
-  //Tile heights
+  const [clientLogo, setClientLogo] = useState('');
+  const [opponentLogo, setOpponentLogo] = useState('');
   const [isUnfinished, setIsUnfinished] = useState(false);
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+        console.log(clientTeam);
+        console.log(opponentTeam);
+        const allTeams = await getTeams();
+        const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
+        const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
+        setClientLogo(clientLogoURL);
+        setOpponentLogo(opponentLogoURL);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchLogos();
+  });
 
   //Extract Final Scores from Each Set
   const firstSetObject = finalScore.filter((score) => score.setNum === 1).pop();
@@ -218,7 +234,7 @@ const MatchTiles = ({
         </div>
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImg}>
-            <img src={opposingLogo}></img>
+            <img src={opponentLogo}></img>
           </div>
           <div
             className={styles.playerInfoName}
@@ -277,10 +293,10 @@ const MatchTiles = ({
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerTitle}>Matchup</div>
         <div className={styles.containerInfo}>
-          UCLA {isWomensTeam(matchName) && "(Womens)"}
+          {clientTeam}
         </div>
         <div className={styles.containerInfo}>
-          {finalScore[0].opponentTeam} {isWomensTeam(matchName) && "(Womens)"}
+          {opponentTeam}
         </div>
       </div>
     </div>
