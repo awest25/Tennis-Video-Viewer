@@ -10,8 +10,10 @@
 }
 
 .IMG{
-    width: 35;
-    text-align: center !important; 
+    max-width: 50px; /* Adjust the width as needed */
+    height: auto; /* Ensures the aspect ratio is maintained */
+    display: block; /* Removes extra space around the image */
+    width: 100%;
 }
 
 .TD{

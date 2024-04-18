@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import styles from '../styles/ExtendedList.module.css';
-import playButtonImage from '../play_circle.jpg';
+import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
 
 const Logos = ({
@@ -14,8 +14,6 @@ const Logos = ({
     useEffect(() => {
       const fetchLogos = async () => {
         try {
-          console.log(clientTeam);
-          console.log(opponentTeam);
           const allTeams = await getTeams();
           const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
           const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
