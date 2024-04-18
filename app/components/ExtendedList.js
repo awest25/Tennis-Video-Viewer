@@ -76,7 +76,7 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
                             ))}
                             <td>
                                 <button className={styles.button}>
-                                    <img src={playButtonImage} className={styles.playButton} />
+                                <img src="https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png" alt="Play Icon" style={{ maxWidth: '30px', height: 'auto', minWidth: '30px' }} />
                                 </button>
                             </td>
                         </tr>
