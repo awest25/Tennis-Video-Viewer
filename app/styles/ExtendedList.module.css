@@ -29,6 +29,9 @@
     background-color: white;
     border: none;
 }
+.button img {
+    cursor: pointer;
+}
 .playButton{
     width: 20px;
     height: 20px;
