@@ -9,7 +9,8 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
-import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
+import MatchTiles from '@/app/components/MatchTiles';
+import extractSetScores from '@/app/services/extractSetScores';
 
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -33,6 +34,8 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
+
+  const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
   // const router = useRouter();
   const pathname = usePathname()
@@ -118,7 +121,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} />
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
@@ -129,10 +132,6 @@ const MatchPage = () => {
             <div className="videoPlayer">
               <div>
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
-              </div>
-              {/* Score display */}
-              <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint} />
               </div>
             </div>
             <div>
@@ -192,10 +191,15 @@ const MatchPage = () => {
                   </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
-
-                {/* Points List */}
-                <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                <div className='jumpList'>
+                  {/* Points List */}
+                  <div className="pointsList">
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                  </div>
+                  {/* Score display */}
+                  <div className="scoreboard">
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -244,7 +248,7 @@ const MatchPage = () => {
         }
 
         .filterList {
-          flex: 1; // Takes up 1/3 of the space
+          flex: 2; // Takes up 1/3 of the space
           margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
@@ -252,9 +256,14 @@ const MatchPage = () => {
           overflow-y: auto;
           height: 350px;
         }
+
+        .jumpList {
+          width: 325px;
+        }
         
         .listHolder {
-          display: flex; 
+          display: flex;
+          gap: 10px;
         }
       `}</style>
 
