@@ -3,30 +3,6 @@ import styles from '../styles/ExtendedList.module.css';
 import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
 
-const Logos = ({
-    clientTeam,
-    opponentTeam,
-  }) => {
-    const [clientLogo, setClientLogo] = useState('');
-    const [opponentLogo, setOpponentLogo] = useState('');
-    const [isUnfinished, setIsUnfinished] = useState(false);
-  
-    useEffect(() => {
-      const fetchLogos = async () => {
-        try {
-          const allTeams = await getTeams();
-          const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
-          const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
-          setClientLogo(clientLogoURL);
-          setOpponentLogo(opponentLogoURL);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      fetchLogos();
-    });}
-
 const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
     const [client_logo, setClientLogo] = useState('');
     const [opponent_logo, setOpponentLogo] = useState('');
@@ -34,8 +10,6 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
     useEffect(() => {
       const fetchLogos = async () => {
         try {
-          console.log(clientTeam);
-          console.log(opponentTeam);
           const allTeams = await getTeams();
           const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
           const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
@@ -49,8 +23,15 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
       fetchLogos();
     });
     let keys = ["", "serverName", "setScore", "gameScore", "pointScore", "pointWonBy", "lastShotResult", "rallyCount"];
-    let keys_headers = ["", "Server", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Duration"];
+    let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Duration"];
     
+
+    const Scroll=()=>{
+      window.scrollTo({
+        top: 100,
+        behavior: "smooth"
+    });
+    }
 
     return (
         <div id="table-container" className={styles.tableContainer}>
@@ -75,7 +56,7 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
                                 </td>
                             ))}
                             <td>
-                                <button className={styles.button}>
+                                <button className={styles.button} onClick={Scroll}>
                                 <img src="https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png" alt="Play Icon" style={{ maxWidth: '30px', height: 'auto', minWidth: '30px' }} />
                                 </button>
                             </td>
