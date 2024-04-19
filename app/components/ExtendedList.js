@@ -3,7 +3,7 @@ import styles from '../styles/ExtendedList.module.css';
 import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
 
-const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
+const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) => {
     const [client_logo, setClientLogo] = useState('');
     const [opponent_logo, setOpponentLogo] = useState('');
   
@@ -26,7 +26,8 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
     let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Duration"];
     
 
-    const Scroll=()=>{
+    const Scroll=(point)=>{
+      onPointSelect(point.Position);
       window.scrollTo({
         top: 100,
         behavior: "smooth"
@@ -56,7 +57,7 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam }) => {
                                 </td>
                             ))}
                             <td>
-                                <button className={styles.button} onClick={Scroll}>
+                                <button className={styles.button} onClick={() => Scroll(item)}>
                                 <img src="https://icons.veryicon.com/png/o/miscellaneous/food-time/play-video-1.png" alt="Play Icon" style={{ maxWidth: '30px', height: 'auto', minWidth: '30px' }} />
                                 </button>
                             </td>

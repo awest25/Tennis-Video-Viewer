@@ -204,7 +204,7 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.ExtendedList}>
-            <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
+            <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime}/>
           </div>
           <br></br>
           {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
