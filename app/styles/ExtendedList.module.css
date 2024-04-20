@@ -11,17 +11,20 @@
 }
 
 .IMG{
-    max-width: 50px; /* Adjust the width as needed */
+    max-width: 35px; /* Adjust the width as needed */
     height: auto; /* Ensures the aspect ratio is maintained */
     display: block; /* Removes extra space around the image */
     width: 100%;
 }
+/* a little smaller on the images */
 
 .TD{
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
     text-align: left;
-    padding: 8px;
+    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-bottom: solid 0.2px #EDEDED;
 }
 
