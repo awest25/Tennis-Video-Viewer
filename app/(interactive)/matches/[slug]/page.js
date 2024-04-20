@@ -33,7 +33,6 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
-  const [teamData, setTeamData] = useState();
 
   // const router = useRouter();
   const pathname = usePathname()
@@ -54,6 +53,8 @@ const MatchPage = () => {
         const matches = MatchQuerySnapshot.docs.map((doc) => doc.data());
         const match = matches.find((match) => match.videoId === videoId);
         const matchv2 = transformData(match);
+        console.log("match data", matchv2)
+        console.log("match data", match)
 
 
         setMatchData(matchv2);
@@ -73,8 +74,6 @@ const MatchPage = () => {
 
   useEffect(() => {
     if (matchData) {
-      console.log('Match Data:', matchData);
-      console.log('Team Data:', teamData);
       const points = returnFilteredPoints();
       const sortedPoints = [...points].sort((a, b) => b.Position - a.Position);
 
@@ -94,7 +93,7 @@ const MatchPage = () => {
 
       return () => clearInterval(intervalId); // Cleanup to avoid memory leaks
     }
-  }, [videoObject, matchData, teamData]);
+  }, [videoObject, matchData]);
 
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
@@ -205,12 +204,9 @@ const MatchPage = () => {
                   </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
-
-
                 {/* Points List */}
                 <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} matchDetails={matchData.matchDetails}  clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchData = {matchData}/>
-                 
+                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} matchDetails={matchData.matchDetails}  clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
                 </div>
 
               
@@ -253,14 +249,14 @@ const MatchPage = () => {
 
         .pointsList {
           flex: 1; /* Takes up 1/3 of the space */
-          margin-top: 0rem;
-          padding: 1rem;
-          margin-left: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 15px;
+          margin-top: 0;
+          padding: 1vw;
+          margin-left: 1vw;
+          border: 0.1vw solid #ddd;
+          border-radius: 1.5vw;
           overflow-y: auto;
-          height: 350px;
-          background-color: #fafafa; /* Light gray background color for padding */
+          height: 30vw;
+          background: linear-gradient(to bottom, #ffffff, #fafafa); 
         }
 
         .filterList {
