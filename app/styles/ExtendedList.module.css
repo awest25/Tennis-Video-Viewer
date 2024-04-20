@@ -3,40 +3,46 @@
 }
 
 .TH{
-    font-size: 16px;
+    font-size: 1vw;
     font-weight: 500;
     text-align: left;
     color: grey;
-    padding-left: 5px;
+    padding-left: 0.25vw;
 }
 
 .IMG{
-    max-width: 35px; /* Adjust the width as needed */
-    height: auto; /* Ensures the aspect ratio is maintained */
-    display: block; /* Removes extra space around the image */
+    max-width: 2.7vw;
+    height: auto; 
+    display: block; 
     width: 100%;
 }
-/* a little smaller on the images */
+
 
 .TD{
-    font-size: 18px;
+    font-size: 1.4vw;
     font-weight: 600;
     text-align: left;
-    padding: 10px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: solid 0.2px #EDEDED;
+    padding: 0.8vw;
+    padding-top: 3.6vh;
+    padding-bottom: 3.6vh;
+    border-bottom: solid 0.02vw #EDEDED;
+}
+
+.TD2{
+    font-size: 1.4vw;
+    font-weight: 600;
+    text-align: left;
+    padding-top: 3.6vh;
+    padding-bottom: 3.6vh;
+    border-bottom: solid 0.02vw #EDEDED;
 }
 
 .button{
     background-color: white;
     border: none;
 }
-.button img {
+.button svg {
     cursor: pointer;
-}
-.playButton{
-    width: 20px;
-    height: 20px;
+    padding-right: 2.3vw;
 }
 

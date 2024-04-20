@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from '../styles/ExtendedList.module.css';
 import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
-import { ReactComponent as RedSvg } from './Red.svg';
-import { ReactComponent as YellowSvg } from './Yellow.svg';
-import { ReactComponent as GreenSvg } from './Green.svg';
 
 const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) => {
     const [client_logo, setClientLogo] = useState('');
@@ -106,10 +103,9 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) =
                                 </td>
                             ))}
 
-                            <td>
+                            <td className={styles.TD2}>
                                 <button className={styles.button} onClick={() => Scroll(item)}>
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 30" x="0px" y="0px" style={{ width: '50px', height: '30px' }}>
-                                        <title>play circle</title>
                                         <g data-name="play circle">
                                             <path d="M12,24A12,12,0,1,1,24,12,12,12,0,0,1,12,24ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Z" stroke="grey" fill="grey" />
                                             <path d="M9,17 L16,12 L9,7 Z" fill="grey"/>
