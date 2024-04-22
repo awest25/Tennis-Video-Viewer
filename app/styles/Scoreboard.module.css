@@ -1,31 +1,45 @@
 .scoreboard {
-    width: 100%; 
-    height: 100%;
-    display: flex;
-  }
-  
-  .scoreboard table{
-    background-color: gainsboro;
-    /* border: 1px solid #eaeaea;
-    border-radius: 10px; */
-    width: 100%; /* Make the table fill the available space */
-    border-collapse: collapse; /* Remove default cell spacing */
-    margin: 20px; /* Add margin for spacing */
-  }
-  
-  .highlight {
-    font-weight: bold; 
-  }
-  
-  .arrow {
-    /* Define styles for an arrow here, for example: */
-    content: "\2192"; /* Unicode arrow right character */
-    margin-left: 5px; /* Adjust spacing as needed */
-    /* Add any other styles for the arrow here */
-  }
-  
-  .scoreboard tr{
-    padding: 10px; /* Add padding for spacing within cells */
-    text-align: center; /* Center text within cells */
-    border: 1px solid #ddd; /* Add border for clarity */
-  }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  padding: 8px;
+  margin-top: 8px;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.scoreboard th,
+.scoreboard td{
+  text-align: left;
+  /* margin: 10px; */
+  padding-top: 6px; /* Add padding for spacing within cells */
+  padding-bottom: 6px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.scoreboard th{
+  font-weight: normal;
+}
+
+.table {
+  border-collapse: collapse;
+}
+
+.pointScore {
+  font-weight: bold;
+  color: #8BB8E8;
+}
+
+.live {
+  font-size: small;
+  font-weight: normal;
+}
+
+.bullet {
+  color: #8BB8E8;
+  font-weight:bolder;
+  /* font-size: large; */
+}

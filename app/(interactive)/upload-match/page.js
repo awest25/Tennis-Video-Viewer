@@ -31,13 +31,18 @@ export default function UploadVideo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchName || !videoId || !jsonFile || !clientTeam || !opponentTeam) {
+    if (!matchName || !videoId || !clientTeam || !opponentTeam) {
       console.error("Please fill in all fields.");
       return;
     }
     
     try {
-      const pointsJson = JSON.parse(await jsonFile.text());
+      const pointsJson = jsonFile? JSON.parse(await jsonFile.text()) : [];
+      console.log(pointsJson)
+      if (pointsJson.length === 0) {
+        const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
+        if (!result) throw new Error("Upload cancelled by user.");
+      }
       await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
       alert('done!')
     } catch (error) {
@@ -54,7 +59,7 @@ export default function UploadVideo() {
   return (
     <div className={styles.container}>
       <div>
-        <h1 className={styles.title}>Upload Video</h1>
+        <h1 className={styles.title}>Upload Match</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Match Name: 
