@@ -194,7 +194,7 @@ const MatchPage = () => {
                 <div className='jumpList'>
                   {/* Points List */}
                   <div className="pointsList">
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
                   </div>
                   {/* Score display */}
                   <div className="scoreboard">

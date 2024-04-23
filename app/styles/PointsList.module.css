@@ -16,7 +16,7 @@
 .pointsList td {
   padding: 0.205vw; /* Adjust padding using viewport units */
   text-align: center;
-  border-bottom: 0.25vw solid #ddd; /* Adjust border width using viewport units */
+  border-bottom: 0.1vw solid #ddd; /* Adjust border width using viewport units */
   font-size: clamp(0.95vw, 1.15vw, 1.75vw); /* Adjust font size with minimum, preferred, and maximum values using clamp() */
   color: #333; /* Text color */
 }
