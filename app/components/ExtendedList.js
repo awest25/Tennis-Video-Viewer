@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from '../styles/ExtendedList.module.css';
-import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
 
 const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) => {
@@ -23,7 +22,7 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) =
       fetchLogos();
     });
     let keys = ["", "serverName", "setScore", "gameScore", "pointScore", "pointWonBy", "lastShotResult", "rallyCount"];
-    let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Duration"];
+    let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Shot Count"];
     
 
     const Scroll=(point)=>{
