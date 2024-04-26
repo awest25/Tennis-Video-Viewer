@@ -71,11 +71,11 @@ const extractSetScores = (finalScore) => {
       if (player1TieScores[index] > player2TieScores[index]) {
         player1FinalScores[index].score++;
         // Tiebreak more than 7 points
-        if (player2TieScores[index] >= 6) {
+        if (player1TieScores[index] >= 6) {
           player1TieScores[index]++;
         }
       } else {
-        if (player1TieScores[index] >= 6) {
+        if (player2TieScores[index] >= 6) {
           player2TieScores[index]++;
         }
         player2FinalScores[index].score++;
