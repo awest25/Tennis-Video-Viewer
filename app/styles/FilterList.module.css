@@ -9,7 +9,7 @@
     margin: 10px 0;
     background-color: #ffffff;
     border: 1px solid #eaeaea;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .activeFilterList {
@@ -26,7 +26,7 @@
     background-color: #f7f7f7; /* Slightly lighter to distinguish from hover state */
     color: #333;
     border: 1px solid #ccc; /* Subtle border color */
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 8px 16px;
     margin: 8px;
     cursor: pointer;
@@ -50,7 +50,7 @@
     padding: 8px 10px; /* Adjusted padding for consistency */
     margin: 4px 0; /* Adjusted margin for better layout */
     background-color: #f9f9f9; /* Slightly different background to distinguish from active items */
-    border-radius: 4px; /* Consistent rounded corners */
+    border-radius: 8px; /* Consistent rounded corners */
     border: 1px solid #eaeaea; /* Subtle border */
     list-style-type: none;
     cursor: pointer;

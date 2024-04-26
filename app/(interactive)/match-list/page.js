@@ -11,9 +11,10 @@ export default function MatchList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "matches"));
-      const matches = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setMatchData(matches);
+      const MatchQuerySnapshot = await getDocs(collection(db, "matches"));
+      const matches = MatchQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setMatchData(matches)
+      
     };
 
     fetchData();

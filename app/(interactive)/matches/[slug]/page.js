@@ -194,13 +194,16 @@ const MatchPage = () => {
                 <div className='jumpList'>
                   {/* Points List */}
                   <div className="pointsList">
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
                   </div>
                   {/* Score display */}
                   <div className="scoreboard">
                     <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
                   </div>
                 </div>
+
+              
+                
               </div>
             </div>
           </div>
@@ -238,13 +241,15 @@ const MatchPage = () => {
         }
 
         .pointsList {
-          flex: 1; // Takes up 1/3 of the space
-          margin-top: 0rem;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 5px;
+          flex: 1; /* Takes up 1/3 of the space */
+          margin-top: 0;
+          padding: 1vw;
+          margin-left: 1vw;
+          border: 0.1vw solid #ddd;
+          border-radius: 1.5vw;
           overflow-y: auto;
-          height: 350px;
+          height: 30vw;
+          background: linear-gradient(to bottom, #ffffff, #fafafa); 
         }
 
         .filterList {
@@ -252,11 +257,10 @@ const MatchPage = () => {
           margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
-          border-radius: 5px;
+          border-radius: 15px;
           overflow-y: auto;
           height: 350px;
         }
-
         .jumpList {
           width: 325px;
         }
