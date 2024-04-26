@@ -23,7 +23,7 @@ const SearchDropdown = () => {
         .map((doc) => {
           const data = doc.data();
           return {
-            value: data.videoId, // Use 'value' to adhere to react-select convention
+            value: doc.id, // Use 'value' to adhere to react-select convention
             label: data.name
           };
         });

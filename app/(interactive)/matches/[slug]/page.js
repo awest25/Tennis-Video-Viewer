@@ -9,10 +9,11 @@ import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
-import MatchTiles from '@/app/components/MatchTiles'; // delete later just for testing
+import MatchTiles from '@/app/components/MatchTiles';
+import extractSetScores from '@/app/services/extractSetScores';
 import ExtendedList from '../../../components/ExtendedList';
 
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
 import transformData from '../../../services/transformData';
 import nameMap from '../../../services/nameMap';
@@ -35,10 +36,12 @@ const MatchPage = () => {
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
 
+  const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
+
   // const router = useRouter();
   console.log(matchData)
   const pathname = usePathname()
-  const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
+  const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
@@ -50,11 +53,10 @@ const MatchPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'matches'));
-        const matches = querySnapshot.docs.map((doc) => doc.data());
-        const match = matches.find((match) => match.videoId === videoId);
-        const matchv2 = transformData(match);
-        setMatchData(matchv2);
+        const documentRef = doc(db, 'matches', docId);
+        const documentSnapshot = await getDoc(documentRef);
+        const transformedData = transformData(documentSnapshot.data());
+        setMatchData(transformedData)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -121,7 +123,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} finalScore={matchData.points} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} />
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
@@ -132,10 +134,6 @@ const MatchPage = () => {
             <div className="videoPlayer">
               <div>
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
-              </div>
-              {/* Score display */}
-              <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint} />
               </div>
             </div>
             <div>
@@ -195,11 +193,19 @@ const MatchPage = () => {
                   </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                 </div>
-
-                {/* Points List */}
-                <div className="pointsList">
-                  <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} />
+                <div className='jumpList'>
+                  {/* Points List */}
+                  <div className="pointsList">
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
+                  </div>
+                  {/* Score display */}
+                  <div className="scoreboard">
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                  </div>
                 </div>
+
+              
+                
               </div>
             </div>
           </div>
@@ -240,27 +246,33 @@ const MatchPage = () => {
         }
 
         .pointsList {
-          flex: 1; // Takes up 1/3 of the space
-          margin-top: 0rem;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 5px;
+          flex: 1; /* Takes up 1/3 of the space */
+          margin-top: 0;
+          padding: 1vw;
+          margin-left: 1vw;
+          border: 0.1vw solid #ddd;
+          border-radius: 1.5vw;
           overflow-y: auto;
-          height: 350px;
+          height: 30vw;
+          background: linear-gradient(to bottom, #ffffff, #fafafa); 
         }
 
         .filterList {
-          flex: 1; // Takes up 1/3 of the space
+          flex: 2; // Takes up 1/3 of the space
           margin-top: 0rem;
           padding: 1rem;
           border: 1px solid #ddd;
-          border-radius: 5px;
+          border-radius: 15px;
           overflow-y: auto;
           height: 350px;
         }
+        .jumpList {
+          width: 325px;
+        }
         
         .listHolder {
-          display: flex; 
+          display: flex;
+          gap: 10px;
         }
       `}</style>
 
