@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from '../styles/ExtendedList.module.css';
 import playButtonImage from './play_button.png';
 import getTeams from '@/app/services/getTeams.js';
+import Winner from '../../public/Winner.js';
+import Error from '../../public/Error.js';
+import DoubleFault from "@/public/DoubleFault";
 
 const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) => {
     const [client_logo, setClientLogo] = useState('');
@@ -56,42 +59,14 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect }) =
                                             {cellIndex === keys.length - 2 ? (
                                                 <>
                                                     {item['lastShotResult'] === 'Winner' && (
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="9" cy="9.96338" r="9" fill="url(#paint0_radial_95_406)"/>
-                                                        <circle cx="9" cy="9.96338" r="3" fill="#76E696"/>
-                                                        <defs>
-                                                        <radialGradient id="paint0_radial_95_406" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9 9.96338) rotate(90) scale(9)">
-                                                        <stop stop-color="white"/>
-                                                        <stop offset="1" stop-color="#DCF6E4"/>
-                                                        </radialGradient>
-                                                        </defs>
-                                                        </svg>
-                                                        
+                                                        <Winner/>
                                                     )}
                                                     {item['lastShotResult'] === 'Error' && (
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="9" cy="9.96338" r="9" fill="url(#paint0_radial_95_660)"/>
-                                                        <circle cx="9" cy="9.96338" r="3" fill="#F7AB1C"/>
-                                                        <defs>
-                                                        <radialGradient id="paint0_radial_95_660" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9 9.96338) rotate(90) scale(9)">
-                                                        <stop stop-color="white"/>
-                                                        <stop offset="1" stop-color="#FFEBCD"/>
-                                                        </radialGradient>
-                                                        </defs>
-                                                        </svg>
+                                                        <Error/>
                                                         
                                                     )}
                                                     {item['lastShotResult'] === 'Double Fault' && (
-                                                        <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="9" cy="9.96338" r="9" fill="url(#paint0_radial_95_656)"/>
-                                                        <circle cx="9" cy="9.96338" r="3" fill="#FF866B"/>
-                                                        <defs>
-                                                        <radialGradient id="paint0_radial_95_656" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9 9.96338) rotate(90) scale(9)">
-                                                        <stop stop-color="white"/>
-                                                        <stop offset="1" stop-color="#FFEDEA"/>
-                                                        </radialGradient>
-                                                        </defs>
-                                                        </svg>
+                                                        <DoubleFault/>
                                                     )}
                                                     <span style={{ marginLeft: '4px' }}>{item['lastShotResult']}</span>
                                                 </>
