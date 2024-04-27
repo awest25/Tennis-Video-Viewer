@@ -116,6 +116,13 @@ const MatchPage = () => {
     setFilterList(updatedFilterList);
   };
 
+  const scrolltolist=()=>{
+    window.scrollTo({
+      top: 900,
+      behavior: "smooth"
+  });
+  }
+
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
@@ -198,6 +205,9 @@ const MatchPage = () => {
                   <div className="pointsList">
                     <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
                   </div>
+                  <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
+                  <button className={styles.buttonn} onClick={() => scrolltolist()}>View Detailed List</button>
+                </div>
                   {/* Score display */}
                   <div className="scoreboard">
                     <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>

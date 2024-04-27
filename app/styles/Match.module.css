@@ -141,3 +141,22 @@
       color 0.15s ease,
       border-color 0.15s ease;
   }
+
+  .buttonn {
+    align : center;
+    padding: 0.625vw 2.5vw; /* Adjust padding using viewport units */
+    cursor: pointer;
+    background-color: #fafafa;
+    border: none; /* Remove the default border */
+    border-left: 0.313vw solid #b0b0b0; /* Adjust border width using viewport units */
+    border-bottom: 0.313vw solid #b0b0b0; /* Adjust border width using viewport units */
+    font-weight: 400;
+    font-size: 1.3vw; /* Adjust font size using viewport units */
+    line-height: 1.0vw;
+    border-radius: 0.25vw; /* Adjust border radius using viewport units */
+  }
+  
+  .buttonn:hover {
+    background-color: #e9ecef;
+    border-color: #b8c2cc;
+  }
