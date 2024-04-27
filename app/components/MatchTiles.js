@@ -57,7 +57,8 @@ const MatchTiles = ({
   player1Name, player2Name, 
   player1FinalScores, player2FinalScores,
   player1TieScores, player2TieScores,
-  isUnfinished
+  isUnfinished,
+  displaySections = { score: true, info: true, matchup: true } // default all true
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
@@ -184,25 +185,30 @@ const MatchTiles = ({
         </div>
       </div>
       {/* Match Location */}
-      <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Match Information</div>
-        <div className={styles.containerInfo}>{matchDetails}</div>
-        <div className={styles.containerInfo}>
-          {extractDateFromString(matchName)}
+      {displaySections.info && (
+        <div className={styles.matchInfoContainer}>
+          <div className={styles.containerTitle}>Match Information</div>
+          <div className={styles.containerInfo}>{matchDetails}</div>
+          <div className={styles.containerInfo}>
+            {extractDateFromString(matchName)}
+          </div>
         </div>
-      </div>
+      )}
       {/* School Info */}
-      <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Matchup</div>
-        <div className={styles.containerInfo}>
-          {clientTeam}
+      {displaySections.matchup && (
+        <div className={styles.matchInfoContainer}>
+          <div className={styles.containerTitle}>Matchup</div>
+          <div className={styles.containerInfo}>
+            {clientTeam}
+          </div>
+          <div className={styles.containerInfo}>
+            {opponentTeam}
+          </div>
         </div>
-        <div className={styles.containerInfo}>
-          {opponentTeam}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
 export default MatchTiles;
+

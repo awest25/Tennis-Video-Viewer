@@ -9,7 +9,7 @@
     border: 1px solid #DEDEDE;
     border-radius: 24px;
     font-family: 'DM Sans', sans-serif;
-    width: 38%;
+    width: 100%; /*use to be 38%, idk why, may bug?*/
     margin: 8px;
     padding: 1em;
 }
