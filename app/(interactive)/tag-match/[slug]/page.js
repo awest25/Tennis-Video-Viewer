@@ -354,7 +354,13 @@ export default function TagMatch() {
 
   const handleImageClick = (event) => {
     const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
-    const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
+    // const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
+    
+    // The current SVG has the actual in width of the court as 360 out of 600 total
+    // The height is 780 out of 1080 total
+    // This makes the ratio 0.6 for width and 0.7222 for height
+    const xRatio = 0.6;
+    // const yRatio = 0.7222;
 
     // Get the bounding rectangle of the SVG container
     const rect = event.currentTarget.getBoundingClientRect();
@@ -362,13 +368,19 @@ export default function TagMatch() {
     const widthOfCourt = rect.width; // Using rect.width is more reliable
     const heightOfCourt = rect.height;
 
+    const inchesPerPixel = courtWidthInInches / (widthOfCourt * xRatio); // This is slightly wrong bc it rounds at some point?
+
     // Calculate the click position relative to the SVG container
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
+    // Find how far from the center the click was
+    const xFromCenter = x - widthOfCourt / 2;
+    const yFromCenter = y - heightOfCourt / 2;
+
     // Calculate the click position in inches
-    const xInches = Math.round((x / widthOfCourt) * courtWidthInInches);
-    const yInches = Math.round((y / heightOfCourt) * courtHeightInInches);
+    const xInches = Math.round(xFromCenter * inchesPerPixel);
+    const yInches = Math.round(yFromCenter * inchesPerPixel) * -1;
 
     console.log("xInches: " + xInches + " yInches: " + yInches);
     return { x: xInches, y: yInches };
