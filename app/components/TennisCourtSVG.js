@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TennisCourtSVG = ({ handleImageClick }) => {
+const TennisCourtSVG = ({ handleImageClick, courtType }) => {
   return (
     <svg onClick={handleImageClick} width="600" height="1080" viewBox="0 0 600 1080" style={{ border: '4px solid red', width: 'auto', height: '30rem' }}>
       {/* Background */}
@@ -20,6 +20,26 @@ const TennisCourtSVG = ({ handleImageClick }) => {
         <rect x="435" y="540" width="45" height="390" fill="lightblue" />
         <rect x="165" y="540" width="135" height="210" fill="lightblue" />
         <rect x="300" y="540" width="135" height="210" fill="lightblue" />
+
+        {/* Optional service sections top half */}
+        {/* Optional service sections bottom half */}
+        {(courtType === 'serve') && (
+          <>
+            <rect x="165" y="330" width="45" height="210" fill="lightblue" />
+            <rect x="210" y="330" width="45" height="210" fill="lightblue" />
+            <rect x="255" y="330" width="45" height="210" fill="lightblue" />
+            <rect x="300" y="330" width="45" height="210" fill="lightblue" />
+            <rect x="345" y="330" width="45" height="210" fill="lightblue" />
+            <rect x="390" y="330" width="45" height="210" fill="lightblue" />
+
+            <rect x="165" y="540" width="45" height="210" fill="lightblue" />
+            <rect x="210" y="540" width="45" height="210" fill="lightblue" />
+            <rect x="255" y="540" width="45" height="210" fill="lightblue" />
+            <rect x="300" y="540" width="45" height="210" fill="lightblue" />
+            <rect x="345" y="540" width="45" height="210" fill="lightblue" />
+            <rect x="390" y="540" width="45" height="210" fill="lightblue" />
+          </>
+        )}
 
         {/* T lines and center lines */}
         <line x1="165" y1="330" x2="435" y2="330" stroke="white" stroke-width="2" />

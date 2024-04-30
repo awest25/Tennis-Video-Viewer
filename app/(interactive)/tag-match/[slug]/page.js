@@ -404,10 +404,10 @@ export default function TagMatch() {
         <div>
           <p>{currentPage}</p>
           {buttonData[currentPage].map((button, index) => {
-            return button.courtImage === true ? (
+            return button.courtImage ? (
               <div>
                 <p>{button.label}</p>
-                <TennisCourtSVG className={styles.courtImage} handleImageClick={(event) => {
+                <TennisCourtSVG className={styles.courtImage} courtType={button.courtImage} handleImageClick={(event) => {
                     setPopUp([])
                     saveToHistory();
                     let data = handleImageClick(event); // returns data.x and data.y coordinates
