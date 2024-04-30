@@ -21,6 +21,8 @@ export default function TagMatch() {
   const [currentPage, setCurrentPage] = useState('ServerName'); // TODO: the default should continue from what was filled in last
   const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
   const [isPublished, setIsPublished] = useState(false); // TODO: impliment this functionality (only show published matches)
+  const [matchMetadata, setMatchMetadata] = useState({});
+
   const [popUp, setPopUp] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [displayPopUp, setDisplayPopUp] = useState(false);
@@ -49,6 +51,10 @@ export default function TagMatch() {
           return { ...oldTableState, rows: [] };
         });
       }
+
+      // Set the metadata to matchDocument but without the 'points'
+      const { points, ...metadata } = matchDocument;
+      setMatchMetadata(metadata);
     });
   }, [matchId]);
 
@@ -353,6 +359,7 @@ export default function TagMatch() {
   const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage);
 
   const handleImageClick = (event) => {
+    console.log("event: ", event);
     const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
     // const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
     
@@ -410,7 +417,11 @@ export default function TagMatch() {
                 <TennisCourtSVG className={styles.courtImage} courtType={button.courtImage} handleImageClick={(event) => {
                     setPopUp([])
                     saveToHistory();
-                    let data = handleImageClick(event); // returns data.x and data.y coordinates
+                    let data = matchMetadata;
+                    // add data.x and data.y to the data object
+                    const { x, y } = handleImageClick(event);
+                    data.x = x;
+                    data.y = y;
                     data.table = tableState.rows;
                     data.activeRowIndex = tableState.activeRowIndex;
                     data.videoTimestamp = getVideoTimestamp();
@@ -422,7 +433,7 @@ export default function TagMatch() {
               <button className={styles.customButton} key={index} onClick={() => {
                 setPopUp([])
                 saveToHistory();
-                let data = {};
+                let data = matchMetadata;
                 data.table = tableState.rows;
                 data.activeRowIndex = tableState.activeRowIndex;
                 data.videoTimestamp = getVideoTimestamp();

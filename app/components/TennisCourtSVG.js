@@ -42,29 +42,29 @@ const TennisCourtSVG = ({ handleImageClick, courtType }) => {
         )}
 
         {/* T lines and center lines */}
-        <line x1="165" y1="330" x2="435" y2="330" stroke="white" stroke-width="2" />
-        <line x1="165" y1="750" x2="435" y2="750" stroke="white" stroke-width="2" />
-        <line x1="300" y1="330" x2="300" y2="540" stroke="white" stroke-width="2" />
-        <line x1="300" y1="540" x2="300" y2="750" stroke="white" stroke-width="2" />
+        <line x1="165" y1="330" x2="435" y2="330" stroke="white" strokeWidth="2" />
+        <line x1="165" y1="750" x2="435" y2="750" stroke="white" strokeWidth="2" />
+        <line x1="300" y1="330" x2="300" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="300" y1="540" x2="300" y2="750" stroke="white" strokeWidth="2" />
 
         {/* Alley lines */}
-        <line x1="165" y1="150" x2="165" y2="540" stroke="white" stroke-width="2" />
-        <line x1="435" y1="150" x2="435" y2="540" stroke="white" stroke-width="2" />
-        <line x1="165" y1="540" x2="165" y2="930" stroke="white" stroke-width="2" />
-        <line x1="435" y1="540" x2="435" y2="930" stroke="white" stroke-width="2" />
+        <line x1="165" y1="150" x2="165" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="435" y1="150" x2="435" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="165" y1="540" x2="165" y2="930" stroke="white" strokeWidth="2" />
+        <line x1="435" y1="540" x2="435" y2="930" stroke="white" strokeWidth="2" />
 
         {/* Outside alley lines */}
-        <line x1="120" y1="150" x2="120" y2="540" stroke="white" stroke-width="2" />
-        <line x1="480" y1="150" x2="480" y2="540" stroke="white" stroke-width="2" />
-        <line x1="120" y1="930" x2="120" y2="540" stroke="white" stroke-width="2" />
-        <line x1="480" y1="930" x2="480" y2="540" stroke="white" stroke-width="2" />
+        <line x1="120" y1="150" x2="120" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="480" y1="150" x2="480" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="120" y1="930" x2="120" y2="540" stroke="white" strokeWidth="2" />
+        <line x1="480" y1="930" x2="480" y2="540" stroke="white" strokeWidth="2" />
 
         {/* Top and Bottom lines */}
-        <line x1="120" y1="150" x2="480" y2="150" stroke="white" stroke-width="2" />
-        <line x1="120" y1="930" x2="480" y2="930" stroke="white" stroke-width="2" />
+        <line x1="120" y1="150" x2="480" y2="150" stroke="white" strokeWidth="2" />
+        <line x1="120" y1="930" x2="480" y2="930" stroke="white" strokeWidth="2" />
 
         {/* Net Line */}
-        <line className="gray-hoverable" x1="90" y1="540" x2="510" y2="540" stroke="black" stroke-width="4" />
+        <line className="gray-hoverable" x1="90" y1="540" x2="510" y2="540" stroke="black" strokeWidth="4" />
 
       <style>
         {`
