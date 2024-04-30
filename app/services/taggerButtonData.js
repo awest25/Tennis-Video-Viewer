@@ -4,38 +4,33 @@ The 'getTaggerButtonData' function generates a JSON object used for creating a d
 
 Structure:
 - Each button object has a 'label' property, which specifies the text to be displayed on the button.
-- The 'action' property of each button is a function that handles all logic for the button and can call the following functions (passed from tag-match.js) in any amount/order:
-  - 'updateLastRow': This action adds a value to a specified column in the last row of the table. The column name is the first argument, and the value to add is the second argument.
-  - 'setCurrentPage': This action updates the 'currentPage' state with the name of the page passed as an argument.
-  - 'addNewRow': Calling this function with no arguments adds a new row to the table.
-  - All table data is stored in the 'data' argument of the action function, accessed with 'data.table'.
+- The 'action' property of each button is a function that handles all logic for the button. It can call various functions passed from tag-match.js, such as 'updateLastRow', 'setCurrentPage', and 'addNewRow'.
 
-For images it's a little different:
-    - To bring in a court image, the following property must be set: { courtImage: true }
-    - The label sits above the image
-    - The action takes a data argument
-    - The x coordinate is stored in: data.x
-    - The y coordinate is sotred in: data.y
-You can then use this x and y coordinate to update the table.
+Data Handling:
+- All table data is stored in the 'data' argument of the action function, accessible with 'data.table'.
+- For image-based interaction, set the 'courtImage' property to 'serve' or 'standard' to specify how the court image should be split.
+- Coordinates are captured in 'data.x' and 'data.y'. Use these to update table entries based on user interactions.
 
-For example, if the coordinates are really high, you know the serve was long, and you write the logic to record it:
-if (data.y > 800) {
-    updateLastRow('isErrorLong', '1'); // sets the isErrorLong column to '1' for the last row
-}
+Example Logic:
+- Update the last row based on serve coordinates:
+  if (data.y > 800) {
+    updateLastRow('isErrorLong', '1'); // Marks the serve as long
+  }
 
-Other examples:
-updateLastRow('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
-setCurrentPage('FirstServeResult'); // sets the currentPage to 'FirstServeResult'
-newRow(); // adds a new row to the table
+- Update scores and state transitions:
+  updateLastRow('pointScore', '0-0'); // sets the pointScore column to '0-0' for the last row
+  setCurrentPage('FirstServeResult'); // transitions to the First Serve Result page
+  newRow(); // adds a new row to the table
 
-Available properties of `data`:
-data.x
-data.y
-data.table
-data.activeRowIndex
-data.videoTimestamp
+Additional Properties of 'data':
+- data.x (only for image data)
+- data.y (only for image data)
+- data.table
+- data.activeRowIndex
+- data.videoTimestamp
 
 ======== Developed by Alex West ======== */
+
 var serverScore = 0;
 var returnerScore = 0;
 var player1SetScore = 0;
