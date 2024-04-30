@@ -1,15 +1,12 @@
 import React from 'react';
 import styles from '../styles/Scoreboard.module.css';
 
-const ScoreBoard = ({ names, playData }) => {
-  // Ensures playData is not null/undefined, to safely access its properties.
-  const data = playData || {};
-
+const ScoreBoard = ({ playData, 
+  player1Name, player2Name, 
+  player1FinalScores, player2FinalScores,
+  player1TieScores, player2TieScores,
+  isUnfinished }) => {
   const {
-    player1Name = '',
-    player2Name = '',
-    player1SetScore = 0,
-    player2SetScore = 0,
     player1GameScore = 0,
     player2GameScore = 0,
     player1PointScore = 0,
@@ -18,48 +15,85 @@ const ScoreBoard = ({ names, playData }) => {
     player2TiebreakScore = 0,
     serverName = '',
     pointScore = true,
-  } = data;
+  } = playData || {};
 
-  const players = names.split(' ');
-  const defaultP1 = `${players[0]} ${players[1]}`;
-  const defaultP2 = `${players[3]} ${players[4]}`;
-  const p1 = player1Name || defaultP1;
-  const p2 = player2Name || defaultP2;
-
-  // Determines point label based on the current score mode (regular or tiebreaker).
-  const PointLabel = pointScore ? "Point" : "Point (Tiebreaker)";
-  const row1 = pointScore ? player1PointScore : player1TiebreakScore;
-  const row2 = pointScore ? player2PointScore : player2TiebreakScore;
+  // console.log(playData)
 
   return (
     <div className={styles.scoreboard}>
       <table>
         <thead>
           <tr>
-            <th>Players</th>
-            <th>Set</th>
-            <th>Game</th>
-            <th>{PointLabel}</th>
+            <th className={styles.live}>Live Score {isUnfinished && "(UF)"}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className={p1 === serverName ? styles.highlight : ''}>
-              {p1 === serverName && <span className={styles.arrow}>&rarr;</span>}
-              {p1}
+            <td className={styles.highlight}>
+              {player1Name}
             </td>
-            <td>{player1SetScore}</td>
+            {/* FINISHED SETS using data from parent! */}
+            {/* Check if tie break, if so add exponent */}
+            {player1FinalScores.map((score, index) =>
+              (playData && (!isNaN(score.score) && index + 1 < playData.setNum)) ? (
+                <td key={index} style={{ position: "relative" }}>
+                  {player1TieScores[index] ? (
+                    <div key={index}>
+                      {score.score}
+                      <sup
+                        style={{
+                          position: "absolute",
+                          fontSize: "0.6em",
+                          top: "0.1em",
+                          right: "0.25em",
+                          letterSpacing: "1px",
+                        }}
+                      >
+                        {player1TieScores[index]}
+                      </sup>
+                    </div>
+                  ) : (
+                    <span key={index}>{score.score}</span>
+                  )}
+                </td>
+              ) : null
+            )}
+            {/* Current Set */}
             <td>{player1GameScore}</td>
-            <td>{row1}</td>
+            <td className={styles.pointScore}>{pointScore ? player1PointScore : player1TiebreakScore}
+              {player1Name === serverName && <span>     &bull;</span>}</td>
           </tr>
           <tr>
-            <td className={p2 === serverName ? styles.highlight : ''}>
-              {p2 === serverName && <span className={styles.arrow}>&rarr;</span>}
-              {p2}
-            </td>
-            <td>{player2SetScore}</td>
+            <td className={styles.highlight}>{player2Name}</td>
+            {/* FINISHED SETS using data from parent! */}
+            {player2FinalScores.map((score, index) =>
+              (playData && (!isNaN(score.score) && index + 1 < playData.setNum)) ? (
+                <td key={index} style={{ position: "relative" }}>
+                  {player2TieScores[index] ? (
+                    <div key={index}>
+                      {score.score}
+                      <sup
+                        style={{
+                          position: "absolute",
+                          fontSize: "0.6em",
+                          top: "0.1em",
+                          right: "0.25em",
+                          letterSpacing: "1px",
+                        }}
+                      >
+                        {player2TieScores[index]}
+                      </sup>
+                    </div>
+                  ) : (
+                    <span key={index}>{score.score}</span>
+                  )}
+                </td>
+              ) : null
+            )}
+            {/* Current Set */}
             <td>{player2GameScore}</td>
-            <td>{row2}</td>
+            <td className={styles.pointScore}>{pointScore ? player2PointScore : player2TiebreakScore}
+              {player2Name === serverName && <span>     &bull;</span>}</td>
           </tr>
         </tbody>
       </table>
