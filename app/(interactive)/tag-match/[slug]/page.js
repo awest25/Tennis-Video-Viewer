@@ -148,27 +148,27 @@ export default function TagMatch() {
   }
 
   const addNewRowAndSync = () => {
-    pullAndPushRows();
-
-    let newTimestamp = getVideoTimestamp();
-
-    // Create a new row object with the required structure
-    const newRow = columnNames.reduce((acc, columnName) => {
-      // Check if a row already exists with the new timestamp
-      let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
-
-      while (existingRow !== undefined) {
-        // If a row already exists, increment the timestamp by 1
-        newTimestamp += 1;
-        existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
-      }
-
-      acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
-      return acc;
-    }, {});
-
-    // Add new row and sort
     setTableState(oldTableState => {
+      pullAndPushRows(oldTableState.rows, null);
+
+      let newTimestamp = getVideoTimestamp();
+
+      // Create a new row object with the required structure
+      const newRow = columnNames.reduce((acc, columnName) => {
+        // Check if a row already exists with the new timestamp
+        let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+
+        while (existingRow !== undefined) {
+          // If a row already exists, increment the timestamp by 1
+          newTimestamp += 1;
+          existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+        }
+
+        acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
+        return acc;
+      }, {});
+
+      // Add new row and sort
       const updatedTable = [...oldTableState.rows, newRow];
       // Sort the table by 'pointStartTime'
       updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
@@ -189,7 +189,7 @@ export default function TagMatch() {
       const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
       return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
     });
-    pullAndPushRows(rowToDeleteTimestamp);
+    pullAndPushRows(tableState.rows, rowToDeleteTimestamp);
   }
 
 
@@ -250,9 +250,9 @@ export default function TagMatch() {
   }, [displayPopUp]);
 
 
-  const pullAndPushRows = async (rowToDeleteTimestamp = null) => {
+  const pullAndPushRows = async (rowState, rowToDeleteTimestamp = null) => {
     try {
-      const tableSnapshot = [...tableState.rows]; // Snapshot of the table before fetching updates
+      const tableSnapshot = [...rowState]; // Snapshot of the table before fetching updates
       // Fetch the current document state from the database
       const matchDocument = await getMatchInfo(matchId);
       const incomingRows = matchDocument.points ?? [];
@@ -309,7 +309,7 @@ export default function TagMatch() {
 
   // Toggle the publushed state of the match
   const togglePublish = async () => {
-    pullAndPushRows();
+    pullAndPushRows(tableState.rows, null);
     try {
       await updateMatchDocument(matchId, {
         published: !isPublished
