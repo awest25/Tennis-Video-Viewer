@@ -28,6 +28,7 @@ Additional Properties of 'data':
 - data.table
 - data.activeRowIndex
 - data.videoTimestamp
+- Every other property in the match document on the server is also available in 'data', such as 'data.videoId', 'data.clientTeam', etc.
 
 ======== Developed by Alex West ======== */
 
