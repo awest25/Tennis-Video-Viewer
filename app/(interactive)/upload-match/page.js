@@ -12,8 +12,11 @@ export default function UploadVideo() {
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [clientTeam, setClientTeam] = useState('Arizona State (M)');
-  const [opponentTeam, setOpponentTeam] = useState('Arizona State (M)');
+  const [clientPlayer, setClientPlayer] = useState('Arizona State (M)');
+  const [opponentTeam, setOpponentTeam] = useState(null);
+  const [opponentPlayer, setOpponentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [singles, setSingles] = useState(true);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -76,10 +79,38 @@ export default function UploadVideo() {
             </select>
           </label>
           <label>
+            Client Player: 
+            <select id="search" onChange={(e) => setClientPlayer(e.target.value)}>
+              {clientPlayerOptions}
+            </select>
+          </label>
+          <label>
             Opponent Team: 
             <select id="search" onChange={(e) => setOpponentTeam(e.target.value)}>
               {teamOptions}
             </select>
+          </label>
+          <label>
+            Opponent Player: 
+            <select id="search" onChange={(e) => setOpponentPlayer(e.target.value)}>
+              {opponentPlayerOptions}
+            </select>
+          </label>
+          <label>
+            <input
+            type="radio"
+            checked={singles}
+            onChange={() => {setSingles(true)}}
+            />
+            Singles
+          </label>
+          <label>
+            <input
+            type="radio"
+            checked={!singles}
+            onChange={() => {setSingles(false)}}
+            />
+            Doubles
           </label>
           <label>
             JSON File: 
