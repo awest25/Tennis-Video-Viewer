@@ -1,4 +1,4 @@
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDoc, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import storage functions
 import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
@@ -53,7 +53,7 @@ async function uploadTeam(teamName, logoFile) {
       logoUrl = await getDownloadURL(snapshot.ref);
     }
 
-    // Then, save the match data along with the PDF URL to Firestore
+    // Then, save the match data along with the Logo URL to Firestore
     const mens = teamName + " (M)";
     const womens = teamName + " (W)";
     const docRefM = await addDoc(collection(db, "teams"), {
@@ -71,4 +71,38 @@ async function uploadTeam(teamName, logoFile) {
   }
 }
 
-export { uploadMatch, uploadTeam };
+async function uploadPlayer(playerName, teamName) {
+  if (!playerName || !teamName) {
+    console.error("All fields are required.");
+    return; // Exit the function if any field is empty
+  }
+
+  try {
+    // Check if the team exists
+    const teamRef = collection(db, 'teams');
+    const teamQuery = query(teamRef, where('name', '==', teamName));
+    const teamSnapshot = await getDocs(teamQuery);
+
+    if (teamSnapshot.empty) {
+      console.log("Team does not exist");
+      return;
+    }
+
+    // Get the document reference
+    const teamDoc = doc(db, 'teams', teamSnapshot.docs[0].id);
+
+    // Check if the 'players' field exists
+    const teamData = (await getDoc(teamDoc)).data();
+    if (!teamData.players) {
+      // If 'players' field doesn't exist, create it and initialize it as an array
+      await updateDoc(teamDoc, { players: [playerName] });
+    } else {
+      // If 'players' field exists, append the playerName to the array
+      await updateDoc(teamDoc, { players: arrayUnion(playerName) });
+    }
+  } catch (e) {
+    console.error("Error adding Player Field: ", e);
+  }
+}
+
+export { uploadMatch, uploadTeam, uploadPlayer };

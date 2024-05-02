@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { uploadTeam, uploadPlayer } from '../../services/upload.js';
 import getTeams from '@/app/services/getTeams.js';
 
@@ -8,6 +8,7 @@ import styles from '../../styles/Upload.module.css'
 
 export default function UploadVideo() {
   const [teamName, setTeamName] = useState('');
+  const [teamSelect, setTeamSelect] = useState('Arizona (M)')
   const [playerName, setPlayerName] = useState('');
   const [logoFile, setLogoFile] = useState(null);
   const [teams, setTeams] = useState([]);
@@ -46,18 +47,24 @@ export default function UploadVideo() {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     
-    if (!playerName) {
+    if (!playerName || !teamSelect) {
       console.error("Please fill in Player Name.");
       return;
     }
     
     try {
-      await uploadPlayer(playerName)
+      await uploadPlayer(playerName, teamSelect)
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
     }
   };
+
+  const teamOptions = useMemo(() => {
+    return teams.map((option, index) => (
+      <option key={index} value={option.name}>{option.name}</option>
+    ));
+  }, [teams]);
 
   return (
     <div className={styles.container}>
@@ -88,7 +95,13 @@ export default function UploadVideo() {
         <form className={styles.form} onSubmit={handleAddSubmit}>
           <label>
             Player Name: 
-            <input type="text" value={teamName} onChange={(e) => setPlayerName(e.target.value)} />
+            <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
+          </label>
+          <label>
+            Team: 
+            <select id="search" onChange={(e) => setTeamSelect(e.target.value)}>
+              {teamOptions}
+            </select>
           </label>
           <button type="submit">Add</button>
         </form>
