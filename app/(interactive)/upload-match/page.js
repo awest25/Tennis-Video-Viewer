@@ -11,13 +11,11 @@ export default function UploadVideo() {
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientTeam, setClientTeam] = useState('Arizona State (M)');
-  const [clientPlayer, setClientPlayer] = useState('Arizona State (M)');
-  const [opponentTeam, setOpponentTeam] = useState(null);
+  const [clientTeam, setClientTeam] = useState('Arizona (M)');
+  const [clientPlayer, setClientPlayer] = useState(null);
+  const [opponentTeam, setOpponentTeam] = useState('Arizona (M)');
   const [opponentPlayer, setOpponentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
-  const [clientPlayers, setClientPlayers] = useState([]);
-  const [opponentPlayers, setOpponentPlayers] = useState([]);
   const [singles, setSingles] = useState(true);
 
   useEffect(() => {
@@ -32,32 +30,6 @@ export default function UploadVideo() {
 
     fetchTeams();
   }, []);
-
-  useEffect(() => {
-    const fetchClientPlayers = async () => {
-      try {
-        const p = await getClientPlayers();
-        setClientPlayers(p);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchClientPlayers();
-  }, [clientTeam]);
-
-  useEffect(() => {
-    const fetchOpponentPlayers = async () => {
-      try {
-        const p = await getClientPlayers();
-        setClientPlayers(p);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchOpponentPlayers();
-  }, [opponentTeam]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,15 +59,20 @@ export default function UploadVideo() {
     ));
   }, [teams]);
   const clientPlayerOptions = useMemo(() => {
-    return clientPlayers.map((option, index) => (
-      <option key={index} value={option.name}>{option.name}</option>
+    if (teams.length === 0) return null
+    const team = teams.find(team => team.name === clientTeam);
+    console.log(team)
+    return team.players.map(player => (
+      <option key={player} value={player}>{player}</option>
     ));
-  }, [clientPlayers]);
+  }, [teams]);
   const opponentPlayerOptions = useMemo(() => {
-    return opponentPlayers.map((option, index) => (
-      <option key={index} value={option.name}>{option.name}</option>
+    if (teams.length === 0) return null
+    const team = teams.find(team => team.name === opponentTeam);
+    return team.players.map(player => (
+      <option key={player} value={player}>{player}</option>
     ));
-  }, [opponentPlayers]);
+  }, [teams]);
 
   return (
     <div className={styles.container}>
