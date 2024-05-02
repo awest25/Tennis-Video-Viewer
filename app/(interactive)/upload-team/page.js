@@ -88,7 +88,7 @@ export default function UploadVideo() {
         <form className={styles.form} onSubmit={handleAddSubmit}>
           <label>
             Player Name: 
-            <input type="text" value={teamName} onChange={(e) => setTeamName(e.target.value)} />
+            <input type="text" value={teamName} onChange={(e) => setPlayerName(e.target.value)} />
           </label>
           <button type="submit">Add</button>
         </form>
