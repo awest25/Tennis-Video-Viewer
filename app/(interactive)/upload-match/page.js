@@ -16,6 +16,8 @@ export default function UploadVideo() {
   const [opponentTeam, setOpponentTeam] = useState(null);
   const [opponentPlayer, setOpponentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [clientPlayers, setClientPlayers] = useState([]);
+  const [opponentPlayers, setOpponentPlayers] = useState([]);
   const [singles, setSingles] = useState(true);
 
   useEffect(() => {
@@ -30,6 +32,32 @@ export default function UploadVideo() {
 
     fetchTeams();
   }, []);
+
+  useEffect(() => {
+    const fetchClientPlayers = async () => {
+      try {
+        const p = await getClientPlayers();
+        setClientPlayers(p);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchClientPlayers();
+  }, [clientTeam]);
+
+  useEffect(() => {
+    const fetchOpponentPlayers = async () => {
+      try {
+        const p = await getClientPlayers();
+        setClientPlayers(p);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchOpponentPlayers();
+  }, [opponentTeam]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +86,16 @@ export default function UploadVideo() {
       <option key={index} value={option.name}>{option.name}</option>
     ));
   }, [teams]);
+  const clientPlayerOptions = useMemo(() => {
+    return clientPlayers.map((option, index) => (
+      <option key={index} value={option.name}>{option.name}</option>
+    ));
+  }, [clientPlayers]);
+  const opponentPlayerOptions = useMemo(() => {
+    return opponentPlayers.map((option, index) => (
+      <option key={index} value={option.name}>{option.name}</option>
+    ));
+  }, [opponentPlayers]);
 
   return (
     <div className={styles.container}>
