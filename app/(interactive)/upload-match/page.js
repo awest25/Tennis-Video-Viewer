@@ -63,16 +63,14 @@ export default function UploadVideo() {
   const clientPlayerOptions = useMemo(() => {
     console.log(clientTeam)
     const team = teams.find(team => team.name === clientTeam);
-    console.log(team)
-    if (!team) return null
-    console.log(team)
+    if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
   }, [clientTeam, teams]);
   const opponentPlayerOptions = useMemo(() => {
     const team = teams.find(team => team.name === opponentTeam);
-    if (!team) return null
+    if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
@@ -117,17 +115,17 @@ export default function UploadVideo() {
           </label>
           <label>
             <input
-            type="radio"
-            checked={singles}
-            onChange={() => {setSingles(true)}}
+              type="radio"
+              checked={singles}
+              onChange={() => {setSingles(true)}}
             />
             Singles
           </label>
           <label>
             <input
-            type="radio"
-            checked={!singles}
-            onChange={() => {setSingles(false)}}
+              type="radio"
+              checked={!singles}
+              onChange={() => {setSingles(false)}}
             />
             Doubles
           </label>

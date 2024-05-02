@@ -59,10 +59,12 @@ async function uploadTeam(teamName, logoFile) {
     const docRefM = await addDoc(collection(db, "teams"), {
       name: mens,
       logoUrl: logoUrl,
+      players: []
     });
     const docRefW = await addDoc(collection(db, "teams"), {
       name: womens,
       logoUrl: logoUrl,
+      players: []
     });
     console.log("Team Document(M) written with ID: ", docRefM.id, " and (W): ", docRefW.id);
     
@@ -95,6 +97,7 @@ async function uploadPlayer(playerName, teamName) {
     const teamData = (await getDoc(teamDoc)).data();
     if (!teamData.players) {
       // If 'players' field doesn't exist, create it and initialize it as an array
+      // backwards support for old storage schema
       await updateDoc(teamDoc, { players: [playerName] });
     } else {
       // If 'players' field exists, append the playerName to the array
