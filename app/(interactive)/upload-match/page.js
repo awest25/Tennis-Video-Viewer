@@ -28,7 +28,9 @@ export default function UploadVideo() {
       }
     };
 
-    fetchTeams();
+    fetchTeams().then(() => {
+      setClientTeam('Arizona (M)'); setOpponentTeam('Arizona (M)')
+    });    
   }, []);
 
   const handleSubmit = async (e) => {
@@ -59,20 +61,22 @@ export default function UploadVideo() {
     ));
   }, [teams]);
   const clientPlayerOptions = useMemo(() => {
-    if (teams.length === 0) return null
+    console.log(clientTeam)
     const team = teams.find(team => team.name === clientTeam);
+    console.log(team)
+    if (!team) return null
     console.log(team)
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
-  }, [teams]);
+  }, [clientTeam, teams]);
   const opponentPlayerOptions = useMemo(() => {
-    if (teams.length === 0) return null
     const team = teams.find(team => team.name === opponentTeam);
+    if (!team) return null
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
-  }, [teams]);
+  }, [opponentTeam, teams]);
 
   return (
     <div className={styles.container}>
