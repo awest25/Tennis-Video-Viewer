@@ -59,6 +59,7 @@ export default function UploadVideo() {
   const teamOptions = useMemo(() => {
     if (teams.length === 0) return null;
     setClientTeam(teams[0].name);
+    setOpponentTeam(teams[0].name);
     return teams.map((option, index) => (
       <option key={index} value={option.name}>{option.name}</option>
     ));
@@ -84,7 +85,7 @@ export default function UploadVideo() {
     <div className={styles.container}>
       <div>
         <h1 className={styles.title}>Upload Match</h1>
-        <h3>Make sure you add the player in 'Upload Team' before this!</h3>
+        <h3>Make sure you add the player in &apos;Upload Team&apos; before this!</h3>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Client Team: 
