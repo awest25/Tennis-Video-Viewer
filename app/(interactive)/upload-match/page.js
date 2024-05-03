@@ -66,6 +66,7 @@ export default function UploadVideo() {
   const clientPlayerOptions = useMemo(() => {
     const team = teams.find(team => team.name === clientTeam);
     if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
+    setClientPlayer(team.players[0]);
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
@@ -73,6 +74,7 @@ export default function UploadVideo() {
   const opponentPlayerOptions = useMemo(() => {
     const team = teams.find(team => team.name === opponentTeam);
     if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
+    setOpponentPlayer(team.players[0]);
     return team.players.map(player => (
       <option key={player} value={player}>{player}</option>
     ));
