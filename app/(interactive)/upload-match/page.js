@@ -84,6 +84,7 @@ export default function UploadVideo() {
     <div className={styles.container}>
       <div>
         <h1 className={styles.title}>Upload Match</h1>
+        <h3>Make sure you add the player in 'Upload Team' before this!</h3>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Client Team: 
