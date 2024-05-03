@@ -11,9 +11,9 @@ export default function UploadVideo() {
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientTeam, setClientTeam] = useState('Arizona (M)');
+  const [clientTeam, setClientTeam] = useState();
   const [clientPlayer, setClientPlayer] = useState(null);
-  const [opponentTeam, setOpponentTeam] = useState('Arizona (M)');
+  const [opponentTeam, setOpponentTeam] = useState();
   const [opponentPlayer, setOpponentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
   const [matchDate, setMatchDate] = useState('')
@@ -29,9 +29,7 @@ export default function UploadVideo() {
       }
     };
 
-    fetchTeams().then(() => {
-      setClientTeam('Arizona (M)'); setOpponentTeam('Arizona (M)')
-    });    
+    fetchTeams();    
   }, []);
 
   const handleSubmit = async (e) => {
@@ -59,6 +57,8 @@ export default function UploadVideo() {
   };
 
   const teamOptions = useMemo(() => {
+    if (teams.length === 0) return null;
+    setClientTeam(teams[0].name);
     return teams.map((option, index) => (
       <option key={index} value={option.name}>{option.name}</option>
     ));
