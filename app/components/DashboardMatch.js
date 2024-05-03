@@ -25,6 +25,7 @@ const DashboardMatch = ({ matchInfo }) => {
                         opponentTeam={match.opponentTeam}
                         matchDetails={match.matchDetails}
                         {...matchSetScores}  // Spread the extracted scores into the component as props
+                        tagged={{status: true}}
                         displaySections={{ score: true, info: false, matchup: false }}
                     />
                     </div>

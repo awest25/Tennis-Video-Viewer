@@ -13,7 +13,22 @@
     margin: 8px;
     padding: 1em;
 }
-
+.matchTopLine {
+    display: flex;
+    justify-content: space-between; /* This spreads the child elements out */
+    align-items: center; /* This vertically centers the items in case they have different heights */
+}
+.containerTagged{
+    font-size: 1vw;
+    font-weight: 350;
+    color: white;
+    background-color: #2774AE;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;

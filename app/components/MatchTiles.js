@@ -58,7 +58,9 @@ const MatchTiles = ({
   player1FinalScores, player2FinalScores,
   player1TieScores, player2TieScores,
   isUnfinished,
+  tagged = {status: false},
   displaySections = { score: true, info: true, matchup: true } // default all true
+
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
@@ -82,7 +84,10 @@ const MatchTiles = ({
   return (
     <div className={styles.matchTilesContainer}>
       <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Final Score</div>
+        <div className={styles.matchTopLine}>
+          <div className={styles.containerTitle}>Final Score</div>
+          {tagged.status && <div className={styles.containerTagged}>Tagged</div>}
+        </div>
         {/* Player Information  */}
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImg}>
