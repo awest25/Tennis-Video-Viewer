@@ -7,7 +7,7 @@ import getTeams from '@/app/services/getTeams.js';
 import styles from '../../styles/Upload.module.css'
 
 export default function UploadVideo() {
-  const [matchName, setMatchName] = useState('');
+  const [matchScore, setMatchScore] = useState('');
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
@@ -16,6 +16,7 @@ export default function UploadVideo() {
   const [opponentTeam, setOpponentTeam] = useState('Arizona (M)');
   const [opponentPlayer, setOpponentPlayer] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [matchDate, setMatchDate] = useState('')
   const [singles, setSingles] = useState(true);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function UploadVideo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchName || !videoId || !clientTeam || !opponentTeam) {
+    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayer || !opponentPlayer || !matchDate) {
       console.error("Please fill in all fields.");
       return;
     }
@@ -48,7 +49,9 @@ export default function UploadVideo() {
         const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
         if (!result) throw new Error("Upload cancelled by user.");
       }
-      await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
+      const teams = [clientTeam, opponentTeam];
+      const players = [clientPlayer, opponentPlayer];
+      await uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, players, matchDate, singles);
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
@@ -61,7 +64,6 @@ export default function UploadVideo() {
     ));
   }, [teams]);
   const clientPlayerOptions = useMemo(() => {
-    console.log(clientTeam)
     const team = teams.find(team => team.name === clientTeam);
     if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
     return team.players.map(player => (
@@ -81,14 +83,6 @@ export default function UploadVideo() {
       <div>
         <h1 className={styles.title}>Upload Match</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <label>
-            Match Name: 
-            <input type="text" value={matchName} onChange={(e) => setMatchName(e.target.value)} />
-          </label>
-          <label>
-            Video ID: 
-            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
-          </label>
           <label>
             Client Team: 
             <select id="search" onChange={(e) => setClientTeam(e.target.value)}>
@@ -112,6 +106,22 @@ export default function UploadVideo() {
             <select id="search" onChange={(e) => setOpponentPlayer(e.target.value)}>
               {opponentPlayerOptions}
             </select>
+          </label>
+          <label>
+            Match Score (spaces only between sets): 7-4 6-7(0-7) 7-2(13-11): 
+          </label>
+          <input type="text" value={matchScore} onChange={(e) => setMatchScore(e.target.value)} />
+          <label htmlFor="date">Date:
+            <input
+              type="date"
+              id="date"
+              value={matchDate}
+              onChange={(e) => {setMatchDate(e.target.value)}}
+            />
+          </label>
+          <label>
+            Video ID: 
+            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
           </label>
           <label>
             <input
