@@ -1,0 +1,38 @@
+.infoContainer {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+
+.playerContainer {
+    border-top: 1px solid #EDEDED; 
+    border-bottom: 1px solid #EDEDED; 
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.playerImage {
+    width: 17%;
+    border-radius: 30%;
+}
+
+.playerName {
+    padding-bottom: 5%;
+    font-size: 14px;
+}
+
+.playerYear {
+    padding-top: 4%;
+    font-size: 12px;
+}
+
+.textContainer {
+    font-weight: 550;
+    flex-direction: column;
+    justify-content: center; 
+    display: flex;
+    padding-left: 5%;
+    letter-spacing: .5px; 
+
+}
