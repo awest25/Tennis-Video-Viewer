@@ -95,6 +95,7 @@ export default function UploadVideo() {
       </div>
       <div>
         <h1 className={styles.title}>Add Player</h1>
+        <h3>See added players by selecting the team in 'Upload Match'</h3>
         <form className={styles.form} onSubmit={handleAddSubmit}>
           <label>
             Fist Name: 
@@ -111,8 +112,8 @@ export default function UploadVideo() {
             </select>
           </label>
           <label>
-            Player Photo (png or jpg):
-            <input type="file" accept="image/png, image/jpeg" onChange={(e) => setPlayerPhoto(e.target.files[0])} />
+            Player Photo (webp, svg, png, jpg):
+            <input type="file" accept="image/webp, image/svg+xml, image/png, image/jpeg" onChange={(e) => setPlayerPhoto(e.target.files[0])} />
           </label>
           <button type="submit">Add</button>
         </form>
