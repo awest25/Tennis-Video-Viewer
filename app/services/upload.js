@@ -22,7 +22,7 @@ async function uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, play
     if (pointsJson === null) published = false;
 
     // matchName: P1 T1 vs. P2 T2
-    const matchName = players[0] + " " + teams[0] + " vs. " + players[1] + " " + teams[1]
+    const matchName = players.client.firstName + " " + players.client.lastName + " " + teams[0] + " vs. " + players.opponent.firstName + " " + players.opponent.lastName + " " + teams[1]
     // only save match to clientTeam because we will never need to use matches by opponentTeam. 
     // Every client should only see their own matches: we upload UCLA vs USC, USC should not be able to see that.
     const docRef = await addDoc(collection(db, teams[0]), {
@@ -79,13 +79,20 @@ async function uploadTeam(teamName, logoFile) {
   }
 }
 
-async function uploadPlayer(playerName, teamName) {
-  if (!playerName || !teamName) {
+async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamName) {
+  if (!playerFirstName || !playerLastName || !teamName) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
 
   try {
+    let playerPhotoUrl = null;
+    if (playerPhoto) {
+      // First, upload the PNG/JPG to Firebase Storage
+      const playerPhotoRef = ref(storage, `player-photos/${playerPhoto.name}`);
+      const snapshot = await uploadBytes(playerPhotoRef, playerPhoto);
+      playerPhotoUrl = await getDownloadURL(snapshot.ref);
+    }
     // Check if the team exists
     const teamRef = collection(db, 'teams');
     const teamQuery = query(teamRef, where('name', '==', teamName));
@@ -104,10 +111,20 @@ async function uploadPlayer(playerName, teamName) {
     if (!teamData.players) {
       // If 'players' field doesn't exist, create it and initialize it as an array
       // backwards support for old storage schema
-      await updateDoc(teamDoc, { players: [playerName] });
+      await updateDoc(teamDoc, { players: [{ 
+        firstName: playerFirstName,
+        lastName: playerLastName,
+        photo: playerPhotoUrl
+      }] 
+      });
     } else {
       // If 'players' field exists, append the playerName to the array
-      await updateDoc(teamDoc, { players: arrayUnion(playerName) });
+      await updateDoc(teamDoc, { players: arrayUnion({ 
+        firstName: playerFirstName,
+        lastName: playerLastName,
+        photo: playerPhotoUrl
+      }) 
+      });
     }
   } catch (e) {
     console.error("Error adding Player Field: ", e);

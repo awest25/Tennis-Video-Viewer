@@ -12,9 +12,11 @@ export default function UploadVideo() {
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
   const [clientTeam, setClientTeam] = useState();
-  const [clientPlayer, setClientPlayer] = useState(null);
+  const [clientPlayerFirst, setClientPlayerFirst] = useState('');
+  const [clientPlayerLast, setClientPlayerLast] = useState('');
   const [opponentTeam, setOpponentTeam] = useState();
-  const [opponentPlayer, setOpponentPlayer] = useState(null);
+  const [opponentPlayerFirst, setOpponentPlayerFirst] = useState('');
+  const [opponentPlayerLast, setOpponentPlayerLast] = useState('');
   const [teams, setTeams] = useState([]);
   const [matchDate, setMatchDate] = useState('')
   const [singles, setSingles] = useState(true);
@@ -31,12 +33,12 @@ export default function UploadVideo() {
 
     fetchTeams();    
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayer || !opponentPlayer || !matchDate) {
-      console.error("Please fill in all fields.");
+    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate) {
+      // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+      console.error('missing fields')
       return;
     }
     
@@ -48,7 +50,16 @@ export default function UploadVideo() {
         if (!result) throw new Error("Upload cancelled by user.");
       }
       const teams = [clientTeam, opponentTeam];
-      const players = [clientPlayer, opponentPlayer];
+      const players = {
+        client: {
+          firstName: clientPlayerFirst,
+          lastName: clientPlayerLast
+        },
+        opponent: {
+          firstName: opponentPlayerFirst,
+          lastName: opponentPlayerLast
+        }
+      };
       await uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, players, matchDate, singles);
       alert('done!')
     } catch (error) {
@@ -67,17 +78,21 @@ export default function UploadVideo() {
   const clientPlayerOptions = useMemo(() => {
     const team = teams.find(team => team.name === clientTeam);
     if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
-    setClientPlayer(team.players[0]);
-    return team.players.map(player => (
-      <option key={player} value={player}>{player}</option>
+    setClientPlayerFirst(team.players[0].firstName);
+    setClientPlayerLast(team.players[0].lastName);
+    return team.players.map((player, index) => (
+      <option key={index} value={[player.firstName, player.lastName]}>{player.firstName} {player.lastName}</option>
     ));
   }, [clientTeam, teams]);
   const opponentPlayerOptions = useMemo(() => {
     const team = teams.find(team => team.name === opponentTeam);
     if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
-    setOpponentPlayer(team.players[0]);
-    return team.players.map(player => (
-      <option key={player} value={player}>{player}</option>
+    //setOpponentPlayer(team.players[0].firstName);
+    setOpponentPlayerFirst(team.players[0].firstName);
+    setOpponentPlayerLast(team.players[0].lastName);
+    return team.players.map((player, index)  => (
+      <option key={index} value={[player.firstName, player.lastName]}>{player.firstName} {player.lastName}</option>
+      
     ));
   }, [opponentTeam, teams]);
 
@@ -89,13 +104,17 @@ export default function UploadVideo() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
             Client Team: 
-            <select id="search" onChange={(e) => setClientTeam(e.target.value)}>
+            <select id="search" onChange={(e) => {setClientTeam(e.target.value)}}>
               {teamOptions}
             </select>
           </label>
           <label>
             Client Player: 
-            <select id="search" onChange={(e) => setClientPlayer(e.target.value)}>
+            <select id="search" onChange={(e) => {
+              const [firstName, lastName] = e.target.value.split(',');
+              setClientPlayerFirst(firstName);
+              setClientPlayerLast(lastName);
+            }}>
               {clientPlayerOptions}
             </select>
           </label>
@@ -107,7 +126,11 @@ export default function UploadVideo() {
           </label>
           <label>
             Opponent Player: 
-            <select id="search" onChange={(e) => setOpponentPlayer(e.target.value)}>
+            <select id="search" onChange={(e) => {
+              const [firstName, lastName] = e.target.value.split(',');
+              setOpponentPlayerFirst(firstName);
+              setOpponentPlayerLast(lastName);
+            }}>
               {opponentPlayerOptions}
             </select>
           </label>
