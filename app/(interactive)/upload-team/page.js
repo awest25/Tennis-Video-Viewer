@@ -10,6 +10,9 @@ export default function UploadVideo() {
   const [teamName, setTeamName] = useState('');
   const [teamSelect, setTeamSelect] = useState('Arizona (M)')
   const [playerName, setPlayerName] = useState('');
+  const [playerFirstName, setPlayerFirstName] = useState('');
+  const [playerLastName, setPlayerLastName] = useState('');
+  const [playerPhoto, setPlayerPhoto] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
   const [teams, setTeams] = useState([]);
   // prevents re-rendering of teams on other state change (useful when teams is expensive)
@@ -47,13 +50,13 @@ export default function UploadVideo() {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     
-    if (!playerName || !teamSelect) {
+    if (!playerFirstName || !playerLastName || !teamSelect) {
       console.error("Please fill in Player Name.");
       return;
     }
     
     try {
-      await uploadPlayer(playerName, teamSelect)
+      await uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamSelect)
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
@@ -94,14 +97,22 @@ export default function UploadVideo() {
         <h1 className={styles.title}>Add Player</h1>
         <form className={styles.form} onSubmit={handleAddSubmit}>
           <label>
-            Player Name: 
-            <input type="text" value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
+            Fist Name: 
+            <input type="text" value={playerFirstName} onChange={(e) => setPlayerFirstName(e.target.value)} />
+          </label>
+          <label>
+            Last Name: 
+            <input type="text" value={playerLastName} onChange={(e) => setPlayerLastName(e.target.value)} />
           </label>
           <label>
             Team: 
             <select id="search" onChange={(e) => setTeamSelect(e.target.value)}>
               {teamOptions}
             </select>
+          </label>
+          <label>
+            Player Photo (png or jpg):
+            <input type="file" accept="image/png, image/jpeg" onChange={(e) => setPlayerPhoto(e.target.files[0])} />
           </label>
           <button type="submit">Add</button>
         </form>
