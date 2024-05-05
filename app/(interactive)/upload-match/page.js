@@ -7,13 +7,19 @@ import getTeams from '@/app/services/getTeams.js';
 import styles from '../../styles/Upload.module.css'
 
 export default function UploadVideo() {
-  const [matchName, setMatchName] = useState('');
+  const [matchScore, setMatchScore] = useState('');
   const [videoId, setVideoId] = useState('');
   const [jsonFile, setJsonFile] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [clientTeam, setClientTeam] = useState('Arizona State (M)');
-  const [opponentTeam, setOpponentTeam] = useState('Arizona State (M)');
+  const [clientTeam, setClientTeam] = useState();
+  const [clientPlayerFirst, setClientPlayerFirst] = useState('');
+  const [clientPlayerLast, setClientPlayerLast] = useState('');
+  const [opponentTeam, setOpponentTeam] = useState();
+  const [opponentPlayerFirst, setOpponentPlayerFirst] = useState('');
+  const [opponentPlayerLast, setOpponentPlayerLast] = useState('');
   const [teams, setTeams] = useState([]);
+  const [matchDate, setMatchDate] = useState('')
+  const [singles, setSingles] = useState(true);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -25,14 +31,14 @@ export default function UploadVideo() {
       }
     };
 
-    fetchTeams();
+    fetchTeams();    
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchName || !videoId || !clientTeam || !opponentTeam) {
-      console.error("Please fill in all fields.");
+    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate) {
+      // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+      console.error('missing fields')
       return;
     }
     
@@ -43,7 +49,18 @@ export default function UploadVideo() {
         const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
         if (!result) throw new Error("Upload cancelled by user.");
       }
-      await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
+      const teams = [clientTeam, opponentTeam];
+      const players = {
+        client: {
+          firstName: clientPlayerFirst,
+          lastName: clientPlayerLast
+        },
+        opponent: {
+          firstName: opponentPlayerFirst,
+          lastName: opponentPlayerLast
+        }
+      };
+      await uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, players, matchDate, singles);
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
@@ -51,28 +68,54 @@ export default function UploadVideo() {
   };
 
   const teamOptions = useMemo(() => {
+    if (teams.length === 0) return null;
+    setClientTeam(teams[0].name);
+    setOpponentTeam(teams[0].name);
     return teams.map((option, index) => (
       <option key={index} value={option.name}>{option.name}</option>
     ));
   }, [teams]);
+  const clientPlayerOptions = useMemo(() => {
+    const team = teams.find(team => team.name === clientTeam);
+    if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
+    setClientPlayerFirst(team.players[0].firstName);
+    setClientPlayerLast(team.players[0].lastName);
+    return team.players.map((player, index) => (
+      <option key={index} value={[player.firstName, player.lastName]}>{player.firstName} {player.lastName}</option>
+    ));
+  }, [clientTeam, teams]);
+  const opponentPlayerOptions = useMemo(() => {
+    const team = teams.find(team => team.name === opponentTeam);
+    if (!team || !Object.prototype.hasOwnProperty.call(team, 'players')) return null; // Check if team or team.players doesn't exist
+    //setOpponentPlayer(team.players[0].firstName);
+    setOpponentPlayerFirst(team.players[0].firstName);
+    setOpponentPlayerLast(team.players[0].lastName);
+    return team.players.map((player, index)  => (
+      <option key={index} value={[player.firstName, player.lastName]}>{player.firstName} {player.lastName}</option>
+      
+    ));
+  }, [opponentTeam, teams]);
 
   return (
     <div className={styles.container}>
       <div>
         <h1 className={styles.title}>Upload Match</h1>
+        <h3>Make sure you add the player in &apos;Upload Team&apos; before this!</h3>
         <form className={styles.form} onSubmit={handleSubmit}>
           <label>
-            Match Name: 
-            <input type="text" value={matchName} onChange={(e) => setMatchName(e.target.value)} />
-          </label>
-          <label>
-            Video ID: 
-            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
-          </label>
-          <label>
             Client Team: 
-            <select id="search" onChange={(e) => setClientTeam(e.target.value)}>
+            <select id="search" onChange={(e) => {setClientTeam(e.target.value)}}>
               {teamOptions}
+            </select>
+          </label>
+          <label>
+            Client Player: 
+            <select id="search" onChange={(e) => {
+              const [firstName, lastName] = e.target.value.split(',');
+              setClientPlayerFirst(firstName);
+              setClientPlayerLast(lastName);
+            }}>
+              {clientPlayerOptions}
             </select>
           </label>
           <label>
@@ -80,6 +123,48 @@ export default function UploadVideo() {
             <select id="search" onChange={(e) => setOpponentTeam(e.target.value)}>
               {teamOptions}
             </select>
+          </label>
+          <label>
+            Opponent Player: 
+            <select id="search" onChange={(e) => {
+              const [firstName, lastName] = e.target.value.split(',');
+              setOpponentPlayerFirst(firstName);
+              setOpponentPlayerLast(lastName);
+            }}>
+              {opponentPlayerOptions}
+            </select>
+          </label>
+          <label>
+            Match Score (spaces only between sets): 7-4 6-7(0-7) 7-2(13-11): 
+          </label>
+          <input type="text" value={matchScore} onChange={(e) => setMatchScore(e.target.value)} />
+          <label htmlFor="date">Date:
+            <input
+              type="date"
+              id="date"
+              value={matchDate}
+              onChange={(e) => {setMatchDate(e.target.value)}}
+            />
+          </label>
+          <label>
+            Video ID: 
+            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
+          </label>
+          <label>
+            <input
+              type="radio"
+              checked={singles}
+              onChange={() => {setSingles(true)}}
+            />
+            Singles
+          </label>
+          <label>
+            <input
+              type="radio"
+              checked={!singles}
+              onChange={() => {setSingles(false)}}
+            />
+            Doubles
           </label>
           <label>
             JSON File: 
