@@ -112,10 +112,10 @@ async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamNa
       // If 'players' field doesn't exist, create it and initialize it as an array
       // backwards support for old storage schema
       await updateDoc(teamDoc, { players: [{ 
-          firstName: playerFirstName,
-          lastName: playerLastName,
-          photo: playerPhotoUrl
-        }] 
+        firstName: playerFirstName,
+        lastName: playerLastName,
+        photo: playerPhotoUrl
+      }] 
       });
     } else {
       // If 'players' field exists, append the playerName to the array
@@ -124,7 +124,7 @@ async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamNa
         lastName: playerLastName,
         photo: playerPhotoUrl
       }) 
-    });
+      });
     }
   } catch (e) {
     console.error("Error adding Player Field: ", e);

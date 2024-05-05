@@ -9,7 +9,6 @@ import styles from '../../styles/Upload.module.css'
 export default function UploadVideo() {
   const [teamName, setTeamName] = useState('');
   const [teamSelect, setTeamSelect] = useState('Arizona (M)')
-  const [playerName, setPlayerName] = useState('');
   const [playerFirstName, setPlayerFirstName] = useState('');
   const [playerLastName, setPlayerLastName] = useState('');
   const [playerPhoto, setPlayerPhoto] = useState(null);
@@ -95,7 +94,7 @@ export default function UploadVideo() {
       </div>
       <div>
         <h1 className={styles.title}>Add Player</h1>
-        <h3>See added players by selecting the team in 'Upload Match'</h3>
+        <h3>See added players by selecting the team in &apos;Upload Match&apos;</h3>
         <form className={styles.form} onSubmit={handleAddSubmit}>
           <label>
             Fist Name: 

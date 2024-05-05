@@ -37,7 +37,8 @@ export default function UploadVideo() {
     e.preventDefault();
     
     if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate) {
-      console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+      // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+      console.error('missing fields')
       return;
     }
     
@@ -110,10 +111,10 @@ export default function UploadVideo() {
           <label>
             Client Player: 
             <select id="search" onChange={(e) => {
-                const [firstName, lastName] = e.target.value.split(',');
-                setClientPlayerFirst(firstName);
-                setClientPlayerLast(lastName);
-              }}>
+              const [firstName, lastName] = e.target.value.split(',');
+              setClientPlayerFirst(firstName);
+              setClientPlayerLast(lastName);
+            }}>
               {clientPlayerOptions}
             </select>
           </label>
