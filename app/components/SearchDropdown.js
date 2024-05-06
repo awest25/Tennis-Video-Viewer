@@ -48,7 +48,6 @@ const SearchDropdown = () => {
           if (!a.date || !b.date) return 1; // no date is last
           return b.date - a.date; // Sort by date
         });
-      console.log(matches)
       setDropdownData(matches);
             
       // Find the selected match based on the URL and set it as selected
