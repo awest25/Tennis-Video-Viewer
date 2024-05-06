@@ -22,11 +22,33 @@ const SearchDropdown = () => {
         .filter((doc) => doc.data().published)
         .map((doc) => {
           const data = doc.data();
+          const name = data.name;
+          const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
+          const match = name.match(dateRegex);
+            
+          let extractedDate = null;
+          if (match) {
+            const month = parseInt(match[1], 10);
+            const day = parseInt(match[2], 10);
+            const year = parseInt(match[3], 10);
+
+            // Assuming year 2000 is the base, adjust if needed
+            const fullYear = year < 50 ? 2000 + year : 1900 + year;
+
+            extractedDate = new Date(fullYear, month - 1, day);
+          }
+
           return {
-            value: doc.id, // Use 'value' to adhere to react-select convention
-            label: data.name
+            value: doc.id,
+            label: name,
+            date: extractedDate
           };
+        })
+        .sort((a, b) => {
+          if (!a.date || !b.date) return 1; // no date is last
+          return b.date - a.date; // Sort by date
         });
+      console.log(matches)
       setDropdownData(matches);
             
       // Find the selected match based on the URL and set it as selected
