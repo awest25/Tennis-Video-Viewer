@@ -19,7 +19,7 @@ const RosterTile = ({firstName, lastName, playerPhoto}) => {
                 <img className={styles.playerImage} src={playerPhoto} alt="" />
                 <div className={styles.textContainer}>
                     <div className={styles.playerName}>
-                        {firstName}
+                        {firstName} {lastName}
                     </div>
                 </div>
             </div>  

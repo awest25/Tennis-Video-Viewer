@@ -16,18 +16,18 @@ const RosterList = () => {
                 const playersArray = mensTeam.players.map(player => ({
                     firstName: player.firstName,
                     lastName: player.lastName,
-                    photoUrl: player.photo 
+                    photoUrl: player.photo
                 }));
-                console.log(playersArray)
-                setMensRoster(playersArray);              
-                console.log("mens roster", mensRoster);
+                setMensRoster(playersArray);        
             } catch (error) {
                 console.error('Error retrieving teams:', error);
             }
         };
 
         fetchTeams(); 
-    }, []);
+    }, [mensRoster]);
+
+    
     
     return(
         //entire container
@@ -35,7 +35,7 @@ const RosterList = () => {
             <h1>Roster</h1>
             <div>
                 {/* Loop through roster  */}
-                {mensRoster.map((index, player) => (
+                {mensRoster.map((player, index) => (
                     <RosterTile key={index} firstName={player.firstName} lastName={player.lastName} playerPhoto={player.photoUrl} />
                 ))}
             </div>
