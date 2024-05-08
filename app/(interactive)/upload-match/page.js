@@ -6,6 +6,35 @@ import getTeams from '@/app/services/getTeams.js';
 
 import styles from '../../styles/Upload.module.css'
 
+const parseMatchScore = (matchScore) => {
+  const sets = matchScore.split(" ");
+  const transformedSets = [];
+  
+  sets.forEach(set => {
+      const games = set.split("-");
+      const clientGamesWon = parseInt(games[0]);
+      const opponentGamesWon = parseInt(games[1]);
+      let clientTiebreakPointsWon = null;
+      let opponentTiebreakPointsWon = null;
+      
+      if (set.includes("(")) {
+          const tiebreak = set.match(/\(([^)]+)\)/)[1].split("-");
+          clientTiebreakPointsWon = parseInt(tiebreak[0]);
+          opponentTiebreakPointsWon = parseInt(tiebreak[1]);
+      }
+      
+      transformedSets.push({
+          set_number: transformedSets.length + 1,
+          clientGamesWon: clientGamesWon,
+          opponentGamesWon: opponentGamesWon,
+          clientTiebreakPointsWon: clientTiebreakPointsWon,
+          opponentTiebreakPointsWon: opponentTiebreakPointsWon
+      });
+  });
+  
+  return transformedSets;
+} 
+
 export default function UploadVideo() {
   const [matchScore, setMatchScore] = useState('');
   const [videoId, setVideoId] = useState('');
@@ -49,7 +78,10 @@ export default function UploadVideo() {
         const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
         if (!result) throw new Error("Upload cancelled by user.");
       }
-      const teams = [clientTeam, opponentTeam];
+      const teams = {
+        clientTeam,
+        opponentTeam
+      };
       const players = {
         client: {
           firstName: clientPlayerFirst,
@@ -60,7 +92,8 @@ export default function UploadVideo() {
           lastName: opponentPlayerLast
         }
       };
-      await uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, players, matchDate, singles);
+      const sets = parseMatchScore(matchScore);
+      await uploadMatch(sets, videoId, pointsJson, pdfFile, teams, players, matchDate, singles);
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
