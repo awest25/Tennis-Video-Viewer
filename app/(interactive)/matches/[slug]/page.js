@@ -242,6 +242,7 @@ const MatchPage = () => {
 
         .pointsList {
           flex: 1; /* Takes up 1/3 of the space */
+          max-width: 0.5 vw;
           margin-top: 0;
           padding: 1vw;
           margin-left: 1vw;
@@ -262,7 +263,7 @@ const MatchPage = () => {
           height: 350px;
         }
         .jumpList {
-          width: 325px;
+          width: 25vw;
         }
         
         .listHolder {
