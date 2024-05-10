@@ -2241,34 +2241,6 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
             }
         },
         {
-            label: 'ErrorWideLeft',
-            action: () => {
-                updateActiveRow('isErrorWideL', '1');
-                updateActiveRow('isPointEnd', '1');
-            }
-        },
-        {
-            label: 'ErrorWideRight',
-            action: () => {
-                updateActiveRow('isErrorWideR', '1');
-                updateActiveRow('isPointEnd', '1');
-            }
-        },
-        {
-            label: 'ErrorLong',
-            action: () => {
-                updateActiveRow('isErrorLong', '1');
-                updateActiveRow('isPointEnd', '1');
-            }
-        },
-        {
-            label: 'ErrorNet',
-            action: () => {
-                updateActiveRow('isErrorNet', '1');
-                updateActiveRow('isPointEnd', '1');
-            }
-        },
-        {
             courtImage: true,
             label: 'Select Shot Result Location',
             action: (data) => {
@@ -2354,6 +2326,11 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                             setCurrentPage('ServerName');
                         }
                         else {
+                            if ((serverScore + returnerScore) % 2 == 1) { // need to switch scores cuz server switches
+                                var tempServeScore = serverScore;
+                                serverScore = returnerScore;
+                                returnerScore = tempServeScore;
+                            }
                             setCurrentPage('ServerName');
                         }
                     }   
