@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation'
 
 import filterStyles from '../../../styles/FilterList.module.css'
@@ -35,6 +35,9 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
+  const [showPDF, setShowPDF] = useState(false);
+  const tableRef = useRef(null);
+  const iframeRef = useRef(null);
 
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
@@ -117,11 +120,18 @@ const MatchPage = () => {
   };
 
   const scrolltolist=()=>{
-    window.scrollTo({
-      top: 900,
-      behavior: "smooth"
-  });
+    if (tableRef.current) {
+      tableRef.current.scrollIntoView({ behavior: "smooth" });
   }
+  };
+
+  const togglePDF = () => {
+    setShowPDF(false);
+  };
+
+  const togglePoints = () => {
+    setShowPDF(true);
+  };
 
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -139,7 +149,7 @@ const MatchPage = () => {
           <div className={styles.mainContent}>
             {/* Video Player */}
             <div className="videoPlayer">
-              <div>
+              <div ref={iframeRef}>
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
             </div>
@@ -213,18 +223,20 @@ const MatchPage = () => {
                     <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
                   </div>
                 </div>
-
-              
-                
               </div>
             </div>
           </div>
-          <div className={styles.ExtendedList}>
-            <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime}/>
+          <div className={styles.toggle}>
+              <button onClick={() =>togglePDF()} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+              <button onClick={() =>togglePoints()} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            {showPDF ? (
+              <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
+            ) : (
+              <div ref={tableRef} className={styles.ExtendedList}>
+                <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime} iframe = {iframeRef}/>
+              </div>
+            )} 
           </div>
-          <br></br>
-          {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
-          <br></br>
         </>
       )}
 

@@ -1,5 +1,6 @@
 .table{
     width: 100%;
+    border-collapse: collapse; 
 }
 
 .TH{
@@ -10,13 +11,16 @@
     padding-left: 0.25vw;
 }
 
+.TR{
+    border-bottom: solid 0.2vw #EDEDED;
+}
+
 .IMG{
     max-width: 2.7vw;
     height: auto; 
     display: block; 
     width: 100%;
 }
-
 
 .TD{
     font-size: 1.4vw;
@@ -25,7 +29,6 @@
     padding: 0.8vw;
     padding-top: 3.6vh;
     padding-bottom: 3.6vh;
-    border-bottom: solid 0.2vw #EDEDED;
 }
 
 .TD2{
@@ -34,7 +37,6 @@
     text-align: left;
     padding-top: 3.6vh;
     padding-bottom: 3.6vh;
-    border-bottom: solid 0.2vw #EDEDED;
 }
 
 .button{

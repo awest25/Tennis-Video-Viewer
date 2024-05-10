@@ -133,6 +133,7 @@
     width:100%;
     border: 1px solid #eaeaea;
     border-radius: 10px;
+    border-top-left-radius: 0% !important;
     padding: 1.5rem;
     text-align: left;
     color: inherit;
@@ -159,4 +160,45 @@
   .buttonn:hover {
     background-color: #e9ecef;
     border-color: #b8c2cc;
+  }
+
+  .toggle {
+    width: 90%;
+  }
+
+  .toggle_buttona_active{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #fafafa;
+    border-top-left-radius: 10px;
+    border: 1px solid #eaeaea;
+  }
+
+  .toggle_buttona_inactive{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #FAF1EA;
+    border-top-left-radius: 10px;
+    border: 1px solid #eaeaea;
+  }
+
+  /* increase size of buttons */
+  .toggle_buttonb_active{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #fafafa;
+    border-top-right-radius: 10px;
+    border: 1px solid #eaeaea;
+  }
+
+  .toggle_buttonb_inactive{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #FAF1EA;
+    border-top-right-radius: 10px;
+    border: 1px solid #eaeaea;
   }
