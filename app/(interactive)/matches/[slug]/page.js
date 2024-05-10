@@ -36,7 +36,48 @@ const MatchPage = () => {
   const [playingPoint, setPlayingPoint] = useState(null);
 
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
+  console.log("Match Data", matchData);
+  const [dynamicString, setDynamicString] = useState("Match Name");
 
+  useEffect(() => {
+    if (matchData) {
+      const matchName = matchData.name;
+      const dateRegex = /\b(\d{1,2})\/(\d{1,2})\/(\d{2,4})\b/;
+      const matchDateMatches = matchName.match(dateRegex);
+
+      // Extract month, day, and year
+      const month = matchDateMatches[1].padStart(2, '0');
+      const day = matchDateMatches[2].padStart(2, '0');
+      const year = matchDateMatches[3];
+
+      const matchDateFormatted = `${month}-${day}-${year}`;
+    
+    
+      const clientteamname = matchData.clientTeam;
+      const opponentteamname = matchData.opponentTeam;
+    
+      // Initialize variables for player names
+      let clientFirstName = '';
+      let clientLastName = '';
+      let opponentFirstName = '';
+      let opponentLastName = '';
+      // Check if client player data exists
+      if (matchData.clientPlayer) {
+        clientFirstName = matchData.clientPlayer.firstName;
+        clientLastName = matchData.clientPlayer.lastName;
+      }
+      // Check if opponent player data exists
+      if (matchData.opponentPlayer) {
+        opponentFirstName = matchData.opponentPlayer.firstName;
+        opponentLastName = matchData.opponentPlayer.lastName;
+      }
+      const newDynamicString = ` ${clientLastName} vs. ${opponentLastName} - ${clientteamname} vs. ${opponentteamname} - ${matchDateFormatted}`;
+      //const newDynamicString = ` ${clientFirstName} ${clientLastName} vs. ${opponentFirstName} ${opponentLastName} - ${clientteamname} vs. ${opponentteamname} - ${matchDateFormatted}`;
+      setDynamicString(newDynamicString); // Update dynamicString state
+    }
+}, [matchData]);
+
+  
   // const router = useRouter();
   const pathname = usePathname()
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
@@ -67,6 +108,7 @@ const MatchPage = () => {
     if (matchData) {
       const points = returnFilteredPoints();
       const sortedPoints = [...points].sort((a, b) => b.Position - a.Position);
+
 
       const updateScoreboardWithTime = (time) => {
         const currentPoint = sortedPoints.find((point) => point.Position <= time);
@@ -121,10 +163,10 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
+          <MatchTiles matchName={dynamicString} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
-              <h2>{matchData.name}</h2>
+              <h2>{dynamicString}</h2>
             </div>
           </div>
           <div className={styles.mainContent}>
@@ -198,7 +240,7 @@ const MatchPage = () => {
                   </div>
                   {/* Score display */}
                   <div className="scoreboard">
-                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                    <ScoreBoard names={dynamicString} playData={playingPoint} {...matchSetScores}/>
                   </div>
                 </div>
 

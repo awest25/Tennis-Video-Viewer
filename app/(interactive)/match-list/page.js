@@ -24,6 +24,7 @@ export default function MatchList() {
     await deleteDoc(doc(db, "matches", id));
     setMatchData(matchData.filter(match => match.id !== id));
   };
+
   const handleRename = async (id) => {
     const docRef = doc(db, "matches", id);
     setDoc(docRef, {name:newName}, { merge: true })
