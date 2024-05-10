@@ -2137,9 +2137,9 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                     updateActiveRow('tiebreakScore', data.table[0]['tiebreakScore']);
                     updateActiveRow('serverFarNear', data.table[0]['serverFarNear']);  
                 }
-                if (data.y < 471) 
-                { // assuming 470 is halfway point
-                    if (data.x < 215) 
+                if (data.y > 0) 
+                { // assuming 0 is halfway point
+                    if (data.x < 0) 
                     {
                         updateActiveRow('side', 'Deuce');
                         setCurrentPage('GroundstrokeShotInfo')
@@ -2152,7 +2152,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 }
                 else
                 {
-                    if (data.x < 215) 
+                    if (data.x < 0) 
                     {
                         updateActiveRow('side', 'Ad');
                         setCurrentPage('GroundstrokeShotInfo')
