@@ -9,10 +9,11 @@
     text-align: left;
     color: grey;
     padding-left: 0.25vw;
+    padding-bottom: 1vw;
 }
 
 .TR{
-    border-bottom: solid 0.2vw #EDEDED;
+    border-bottom: solid 0.1vw #EDEDED;
 }
 
 .IMG{

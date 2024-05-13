@@ -26,7 +26,7 @@ const ExtendedList = ({ pointsData, clientTeam, opponentTeam, onPointSelect, ifr
       fetchLogos();
     });
     let keys = ["", "serverName", "setScore", "gameScore", "pointScore", "pointWonBy", "lastShotResult", "rallyCount"];
-    let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Shot Count"];
+    let keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Shot Count", ""];
 
 
     const Scroll=(point)=>{
