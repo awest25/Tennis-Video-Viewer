@@ -272,7 +272,7 @@ const MatchPage = () => {
           margin-top: 0;
           padding: 1vw;
           margin-left: 1vw;
-          border: 0.1vw solid #ddd;
+          border: 1px solid #ddd;
           border-radius: 1.5vw;
           overflow-y: auto;
           height: 30vw;
@@ -281,12 +281,14 @@ const MatchPage = () => {
 
         .filterList {
           flex: 2; // Takes up 1/3 of the space
-          margin-top: 0rem;
-          padding: 1rem;
+          margin-top: 0;
+          padding: 1vw;
+          margin-left: 1vw;
           border: 1px solid #ddd;
-          border-radius: 15px;
+          border-radius: 1.5vw;
           overflow-y: auto;
-          height: 350px;
+          height: 30vw;
+          background: linear-gradient(to bottom, #ffffff, #fafafa); 
         }
         .jumpList {
           width: 325px;
