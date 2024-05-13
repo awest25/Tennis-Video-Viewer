@@ -34,7 +34,7 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
     return { set: '', gameScore: '', pointScore: '', serverName: '' };
   };
 
-  const displayedPoints = expanded ? pointsData : pointsData.slice(0, 5);
+  const displayedPoints = pointsData;
 
   return (
     <div>
@@ -81,7 +81,8 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
               </tr>
             );
           })}
-          {!expanded && pointsData.length > 4 && (
+          
+          {/* {!expanded && pointsData.length > 4 && (
             <tr>
               <td colSpan="5" >
                 <div style={{ padding: '0.5vw' }}>
@@ -98,7 +99,7 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
                 </div>
               </td>
             </tr>
-          )}
+          )} */}
         </tbody>
       </table>
     </div>

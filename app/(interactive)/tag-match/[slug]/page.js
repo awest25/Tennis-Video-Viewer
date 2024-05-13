@@ -8,6 +8,7 @@ import styles from '../../../styles/TagMatch.module.css';
 import { usePathname } from 'next/navigation'
 import getMatchInfo from '../../../services/getMatchInfo.js';
 import updateMatchDocument from '../../../services/updateMatchDocument.js';
+import TennisCourtSVG from '@/app/components/TennisCourtSVG';
 
 export default function TagMatch() {
   // const router = useRouter();
@@ -20,6 +21,8 @@ export default function TagMatch() {
   const [currentPage, setCurrentPage] = useState('ServerName'); // TODO: the default should continue from what was filled in last
   const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
   const [isPublished, setIsPublished] = useState(false); // TODO: impliment this functionality (only show published matches)
+  const [matchMetadata, setMatchMetadata] = useState({});
+
   const [popUp, setPopUp] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [displayPopUp, setDisplayPopUp] = useState(false);
@@ -48,6 +51,10 @@ export default function TagMatch() {
           return { ...oldTableState, rows: [] };
         });
       }
+
+      // Set the metadata to matchDocument but without the 'points'
+      const { points, ...metadata } = matchDocument;
+      setMatchMetadata(metadata);
     });
   }, [matchId]);
 
@@ -147,27 +154,27 @@ export default function TagMatch() {
   }
 
   const addNewRowAndSync = () => {
-    pullAndPushRows();
-
-    let newTimestamp = getVideoTimestamp();
-
-    // Create a new row object with the required structure
-    const newRow = columnNames.reduce((acc, columnName) => {
-      // Check if a row already exists with the new timestamp
-      let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
-
-      while (existingRow !== undefined) {
-        // If a row already exists, increment the timestamp by 1
-        newTimestamp += 1;
-        existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
-      }
-
-      acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
-      return acc;
-    }, {});
-
-    // Add new row and sort
     setTableState(oldTableState => {
+      pullAndPushRows(oldTableState.rows, null);
+
+      let newTimestamp = getVideoTimestamp();
+
+      // Create a new row object with the required structure
+      const newRow = columnNames.reduce((acc, columnName) => {
+        // Check if a row already exists with the new timestamp
+        let existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+
+        while (existingRow !== undefined) {
+          // If a row already exists, increment the timestamp by 1
+          newTimestamp += 1;
+          existingRow = tableState.rows.find(row => row.pointStartTime === newTimestamp);
+        }
+
+        acc[columnName] = columnName === 'pointStartTime' ? newTimestamp : '';
+        return acc;
+      }, {});
+
+      // Add new row and sort
       const updatedTable = [...oldTableState.rows, newRow];
       // Sort the table by 'pointStartTime'
       updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime);
@@ -188,7 +195,7 @@ export default function TagMatch() {
       const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
       return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
     });
-    pullAndPushRows(rowToDeleteTimestamp);
+    pullAndPushRows(tableState.rows, rowToDeleteTimestamp);
   }
 
 
@@ -249,9 +256,9 @@ export default function TagMatch() {
   }, [displayPopUp]);
 
 
-  const pullAndPushRows = async (rowToDeleteTimestamp = null) => {
+  const pullAndPushRows = async (rowState, rowToDeleteTimestamp = null) => {
     try {
-      const tableSnapshot = [...tableState.rows]; // Snapshot of the table before fetching updates
+      const tableSnapshot = [...rowState]; // Snapshot of the table before fetching updates
       // Fetch the current document state from the database
       const matchDocument = await getMatchInfo(matchId);
       const incomingRows = matchDocument.points ?? [];
@@ -308,7 +315,7 @@ export default function TagMatch() {
 
   // Toggle the publushed state of the match
   const togglePublish = async () => {
-    pullAndPushRows();
+    pullAndPushRows(tableState.rows, null);
     try {
       await updateMatchDocument(matchId, {
         published: !isPublished
@@ -352,26 +359,43 @@ export default function TagMatch() {
   const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage);
 
   const handleImageClick = (event) => {
+    console.log("event: ", event);
     const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
-    const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
+    // const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
+    
+    // The current SVG has the actual in width of the court as 360 out of 600 total
+    // The height is 780 out of 1080 total
+    // This makes the ratio 0.6 for width and 0.7222 for height
+    const xRatio = 0.6;
+    // const yRatio = 0.7222;
 
-    // Get the bounding rectangle of the target (image)
-    const rect = event.target.getBoundingClientRect();
+    // Get the bounding rectangle of the SVG container
+    const rect = event.currentTarget.getBoundingClientRect();
 
-    const widthOfCourt = rect.right - rect.left;
-    const heightOfCourt = rect.bottom - rect.top;
+    const widthOfCourt = rect.width; // Using rect.width is more reliable
+    const heightOfCourt = rect.height;
 
-    // Calculate the click position relative to the image
+    const inchesPerPixel = courtWidthInInches / (widthOfCourt * xRatio); // This is slightly wrong bc it rounds at some point?
+
+    // Calculate the click position relative to the SVG container
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    // Calculate the click position relative to the court
-    const xInches = Math.round((x / widthOfCourt) * courtWidthInInches);
-    const yInches = Math.round((y / heightOfCourt) * courtHeightInInches);
+    // Find how far from the center the click was
+    const xFromCenter = x - widthOfCourt / 2;
+    const yFromCenter = y - heightOfCourt / 2;
+
+    // Calculate the click position in inches
+    let xInches = Math.round(xFromCenter * inchesPerPixel);
+    let yInches = Math.round(yFromCenter * inchesPerPixel) * -1;
+
+    // Convert -0 to 0
+    xInches = Object.is(xInches, -0) ? 0 : xInches;
+    yInches = Object.is(yInches, -0) ? 0 : yInches;
 
     console.log("xInches: " + xInches + " yInches: " + yInches);
-    return { 'x': xInches, 'y': yInches };
-  }
+    return { x: xInches, y: yInches };
+  };
 
 
   return (
@@ -391,35 +415,34 @@ export default function TagMatch() {
         <div>
           <p>{currentPage}</p>
           {buttonData[currentPage].map((button, index) => {
-            return button.courtImage === true ? (
+            return button.courtImage ? (
               <div>
                 <p>{button.label}</p>
-                <img
-                  src="/images/Tennis_Court_Full.png"
-                  alt="tennis court"
-                  onClick={(event) => {
+                <TennisCourtSVG className={styles.courtImage} courtType={button.courtImage} handleImageClick={(event) => {
                     setPopUp([])
                     saveToHistory();
-                    let data = handleImageClick(event); // returns data.x and data.y coordinates
+                    let data = matchMetadata;
+                    // add data.x and data.y to the data object
+                    const { x, y } = handleImageClick(event);
+                    data.x = x;
+                    data.y = y;
                     data.table = tableState.rows;
                     data.activeRowIndex = tableState.activeRowIndex;
                     data.videoTimestamp = getVideoTimestamp();
                     button.action(data);
-                    showPopUp()
-                  }}
-                  style={{ width: "10%" }}
-                />
+                    showPopUp();
+                  }} />
               </div>
             ) : (
               <button className={styles.customButton} key={index} onClick={() => {
                 setPopUp([])
                 saveToHistory();
-                let data = {};
+                let data = matchMetadata;
                 data.table = tableState.rows;
                 data.activeRowIndex = tableState.activeRowIndex;
                 data.videoTimestamp = getVideoTimestamp();
                 button.action(data);
-                showPopUp()
+                showPopUp();
               }}>
                 {button.label}
               </button>
@@ -465,7 +488,7 @@ export default function TagMatch() {
                 <td key={colIndex}>
                   <input
                     type="text"
-                    value={row[columnName] || ''}
+                    value={row[columnName] === undefined || row[columnName] === null ? '' : row[columnName]}
                     onChange={(event) => {
                       saveToHistory(); // Save the current state to history first
                       changeRowValue(rowIndex, columnName, event.target.value); // Then handle the change
