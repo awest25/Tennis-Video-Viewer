@@ -386,8 +386,12 @@ export default function TagMatch() {
     const yFromCenter = y - heightOfCourt / 2;
 
     // Calculate the click position in inches
-    const xInches = Math.round(xFromCenter * inchesPerPixel);
-    const yInches = Math.round(yFromCenter * inchesPerPixel) * -1;
+    let xInches = Math.round(xFromCenter * inchesPerPixel);
+    let yInches = Math.round(yFromCenter * inchesPerPixel) * -1;
+
+    // Convert -0 to 0
+    xInches = Object.is(xInches, -0) ? 0 : xInches;
+    yInches = Object.is(yInches, -0) ? 0 : yInches;
 
     console.log("xInches: " + xInches + " yInches: " + yInches);
     return { x: xInches, y: yInches };
@@ -426,7 +430,7 @@ export default function TagMatch() {
                     data.activeRowIndex = tableState.activeRowIndex;
                     data.videoTimestamp = getVideoTimestamp();
                     button.action(data);
-                    showPopUp()
+                    showPopUp();
                   }} />
               </div>
             ) : (
@@ -438,7 +442,7 @@ export default function TagMatch() {
                 data.activeRowIndex = tableState.activeRowIndex;
                 data.videoTimestamp = getVideoTimestamp();
                 button.action(data);
-                showPopUp()
+                showPopUp();
               }}>
                 {button.label}
               </button>
@@ -484,7 +488,7 @@ export default function TagMatch() {
                 <td key={colIndex}>
                   <input
                     type="text"
-                    value={row[columnName] || ''}
+                    value={row[columnName] === undefined || row[columnName] === null ? '' : row[columnName]}
                     onChange={(event) => {
                       saveToHistory(); // Save the current state to history first
                       changeRowValue(rowIndex, columnName, event.target.value); // Then handle the change
