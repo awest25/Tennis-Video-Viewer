@@ -7,64 +7,64 @@ const TennisCourtSVG = ({ handleImageClick, courtType }) => {
       <rect x="0" y="540" width="600" height="540" fill="lightgray" />
       <rect x="0" y="0" width="600" height="540" fill="lightgray" />
 
-        {/* Top half of the court */}
-        <rect x="120" y="150" width="45" height="390" fill="lightblue" />
-        <rect x="165" y="150" width="270" height="180" fill="lightblue" />
-        <rect x="435" y="150" width="45" height="390" fill="lightblue" />
-        <rect x="165" y="330" width="135" height="210" fill="lightblue" />
-        <rect x="300" y="330" width="135" height="210" fill="lightblue" />
+      {/* Top half of the court */}
+      <rect x="120" y="150" width="45" height="390" fill="lightblue" />
+      <rect x="165" y="150" width="270" height="180" fill="lightblue" />
+      <rect x="435" y="150" width="45" height="390" fill="lightblue" />
+      <rect x="165" y="330" width="135" height="210" fill="lightblue" />
+      <rect x="300" y="330" width="135" height="210" fill="lightblue" />
 
-        {/* Bottom half of the court, mirrored from the top half */}
-        <rect x="120" y="540" width="45" height="390" fill="lightblue" />
-        <rect x="165" y="750" width="270" height="180" fill="lightblue" />
-        <rect x="435" y="540" width="45" height="390" fill="lightblue" />
-        <rect x="165" y="540" width="135" height="210" fill="lightblue" />
-        <rect x="300" y="540" width="135" height="210" fill="lightblue" />
+      {/* Bottom half of the court, mirrored from the top half */}
+      <rect x="120" y="540" width="45" height="390" fill="lightblue" />
+      <rect x="165" y="750" width="270" height="180" fill="lightblue" />
+      <rect x="435" y="540" width="45" height="390" fill="lightblue" />
+      <rect x="165" y="540" width="135" height="210" fill="lightblue" />
+      <rect x="300" y="540" width="135" height="210" fill="lightblue" />
 
-        {/* Optional service sections top half */}
-        {/* Optional service sections bottom half */}
-        {(courtType === 'serve') && (
-          <>
-            <rect x="165" y="330" width="45" height="210" fill="lightblue" />
-            <rect x="210" y="330" width="45" height="210" fill="lightblue" />
-            <rect x="255" y="330" width="45" height="210" fill="lightblue" />
-            <rect x="300" y="330" width="45" height="210" fill="lightblue" />
-            <rect x="345" y="330" width="45" height="210" fill="lightblue" />
-            <rect x="390" y="330" width="45" height="210" fill="lightblue" />
+      {/* Optional service sections top half */}
+      {/* Optional service sections bottom half */}
+      {(courtType === 'serve') && (
+        <>
+          <rect x="165" y="330" width="45" height="210" fill="lightblue" />
+          <rect x="210" y="330" width="45" height="210" fill="lightblue" />
+          <rect x="255" y="330" width="45" height="210" fill="lightblue" />
+          <rect x="300" y="330" width="45" height="210" fill="lightblue" />
+          <rect x="345" y="330" width="45" height="210" fill="lightblue" />
+          <rect x="390" y="330" width="45" height="210" fill="lightblue" />
 
-            <rect x="165" y="540" width="45" height="210" fill="lightblue" />
-            <rect x="210" y="540" width="45" height="210" fill="lightblue" />
-            <rect x="255" y="540" width="45" height="210" fill="lightblue" />
-            <rect x="300" y="540" width="45" height="210" fill="lightblue" />
-            <rect x="345" y="540" width="45" height="210" fill="lightblue" />
-            <rect x="390" y="540" width="45" height="210" fill="lightblue" />
-          </>
-        )}
+          <rect x="165" y="540" width="45" height="210" fill="lightblue" />
+          <rect x="210" y="540" width="45" height="210" fill="lightblue" />
+          <rect x="255" y="540" width="45" height="210" fill="lightblue" />
+          <rect x="300" y="540" width="45" height="210" fill="lightblue" />
+          <rect x="345" y="540" width="45" height="210" fill="lightblue" />
+          <rect x="390" y="540" width="45" height="210" fill="lightblue" />
+        </>
+      )}
 
-        {/* T lines and center lines */}
-        <line x1="165" y1="330" x2="435" y2="330" stroke="white" strokeWidth="2" />
-        <line x1="165" y1="750" x2="435" y2="750" stroke="white" strokeWidth="2" />
-        <line x1="300" y1="330" x2="300" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="300" y1="540" x2="300" y2="750" stroke="white" strokeWidth="2" />
+      {/* T lines and center lines */}
+      <line x1="165" y1="330" x2="435" y2="330" stroke="white" strokeWidth="2" />
+      <line x1="165" y1="750" x2="435" y2="750" stroke="white" strokeWidth="2" />
+      <line x1="300" y1="330" x2="300" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="300" y1="540" x2="300" y2="750" stroke="white" strokeWidth="2" />
 
-        {/* Alley lines */}
-        <line x1="165" y1="150" x2="165" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="435" y1="150" x2="435" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="165" y1="540" x2="165" y2="930" stroke="white" strokeWidth="2" />
-        <line x1="435" y1="540" x2="435" y2="930" stroke="white" strokeWidth="2" />
+      {/* Alley lines */}
+      <line x1="165" y1="150" x2="165" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="435" y1="150" x2="435" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="165" y1="540" x2="165" y2="930" stroke="white" strokeWidth="2" />
+      <line x1="435" y1="540" x2="435" y2="930" stroke="white" strokeWidth="2" />
 
-        {/* Outside alley lines */}
-        <line x1="120" y1="150" x2="120" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="480" y1="150" x2="480" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="120" y1="930" x2="120" y2="540" stroke="white" strokeWidth="2" />
-        <line x1="480" y1="930" x2="480" y2="540" stroke="white" strokeWidth="2" />
+      {/* Outside alley lines */}
+      <line x1="120" y1="150" x2="120" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="480" y1="150" x2="480" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="120" y1="930" x2="120" y2="540" stroke="white" strokeWidth="2" />
+      <line x1="480" y1="930" x2="480" y2="540" stroke="white" strokeWidth="2" />
 
-        {/* Top and Bottom lines */}
-        <line x1="120" y1="150" x2="480" y2="150" stroke="white" strokeWidth="2" />
-        <line x1="120" y1="930" x2="480" y2="930" stroke="white" strokeWidth="2" />
+      {/* Top and Bottom lines */}
+      <line x1="120" y1="150" x2="480" y2="150" stroke="white" strokeWidth="2" />
+      <line x1="120" y1="930" x2="480" y2="930" stroke="white" strokeWidth="2" />
 
-        {/* Net Line */}
-        <line className="gray-hoverable" x1="90" y1="540" x2="510" y2="540" stroke="black" strokeWidth="4" />
+      {/* Net Line */}
+      <line className="gray-hoverable" x1="90" y1="540" x2="510" y2="540" stroke="black" strokeWidth="4" />
 
       <style>
         {`

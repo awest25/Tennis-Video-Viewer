@@ -119,10 +119,10 @@ const MatchPage = () => {
     setFilterList(updatedFilterList);
   };
 
-  const scrollToDetailedList=()=>{
+  const scrollToDetailedList = () => {
     if (tableRef.current) {
       tableRef.current.scrollIntoView({ behavior: "smooth" });
-  }
+    }
   };
 
   const togglePDF = () => {
@@ -140,7 +140,7 @@ const MatchPage = () => {
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores} />
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
@@ -213,29 +213,29 @@ const MatchPage = () => {
                 <div className='jumpList'>
                   {/* Points List */}
                   <div className="pointsList">
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
-                  <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
-                </div>
+                    <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
+                  </div>
                   {/* Score display */}
                   <div className="scoreboard">
-                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div className={styles.toggle}>
-              <button onClick={() => togglePDF()} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
-              <button onClick={() => togglePoints()} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            <button onClick={() => togglePDF()} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+            <button onClick={() => togglePoints()} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (
               <div ref={tableRef} className={styles.ExtendedList}>
-                <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime} iframe = {iframeRef}/>
+                <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime} iframe={iframeRef} />
               </div>
-            )} 
+            )}
           </div>
         </>
       )}

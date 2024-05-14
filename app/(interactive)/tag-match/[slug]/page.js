@@ -53,6 +53,7 @@ export default function TagMatch() {
       }
 
       // Set the metadata to matchDocument but without the 'points'
+      // eslint-disable-next-line no-unused-vars
       const { points, ...metadata } = matchDocument;
       setMatchMetadata(metadata);
     });
@@ -362,7 +363,7 @@ export default function TagMatch() {
     console.log("event: ", event);
     const courtWidthInInches = 432; // The court is 36 feet wide, or 432 inches
     // const courtHeightInInches = 936; // The court is 78 feet long, or 936 inches
-    
+
     // The current SVG has the actual in width of the court as 360 out of 600 total
     // The height is 780 out of 1080 total
     // This makes the ratio 0.6 for width and 0.7222 for height
@@ -419,19 +420,19 @@ export default function TagMatch() {
               <div>
                 <p>{button.label}</p>
                 <TennisCourtSVG className={styles.courtImage} courtType={button.courtImage} handleImageClick={(event) => {
-                    setPopUp([])
-                    saveToHistory();
-                    let data = matchMetadata;
-                    // add data.x and data.y to the data object
-                    const { x, y } = handleImageClick(event);
-                    data.x = x;
-                    data.y = y;
-                    data.table = tableState.rows;
-                    data.activeRowIndex = tableState.activeRowIndex;
-                    data.videoTimestamp = getVideoTimestamp();
-                    button.action(data);
-                    showPopUp();
-                  }} />
+                  setPopUp([])
+                  saveToHistory();
+                  let data = matchMetadata;
+                  // add data.x and data.y to the data object
+                  const { x, y } = handleImageClick(event);
+                  data.x = x;
+                  data.y = y;
+                  data.table = tableState.rows;
+                  data.activeRowIndex = tableState.activeRowIndex;
+                  data.videoTimestamp = getVideoTimestamp();
+                  button.action(data);
+                  showPopUp();
+                }} />
               </div>
             ) : (
               <button className={styles.customButton} key={index} onClick={() => {
