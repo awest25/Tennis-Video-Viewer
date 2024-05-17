@@ -2298,7 +2298,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 }
 
                 if ((data.table[data.activeRowIndex]["shotContactY"] >= 0 & ((data.y >= 0 || data.y <-455) || (data.x > 157 || data.x < -157))) ||
-                (data.table[data.activeRowIndex]["shotContactY"] < 0 & ((data.y <= 0 || data.y > 455) || (data.x > 157 || data.x < -157)))) {
+                (data.table[data.activeRowIndex]["shotContactY"] < 0 & ((data.y <= 0 || data.y > 455) || (data.x > 157 || data.x < -157))) ||
+                (data.table[data.activeRowIndex]["isWinner"] == "1")) {
                     serverScore =  parseInt(data.table[data.activeRowIndex]['pointScore'].split("-")[0]);
                     returnerScore =  parseInt(data.table[data.activeRowIndex]['pointScore'].split("-")[1]);
                     player1GameScore =  parseInt(data.table[data.activeRowIndex]['gameScore'].split("-")[0]);
