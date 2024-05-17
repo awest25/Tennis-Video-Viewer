@@ -2,7 +2,7 @@ import { db } from '../services/initializeFirebase.js'; // Ensure storage is exp
 import { collection, getDocs } from 'firebase/firestore';
 
 
-const getLogos = async() => {
+const getTeams = async() => {
   try {
     const querySnapshot = await getDocs(collection(db, 'teams'));
     const teams = querySnapshot.docs.map((doc) => doc.data());
@@ -14,4 +14,4 @@ const getLogos = async() => {
   }
 };
 
-export default getLogos;
+export default getTeams;

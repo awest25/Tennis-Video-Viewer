@@ -1,0 +1,52 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+.searchSection {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.searchBox {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.searchButton {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.mainContent {
+  display: flex;
+  height: 90vh;
+}
+
+.eventsContainer {
+  background-color: #ddd; /* Light grey background */
+  height: 30px; /* Small height for a thin bar */
+  width: 100%; /* Full width */
+  display: flex;
+  align-items: center;
+  padding: 0 20px; /* Padding on the sides */
+}
+
+.matchesContainer {
+  flex: 1;
+  background-color: #d3d3d3;
+  margin: 10px;
+}
+
+.rosterContainer {
+  width: 20%; /*fixed width for roster section */
+  background-color: #FFF;
+}
