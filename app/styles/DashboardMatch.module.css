@@ -1,7 +1,5 @@
 /* DashboardMatch.module.css */
-.parentContainer {
 
-}
 
 .matchesContainer {
     display: grid;
@@ -16,7 +14,13 @@
    transform: scale(0.98);
   
 }
+.matchTypeTitle{
+    margin-left: 20px;
+    margin-bottom: 5px;
+    border: 0px;
+    font-size: clamp(15px, 2.0vw, 30px);
 
+}
 .title {
     margin-left: 20px;
     margin-bottom: 5px;
@@ -26,7 +30,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center; 
+    font-size: clamp(10px, 1.2vw, 35px);
 }.date {
     margin-right: 20px;
     margin-bottom: 0px;
+    
 }
