@@ -317,7 +317,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
   'ServerSideTiebreak': [
     {
       label: 'NearSide',
-      action: () => {
+      action: (data) => {
         updateActiveRow('pointScore', serverScore + '-' + returnerScore);
         updateActiveRow('gameScore', data.table[data.activeRowIndex - 1]['gameScore']);
         updateActiveRow('setScore', data.table[data.activeRowIndex - 1]['setScore']);
@@ -329,7 +329,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
     },
     {
       label: 'FarSide',
-      action: () => {
+      action: (data) => {
         updateActiveRow('serverName', data.table[data.activeRowIndex - 1]['serverName']);
         updateActiveRow('pointScore', serverScore + '-' + returnerScore);
         updateActiveRow('gameScore', data.table[data.activeRowIndex - 1]['gameScore']);
