@@ -6,15 +6,15 @@ import { useRouter, usePathname } from 'next/navigation'
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
+import SignInPage from './SignIn.js';
 
-const SearchDropdown = () => {
+const SearchDropdown = ({authorization}) => {
   const [dropdownData, setDropdownData] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null); // State to keep track of the selected option
-
   const router = useRouter();
   const pathname = usePathname();
   const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
-
+  const [isSignedIn, setIsSignedIn] = useState(false);
   useEffect(() => {
     const fetchMatches = async () => {
       const querySnapshot = await getDocs(collection(db, 'matches'));
@@ -28,11 +28,19 @@ const SearchDropdown = () => {
           };
         });
       setDropdownData(matches);
-            
+      if(authorization){
+        setIsSignedIn(true);
+      }
+      if(!isSignedIn) {
+        router.push('/');
+      }
       // Find the selected match based on the URL and set it as selected
-      if (videoId) {
+      else if (videoId) {
         const selectedMatch = matches.find(match => match.value === videoId);
         setSelectedOption(selectedMatch);
+      }
+      else{
+        setSelectedOption(null);
       }
     };
 

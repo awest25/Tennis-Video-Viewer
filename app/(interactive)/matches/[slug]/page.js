@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation'
-
 import filterStyles from '../../../styles/FilterList.module.css'
 import styles from '../../../styles/Match.module.css';
 import VideoPlayer from '../../../components/VideoPlayer';
@@ -10,8 +9,9 @@ import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
 import MatchTiles from '@/app/components/MatchTiles';
+import AuthWrapper from '@/app/components/AuthWrapper';
 import extractSetScores from '@/app/services/extractSetScores';
-
+import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
 import transformData from '../../../services/transformData';
@@ -26,6 +26,8 @@ import nameMap from '../../../services/nameMap';
 //     }))
 //   }
 
+
+
 const MatchPage = () => {
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
@@ -34,7 +36,6 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
-
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
   // const router = useRouter();
@@ -201,9 +202,6 @@ const MatchPage = () => {
                     <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
                   </div>
                 </div>
-
-              
-                
               </div>
             </div>
           </div>
@@ -211,6 +209,7 @@ const MatchPage = () => {
           {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
           <br></br>
         </>
+        
       )}
 
       <style jsx>{`
