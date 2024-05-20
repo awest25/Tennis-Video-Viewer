@@ -165,6 +165,7 @@
 
 .videoPlayer {
   flex: 7;
+  padding-right: 2vw;
 }
 
 .sidebar {

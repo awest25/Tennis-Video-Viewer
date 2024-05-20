@@ -5,6 +5,9 @@ function VideoPlayer({ videoId, setVideoObject }) {
 
   useEffect(() => {
     const initializePlayer = () => {
+      const playerWidth = document.getElementById('player').offsetWidth;
+      const playerHeight = Math.ceil(playerWidth / 16 * 9); // Assuming 16:9 aspect ratio
+
       playerRef.current = new window.YT.Player('player', {
         videoId: videoId,
         events: {
@@ -13,6 +16,8 @@ function VideoPlayer({ videoId, setVideoObject }) {
         playerVars: {
           'origin': 'http://localhost:3000' 
         },
+        width: '100%', // Adjust the width here
+        height: playerHeight
       });
       setVideoObject(playerRef.current);
     };
