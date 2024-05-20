@@ -125,14 +125,6 @@ const MatchPage = () => {
     }
   };
 
-  const togglePDF = () => {
-    setShowPDF(false);
-  };
-
-  const togglePoints = () => {
-    setShowPDF(true);
-  };
-
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
@@ -227,8 +219,8 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.toggle}>
-            <button onClick={() => togglePDF()} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
-            <button onClick={() => togglePoints()} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (
