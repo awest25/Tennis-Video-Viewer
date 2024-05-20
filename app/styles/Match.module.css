@@ -182,6 +182,10 @@
   overflow: auto;
 }
 
+.sidecontent::-webkit-scrollbar {
+  display: none;
+}
+
   .toggle {
     width: 90%;
   }
