@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation'
 
-import filterStyles from '../../../styles/FilterList.module.css'
+import filterListStyles from '../../../styles/FilterList.module.css'
 import styles from '../../../styles/Match.module.css';
 import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
@@ -141,18 +141,18 @@ const MatchPage = () => {
           </div>
           <div className={styles.mainContent}>
             {/* Video Player */}
-            <div className="videoPlayer">
+            <div className={styles.videoPlayer}>
               <div ref={iframeRef}>
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
             </div>
-            <div className={styles.toggle}>
+            <div className={styles.sidebar}>
               {/* Filter List */}
-              <div className={filterStyles.activeFilterListContainer}>
+              <div className={filterListStyles.activeFilterListContainer}>
                 Active Filters:
-                <ul className={filterStyles.activeFilterList}>
+                <ul className={filterListStyles.activeFilterList}>
                   {sortedFilterList.map(([key, value]) => (
-                    <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                    <li className={filterListStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
                       {nameMap[key]}: {value}
                     </li>
                   ))}
@@ -163,9 +163,9 @@ const MatchPage = () => {
               {/* List Holders */}
               {/* Filter List */}
               {tab === 0 && 
-                <div className="filterList">
+                <div className={styles.sidebox}>
                   {/* Radio Options */}
-                  <div className={filterStyles.optionsList}>
+                  <div className={filterListStyles.optionsList}>
                     <div>
                       <input
                         type="radio"
@@ -203,22 +203,24 @@ const MatchPage = () => {
                       <label htmlFor="countRadio">Show Count</label>
                     </div>
                   </div>
-                  <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
+                  <div className={styles.sidecontent}>
+                    <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
+                  </div>
                 </div>}
                 {tab === 1 &&
-                <div className='jumpList'>
+                <div className={styles.sidebox}>
                   {/* Points List */}
-                  <div className="pointsList">
+                  <div className={styles.sidecontent}>
                     <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
                     <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
                   </div>
-                  {/* Score display */}
-                  <div className="scoreboard">
-                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
-                  </div>
                 </div>}
+                {/* Score display */}
+                <div className="scoreboard">
+                  <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
+                </div>
               </div>
           </div>
           <div className={styles.toggle}>
@@ -248,75 +250,10 @@ const MatchPage = () => {
           margin-bottom: 1rem;
           width: 80%;
         }
-
-        ${styles.mainContent} {
-          display: flex;
-          flex-direction: row;
-          width: 100%; // Take up the full width
-          justify-content: center;
-          align-items: flex-start;
-        }
-
-        .videoPlayer {
-          flex: 2; // Takes up 2/3 of the space
-          padding: 1rem;
-        }
-
-        .pointsList {
-          flex: 1; /* Takes up 1/3 of the space */
-          max-width: 0.5 vw;
-          margin-top: 0;
-          padding: 1vw;
-          margin-left: 1vw;
-          border: 1px solid #ddd;
-          border-radius: 1.5vw;
-          overflow-y: auto;
-          height: 30vw;
-          background: linear-gradient(to bottom, #ffffff, #fafafa); 
-        }
-
-        .filterList {
-          flex: 2; // Takes up 1/3 of the space
-          margin-top: 0;
-          padding: 1vw;
-          margin-left: 1vw;
-          border: 1px solid #ddd;
-          border-radius: 1.5vw;
-          overflow-y: auto;
-          height: 30vw;
-          background: linear-gradient(to bottom, #ffffff, #fafafa); 
-        }
-        .jumpList {
-          width: 25vw;
-        }
         
         .listHolder {
           display: flex;
           gap: 10px;
-        }
-      `}</style>
-
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
         }
       `}</style>
     </div>

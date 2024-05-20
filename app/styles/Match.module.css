@@ -98,8 +98,7 @@
     flex: 1;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+    width: 100%;
   }
   
   .headerRow {
@@ -163,6 +162,25 @@
     background-color: #e9ecef;
     border-color: #b8c2cc;
   }
+
+.videoPlayer {
+  flex: 7;
+}
+
+.sidebar {
+  flex: 3;
+}
+
+.sidebox {
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  border-top-left-radius: 0% !important;
+}
+
+.sidecontent {
+  max-height: 20vw;
+  overflow: auto;
+}
 
   .toggle {
     width: 90%;
