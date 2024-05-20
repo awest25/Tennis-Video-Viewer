@@ -36,6 +36,7 @@ const MatchPage = () => {
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
   const [showPDF, setShowPDF] = useState(false);
+  const [tab, setTab] = useState(0);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
@@ -145,7 +146,7 @@ const MatchPage = () => {
                 <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
               </div>
             </div>
-            <div>
+            <div className={styles.toggle}>
               {/* Filter List */}
               <div className={filterStyles.activeFilterListContainer}>
                 Active Filters:
@@ -157,9 +158,11 @@ const MatchPage = () => {
                   ))}
                 </ul>
               </div>
+              <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Filters</button>
+              <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Points</button>
               {/* List Holders */}
-              <div className='listHolder'>
-                {/* Filter List */}
+              {/* Filter List */}
+              {tab === 0 && 
                 <div className="filterList">
                   {/* Radio Options */}
                   <div className={filterStyles.optionsList}>
@@ -201,7 +204,8 @@ const MatchPage = () => {
                     </div>
                   </div>
                   <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
-                </div>
+                </div>}
+                {tab === 1 &&
                 <div className='jumpList'>
                   {/* Points List */}
                   <div className="pointsList">
@@ -214,9 +218,8 @@ const MatchPage = () => {
                   <div className="scoreboard">
                     <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
                   </div>
-                </div>
+                </div>}
               </div>
-            </div>
           </div>
           <div className={styles.toggle}>
             <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
