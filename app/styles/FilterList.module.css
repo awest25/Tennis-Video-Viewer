@@ -5,7 +5,7 @@
     align-items: center;
     box-sizing: border-box;
     padding: 1vw;
-    margin: 1vw 0;
+    margin-bottom: 1vw;
     background-color: #ffffff;
     border: 0.2vw solid #eaeaea;
     border-radius: 1.5vw;
@@ -104,8 +104,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 1.2vw;
+    font-size: 1.1vw;
     padding: 1vw;
-    padding-right: 3vw;
 
 }
