@@ -708,7 +708,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 if (data.x >= -157 & data.x < -105)
                 {
                     updateActiveRow('firstServeZone', 'Wide');
-                    if (data.y >= 10 & data.y <= 245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -754,7 +754,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 else if (data.x >= -105 & data.x <= -52)
                 {
                     updateActiveRow('firstServeZone', 'Body');
-                    if (data.y >= 10 & data.y <= 245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -800,7 +800,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 else if (data.x > -52 & data.x < 0)
                 {
                     updateActiveRow('firstServeZone', 'T');
-                    if (data.y >= 10 & data.y <= 245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -862,7 +862,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 if (data.x >= 0 & data.x < 50)
                 {
                     updateActiveRow('firstServeZone', 'T');
-                    if (data.y <= 10 & data.y >= -245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -908,7 +908,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 else if (data.x >= 50 & data.x <= 105)
                 {
                     updateActiveRow('firstServeZone', 'Body');
-                    if (data.y <= 10 & data.y >= -245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -954,7 +954,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
                 else if (data.x > 105 & data.x <= 157)
                 {
                     updateActiveRow('firstServeZone', 'Wide');
-                    if (data.y <= 10 & data.y >= -245)
+                    if (data.y <= -10 & data.y >= -245)
                     {
                         updateActiveRow('firstServeIn', '1');
                         if (data.table[data.activeRowIndex]['isAce'] == '1') {
@@ -1413,7 +1413,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
         {
             if ((data.table[data.activeRowIndex])['side'] == 'Ad') // split by side
             {
-                // Assuming coordinate range of x: 75 -215, y: 470-723
+                // Assuming coordinate range of x: 
             if (data.x >= -157 & data.x < -105)
             {
                 updateActiveRow('secondServeZone', 'Wide');
