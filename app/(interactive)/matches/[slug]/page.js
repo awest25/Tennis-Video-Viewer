@@ -207,7 +207,7 @@ const MatchPage = () => {
                     <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                   </div>
                 </div>}
-                {tab === 1 &&
+              {tab === 1 &&
                 <div className={styles.sidebox}>
                   {/* Points List */}
                   <div className={styles.sidecontent}>
@@ -217,11 +217,11 @@ const MatchPage = () => {
                     <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
                   </div>
                 </div>}
-                {/* Score display */}
-                <div className="scoreboard">
-                  <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
-                </div>
+              {/* Score display */}
+              <div className="scoreboard">
+                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
               </div>
+            </div>
           </div>
           <div className={styles.toggle}>
             <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
