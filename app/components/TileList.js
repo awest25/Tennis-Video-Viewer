@@ -30,9 +30,6 @@ const groupByDate = (matches) => {
 
 const TileList = () => {
     const [matchList, setMatchList] = useState([]);
-    const [matchData, setMatchData] = useState();
-
-    const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
     useEffect(() => {
         const fetchMatches = async () => {
@@ -44,7 +41,6 @@ const TileList = () => {
                 return transformData(data); // Assuming transformData is a function you have that processes each document's data
             });
             const sortedDate = groupByDate(transformedMatches)
-            console.log(sortedDate)
             setMatchList(sortedDate); // Update your state with the transformed matches
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -57,12 +53,6 @@ const TileList = () => {
 
     return (
         <div>
-            {matchData && (<MatchTiles  matchName={matchData.name}
-                            clientTeam={matchData.clientTeam}
-                            opponentTeam={matchData.opponentTeam}
-                            matchDetails={matchData.matchDetails}
-                            {...matchSetScores} />)}
-
             {matchList && matchList.map((matches, index) => (
                 matches.length > 0 && (
                     <DashboardMatch key={index} matchInfo={matches} />
