@@ -2,41 +2,47 @@
 
 .matchTilesContainer {
     display: flex;
-    width: 100%;
+    flex-wrap: wrap;
+    width: 90vw;
+    padding: 1vw;
+    box-sizing: border-box;
 }
 
+
+
 .matchInfoContainer {
-    border: 1px solid #DEDEDE;
-    border-radius: 24px;
+    border: 0.13vw solid #DEDEDE;
+    border-radius: 1.2vw;
     font-family: 'DM Sans', sans-serif;
-    width: 38%;
-    margin: 8px;
-    padding: 1em;
+    width: 27vw; /* Adjusted to fit within the container */
+    margin: 1vw; /* Margin between tiles */
+    padding: 1vw; /* Padding inside each tile */
+    box-sizing: border-box;
 }
 
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;
-    padding-bottom: 2px;
+    padding-bottom: 0.2vw;
 }
 
 .containerInfo {
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     font-weight: 600;
 }
 
 .playerInfo {
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
     font-weight: 600;
     position: relative;
 }
 
 .playerInfoName {
-    padding-left: 1em;
-    padding-right: 2em;
+    padding-left: 1vw;
+    padding-right: 2vw;
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.3vw;
     font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
@@ -45,18 +51,23 @@
 .playerInfoScore {
     position: absolute;
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.4vw;
     font-weight: 600;
-    left: 85%;
-    letter-spacing: .5em;
+    padding-left: 21vw ;
+    letter-spacing: 0.5vw;
 }
 
 .playerSchoolImg {
-    width: 1.5em;
+    width: 2.5vw;
     padding: 0;
 }
 
-.playerSchoolImg img {
-    width: 100%; /* Set the width of the image to 100% of its container */
-    height: auto; /* Automatically adjust the height to maintain aspect ratio */
-  }
+.playerSchoolImgcontainer {
+    max-width: 4vw; /* Adjust max-width using viewport units */
+    height: 4vw; /* Set the desired height */
+    padding-left: 1vw;
+    display: flex;
+    justify-content: center; /* Center the image vertically */
+    align-items: center; /* Center the image horizontally */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
+}

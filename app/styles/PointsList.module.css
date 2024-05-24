@@ -9,12 +9,13 @@
 }
 
 .playerSchoolImg {
-  max-width: 2.3vw; /* Adjust max-width using viewport units */
-  display: block;
-  width: 2.3vw;
-  padding-bottom: 0.85vw;
-  padding-top: 0.85vw;
-  margin: 0 auto; /* Center the element horizontally */
+  max-width: 4vw; /* Adjust max-width using viewport units */
+  height: 4vw; /* Set the desired height */
+  padding-left: 1vw;
+  display: flex;
+  justify-content: center; /* Center the image vertically */
+  align-items: center; /* Center the image horizontally */
+  overflow: hidden; /* Ensure the image doesn't overflow the container */
 }
 
 .pointsList th,
@@ -61,13 +62,8 @@
 }
 
 .IMG {
-  max-height: 4vw;
-
-  max-width: 4vw; /* Adjust max-width using viewport units */
-
-  display: block;
-  width: 4vw;
-
+  width: 100%; /* Ensure the image takes up the entire container */
+  height: auto; /* Allow the image to resize proportionally */
 }
 
 .buttonn:focus {
