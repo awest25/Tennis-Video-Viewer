@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-function VideoPlayer({ videoId, setVideoObject }) {
+function VideoPlayer({ videoId, setVideoObject, onReady }) {
   const playerRef = useRef(null);
 
   useEffect(() => {
@@ -53,7 +53,10 @@ function VideoPlayer({ videoId, setVideoObject }) {
   }, [videoId]);
 
   const onPlayerReady = () => {
-    console.log('player is ready')
+    console.log('player is ready');
+    if (onReady) {
+      onReady();
+    }
   };
 
   return <div id="player"></div>;
