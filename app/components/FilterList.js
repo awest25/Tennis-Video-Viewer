@@ -51,7 +51,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
   const countFilteredPointsTotal = (key) => {
     return pointsData.reduce((total, point) => {
       // Check if the value attribute is not an empty string
-      if (point[key] !== '') {
+      if (point[key] !== '' && point[key] !== null) {
         return total + 1; // Add 1 to the total if this point has a value specific to this category (key)
       }
       // Otherwise, just return the current total without adding anything
@@ -83,7 +83,7 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
                   <ul className={styles.filterValuesList} style={{ display: openKey === key ? 'block' : 'none' }}>
                     {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map((value) => (
-                      value !== '' && (
+                      value !== '' && value !== null && (
                         <div className={styles.filterValueItem} key={value} style={{
                           cursor: 'pointer',
                           backgroundColor: isActiveFilter(key, value) ? '#8BB8E8' : ''
