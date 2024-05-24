@@ -36,7 +36,7 @@ const MatchPage = () => {
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
   const [showPDF, setShowPDF] = useState(false);
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(1);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
@@ -128,6 +128,15 @@ const MatchPage = () => {
 
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
+  function addBorderRadius() {
+    console.log('adding border radius');
+    const anyIframe = document.getElementById('player');
+    if (anyIframe) {
+      console.log('found iframe:', anyIframe);
+      anyIframe.style.borderRadius = '10px';
+    }
+  }
+
   return (
     <div className={styles.container}>
       {/* Main Content Area */}
@@ -143,7 +152,7 @@ const MatchPage = () => {
             {/* Video Player */}
             <div className={styles.videoPlayer}>
               <div ref={iframeRef}>
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
             <div className={styles.sidebar}>
