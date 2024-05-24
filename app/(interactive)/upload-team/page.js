@@ -11,6 +11,7 @@ export default function UploadVideo() {
   const [teamSelect, setTeamSelect] = useState('Arizona (M)')
   const [playerFirstName, setPlayerFirstName] = useState('');
   const [playerLastName, setPlayerLastName] = useState('');
+  const [playerHand, setPlayerHand] = useState('right');
   const [playerPhoto, setPlayerPhoto] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
   const [teams, setTeams] = useState([]);
@@ -55,7 +56,7 @@ export default function UploadVideo() {
     }
     
     try {
-      await uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamSelect)
+      await uploadPlayer(playerFirstName, playerLastName, playerPhoto, playerHand, teamSelect)
       alert('done!')
     } catch (error) {
       console.error("Error uploading match:", error);
@@ -103,6 +104,11 @@ export default function UploadVideo() {
           <label>
             Last Name: 
             <input type="text" value={playerLastName} onChange={(e) => setPlayerLastName(e.target.value)} />
+          </label>
+          <label> Hand: 
+            <input type="radio" checked={playerHand === 'right'} onChange={() => {setPlayerHand('right')}} /> Right
+            <input type="radio" checked={playerHand === 'left'} onChange={() => {setPlayerHand('left')}} /> Left
+            <input type="radio" checked={playerHand === 'ambidextrous'} onChange={() => {setPlayerHand('ambidextrous')}} /> Ambidextrous
           </label>
           <label>
             Team: 

@@ -80,7 +80,7 @@ async function uploadTeam(teamName, logoFile) {
   }
 }
 
-async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamName) {
+async function uploadPlayer(playerFirstName, playerLastName, playerHand, playerPhoto, teamName) {
   if (!playerFirstName || !playerLastName || !teamName) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
@@ -115,6 +115,7 @@ async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamNa
       await updateDoc(teamDoc, { players: [{ 
         firstName: playerFirstName,
         lastName: playerLastName,
+        playerHand,
         photo: playerPhotoUrl
       }] 
       });
