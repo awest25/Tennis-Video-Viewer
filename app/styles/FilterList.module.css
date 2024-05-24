@@ -4,11 +4,11 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-    padding: 1vw;
+    padding: 0.5vw;
     margin-bottom: 1vw;
     background-color: #ffffff;
-    border: 0.2vw solid #eaeaea;
-    border-radius: 1.5vw;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
     font-size: 1.2vw;
 }
 
@@ -24,14 +24,14 @@
 }
 
 .activeFilterItem {
-    background-color: #f7f7f7; /* Slightly lighter to distinguish from hover state */
+    background-color: #fafafa; /* Slightly lighter to distinguish from hover state */
     color: #333;
-    border: 0.2vw solid #ccc; /* Subtle border color */
-    border-radius: 0.0.5vw;
-    padding: 0.4vw 0.8vw;
+    border: 1px solid #eaeaea; /* Subtle border color */
+    border-radius: 0.25vw;
+    padding: 0.625vw 2.5vw;
     margin: 0.5vw;
     cursor: pointer;
-    font-size: 1.2vw;
+    font-size: 1.3vw;
     transition: all 0.2s ease-in-out; /* Smooth transition for all properties */
 }
 
