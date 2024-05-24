@@ -2,8 +2,8 @@ import { collection, addDoc, query, where, getDoc, getDocs, updateDoc, doc, arra
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import storage functions
 import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
-async function uploadMatch(sets, videoId, pointsJson, pdfFile, teams, players, matchDate, singles) {
-  if (!sets || !videoId || !teams || !players || !matchDate || !singles) {
+async function uploadMatch(sets, videoId, pointsJson, pdfFile, teams, players, matchDate, singles, matchDetails) {
+  if (!sets || !videoId || !teams || !players || !matchDate || !singles || !matchDetails) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
@@ -35,6 +35,7 @@ async function uploadMatch(sets, videoId, pointsJson, pdfFile, teams, players, m
       players,
       published,
       singles,
+      matchDetails,
       points: pointsJson? pointsJson : []
     });
     console.log("Match Document written with ID: ", docRef.id);

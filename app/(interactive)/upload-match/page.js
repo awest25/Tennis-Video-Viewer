@@ -77,7 +77,7 @@ export default function UploadVideo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate || !clientUTR || !opponentUTR || !temperature || !division || !event || !lineup || !matchVenue || !round || !indoor || !surface) {
+    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate || !clientUTR || !opponentUTR || !temperature || !division || !event || !lineup || !matchVenue || !round || !indoor || !surface ) {
       // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
       console.error('missing fields')
       return;
