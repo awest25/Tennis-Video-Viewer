@@ -1,5 +1,9 @@
+.pointsContainer {
+  padding: 0.7vw;
+}
+
 .pointsList {
-  width: 20vw; /* Use viewport width for full width */
+  width: 100%;
   border-collapse: collapse;
   overflow: hidden;
 }
@@ -10,6 +14,7 @@
   width: 2.3vw;
   padding-bottom: 0.85vw;
   padding-top: 0.85vw;
+  margin: 0 auto; /* Center the element horizontally */
 }
 
 .pointsList th,
@@ -36,8 +41,6 @@
 .pointsList tbody tr:hover {
   background-color: #e2e2e2;
 }
-
-
 
 .buttonn {
   padding: 0.625vw 2.5vw; /* Adjust padding using viewport units */

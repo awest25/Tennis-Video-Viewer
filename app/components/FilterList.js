@@ -66,14 +66,11 @@ const FilterList = ({ pointsData, filterList, setFilterList, showPercent, showCo
 
   // Sort the filterList array in alphabetical order
   // const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
-
   return (
     <>
       <div>
         <ul className={styles.availableFilterList}>
           {keys.map((key) => {
-            // Check if key is in the nameMap
-            // if (nameMap.hasOwnProperty(key)) {
             return (
               <div className={styles.availableFilterItem} key={key} onClick={() => toggleOpen(key)}>
                 <li>

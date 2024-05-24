@@ -10,19 +10,20 @@
   font-weight: bold;
 }
 
-.scoreboard th,
+.scoreboard th, 
 .scoreboard td {
   text-align: left;
-  padding-top: 0.75vw; /* Add padding for spacing within cells */
-  padding-bottom: 0.75vw;
+  font-size: 1.5vw;
   padding-left: 0.2vw;
   padding-right: 0.2vw;
-  font-size: 1.5vw;
+}
+.scoreboard td {
+  padding-top: 0.5vw;
 }
 
 .scoreboard th {
   font-weight: normal;
-  font-sze: 1.5vw;
+  font-size: 1.3vw;
 }
 
 .table {

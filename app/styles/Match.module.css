@@ -94,25 +94,14 @@
   }
   
   .mainContent {
-    /* padding: 5rem 0; */
-    flex: 1;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .headerRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     width: 100%;
   }
   
   .titleContainer {
-    flex-grow: 1; /* This allows the container to grow and take up available space */
     display: flex;
-    justify-content: center; /* This centers the title horizontally within the title container */
+    justify-content: center;
     align-items: center; /* This centers the title vertically */
     margin: 0 auto; /* This may help maintain the centering if other elements are taking up space */
   }
@@ -164,8 +153,34 @@
     border-color: #b8c2cc;
   }
 
+.videoPlayer {
+  flex: 3;
+  padding-right: 2vw;
+  border-radius: 10px;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.sidebox {
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  border-top-left-radius: 0% !important;
+}
+
+.sidecontent {
+  max-height: 20vw;
+  overflow: auto;
+}
+
+.sidecontent::-webkit-scrollbar {
+  display: none;
+}
+
   .toggle {
     width: 90%;
+    padding-top: 3vw;
   }
 
   .toggle_buttona_active{
