@@ -152,7 +152,7 @@ const MatchPage = () => {
             {/* Video Player */}
             <div className={styles.videoPlayer}>
               <div ref={iframeRef}>
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
+                <VideoPlayer id='player' videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
             <div className={styles.sidebar}>
