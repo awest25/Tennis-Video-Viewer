@@ -401,8 +401,8 @@ export default function TagMatch() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '48vw', height: '36vw'}}>
           <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
           {/* temporary means to select video (should it be a form?) */}
           <label>Input YouTube Code: </label>
