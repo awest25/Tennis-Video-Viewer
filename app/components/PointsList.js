@@ -57,9 +57,11 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
                 onClick={() => onPointSelect(point.Position)}
                 style={{ cursor: 'pointer' }}
               >
-                <td>
+                <td >
+                  <div className={styles.imgcontainer}>
                   <div className={styles.playerSchoolImg}>
                     <img src={serverName === point.player1Name ? clientLogo : opponentLogo} className={styles.IMG} />
+                  </div>
                   </div>
                 </td>
                 <td><b style={{ fontSize: '1em' }}>{set}</b></td>

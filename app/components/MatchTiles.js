@@ -20,9 +20,12 @@ const extractDateFromString = (inputString) => {
     const dateParts = firstMatch.includes('/') ? firstMatch.split('/') : firstMatch.split('-');
     const month = parseInt(dateParts[0]);
     const day = parseInt(dateParts[1]);
-    const year = parseInt(dateParts[2]);
+    let year = parseInt(dateParts[2]);
+    if (year < 100) {
+      year += 2000; // Adjust for two-digit year format
+    }
 
-    const dateObject = new Date(year + 2000, month - 1, day);
+    const dateObject = new Date(year, month - 1, day);
     return dateObject.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
@@ -67,7 +70,7 @@ const MatchTiles = ({
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerTitle}>Final Score</div>
         <div className={styles.playerInfo}>
-          <div className={styles.playerSchoolImg}>
+          <div className={styles.playerSchoolImgcontainerhome}>
             <img src={clientLogo} alt={`${clientTeam} logo`} />
           </div>
           <div className={styles.playerInfoName} style={{ opacity: isUnfinished || !calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
@@ -89,7 +92,7 @@ const MatchTiles = ({
           </div>
         </div>
         <div className={styles.playerInfo}>
-          <div className={styles.playerSchoolImg}>
+          <div className={styles.playerSchoolImgcontainer}>
             <img src={opponentLogo} alt={`${opponentTeam} logo`} />
           </div>
           <div className={styles.playerInfoName} style={{ opacity: calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>

@@ -9,13 +9,18 @@
 }
 
 .playerSchoolImg {
-  max-width: 4vw; /* Adjust max-width using viewport units */
+  max-width: min(3.7vw, calc(4vw * 16 / 9)); /* Limit the max-width based on aspect ratio and 4vw height */
   height: 4vw; /* Set the desired height */
-  padding-left: 1vw;
+  padding-left: 0.6vw;
   display: flex;
   justify-content: center; /* Center the image vertically */
   align-items: center; /* Center the image horizontally */
   overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.imgcontainer{
+  padding-left: 1vw;
+  display: flex;
 }
 
 .pointsList th,
