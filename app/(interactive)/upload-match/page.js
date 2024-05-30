@@ -54,7 +54,7 @@ export default function UploadVideo() {
   const [event, setEvent] = useState('');
   const [lineup, setLineup] = useState('');
   const [matchVenue, setMatchVenue] = useState('');
-  const [round, setRound] = useState('');
+  const [round, setRound] = useState(null);
   const [indoor, setIndoor] = useState(false);
   const [surface, setSurface] = useState('hard');
   const [singles, setSingles] = useState(true);
@@ -77,8 +77,41 @@ export default function UploadVideo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!matchScore || !videoId || !clientTeam || !opponentTeam || !clientPlayerFirst || !clientPlayerLast || !opponentPlayerFirst || !opponentPlayerLast || !matchDate || !clientUTR || !opponentUTR || !temperature || !division || !event || !lineup || !matchVenue || !round || !indoor || !surface ) {
-      // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+    if (matchScore === null || 
+      videoId === null || 
+      clientTeam === null || 
+      opponentTeam === null || 
+      clientPlayerFirst === null || 
+      clientPlayerLast === null || 
+      opponentPlayerFirst === null || 
+      opponentPlayerLast === null || 
+      matchDate === null || 
+      clientUTR === null || 
+      opponentUTR === null || 
+      division === null || 
+      event === null || 
+      lineup === null || 
+      matchVenue === null || 
+      indoor === null || 
+      surface === null) {  
+    // console.error(`Please fill in the following fields: ${missingFields.join(', ')}.`);
+      console.log(matchScore)
+      console.log(videoId)
+      console.log(clientTeam)
+      console.log(opponentTeam)
+      console.log(clientPlayerFirst)
+      console.log(clientPlayerLast)
+      console.log(opponentPlayerFirst)
+      console.log(opponentPlayerLast)
+      console.log(matchDate)
+      console.log(clientUTR)
+      console.log(opponentUTR)
+      console.log(division)
+      console.log(event)
+      console.log(lineup)
+      console.log(matchVenue)
+      console.log(indoor)
+      console.log(surface)
       console.error('missing fields')
       return;
     }
