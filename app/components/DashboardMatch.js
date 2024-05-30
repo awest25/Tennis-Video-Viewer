@@ -6,47 +6,30 @@ import styles from '../styles/DashboardMatch.module.css'; // Import the CSS modu
 const calculateMatchDate = (matchInfo) => {
     if (matchInfo && matchInfo.length > 0 && matchInfo[0].matchDate) {
         const date = matchInfo[0].matchDate;
-        const formattedDate = date.slice(5, 7) + '/' + date.slice(8, 10) + '/' + date.slice(0, 4);
-        return formattedDate;
+        return date.slice(5, 7) + '/' + date.slice(8, 10) + '/' + date.slice(0, 4);
     }
     return "Date unavailable";
 }
 
 const matchTitle = (matchInfo) => {
-    if (matchInfo && matchInfo.length > 0) {
-        const clientTeam = matchInfo[0].teams.clientTeam;
-        const opponentTeam = matchInfo[0].teams.opponentTeam;
-
-        let clientWins = 0;
-        let opponentWins = 0;
-
-        matchInfo.forEach(match => {
-            let setClientWins = 0;
-            let setOpponentWins = 0;
-            match.sets.forEach(set =>{
-                if(set.clientGamesWon > set.opponentGamesWon)
-                {
-                    setClientWins++;
-                }
-                else{
-                    setOpponentWins++;
-                }
-            })
-            if(setClientWins > setOpponentWins)
-            {
-                clientWins++;
-            }
-            else{
-                opponentWins++;
+    if (!matchInfo?.length) return "matchTitle Bug";
+    const { clientTeam, opponentTeam } = matchInfo[0].teams;
+    let clientWins = 0, opponentWins = 0;
+    matchInfo.forEach(match => {
+        let setClientWins = 0, setOpponentWins = 0;
+        match.sets.forEach(({ clientGamesWon, opponentGamesWon, clientTiebreakPointsWon, opponentTiebreakPointsWon }) => {
+            if (clientGamesWon > opponentGamesWon || (clientGamesWon === opponentGamesWon && clientTiebreakPointsWon > opponentTiebreakPointsWon)) {
+                setClientWins++;
+            } else {
+                setOpponentWins++;
             }
         });
-        const result = clientWins > opponentWins ? 'W' : 'L';
-        const formattedTitle = `${clientTeam} vs. ${opponentTeam} - ${result}(${clientWins}-${opponentWins})`;
-        return formattedTitle;
-    }
-    return "Game Bugged";
+        if (setClientWins > setOpponentWins) clientWins++;
+        else opponentWins++;
+    });
+    const result = clientWins > opponentWins ? 'W' : 'L';
+    return `${clientTeam} vs. ${opponentTeam} - ${result} (${clientWins}-${opponentWins})`;
 };
-
 
 const DashboardMatch = ({ matchInfo }) => { 
     const singlesMatches = matchInfo.filter(match => match.singles === true);

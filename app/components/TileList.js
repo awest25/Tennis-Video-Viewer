@@ -10,7 +10,6 @@ import {  getDocs, collection} from 'firebase/firestore';
 
 const groupByDate = (matches) => {
     const grouped = {};
-    // Group matches into arrays by date
     matches.forEach(match => {
         const date = match.matchDate || 'unknown';
         if (!grouped[date]) {
@@ -31,26 +30,24 @@ const groupByDate = (matches) => {
 const TileList = () => {
     const [matchList, setMatchList] = useState([]);
 
+    //Pulls Matches
     useEffect(() => {
         const fetchMatches = async () => {
           try {
             const querySnapshot = await getDocs(collection(db, 'UCLA (W)'));
-            // Iterate over each document, transform the data, and collect the results
             const transformedMatches = querySnapshot.docs.map(doc => {
                 const data = doc.data(); // Get the data of each document
                 return transformData(data); // Assuming transformData is a function you have that processes each document's data
             });
             const sortedDate = groupByDate(transformedMatches)
-            setMatchList(sortedDate); // Update your state with the transformed matches
+            setMatchList(sortedDate); 
           } catch (error) {
             console.error('Error fetching data:', error);
           } 
         };
-    
         fetchMatches();
     }, []);
       
-
     return (
         <div>
             {matchList && matchList.map((matches, index) => (
