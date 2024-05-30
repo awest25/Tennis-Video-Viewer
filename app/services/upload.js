@@ -2,8 +2,8 @@ import { collection, addDoc, query, where, getDoc, getDocs, updateDoc, doc, arra
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import storage functions
 import { db, storage } from '../services/initializeFirebase.js'; // Ensure storage is exported from initializeFirebase.js
 
-async function uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, players, matchDate, singles) {
-  if (!matchScore || !videoId || !teams || !players || !matchDate || !singles) {
+async function uploadMatch(sets, videoId, pointsJson, pdfFile, teams, players, matchDate, singles, matchDetails) {
+  if (!sets || !videoId || !teams || !players || !matchDate || !singles || !matchDetails) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
   }
@@ -22,19 +22,20 @@ async function uploadMatch(matchScore, videoId, pointsJson, pdfFile, teams, play
     if (pointsJson === null) published = false;
 
     // matchName: P1 T1 vs. P2 T2
-    const matchName = players.client.firstName + " " + players.client.lastName + " " + teams[0] + " vs. " + players.opponent.firstName + " " + players.opponent.lastName + " " + teams[1]
+    const matchName = players.client.firstName + " " + players.client.lastName + " " + teams.clientTeam + " vs. " + players.opponent.firstName + " " + players.opponent.lastName + " " + teams.opponentTeam
     // only save match to clientTeam because we will never need to use matches by opponentTeam. 
     // Every client should only see their own matches: we upload UCLA vs USC, USC should not be able to see that.
-    const docRef = await addDoc(collection(db, teams[0]), {
+    const docRef = await addDoc(collection(db, teams.clientTeam), {
       name: matchName,
       videoId,
-      matchScore,
+      sets,
       pdfUrl,
       matchDate,
       teams,
       players,
       published,
       singles,
+      matchDetails,
       points: pointsJson? pointsJson : []
     });
     console.log("Match Document written with ID: ", docRef.id);
@@ -79,7 +80,7 @@ async function uploadTeam(teamName, logoFile) {
   }
 }
 
-async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamName) {
+async function uploadPlayer(playerFirstName, playerLastName, playerHand, playerPhoto, teamName) {
   if (!playerFirstName || !playerLastName || !teamName) {
     console.error("All fields are required.");
     return; // Exit the function if any field is empty
@@ -114,6 +115,7 @@ async function uploadPlayer(playerFirstName, playerLastName, playerPhoto, teamNa
       await updateDoc(teamDoc, { players: [{ 
         firstName: playerFirstName,
         lastName: playerLastName,
+        playerHand,
         photo: playerPhotoUrl
       }] 
       });
