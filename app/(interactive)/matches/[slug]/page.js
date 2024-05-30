@@ -35,7 +35,7 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
-  const [showPDF, setShowPDF] = useState(false);
+  const [showPDF, setShowPDF] = useState(true);
   const [tab, setTab] = useState(1);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
@@ -233,8 +233,8 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.toggle}>
-            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
             <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (
