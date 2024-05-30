@@ -11,25 +11,25 @@ const parseMatchScore = (matchScore) => {
   const transformedSets = [];
   
   sets.forEach(set => {
-      const games = set.split("-");
-      const clientGamesWon = parseInt(games[0]);
-      const opponentGamesWon = parseInt(games[1]);
-      let clientTiebreakPointsWon = null;
-      let opponentTiebreakPointsWon = null;
+    const games = set.split("-");
+    const clientGamesWon = parseInt(games[0]);
+    const opponentGamesWon = parseInt(games[1]);
+    let clientTiebreakPointsWon = null;
+    let opponentTiebreakPointsWon = null;
       
-      if (set.includes("(")) {
-          const tiebreak = set.match(/\(([^)]+)\)/)[1].split("-");
-          clientTiebreakPointsWon = parseInt(tiebreak[0]);
-          opponentTiebreakPointsWon = parseInt(tiebreak[1]);
-      }
+    if (set.includes("(")) {
+      const tiebreak = set.match(/\(([^)]+)\)/)[1].split("-");
+      clientTiebreakPointsWon = parseInt(tiebreak[0]);
+      opponentTiebreakPointsWon = parseInt(tiebreak[1]);
+    }
       
-      transformedSets.push({
-          set_number: transformedSets.length + 1,
-          clientGamesWon: clientGamesWon,
-          opponentGamesWon: opponentGamesWon,
-          clientTiebreakPointsWon: clientTiebreakPointsWon,
-          opponentTiebreakPointsWon: opponentTiebreakPointsWon
-      });
+    transformedSets.push({
+      set_number: transformedSets.length + 1,
+      clientGamesWon: clientGamesWon,
+      opponentGamesWon: opponentGamesWon,
+      clientTiebreakPointsWon: clientTiebreakPointsWon,
+      opponentTiebreakPointsWon: opponentTiebreakPointsWon
+    });
   });
   
   return transformedSets;
