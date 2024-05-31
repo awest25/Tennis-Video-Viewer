@@ -37,6 +37,7 @@ const MatchPage = () => {
   const [playingPoint, setPlayingPoint] = useState(null);
   const [showPDF, setShowPDF] = useState(true);
   const [tab, setTab] = useState(1);
+  const [triggerScroll, setTriggerScroll] = useState(false);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
@@ -92,6 +93,15 @@ const MatchPage = () => {
     }
   }, [videoObject, matchData]);
 
+  useEffect(() => {
+    if (triggerScroll && !showPDF) {
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      setTriggerScroll(false);
+    }
+  }, [triggerScroll, showPDF]);
+
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
@@ -121,10 +131,10 @@ const MatchPage = () => {
   };
 
   const scrollToDetailedList = () => {
-    if (tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setShowPDF(false);
+    setTriggerScroll(true);
   };
+
 
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
