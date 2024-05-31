@@ -243,8 +243,8 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.toggle}>
-            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
-            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_inactive : styles.toggle_buttonb_active}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Points</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (
