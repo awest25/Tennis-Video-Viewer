@@ -28,7 +28,7 @@ const groupByDate = (matches) => {
 };
 
 const TileList = () => {
-    const [matchList, setMatchList] = useState([]);
+     const [matchList, setMatchList] = useState([]);
 
     //Pulls Matches
     useEffect(() => {

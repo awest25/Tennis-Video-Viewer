@@ -32,63 +32,63 @@ const matchTitle = (matchInfo) => {
 };
 
 const DashboardMatch = ({ matchInfo }) => { 
-    const singlesMatches = matchInfo.filter(match => match.singles === true);
-    const doublesMatches = matchInfo.filter(match => match.singles === false);
+  const singlesMatches = matchInfo.filter(match => match.singles === true);
+  const doublesMatches = matchInfo.filter(match => match.singles === false);
 
-    return (    
-        <div className={styles.parentContainer}>
-            <div className={styles.header}>
-                <h1 className={styles.title}>{matchTitle(matchInfo)}</h1>
-                <h1 className={styles.date}>{calculateMatchDate(matchInfo)}</h1>
-            </div>
-            {singlesMatches && singlesMatches.length > 0 && (
-                <div>
-                    <h2 className={styles.matchTypeTitle}>Singles</h2>
-                    <div className={styles.matchesContainer}>
-                        {singlesMatches && singlesMatches.map((match, index) => {
-                        const matchSetScores = match ? extractSetScores(match.points) : {};
-                        return (
-                            <div key={index} className={styles.matchItem}>
-                            <MatchTiles 
-                                matchName={match.name}
-                                clientTeam={match.clientTeam}
-                                opponentTeam={match.opponentTeam}
-                                matchDetails={match.matchDetails}
-                                {...matchSetScores}  // Spread the extracted scores into the component as props
-                                tagged={{status: match.published}}
-                                displaySections={{ score: true, info: false, matchup: false }}
-                            />
-                            </div>
-                        );
-                        })}
-                    </div>
+  return (    
+    <div className={styles.parentContainer}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>{matchTitle(matchInfo)}</h1>
+        <h1 className={styles.date}>{calculateMatchDate(matchInfo)}</h1>
+      </div>
+      {singlesMatches && singlesMatches.length > 0 && (
+        <div>
+          <h2 className={styles.matchTypeTitle}>Singles</h2>
+          <div className={styles.matchesContainer}>
+            {singlesMatches && singlesMatches.map((match, index) => {
+              const matchSetScores = match ? extractSetScores(match.points) : {};
+              return (
+                <div key={index} className={styles.matchItem}>
+                  <MatchTiles 
+                    matchName={match.name}
+                    clientTeam={match.clientTeam}
+                    opponentTeam={match.opponentTeam}
+                    matchDetails={match.matchDetails}
+                    {...matchSetScores}  // Spread the extracted scores into the component as props
+                    tagged={{status: match.published}}
+                    displaySections={{ score: true, info: false, matchup: false }}
+                  />
                 </div>
-            )}
-            {doublesMatches && doublesMatches.length > 0 && (
-            <div>
-                <h2 className={styles.matchTypeTitle}>Doubles</h2>
-                <div className={styles.matchesContainer}>
-                    {doublesMatches.map((match, index) => {
-                        const matchSetScores = match ? extractSetScores(match.points) : {};
-                        return (
-                            <div key={index} className={styles.matchItem}>
-                                <MatchTiles 
-                                    matchName={match.name}
-                                    clientTeam={match.clientTeam}
-                                    opponentTeam={match.opponentTeam}
-                                    matchDetails={match.matchDetails}
-                                    {...matchSetScores}  // Spread the extracted scores into the component as props
-                                    tagged={{status: match.published}}
-                                    displaySections={{ score: true, info: false, matchup: false }}
-                                />
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-        )}
+              );
+            })}
+          </div>
         </div>
-    );
+      )}
+      {doublesMatches && doublesMatches.length > 0 && (
+        <div>
+          <h2 className={styles.matchTypeTitle}>Doubles</h2>
+          <div className={styles.matchesContainer}>
+            {doublesMatches.map((match, index) => {
+              const matchSetScores = match ? extractSetScores(match.points) : {};
+              return (
+                <div key={index} className={styles.matchItem}>
+                  <MatchTiles 
+                    matchName={match.name}
+                    clientTeam={match.clientTeam}
+                    opponentTeam={match.opponentTeam}
+                    matchDetails={match.matchDetails}
+                    {...matchSetScores}  // Spread the extracted scores into the component as props
+                    tagged={{status: match.published}}
+                    displaySections={{ score: true, info: false, matchup: false }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default DashboardMatch;

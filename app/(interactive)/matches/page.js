@@ -20,7 +20,7 @@ const MatchesDashboard = () => {
         <button className={styles.searchButton}>Search</button>
       </div>
       <div className={styles.eventsContainer}>
-          {/* Dynamic event tile content goes here */}
+        {/* Dynamic event tile content goes here */}
       </div>
       <div className={styles.mainContent}>
         <div className={styles.matchesContainer}>
