@@ -1,27 +1,43 @@
-import { useState, useEffect } from 'react';
-import { getAuth } from 'firebase/auth';
-// auth wrapper for matchpage as an idea for authorization
-const AuthWrapper = ({ children }) => {
-  const [autheduser, setAuthedUser] = useState(null);
+'use client'
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../services/initializeFirebase';
+import SignIn from './SignIn';
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setAuthedUser(user);
-      } else {
-        setAuthedUser(null);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
     });
 
-    return () => unsubscribe(); 
+    return () => unsubscribe();
   }, []);
 
-  if (!autheduser) {
-    return <SignIn setUser={setAuthedUser} />;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  return children;
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      setUser(null);
+    }).catch((error) => {
+      console.error('Error signing out:', error);
+    });
+  };
+
+  return (
+    <div style={{width: '100%'}}>
+    <AuthContext.Provider value={{ user, handleSignOut }}>
+      {user ? children : <SignIn />}
+    </AuthContext.Provider>
+    </div>
+  );
 };
 
-export default AuthWrapper;
+export const useAuth = () => useContext(AuthContext);

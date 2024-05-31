@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import firebase from 'firebase/app';
+// components/SignIn.js
+import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { db, storage } from '../services/initializeFirebase';
-import styles from '../styles/SignIn.module.css'
+import styles from '../styles/SignIn.module.css';
+import { useAuth } from './AuthWrapper';
 
-const SignInPage = ({ setUser }) => {
+const SignInPage = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
-  
+  const { user, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
       const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
-      setUser(userCredential.user);
+      await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
     } catch (error) {
       setError(error.message);
       console.log(error.message);
@@ -27,34 +26,48 @@ const SignInPage = ({ setUser }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSignIn}>
-        <div className={styles.card}>
-        <img>
-        {/* need to add logo */}
-        </img>
-      <h2>Sign in to your account</h2>
-      <div>
-          <input
-            type="email"
-            name="email"
-            value={credentials.email}
-            onChange={handleChange}
-            placeholder="Username"
-          />
+    <div>
+      <div className={styles.titleBar}>
+        <div className={styles.leftTitle}>
+          <h1>BSA | Tennis Consulting</h1>
         </div>
-        <div>
-          <input
-            type="password"
-            name="password"
-            value={credentials.password}
-            onChange={handleChange}
-            placeholder="Password"
-          />
+        <div className={styles.rightTitle}>
+          {user ? (
+            <button onClick={handleSignOut}>Sign Out</button>
+          ) : (
+            <button>Sign In</button>
+          )}
         </div>
-        <button type="submit">Sign In</button>
-        </div>
-      </form>
+      </div>
+      <div className={styles.container}>
+        <form onSubmit={handleSignIn}>
+          <div className={styles.card}>
+            <img>
+            {/* Add logo if needed */}
+            </img>
+            <h2>Sign in to your account</h2>
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={credentials.email}
+                onChange={handleChange}
+                placeholder="Username"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="Password"
+              />
+            </div>
+            <button type="submit">Sign In</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

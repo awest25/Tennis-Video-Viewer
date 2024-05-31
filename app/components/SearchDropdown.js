@@ -7,6 +7,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../services/initializeFirebase.js';
 import styles from '../styles/SearchDropdown.module.css';
 import SignInPage from './SignIn.js';
+import { AuthProvider } from './AuthWrapper.js';
 
 const SearchDropdown = ({authorization}) => {
   const [dropdownData, setDropdownData] = useState([]);
@@ -14,7 +15,6 @@ const SearchDropdown = ({authorization}) => {
   const router = useRouter();
   const pathname = usePathname();
   const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
-  const [isSignedIn, setIsSignedIn] = useState(false);
   useEffect(() => {
     const fetchMatches = async () => {
       const querySnapshot = await getDocs(collection(db, 'matches'));
@@ -28,14 +28,8 @@ const SearchDropdown = ({authorization}) => {
           };
         });
       setDropdownData(matches);
-      if(authorization){
-        setIsSignedIn(true);
-      }
-      if(!isSignedIn) {
-        router.push('/');
-      }
       // Find the selected match based on the URL and set it as selected
-      else if (videoId) {
+      if (videoId) {
         const selectedMatch = matches.find(match => match.value === videoId);
         setSelectedOption(selectedMatch);
       }
@@ -53,6 +47,7 @@ const SearchDropdown = ({authorization}) => {
   };
 
   return (
+    <AuthProvider>
     <div>
       <Select
         placeholder="Search for a tennis match..."
@@ -67,6 +62,7 @@ const SearchDropdown = ({authorization}) => {
         className={styles.searchDropdown}
       />
     </div>
+    </AuthProvider>
   );
 }
 
