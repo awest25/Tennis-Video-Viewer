@@ -6,6 +6,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
   }
   
   .title a {
@@ -120,6 +121,21 @@
     width: 100%;
     border: 1px solid #eaeaea;
     border-radius: 10px;
+    border-top-left-radius: 0% !important;
+    /* padding: 1.5rem; */
+    text-align: left;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .ExtendedList{
+    width:100%;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    border-top-left-radius: 0% !important;
     padding: 1.5rem;
     text-align: left;
     color: inherit;
@@ -127,4 +143,72 @@
     transition:
       color 0.15s ease,
       border-color 0.15s ease;
+  }
+
+  .viewDetailedListButton {
+    padding: 0.625vw 2.5vw; /* Adjust padding using viewport units */
+    cursor: pointer;
+    background-color: #fafafa;
+    border: none; /* Remove the default border */
+    /* border-left: 0.313vw solid #b0b0b0; /* Adjust border width using viewport units */
+    /* border-bottom: 0.313vw solid #b0b0b0; /* Adjust border width using viewport units */
+    border: 1px solid #eaeaea;
+    font-weight: 400;
+    font-size: 1.3vw; /* Adjust font size using viewport units */
+    line-height: 1.0vw;
+    border-radius: 0.25vw; /* Adjust border radius using viewport units */
+  }
+  
+  .viewDetailedListButton:hover {
+    background-color: #e9ecef;
+    border-color: #b8c2cc;
+  }
+
+  .toggle {
+    width: 90%;
+  }
+
+  .toggle_buttona_active{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #fafafa;
+    border-top-left-radius: 10px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .toggle_buttona_inactive{
+    font-size: 1vw;
+    width: 10vw;
+    height: 5vh;
+    background-color: #ffffff;
+    border-top-left-radius: 10px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* increase size of buttons */
+  .toggle_buttonb_active{
+    font-size: 1vw;
+    width: 12vw;
+    height: 5vh;
+    background-color: #fafafa;
+    border-top-right-radius: 10px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .toggle_buttonb_inactive{
+    font-size: 1vw;
+    width: 12vw;
+    height: 5vh;
+    background-color: #ffffff;
+    border-top-right-radius: 10px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
   }
