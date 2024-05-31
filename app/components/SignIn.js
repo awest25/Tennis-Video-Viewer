@@ -65,6 +65,13 @@ const SignInPage = () => {
               />
             </div>
             <button type="submit">Sign In</button>
+            <div style={{color:'grey', fontSize:'0.7rem'}}>
+              <p>Need Help? <b><u>Contact Us</u></b></p>
+              {/* add contact details */}
+              <p>To demo this page, use:</p>
+              <ul>Username: demo</ul>
+              <ul>Password: demo</ul>
+            </div>
           </div>
         </form>
       </div>
