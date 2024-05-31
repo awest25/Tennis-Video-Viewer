@@ -37,6 +37,7 @@ const MatchPage = () => {
   const [playingPoint, setPlayingPoint] = useState(null);
   const [showPDF, setShowPDF] = useState(true);
   const [tab, setTab] = useState(1);
+  const [triggerScroll, setTriggerScroll] = useState(false);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
@@ -92,6 +93,15 @@ const MatchPage = () => {
     }
   }, [videoObject, matchData]);
 
+  useEffect(() => {
+    if (triggerScroll && !showPDF) {
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      setTriggerScroll(false);
+    }
+  }, [triggerScroll, showPDF]);
+
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
@@ -121,10 +131,10 @@ const MatchPage = () => {
   };
 
   const scrollToDetailedList = () => {
-    if (tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setShowPDF(false);
+    setTriggerScroll(true);
   };
+
 
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
 
@@ -233,8 +243,8 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.toggle}>
-            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
-            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_inactive : styles.toggle_buttonb_active}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Points</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (

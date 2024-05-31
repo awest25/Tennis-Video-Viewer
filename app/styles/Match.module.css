@@ -188,7 +188,7 @@
     width: 10vw;
     height: 5vh;
     background-color: #fafafa;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
@@ -199,7 +199,7 @@
     width: 10vw;
     height: 5vh;
     background-color: #ffffff;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
@@ -211,7 +211,7 @@
     width: 12vw;
     height: 5vh;
     background-color: #fafafa;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
@@ -222,7 +222,7 @@
     width: 12vw;
     height: 5vh;
     background-color: #ffffff;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
