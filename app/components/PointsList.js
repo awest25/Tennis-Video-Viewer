@@ -36,7 +36,7 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
   const displayedPoints = pointsData;
 
   return (
-    <div>
+    <div className={styles.pointsContainer}>
       <table className={styles.pointsList}>
         <thead>
           <tr>

@@ -9,11 +9,26 @@
     border: 1px solid #DEDEDE;
     border-radius: 24px;
     font-family: 'DM Sans', sans-serif;
-    width: 38%;
+    width: 100%; /*use to be 38%, idk why, may bug?*/
     margin: 8px;
     padding: 1em;
 }
-
+.matchTopLine {
+    display: flex;
+    justify-content: space-between; /* This spreads the child elements out */
+    align-items: center; /* This vertically centers the items in case they have different heights */
+}
+.containerTagged{
+    font-size: 1vw;
+    font-weight: 350;
+    color: white;
+    background-color: #2774AE;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;
@@ -27,14 +42,14 @@
 
 .playerInfo {
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
     font-weight: 600;
     position: relative;
 }
 
 .playerInfoName {
     padding-left: 1em;
-    padding-right: 5em;
+    padding-right: 2em;
     display: flex;
     font-size: 1.8vw;
     font-weight: 600;

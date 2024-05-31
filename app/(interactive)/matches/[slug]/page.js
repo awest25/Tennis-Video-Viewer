@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation'
 
-import filterStyles from '../../../styles/FilterList.module.css'
+import filterListStyles from '../../../styles/FilterList.module.css'
 import styles from '../../../styles/Match.module.css';
 import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
@@ -26,7 +26,8 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
-  const [showPDF, setShowPDF] = useState(false);
+  const [showPDF, setShowPDF] = useState(true);
+  const [tab, setTab] = useState(1);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
@@ -113,103 +114,116 @@ const MatchPage = () => {
     }
   };
 
-  const togglePDF = () => {
-    setShowPDF(false);
-  };
-
-  const togglePoints = () => {
-    setShowPDF(true);
-  };
-
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
+
+  function addBorderRadius() {
+    console.log('adding border radius');
+    const anyIframe = document.getElementById('player');
+    if (anyIframe) {
+      console.log('found iframe:', anyIframe);
+      anyIframe.style.borderRadius = '10px';
+    }
+  }
 
   return (
     <AuthProvider>
-      <div className={styles.container}>
-        {matchData && (
-          <>
-            <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}  />
-            <div className={styles.headerRow}>
-              <div className={styles.titleContainer}>
-                <h2>{matchData.name}</h2>
+    <div className={styles.container}>
+      {/* Main Content Area */}
+      {matchData && (
+        <>
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores} />
+          <div className={styles.headerRow}>
+            <div className={styles.titleContainer}>
+              <h2>{matchData.name}</h2>
+            </div>
+          </div>
+          <div className={styles.mainContent}>
+            {/* Video Player */}
+            <div className={styles.videoPlayer}>
+              <div ref={iframeRef}>
+                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
-            <div className={styles.mainContent}>
-              <div className="videoPlayer">
-                <div ref={iframeRef}>
-                  <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
-                </div>
+            <div className={styles.sidebar}>
+              {/* Filter List */}
+              <div className={filterListStyles.activeFilterListContainer}>
+                Active Filters:
+                <ul className={filterListStyles.activeFilterList}>
+                  {sortedFilterList.map(([key, value]) => (
+                    <li className={filterListStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                      {nameMap[key]}: {value}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <div>
-                <div className={filterStyles.activeFilterListContainer}>
-                  Active Filters:
-                  <ul className={filterStyles.activeFilterList}>
-                    {sortedFilterList.map(([key, value]) => (
-                      <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
-                        {nameMap[key]}: {value}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className='listHolder'>
-                  <div className="filterList">
-                    <div className={filterStyles.optionsList}>
-                      <div>
-                        <input
-                          type="radio"
-                          id="defaultRadio"
-                          checked={!showCount && !showPercent}
-                          onChange={() => {
-                            setShowPercent(false);
-                            setShowCount(false);
-                          }}
-                        />
-                        <label htmlFor="defaultRadio">Default</label>
-                      </div>
-                      <div>
-                        <input
-                          type="radio"
-                          id="percentRadio"
-                          checked={showPercent}
-                          onChange={() => {
-                            setShowPercent(true);
-                            setShowCount(false);
-                          }}
-                        />
-                        <label htmlFor="percentRadio">Show Percent</label>
-                      </div>
-                      <div>
-                        <input
-                          type="radio"
-                          id="countRadio"
-                          checked={showCount}
-                          onChange={() => {
-                            setShowPercent(false);
-                            setShowCount(true);
-                          }}
-                        />
-                        <label htmlFor="countRadio">Show Count</label>
-                      </div>
+              <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Filters</button>
+              <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Points</button>
+              {/* List Holders */}
+              {/* Filter List */}
+              {tab === 0 && 
+                <div className={styles.sidebox}>
+                  {/* Radio Options */}
+                  <div className={filterListStyles.optionsList}>
+                    <div>
+                      <input
+                        type="radio"
+                        id="defaultRadio"
+                        checked={!showCount && !showPercent}
+                        onChange={() => {
+                          setShowPercent(false);
+                          setShowCount(false);
+                        }}
+                      />
+                      <label htmlFor="defaultRadio">Default</label>
                     </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="percentRadio"
+                        checked={showPercent}
+                        onChange={() => {
+                          setShowPercent(true);
+                          setShowCount(false);
+                        }}
+                      />
+                      <label htmlFor="percentRadio">Show Percent</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="countRadio"
+                        checked={showCount}
+                        onChange={() => {
+                          setShowPercent(false);
+                          setShowCount(true);
+                        }}
+                      />
+                      <label htmlFor="countRadio">Show Count</label>
+                    </div>
+                  </div>
+                  <div className={styles.sidecontent}>
                     <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
                   </div>
-                  <div className='jumpList'>
-                    <div className="pointsList">
-                      <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}  />
-                    </div>
+                </div>}
+              {tab === 1 &&
+                <div className={styles.sidebox}>
+                  {/* Points List */}
+                  <div className={styles.sidecontent}>
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
+                  </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
                     <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
                   </div>
-                    <div className="scoreboard">
-                      <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}  />
-                    </div>
+                  </div>}
+                  {/* Score display */}
+                  <div className="scoreboard">
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
                   </div>
                 </div>
-              </div>
             </div>
           <div className={styles.toggle}>
-            <button onClick={() => togglePDF()} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
-            <button onClick={() => togglePoints()} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (
@@ -230,76 +244,14 @@ const MatchPage = () => {
           align-items: center;
         }
 
-          .searchDropdown {
-            margin-bottom: 1rem;
-            width: 80%;
-          }
-
-          ${styles.mainContent} {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            justify-content: center;
-            align-items: flex-start;
-          }
-
-          .videoPlayer {
-            flex: 2;
-            padding: 1rem;
-          }
-
-        .pointsList {
-          flex: 1; /* Takes up 1/3 of the space */
-          margin-top: 0;
-          padding: 1vw;
-          margin-left: 1vw;
-          border: 0.1vw solid #ddd;
-          border-radius: 1.5vw;
-          overflow-y: auto;
-          height: 30vw;
-          background: linear-gradient(to bottom, #ffffff, #fafafa); 
-        }
-
-        .filterList {
-          flex: 2; // Takes up 1/3 of the space
-          margin-top: 0rem;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 15px;
-          overflow-y: auto;
-          height: 350px;
-        }
-        .jumpList {
-          width: 325px;
+        .searchDropdown {
+          margin-bottom: 1rem;
+          width: 80%;
         }
         
         .listHolder {
           display: flex;
           gap: 10px;
-        }
-      `}</style>
-
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
         }
       `}</style>
     </div>
