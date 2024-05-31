@@ -44,7 +44,10 @@ const MatchTiles = ({
   player1Name, player2Name, 
   player1FinalScores, player2FinalScores,
   player1TieScores, player2TieScores,
-  isUnfinished
+  isUnfinished,
+  tagged = {status: false},
+  displaySections = { score: true, info: true, matchup: true } // default all true
+
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
@@ -68,7 +71,11 @@ const MatchTiles = ({
   return (
     <div className={styles.matchTilesContainer}>
       <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Final Score</div>
+        <div className={styles.matchTopLine}>
+          <div className={styles.containerTitle}>Final Score</div>
+          {tagged.status && <div className={styles.containerTagged}>Tagged</div>}
+        </div>
+        {/* Player Information  */}
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImgcontainerhome}>
             <img src={clientLogo} alt={`${clientTeam} logo`} />
@@ -114,18 +121,31 @@ const MatchTiles = ({
           </div>
         </div>
       </div>
-      <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Match Information</div>
-        <div className={styles.containerInfo}>{matchDetails}</div>
-        <div className={styles.containerInfo}>{extractDateFromString(matchName)}</div>
-      </div>
-      <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Matchup</div>
-        <div className={styles.containerInfo}>{clientTeam}</div>
-        <div className={styles.containerInfo}>{opponentTeam}</div>
-      </div>
+      {/* Match Location */}
+      {displaySections.info && (
+        <div className={styles.matchInfoContainer}>
+          <div className={styles.containerTitle}>Match Information</div>
+          <div className={styles.containerInfo}>{matchDetails}</div>
+          <div className={styles.containerInfo}>
+            {extractDateFromString(matchName)}
+          </div>
+        </div>
+      )}
+      {/* School Info */}
+      {displaySections.matchup && (
+        <div className={styles.matchInfoContainer}>
+          <div className={styles.containerTitle}>Matchup</div>
+          <div className={styles.containerInfo}>
+            {clientTeam}
+          </div>
+          <div className={styles.containerInfo}>
+            {opponentTeam}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default MatchTiles;
+

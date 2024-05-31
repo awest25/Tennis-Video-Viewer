@@ -12,13 +12,26 @@
     border: 0.13vw solid #DEDEDE;
     border-radius: 1.2vw;
     font-family: 'DM Sans', sans-serif;
-    width: calc(33.33% - 0.47vw); /* Adjusted to fit within the container with spacing */
-    margin: 0 0.7vw; /* Margin between tiles */
-    padding: 1vw; /* Padding inside each tile */
-
-    box-sizing: border-box;
+    width: 100%; /*use to be 38%, idk why, may bug?*/
+    margin: 8px;
+    padding: 1em;
 }
-
+.matchTopLine {
+    display: flex;
+    justify-content: space-between; /* This spreads the child elements out */
+    align-items: center; /* This vertically centers the items in case they have different heights */
+}
+.containerTagged{
+    font-size: 1vw;
+    font-weight: 350;
+    color: white;
+    background-color: #2774AE;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;
