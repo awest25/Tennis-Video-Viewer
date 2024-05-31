@@ -2,44 +2,48 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  padding: 8px;
-  margin-top: 8px;
+  border: 0.1vw solid #eaeaea;
+  border-radius: 1.5vw;
+  padding: 1vw;
+  margin-top: 1vw;
   background-color: transparent;
   font-weight: bold;
 }
 
-.scoreboard th,
-.scoreboard td{
+.scoreboard th, 
+.scoreboard td {
   text-align: left;
-  /* margin: 10px; */
-  padding-top: 6px; /* Add padding for spacing within cells */
-  padding-bottom: 6px;
-  padding-left: 2px;
-  padding-right: 2px;
+  font-size: 1.5vw;
+  padding-left: 0.3vw;
+  padding-right: 0.3vw;
+}
+.scoreboard td {
+  padding-top: 0.5vw;
 }
 
-.scoreboard th{
+.scoreboard th {
   font-weight: normal;
+  font-size: 1.3vw;
 }
 
 .table {
   border-collapse: collapse;
+
 }
 
 .pointScore {
   font-weight: bold;
   color: #8BB8E8;
+  font-size: 1.5vw;
 }
 
 .live {
-  font-size: small;
+  font-size: 1.5vw;
   font-weight: normal;
 }
 
 .bullet {
   color: #8BB8E8;
-  font-weight:bolder;
-  /* font-size: large; */
+  font-weight: bolder;
+  font-size: 1.5vw;
 }

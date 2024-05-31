@@ -1,15 +1,26 @@
+.pointsContainer {
+  padding: 0.7vw;
+}
+
 .pointsList {
-  width: 20vw; /* Use viewport width for full width */
+  width: 100%;
   border-collapse: collapse;
   overflow: hidden;
 }
 
 .playerSchoolImg {
-  max-width: 2.3vw; /* Adjust max-width using viewport units */
-  display: block;
-  width: 2.3vw;
-  padding-bottom: 0.85vw;
-  padding-top: 0.85vw;
+  max-width: min(3.7vw, calc(4vw * 16 / 9)); /* Limit the max-width based on aspect ratio and 4vw height */
+  height: 4vw; /* Set the desired height */
+  padding-left: 0.6vw;
+  display: flex;
+  justify-content: center; /* Center the image vertically */
+  align-items: center; /* Center the image horizontally */
+  overflow: hidden; /* Ensure the image doesn't overflow the container */
+}
+
+.imgcontainer{
+  padding-left: 1vw;
+  display: flex;
 }
 
 .pointsList th,
@@ -37,8 +48,6 @@
   background-color: #e2e2e2;
 }
 
-
-
 .buttonn {
   padding: 0.625vw 2.5vw; /* Adjust padding using viewport units */
   cursor: pointer;
@@ -58,13 +67,8 @@
 }
 
 .IMG {
-  max-height: 4vw;
-
-  max-width: 4vw; /* Adjust max-width using viewport units */
-
-  display: block;
-  width: 4vw;
-
+  width: 100%; /* Ensure the image takes up the entire container */
+  height: auto; /* Allow the image to resize proportionally */
 }
 
 .buttonn:focus {
