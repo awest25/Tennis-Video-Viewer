@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { db } from '../../services/initializeFirebase.js';
 import { collection, getDocs, deleteDoc, setDoc, doc } from 'firebase/firestore';
+import Dashboard from '/dashboard/dash.js';
+
 
 export default function MatchList() {
   const [matchData, setMatchData] = useState([]);

@@ -1,22 +1,20 @@
 import Link from 'next/link';
-
 import SearchDropdown from '../components/SearchDropdown';
+import Dashboard from '../(interactive)/dashboard/dash.js';
 
 import styles from '../styles/Home.module.css'
 
 const Home = () => {
   return (
+    /*
     <div className={styles.container}>
       <h1 className={styles.title}>
       Match Viewer
       </h1>
-
-      {/* Search Dropdown */}
       <div className="searchDropdown">
         <SearchDropdown/>
       </div>
 
-      {/* Other Links */}
       <div className={styles.actionsContainer}>
         <p>Or get started by:</p>
         <ul>
@@ -31,7 +29,8 @@ const Home = () => {
           </li>
         </ul>
       </div>
-    </div>
+    </div>*/
+    <Dashboard/>
   );
 }
 

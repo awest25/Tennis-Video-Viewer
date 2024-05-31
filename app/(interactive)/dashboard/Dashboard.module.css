@@ -1,0 +1,83 @@
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.header h2 {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  margin-bottom: 20px;
+  padding: 10px 0;
+}
+
+.card {
+  min-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  white-space: nowrap;
+}
+
+.matchSection {
+  margin-bottom: 20px;
+}
+
+.matchSection h3 {
+  font-size: 24px;
+  color: #2774AE;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matchSection .date {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2774AE;
+}
+
+.matchDetails {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.matchCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 5px;
+  flex: 1 0 300px;
+  background-color: #fff;
+}
+
+.type {
+  font-weight: bold;
+}
+
+.player1, .player2 {
+  display: block;
+  font-size: 16px;
+}
+
+.score, .opponentScore {
+  display: block;
+  font-size: 14px;
+}
