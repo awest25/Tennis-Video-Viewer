@@ -5,7 +5,7 @@ import styles from '../styles/SignIn.module.css';
 import { useAuth } from './AuthWrapper';
 
 const SignInPage = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);
   const { user, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
 
@@ -13,7 +13,8 @@ const SignInPage = () => {
     e.preventDefault();
     try {
       const auth = getAuth();
-      await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
+      const email = `${credentials.username}@ucla.edu`; // Append @ucla.edu to the username
+      await signInWithEmailAndPassword(auth, email, credentials.password);
     } catch (error) {
       setError(error.message);
       console.log(error.message);
@@ -48,9 +49,9 @@ const SignInPage = () => {
             <h2>Sign in to your account</h2>
             <div>
               <input
-                type="email"
-                name="email"
-                value={credentials.email}
+                type="text"
+                name="username"
+                value={credentials.username}
                 onChange={handleChange}
                 placeholder="Username"
               />
@@ -66,7 +67,12 @@ const SignInPage = () => {
             </div>
             <button type="submit">Sign In</button>
             <div style={{color:'grey', fontSize:'0.7rem'}}>
-              <p>Need Help? <b><u>Contact Us</u></b></p>
+            <p>
+              Need Help?{' '}
+              <a href="mailto:uclatennisconsulting@gmail.com" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                <b>Contact Us</b>
+              </a>
+            </p>
               {/* add contact details */}
               <p>To demo this page, use:</p>
               <ul>Username: demo</ul>
