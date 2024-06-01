@@ -1,6 +1,7 @@
 // import { Inter } from "next/font/google";
 // import Toolbar from "./components/Toolbar"
 import Footer from "./components/Footer"
+import { AuthProvider } from "./components/AuthWrapper";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,11 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         {/* <Toolbar/> */}
+        <div style={{width:'100%'}}>
+        <AuthProvider>
         {children}
+        </AuthProvider>
+        </div>
         <Footer/>
       </body>
     </html>

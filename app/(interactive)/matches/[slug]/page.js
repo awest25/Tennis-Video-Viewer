@@ -10,6 +10,7 @@ import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
 import MatchTiles from '@/app/components/MatchTiles';
+import { AuthProvider } from '@/app/components/AuthWrapper';
 import extractSetScores from '@/app/services/extractSetScores';
 import ExtendedList from '../../../components/ExtendedList';
 
@@ -18,20 +19,10 @@ import { db } from '../../../services/initializeFirebase';
 import transformData from '../../../services/transformData';
 import nameMap from '../../../services/nameMap';
 
-// export async function generateStaticParams() {
-//     const querySnapshot = await getDocs(collection(db, 'matches'));
-//     const matches = querySnapshot.docs.map((doc) => doc.data());
-
-//     return matches.map((match) => ({
-//       slug: match.slug,
-//     }))
-//   }
-
 const MatchPage = () => {
   const [matchData, setMatchData] = useState();
   const [filterList, setFilterList] = useState([]);
   const [videoObject, setVideoObject] = useState(null);
-  // const [showOptions, setShowOptions] = useState(false);
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
@@ -43,11 +34,9 @@ const MatchPage = () => {
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
   // const router = useRouter();
-  console.log(matchData)
   const pathname = usePathname()
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-  // Function to jump to a specific time in the video, given in milliseconds, via the YouTube Player API
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
       videoObject.seekTo(time / 1000, true);
@@ -60,14 +49,14 @@ const MatchPage = () => {
         const documentRef = doc(db, 'matches', docId);
         const documentSnapshot = await getDoc(documentRef);
         const transformedData = transformData(documentSnapshot.data());
-        setMatchData(transformedData)
+        setMatchData(transformedData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchData(); // Call the fetchData function when the component mounts or when videoId changes
-  }, []);
+    fetchData();
+  }, [docId]);
 
   useEffect(() => {
     if (matchData) {
@@ -88,7 +77,7 @@ const MatchPage = () => {
         }
       }, 200);
 
-      return () => clearInterval(intervalId); // Cleanup to avoid memory leaks
+      return () => clearInterval(intervalId);
     }
   }, [videoObject, matchData]);
 
@@ -114,7 +103,6 @@ const MatchPage = () => {
     return filteredPoints;
   };
 
-  //Active Filter
   const removeFilter = (key, value) => {
     const updatedFilterList = filterList.filter(([filterKey, filterValue]) => !(filterKey === key && filterValue === value));
     setFilterList(updatedFilterList);
@@ -138,6 +126,7 @@ const MatchPage = () => {
   }
 
   return (
+    <AuthProvider>
     <div className={styles.container}>
       {/* Main Content Area */}
       {matchData && (
@@ -225,13 +214,13 @@ const MatchPage = () => {
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
                     <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
                   </div>
-                </div>}
-              {/* Score display */}
-              <div className="scoreboard">
-                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
-              </div>
+                  </div>}
+                  {/* Score display */}
+                  <div className="scoreboard">
+                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
+                  </div>
+                </div>
             </div>
-          </div>
           <div className={styles.toggle}>
             <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
             <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
@@ -266,6 +255,7 @@ const MatchPage = () => {
         }
       `}</style>
     </div>
+    </AuthProvider>
   );
 };
 
