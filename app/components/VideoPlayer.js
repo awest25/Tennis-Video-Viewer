@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
-function VideoPlayer({ videoId, setVideoObject }) {
+function VideoPlayer({ videoId, setVideoObject, onReady }) {
   const playerRef = useRef(null);
 
   useEffect(() => {
     const initializePlayer = () => {
+      const playerWidth = document.getElementById('player').offsetWidth;
+      const playerHeight = Math.ceil(playerWidth / 16 * 9); // Assuming 16:9 aspect ratio
+
       playerRef.current = new window.YT.Player('player', {
         videoId: videoId,
         events: {
@@ -13,6 +16,8 @@ function VideoPlayer({ videoId, setVideoObject }) {
         playerVars: {
           'origin': 'http://localhost:3000' 
         },
+        width: '100%', // Adjust the width here
+        height: playerHeight
       });
       setVideoObject(playerRef.current);
     };
@@ -48,7 +53,10 @@ function VideoPlayer({ videoId, setVideoObject }) {
   }, [videoId]);
 
   const onPlayerReady = () => {
-    console.log('player is ready')
+    console.log('player is ready');
+    if (onReady) {
+      onReady();
+    }
   };
 
   return <div id="player"></div>;

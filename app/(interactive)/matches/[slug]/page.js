@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation'
 
-import filterStyles from '../../../styles/FilterList.module.css'
+import filterListStyles from '../../../styles/FilterList.module.css'
 import styles from '../../../styles/Match.module.css';
 import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
@@ -11,6 +11,7 @@ import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
 import MatchTiles from '@/app/components/MatchTiles';
 import extractSetScores from '@/app/services/extractSetScores';
+import ExtendedList from '../../../components/ExtendedList';
 
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
@@ -34,10 +35,16 @@ const MatchPage = () => {
   const [showPercent, setShowPercent] = useState(false);
   const [showCount, setShowCount] = useState(false);
   const [playingPoint, setPlayingPoint] = useState(null);
+  const [showPDF, setShowPDF] = useState(true);
+  const [tab, setTab] = useState(1);
+  const [triggerScroll, setTriggerScroll] = useState(false);
+  const tableRef = useRef(null);
+  const iframeRef = useRef(null);
 
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
 
   // const router = useRouter();
+  console.log(matchData)
   const pathname = usePathname()
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
@@ -86,6 +93,15 @@ const MatchPage = () => {
     }
   }, [videoObject, matchData]);
 
+  useEffect(() => {
+    if (triggerScroll && !showPDF) {
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      setTriggerScroll(false);
+    }
+  }, [triggerScroll, showPDF]);
+
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
@@ -114,14 +130,29 @@ const MatchPage = () => {
     setFilterList(updatedFilterList);
   };
 
+  const scrollToDetailedList = () => {
+    setShowPDF(false);
+    setTriggerScroll(true);
+  };
+
+
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
+
+  function addBorderRadius() {
+    console.log('adding border radius');
+    const anyIframe = document.getElementById('player');
+    if (anyIframe) {
+      console.log('found iframe:', anyIframe);
+      anyIframe.style.borderRadius = '10px';
+    }
+  }
 
   return (
     <div className={styles.container}>
       {/* Main Content Area */}
       {matchData && (
         <>
-          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores}/>
+          <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores} />
           <div className={styles.headerRow}>
             <div className={styles.titleContainer}>
               <h2>{matchData.name}</h2>
@@ -129,29 +160,31 @@ const MatchPage = () => {
           </div>
           <div className={styles.mainContent}>
             {/* Video Player */}
-            <div className="videoPlayer">
-              <div>
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} />
+            <div className={styles.videoPlayer}>
+              <div ref={iframeRef}>
+                <VideoPlayer id='player' videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
-            <div>
+            <div className={styles.sidebar}>
               {/* Filter List */}
-              <div className={filterStyles.activeFilterListContainer}>
+              <div className={filterListStyles.activeFilterListContainer}>
                 Active Filters:
-                <ul className={filterStyles.activeFilterList}>
+                <ul className={filterListStyles.activeFilterList}>
                   {sortedFilterList.map(([key, value]) => (
-                    <li className={filterStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
+                    <li className={filterListStyles.activeFilterItem} key={`${key}-${value}`} style={{ cursor: 'pointer' }} onClick={() => removeFilter(key, value)}>
                       {nameMap[key]}: {value}
                     </li>
                   ))}
                 </ul>
               </div>
+              <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Filters</button>
+              <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Points</button>
               {/* List Holders */}
-              <div className='listHolder'>
-                {/* Filter List */}
-                <div className="filterList">
+              {/* Filter List */}
+              {tab === 0 && 
+                <div className={styles.sidebox}>
                   {/* Radio Options */}
-                  <div className={filterStyles.optionsList}>
+                  <div className={filterListStyles.optionsList}>
                     <div>
                       <input
                         type="radio"
@@ -189,27 +222,37 @@ const MatchPage = () => {
                       <label htmlFor="countRadio">Show Count</label>
                     </div>
                   </div>
-                  <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
-                </div>
-                <div className='jumpList'>
+                  <div className={styles.sidecontent}>
+                    <FilterList pointsData={matchData.points} filterList={filterList} setFilterList={setFilterList} showPercent={showPercent} showCount={showCount} />
+                  </div>
+                </div>}
+              {tab === 1 &&
+                <div className={styles.sidebox}>
                   {/* Points List */}
-                  <div className="pointsList">
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam}/>
+                  <div className={styles.sidecontent}>
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
-                  {/* Score display */}
-                  <div className="scoreboard">
-                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores}/>
+                  <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
+                    <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
                   </div>
-                </div>
-
-              
-                
+                </div>}
+              {/* Score display */}
+              <div className="scoreboard">
+                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
               </div>
             </div>
           </div>
-          <br></br>
-          {matchData.pdfUrl && <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />}
-          <br></br>
+          <div className={styles.toggle}>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_inactive : styles.toggle_buttonb_active}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Points</button>
+            {showPDF ? (
+              <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
+            ) : (
+              <div ref={tableRef} className={styles.ExtendedList}>
+                <ExtendedList pointsData={returnFilteredPoints()} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} onPointSelect={handleJumpToTime} iframe={iframeRef} />
+              </div>
+            )}
+          </div>
         </>
       )}
 
@@ -226,72 +269,10 @@ const MatchPage = () => {
           margin-bottom: 1rem;
           width: 80%;
         }
-
-        ${styles.mainContent} {
-          display: flex;
-          flex-direction: row;
-          width: 100%; // Take up the full width
-          justify-content: center;
-          align-items: flex-start;
-        }
-
-        .videoPlayer {
-          flex: 2; // Takes up 2/3 of the space
-          padding: 1rem;
-        }
-
-        .pointsList {
-          flex: 1; /* Takes up 1/3 of the space */
-          margin-top: 0;
-          padding: 1vw;
-          margin-left: 1vw;
-          border: 0.1vw solid #ddd;
-          border-radius: 1.5vw;
-          overflow-y: auto;
-          height: 30vw;
-          background: linear-gradient(to bottom, #ffffff, #fafafa); 
-        }
-
-        .filterList {
-          flex: 2; // Takes up 1/3 of the space
-          margin-top: 0rem;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          border-radius: 15px;
-          overflow-y: auto;
-          height: 350px;
-        }
-        .jumpList {
-          width: 325px;
-        }
         
         .listHolder {
           display: flex;
           gap: 10px;
-        }
-      `}</style>
-
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
         }
       `}</style>
     </div>

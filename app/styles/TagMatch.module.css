@@ -31,3 +31,9 @@
     transform: translateX(-50%);
     
 }
+
+.courtImage {
+    width: 50%;
+    height: 50%;
+    /* object-fit: cover; */
+}
