@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/PointsList.module.css';
 import getTeams from '@/app/services/getTeams.js';
 
-const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => {
+const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponentTeam }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
 
@@ -33,8 +33,6 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
     return { set: '', gameScore: '', pointScore: '', serverName: '' };
   };
 
-  const displayedPoints = pointsData;
-
   return (
     <div className={styles.pointsContainer}>
       <table className={styles.pointsList}>
@@ -48,7 +46,7 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
           </tr>
         </thead>
         <tbody>
-          {displayedPoints.map((point, index) => {
+          {pointsData.map((point, index) => {
             const { set, gameScore, pointScore, serverName } = parsePointData(point.Name || '');
             return (
               <tr
@@ -67,6 +65,22 @@ const PointsList = ({ pointsData, onPointSelect, clientTeam, opponentTeam }) => 
                 <td><b style={{ fontSize: '1em' }}>{set}</b></td>
                 <td><b style={{ fontSize: '1em' }}>{gameScore}</b></td>
                 <td><b style={{ fontSize: '1em', whiteSpace: 'nowrap', width: '20%' }}>{pointScore}</b></td>
+                <td
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onBookmark(point);
+                  }}
+                >
+                  {Object.prototype.hasOwnProperty.call(point, 'bookmarked') && point.bookmarked ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                      <path d="M6 2c-1.1 0-2 .9-2 2v16c0 .55.45 1 1 1 .17 0 .34-.05.5-.15L12 17.7l6.5 3.15c.16.1.33.15.5.15.55 0 1-.45 1-1V4c0-1.1-.9-2-2-2H6z" fill="#000000"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                      <path d="M6 2c-1.1 0-2 .9-2 2v16c0 .55.45 1 1 1 .17 0 .34-.05.5-.15L12 17.7l6.5 3.15c.16.1.33.15.5.15.55 0 1-.45 1-1V4c0-1.1-.9-2-2-2H6zm0 2h12v13.15l-5.5-2.65a1 1 0 0 0-.99 0L6 17.15V4z"/>
+                    </svg>
+                  )}
+                </td>
               </tr>
             );
           })}
