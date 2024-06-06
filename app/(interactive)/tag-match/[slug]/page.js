@@ -273,7 +273,7 @@ export default function TagMatch() {
         : combinedRows;
 
       // Filter out duplicates based on pointStartTime, keeping the last occurrence
-      const uniqueRows = combinedRows.reduceRight((acc, row) => {
+      let uniqueRows = combinedRows.reduceRight((acc, row) => {
         acc.pointStartTimes.add(row.pointStartTime);
         if (acc.pointStartTimes.has(row.pointStartTime) && !acc.added.has(row.pointStartTime)) {
           acc.rows.unshift(row); // Add the row to the beginning to maintain order
@@ -281,6 +281,16 @@ export default function TagMatch() {
         }
         return acc;
       }, { rows: [], pointStartTimes: new Set(), added: new Set() }).rows;
+
+      // If any rows have a value of undefined, set it to an empty string
+      // This is a requirement for Firestore
+      uniqueRows.forEach(row => {
+        for (const key in row) {
+          if (row[key] === undefined) {
+            row[key] = '';
+          }
+        }
+      });
 
       // Update the document in Firestore with the unique rows
       await updateMatchDocument(matchId, {
