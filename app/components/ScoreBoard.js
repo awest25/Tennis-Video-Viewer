@@ -45,7 +45,7 @@ const ScoreBoard = ({ playData,
                           position: "absolute",
                           fontSize: "0.6em",
                           top: "0.1em",
-                          right: "0.25em",
+                          right: "0em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -77,7 +77,7 @@ const ScoreBoard = ({ playData,
                           position: "absolute",
                           fontSize: "0.6em",
                           top: "0.1em",
-                          right: "0.25em",
+                          right: "0em",
                           letterSpacing: "1px",
                         }}
                       >
