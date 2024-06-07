@@ -199,61 +199,69 @@ export default function TagMatch() {
     <div className={styles.container}>
       <label>Enter YouTube Code: </label>
       <input type="text" value={videoId} onChange={handleVideoIdChange} ref={inputRef} />
-      <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-      <button onClick={handleDownload}>Download CSV</button>
-      <button onClick={handleCopyColumns}>Copy Columns</button>
-      <table className={styles.table}>
-        <tbody>
-          <tr>
-            <td colSpan="2">Current Time: {timerValue}ms</td>
-          </tr>
-          <tr>
-            <td>Jump to: </td>
-          </tr>
-          <tr>
-            <td>
-              <input
-                type="number"
-                placeholder="Milliseconds"
-                value={timerValue}
-                onChange={(event) => handleMillisecondsChange(event.target.value)}
-                style={{ marginRight: '10px' }}
-              />
-            </td>
-            <td>ms</td>
-          </tr>
-          <tr>
-            <td>
-              <input
-                type="number"
-                placeholder="Minutes"
-                value={Math.floor(timerValue / 60000)}
-                onChange={(event) => {
-                  const minutes = parseFloat(event.target.value);
-                  const seconds = (timerValue % 60000) / 1000;
-                  handleMinutesSecondsChange(minutes, seconds);
-                }}
-                style={{ marginRight: '10px' }}
-              />
-            </td>
-            <td>minutes</td>
-            <td>
-              <input
-                type="number"
-                placeholder="Seconds"
-                value={Math.round((timerValue % 60000) / 1000)}
-                onChange={(event) => {
-                  const seconds = parseFloat(event.target.value);
-                  const minutes = Math.floor(timerValue / 60000);
-                  handleMinutesSecondsChange(minutes, seconds);
-                }}
-              />
-            </td>
-            <td>seconds</td>
-          </tr>
-        </tbody>
-      </table>
-      <KeybindingsTable />
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '28vw'}}>
+        <div style={{ display: 'flex', flexDirection: 'column'}}>
+          <div style={{width: '42vw'}}>
+            <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
+          </div>
+          <button onClick={handleDownload}>Download CSV</button>
+          <button onClick={handleCopyColumns}>Copy Columns</button>
+        </div>
+        <div>
+          <table className={styles.table}>
+            <tbody>
+              <tr>
+                <td colSpan="2">Current Time: {timerValue}ms</td>
+              </tr>
+              <tr>
+                <td>Jump to: </td>
+              </tr>
+              <tr>
+                <td>
+                  <input
+                    type="number"
+                    placeholder="Milliseconds"
+                    value={timerValue}
+                    onChange={(event) => handleMillisecondsChange(event.target.value)}
+                    style={{ marginRight: '10px' }}
+                  />
+                </td>
+                <td>ms</td>
+              </tr>
+              <tr>
+                <td>
+                  <input
+                    type="number"
+                    placeholder="Minutes"
+                    value={Math.floor(timerValue / 60000)}
+                    onChange={(event) => {
+                      const minutes = parseFloat(event.target.value);
+                      const seconds = (timerValue % 60000) / 1000;
+                      handleMinutesSecondsChange(minutes, seconds);
+                    }}
+                    style={{ marginRight: '10px' }}
+                  />
+                </td>
+                <td>minutes</td>
+                <td>
+                  <input
+                    type="number"
+                    placeholder="Seconds"
+                    value={Math.round((timerValue % 60000) / 1000)}
+                    onChange={(event) => {
+                      const seconds = parseFloat(event.target.value);
+                      const minutes = Math.floor(timerValue / 60000);
+                      handleMinutesSecondsChange(minutes, seconds);
+                    }}
+                  />
+                </td>
+                <td>seconds</td>
+              </tr>
+            </tbody>
+          </table>
+          <KeybindingsTable />
+        </div>
+      </div>
 
       <hr />
       <table>
