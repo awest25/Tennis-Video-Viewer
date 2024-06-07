@@ -72,7 +72,7 @@ export default function MatchList() {
             <div key={match.id}>
               <li>
                 <span>{match.name}<button onClick={() => handleDelete(match.id)}>Delete</button></span>
-                <span><button onClick={() => handleDownload(match.id)}>Download</button></span>
+                <span><button onClick={() => handleDownload(match.id)}>Download JSON</button></span>
                 <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
                 <br/>
                 <input onChange={(e) => setNewName(e.target.value)}/>

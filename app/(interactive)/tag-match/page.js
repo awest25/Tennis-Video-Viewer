@@ -204,7 +204,7 @@ export default function TagMatch() {
           <div style={{width: '42vw'}}>
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
           </div>
-          <button onClick={handleDownload}>Download CSV</button>
+          <button onClick={handleDownload}>Download JSON</button>
           <button onClick={handleCopyColumns}>Copy Columns</button>
         </div>
         <div>
