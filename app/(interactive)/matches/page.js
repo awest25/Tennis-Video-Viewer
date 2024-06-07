@@ -15,6 +15,7 @@ const MatchesDashboard = () => {
   // Selecting Player from Roster
   const [matchData, setMatchData] = useState([]);
   const [activePlayer, setActivePlayer] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState("UCLA (M)"); 
 
   const handleActivePlayerChange = (player) => {
     setActivePlayer(player);
@@ -22,7 +23,8 @@ const MatchesDashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const MatchQuerySnapshot = await getDocs(collection(db, "matches"));
+      // check which team to pull from
+      const MatchQuerySnapshot = await getDocs(collection(db, selectedTeam));
       const matches = MatchQuerySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -30,7 +32,17 @@ const MatchesDashboard = () => {
       setMatchData(matches);
     };
     fetchData();
-  }, []);
+  }, [selectedTeam]);
+
+  // Select Team to Pull from DB; 
+  const changeTeam = (team) => {
+    const allowedTeams = ["UCLA (M)", "UCLA (W)"];
+    if (allowedTeams.includes(team)) {
+      setSelectedTeam(team);
+    } else {
+      console.error("Invalid team selected:", team);
+    }
+  };
 
   //Get Player's matches
   const playerMatches = matchData
