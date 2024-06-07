@@ -66,9 +66,9 @@ const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponen
                 <td><b style={{ fontSize: '1em' }}>{gameScore}</b></td>
                 <td><b style={{ fontSize: '1em', whiteSpace: 'nowrap', width: '20%' }}>{pointScore}</b></td>
                 <td
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onBookmark(point);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onBookmark(point);
                   }}
                 >
                   {Object.prototype.hasOwnProperty.call(point, 'bookmarked') && point.bookmarked ? (
