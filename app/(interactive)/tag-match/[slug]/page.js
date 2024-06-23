@@ -132,18 +132,6 @@ export default function TagMatch() {
     navigator.clipboard.writeText(csvData);
   };
 
-  const handleDownload = () => {
-    const csvData = convertToCSV(tableState.rows);
-    const blob = new Blob([csvData], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'points.csv';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -430,7 +418,6 @@ export default function TagMatch() {
           <label>Input YouTube Code: </label>
           <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
-          <button onClick={handleDownload}>Download CSV</button>
           <button onClick={handleCopy}>Copy Columns</button>
           <button onClick={undoLastAction}>Undo</button>
           <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
@@ -485,6 +472,8 @@ export default function TagMatch() {
         </div>
 
       </div>
+
+
 
       { /* CSV Table */}
       <table>
