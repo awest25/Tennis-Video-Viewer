@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import VideoPlayer from '../../components/VideoPlayer';
 import styles from '../../styles/Tagging.module.css';
 
-const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handleRemoveTime }) => {
+const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, handlePlayerWonChange, handleRemoveTime }) => {
   return (
     <tr key={index}>
       <td>{index + 1}</td>
@@ -20,6 +20,13 @@ const TagTable = ({ pair, index, handleStartTimeChange, handleEndTimeChange, han
           type="text"
           value={pair[1]}
           onChange={(event) => handleEndTimeChange(index, event.target.value)}
+        />
+      </td>
+      <td>
+        <input
+          type="text"
+          value={pair[2]}
+          onChange={(event) => handlePlayerWonChange(index, event.target.value)}
         />
       </td>
       <td>
@@ -44,24 +51,24 @@ const KeybindingsTable = () => {
           <td>Pause/Play</td>
         </tr>
         <tr>
-          <td>[d] [f]</td>
-          <td>Start Timestamp / End Timestamp</td>
+          <td>[d] [g] [f]</td>
+          <td>Start Timestamp, Player1Won | Start Timestamp, Player2Won | End Timestamp</td>
         </tr>
         <tr>
           <td>[r] [e]</td>
-          <td>Forward/Backward 1s</td>
+          <td>Forward | Backward 1s</td>
         </tr>
         <tr>
           <td>[w] [q]</td>
-          <td>Forward/Backward 5s</td>
+          <td>Forward | Backward 5s</td>
         </tr>
         <tr>
           <td>[s] [a]</td>
-          <td>Forward/Backward 10s</td>
+          <td>Forward | Backward 10s</td>
         </tr>
         <tr>
           <td>[1] [2]</td>
-          <td>Speed x1 / x2</td>
+          <td>Speed x1 | x2</td>
         </tr>
       </tbody>
     </table>
@@ -99,13 +106,20 @@ export default function TagMatch() {
       "d": () => {
         const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
         if (!timeList.some(pair => pair[1] === 0)) {
-          setTimeList(timeList => [...timeList, [newTimestamp, 0]].sort((pair1, pair2) => pair1[0] - pair2[0]));
+          setTimeList(timeList => [...timeList, [newTimestamp, 0, "Player 1"]].sort((pair1, pair2) => pair1[0] - pair2[0]));
           setCurTimeStart(newTimestamp);
         }
       },
       "f": () => {
         const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-        setTimeList(timeList => timeList.map(pair => (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp] : pair));
+        setTimeList(timeList => timeList.map(pair => (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp, pair[2]] : pair));
+      },
+      "g": () => {
+        const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
+        if (!timeList.some(pair => pair[1] === 0)) {
+          setTimeList(timeList => [...timeList, [newTimestamp, 0, "Player 2"]].sort((pair1, pair2) => pair1[0] - pair2[0]));
+          setCurTimeStart(newTimestamp);
+        }
       },
       "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1 / FRAMERATE, true),
       "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1 / FRAMERATE, true),
@@ -123,13 +137,19 @@ export default function TagMatch() {
 
   const handleStartTimeChange = (index, value) => {
     const updatedTimeList = [...timeList];
-    updatedTimeList[index] = [parseInt(value), updatedTimeList[index][1]];
+    updatedTimeList[index] = [parseInt(value), updatedTimeList[index][1], updatedTimeList[index][2]];
     setTimeList(updatedTimeList);
   };
 
   const handleEndTimeChange = (index, value) => {
     const updatedTimeList = [...timeList];
-    updatedTimeList[index] = [updatedTimeList[index][0], parseInt(value)];
+    updatedTimeList[index] = [updatedTimeList[index][0], parseInt(value), updatedTimeList[index][2]];
+    setTimeList(updatedTimeList);
+  };
+
+  const handlePlayerWonChange = (index, value) => {
+    const updatedTimeList = [...timeList];
+    updatedTimeList[index] = [updatedTimeList[index][0], updatedTimeList[index][1], value];
     setTimeList(updatedTimeList);
   };
 
@@ -270,6 +290,7 @@ export default function TagMatch() {
             <th>Index</th>
             <th>Start Time</th>
             <th>End Time</th>
+            <th>Point Winner</th>
             <th>Remove</th>
           </tr>
         </thead>
@@ -286,6 +307,7 @@ export default function TagMatch() {
                   index={index}
                   handleStartTimeChange={handleStartTimeChange}
                   handleEndTimeChange={handleEndTimeChange}
+                  handlePlayerWonChange={handlePlayerWonChange}
                   handleRemoveTime={handleRemoveTime}
                 />
               );
@@ -303,6 +325,7 @@ export default function TagMatch() {
               index={index}
               handleStartTimeChange={handleStartTimeChange}
               handleEndTimeChange={handleEndTimeChange}
+              handlePlayerWonChange={handlePlayerWonChange}
               handleRemoveTime={handleRemoveTime}
             />
           ))}
