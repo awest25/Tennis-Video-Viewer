@@ -51,8 +51,8 @@ const KeybindingsTable = () => {
           <td>Pause/Play</td>
         </tr>
         <tr>
-          <td>[d] [g] [f]</td>
-          <td>Start Timestamp, Player1Won | Start Timestamp, Player2Won | End Timestamp</td>
+          <td>[d] [f] [g]</td>
+          <td>Start Timestamp | End Timestamp, Player 1 Won | End Timestamp, Player 2 Won</td>
         </tr>
         <tr>
           <td>[r] [e]</td>
@@ -106,20 +106,17 @@ export default function TagMatch() {
       "d": () => {
         const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
         if (!timeList.some(pair => pair[1] === 0)) {
-          setTimeList(timeList => [...timeList, [newTimestamp, 0, "Player 1"]].sort((pair1, pair2) => pair1[0] - pair2[0]));
+          setTimeList(timeList => [...timeList, [newTimestamp, 0, ""]].sort((pair1, pair2) => pair1[0] - pair2[0]));
           setCurTimeStart(newTimestamp);
         }
       },
       "f": () => {
         const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-        setTimeList(timeList => timeList.map(pair => (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp, pair[2]] : pair));
+        setTimeList(timeList => timeList.map(pair => (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp, 'Player 1'] : pair));
       },
       "g": () => {
         const newTimestamp = Math.round(videoObject.getCurrentTime() * 1000);
-        if (!timeList.some(pair => pair[1] === 0)) {
-          setTimeList(timeList => [...timeList, [newTimestamp, 0, "Player 2"]].sort((pair1, pair2) => pair1[0] - pair2[0]));
-          setCurTimeStart(newTimestamp);
-        }
+        setTimeList(timeList => timeList.map(pair => (pair[1] === 0 && newTimestamp >= pair[0]) ? [pair[0], newTimestamp, 'Player 2'] : pair));
       },
       "r": () => videoObject.seekTo(videoObject.getCurrentTime() + 1 / FRAMERATE, true),
       "e": () => videoObject.seekTo(videoObject.getCurrentTime() - 1 / FRAMERATE, true),
