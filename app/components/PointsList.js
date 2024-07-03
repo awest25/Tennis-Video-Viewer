@@ -24,16 +24,16 @@ const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponen
 
   // does not consider 40-A!
   // as of 07/02/24, use specific fields rather than parsing
-  const parsePointData = (pointName) => {
-    const regex = /Set (\d+): (\d+-\d+), (\d+-\d+) (.*?) Serving/;
-    const match = pointName.match(regex);
+  // const parsePointData = (pointName) => {
+  //   const regex = /Set (\d+): (\d+-\d+), (\d+-\d+) (.*?) Serving/;
+  //   const match = pointName.match(regex);
 
-    if (match) {
-      const [, set, gameScore, pointScore, serverName] = match;
-      return { set, gameScore, pointScore, serverName };
-    }
-    return { set: '', gameScore: '', pointScore: '', serverName: '' };
-  };
+  //   if (match) {
+  //     const [, set, gameScore, pointScore, serverName] = match;
+  //     return { set, gameScore, pointScore, serverName };
+  //   }
+  //   return { set: '', gameScore: '', pointScore: '', serverName: '' };
+  // };
 
   return (
     <div className={styles.pointsContainer}>
