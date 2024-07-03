@@ -22,6 +22,8 @@ const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponen
     fetchLogos();
   }, [clientTeam, opponentTeam]);
 
+  // does not consider 40-A!
+  // as of 07/02/24, use specific fields rather than parsing
   const parsePointData = (pointName) => {
     const regex = /Set (\d+): (\d+-\d+), (\d+-\d+) (.*?) Serving/;
     const match = pointName.match(regex);
@@ -47,7 +49,8 @@ const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponen
         </thead>
         <tbody>
           {pointsData.map((point, index) => {
-            const { set, gameScore, pointScore, serverName } = parsePointData(point.Name || '');
+            console.log(point)
+            // const { set, gameScore, pointScore, serverName } = parsePointData(point.Name || '');
             return (
               <tr
                 className={styles.pointsListItem}
@@ -58,13 +61,13 @@ const PointsList = ({ pointsData, onBookmark, onPointSelect, clientTeam, opponen
                 <td >
                   <div className={styles.imgcontainer}>
                     <div className={styles.playerSchoolImg}>
-                      <img src={serverName === point.player1Name ? clientLogo : opponentLogo} className={styles.IMG} />
+                      <img src={point.serverName === point.player1Name ? clientLogo : opponentLogo} className={styles.IMG} />
                     </div>
                   </div>
                 </td>
-                <td><b style={{ fontSize: '1em' }}>{set}</b></td>
-                <td><b style={{ fontSize: '1em' }}>{gameScore}</b></td>
-                <td><b style={{ fontSize: '1em', whiteSpace: 'nowrap', width: '20%' }}>{pointScore}</b></td>
+                <td><b style={{ fontSize: '1em' }}>{point.setNum}</b></td>
+                <td><b style={{ fontSize: '1em' }}>{point.gameScore}</b></td>
+                <td><b style={{ fontSize: '1em', whiteSpace: 'nowrap', width: '20%' }}>{point.pointScore}</b></td>
                 <td
                   onClick={(e) => {
                     e.stopPropagation();
