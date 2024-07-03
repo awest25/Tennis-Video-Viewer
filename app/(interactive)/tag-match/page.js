@@ -173,7 +173,7 @@ export default function TagMatch() {
   };
 
   const handleDownload = () => {
-    const csvData = ['Index,Start Time,End Time', ...timeList.map((pair, index) => `${index + 1},${pair[0]},${pair[1]}`)].join('\n');
+    const csvData = ['Index,Start Time,End Time,Point Winner', ...timeList.map((pair, index) => `${index + 1},${pair[0]},${pair[1]},${pair[2]}`)].join('\n');
     const blob = new Blob([csvData], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
