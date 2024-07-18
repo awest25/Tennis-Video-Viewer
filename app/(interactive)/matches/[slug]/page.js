@@ -14,7 +14,7 @@ import { AuthProvider } from '@/app/components/AuthWrapper';
 import extractSetScores from '@/app/services/extractSetScores';
 import ExtendedList from '../../../components/ExtendedList';
 
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../services/initializeFirebase';
 import transformData from '../../../services/transformData';
 import nameMap from '../../../services/nameMap';
@@ -28,12 +28,12 @@ const MatchPage = () => {
   const [playingPoint, setPlayingPoint] = useState(null);
   const [showPDF, setShowPDF] = useState(true);
   const [tab, setTab] = useState(1);
+  const [bookmarks, setBookmarks] = useState([]);
+  const [triggerScroll, setTriggerScroll] = useState(false);
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
   const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
-
-  // const router = useRouter();
   const pathname = usePathname()
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
@@ -43,13 +43,49 @@ const MatchPage = () => {
     }
   };
 
+  const handleBookmark = async (point) => {
+    const updatedPoints = matchData.points.map(p => {
+      if (p.Name === point.Name) {
+        return { ...p, bookmarked: !p.bookmarked };
+      }
+      return p;
+    });
+    setMatchData({
+      ...matchData,
+      points: updatedPoints,
+    });
+    // update state to show frontend (instead of waiting for DB doc update + fetch)
+    setBookmarks(updatedPoints.filter(p => p.bookmarked === true))
+    try {
+      const documentRef = doc(db, 'matches', docId);
+      const documentSnapshot = await getDoc(documentRef);
+      const transformedData = transformData(documentSnapshot.data());
+      const points = transformedData.points;
+
+      const updatedDatabasePoints = points.map(p => {
+        if (p.Name === point.Name) {
+          return { ...p, bookmarked: !p.bookmarked };
+        }
+        return p;
+      });
+      await updateDoc(documentRef, { points: updatedDatabasePoints });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const documentRef = doc(db, 'matches', docId);
         const documentSnapshot = await getDoc(documentRef);
         const transformedData = transformData(documentSnapshot.data());
-        setMatchData(transformedData);
+        setMatchData(transformedData)
+
+        // bookmarked can be null
+        const initialBookmarks = transformedData.points.filter(point => point.bookmarked !== undefined && point.bookmarked === true)
+        console.log("initial bookmarks: " + initialBookmarks)
+        setBookmarks(initialBookmarks)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -81,6 +117,15 @@ const MatchPage = () => {
     }
   }, [videoObject, matchData]);
 
+  useEffect(() => {
+    if (triggerScroll && !showPDF) {
+      if (tableRef.current) {
+        tableRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+      setTriggerScroll(false);
+    }
+  }, [triggerScroll, showPDF]);
+
   const returnFilteredPoints = () => {
     let filteredPoints = matchData.points;
     const filterMap = new Map();
@@ -109,9 +154,8 @@ const MatchPage = () => {
   };
 
   const scrollToDetailedList = () => {
-    if (tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setShowPDF(false);
+    setTriggerScroll(true);
   };
 
   const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
@@ -141,7 +185,7 @@ const MatchPage = () => {
             {/* Video Player */}
             <div className={styles.videoPlayer}>
               <div ref={iframeRef}>
-                <VideoPlayer videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
+                <VideoPlayer id='player' videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
             <div className={styles.sidebar}>
@@ -156,8 +200,9 @@ const MatchPage = () => {
                   ))}
                 </ul>
               </div>
-              <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Filters</button>
-              <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Points</button>
+              <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Filters</button>
+              <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_button_neutral_active : styles.toggle_button_neutral_inactive}>Points</button>
+              <button onClick={() => setTab(2)} className={tab === 2 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Bookmarks</button>
               {/* List Holders */}
               {/* Filter List */}
               {tab === 0 && 
@@ -209,7 +254,17 @@ const MatchPage = () => {
                 <div className={styles.sidebox}>
                   {/* Points List */}
                   <div className={styles.sidecontent}>
-                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
+                    <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} onBookmark={handleBookmark} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
+                  </div>
+                  <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
+                    <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
+                  </div>
+                </div>}
+              {tab === 2 &&
+                <div className={styles.sidebox}>
+                  {/* Bookmark List */}
+                  <div className={styles.sidecontent}>
+                    <PointsList pointsData={bookmarks} onPointSelect={handleJumpToTime} onBookmark={handleBookmark} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
                     <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
@@ -222,8 +277,8 @@ const MatchPage = () => {
                 </div>
             </div>
           <div className={styles.toggle}>
-            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Key Stats & Visuals</button>
-            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_inactive : styles.toggle_buttona_active}>Points</button>
+            <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_inactive : styles.toggle_buttonb_active}>Key Stats & Visuals</button>
+            <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Points</button>
             {showPDF ? (
               <iframe className={styles.pdfView} src={matchData.pdfUrl} width="90%" height="1550" />
             ) : (

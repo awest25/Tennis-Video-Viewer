@@ -132,6 +132,18 @@ export default function TagMatch() {
     navigator.clipboard.writeText(csvData);
   };
 
+  const handleDownload = () => {
+    const csvData = convertToCSV(tableState.rows);
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'points.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -273,7 +285,7 @@ export default function TagMatch() {
         : combinedRows;
 
       // Filter out duplicates based on pointStartTime, keeping the last occurrence
-      const uniqueRows = combinedRows.reduceRight((acc, row) => {
+      let uniqueRows = combinedRows.reduceRight((acc, row) => {
         acc.pointStartTimes.add(row.pointStartTime);
         if (acc.pointStartTimes.has(row.pointStartTime) && !acc.added.has(row.pointStartTime)) {
           acc.rows.unshift(row); // Add the row to the beginning to maintain order
@@ -281,6 +293,16 @@ export default function TagMatch() {
         }
         return acc;
       }, { rows: [], pointStartTimes: new Set(), added: new Set() }).rows;
+
+      // If any rows have a value of undefined, set it to an empty string
+      // This is a requirement for Firestore
+      uniqueRows.forEach(row => {
+        for (const key in row) {
+          if (row[key] === undefined) {
+            row[key] = '';
+          }
+        }
+      });
 
       // Update the document in Firestore with the unique rows
       await updateMatchDocument(matchId, {
@@ -401,13 +423,14 @@ export default function TagMatch() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '48vw', height: '36vw'}}>
           <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
           {/* temporary means to select video (should it be a form?) */}
           <label>Input YouTube Code: </label>
           <input type="text" value={videoId} onChange={handleVideoIdChange} />
 
+          <button onClick={handleDownload}>Download CSV</button>
           <button onClick={handleCopy}>Copy Columns</button>
           <button onClick={undoLastAction}>Undo</button>
           <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
@@ -462,8 +485,6 @@ export default function TagMatch() {
         </div>
 
       </div>
-
-
 
       { /* CSV Table */}
       <table>

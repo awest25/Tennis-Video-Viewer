@@ -185,10 +185,10 @@
 
   .toggle_buttona_active{
     font-size: 1vw;
-    width: 10vw;
+    width: 6vw;
     height: 5vh;
     background-color: #fafafa;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
@@ -196,22 +196,41 @@
 
   .toggle_buttona_inactive{
     font-size: 1vw;
-    width: 10vw;
+    width: 6vw;
     height: 5vh;
     background-color: #ffffff;
-    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
   }
 
-  /* increase size of buttons */
-  .toggle_buttonb_active{
+  .toggle_button_neutral_active{
     font-size: 1vw;
-    width: 12vw;
+    width: 6vw;
     height: 5vh;
     background-color: #fafafa;
-    border-top-right-radius: 10px;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .toggle_button_neutral_inactive{
+    font-size: 1vw;
+    width: 6vw;
+    height: 5vh;
+    background-color: #ffffff;
+    border: 1px solid #eaeaea;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .toggle_buttonb_active{
+    font-size: 1vw;
+    width: 6vw;
+    height: 5vh;
+    background-color: #fafafa;
+    border-top-left-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;
@@ -219,10 +238,10 @@
 
   .toggle_buttonb_inactive{
     font-size: 1vw;
-    width: 12vw;
+    width: 6vw;
     height: 5vh;
     background-color: #ffffff;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     border: 1px solid #eaeaea;
     cursor: pointer;
     font-weight: bold;

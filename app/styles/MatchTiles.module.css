@@ -2,16 +2,21 @@
 
 .matchTilesContainer {
     display: flex;
-    width: 100%;
+    justify-content: space-between; /* Ensures tiles are spaced evenly */
+    width: 90vw;
+    padding-top: 2vw;
+    box-sizing: border-box;
 }
 
 .matchInfoContainer {
-    border: 1px solid #DEDEDE;
-    border-radius: 24px;
+    border: 0.13vw solid #DEDEDE;
+    border-radius: 1.2vw;
     font-family: 'DM Sans', sans-serif;
-    width: 100%; /*use to be 38%, idk why, may bug?*/
-    margin: 8px;
-    padding: 1em;
+    width: calc(33.33% - 0.47vw); /* Adjusted to fit within the container with spacing */
+    margin: 0 0.7vw; /* Margin between tiles */
+    padding: 1vw; /* Padding inside each tile */
+
+    box-sizing: border-box;
 }
 .matchTopLine {
     display: flex;
@@ -32,11 +37,11 @@
 .containerTitle {
     font-size: 1.1vw;
     font-weight: 350;
-    padding-bottom: 2px;
+    padding-bottom: 0.2vw;
 }
 
 .containerInfo {
-    font-size: 1.8vw;
+    font-size: 1.5vw;
     font-weight: 600;
 }
 
@@ -48,10 +53,10 @@
 }
 
 .playerInfoName {
-    padding-left: 1em;
-    padding-right: 2em;
+    padding-left: 1vw;
+    padding-right: 2vw;
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.43vw;
     font-weight: 600;
     overflow: hidden;
     white-space: nowrap;
@@ -60,18 +65,28 @@
 .playerInfoScore {
     position: absolute;
     display: flex;
-    font-size: 1.8vw;
+    font-size: 1.5vw;
     font-weight: 600;
-    left: 85%;
-    letter-spacing: .5em;
+    padding-left: 22.6vw;
+    letter-spacing: 0.5vw;
 }
 
-.playerSchoolImg {
-    width: 1.5em;
-    padding: 0;
-}
 
-.playerSchoolImg img {
-    width: 100%; /* Set the width of the image to 100% of its container */
-    height: auto; /* Automatically adjust the height to maintain aspect ratio */
+.playerSchoolImgcontainerhome {
+    max-width: 3vw; /* Adjust max-width using viewport units */
+    height: 2vw; /* Set the desired height */
+    padding: 0.1vw;
+    display: flex;
+    justify-content: center; /* Center the image vertically */
+    align-items: center; /* Center the image horizontally */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
+  }
+
+.playerSchoolImgcontainer {
+    max-width: 2.9vw; /* Adjust max-width using viewport units */
+    padding-bottom: 0.4vw;
+    display: flex;
+    justify-content: center; /* Center the image vertically */
+    align-items: center; /* Center the image horizontally */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
   }
