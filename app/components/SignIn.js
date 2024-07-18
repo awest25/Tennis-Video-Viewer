@@ -7,7 +7,7 @@ import { useAuth } from './AuthWrapper';
 const SignInPage = () => {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [error, setError] = useState(null);
-  const { user, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
+  const { authUser, userProfile, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -33,7 +33,7 @@ const SignInPage = () => {
           <h1>BSA | Tennis Consulting</h1>
         </div>
         <div className={styles.rightTitle}>
-          {user ? (
+          {authUser ? (
             <button onClick={handleSignOut}>Sign Out</button>
           ) : (
             <button>Sign In</button>

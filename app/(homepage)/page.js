@@ -7,7 +7,7 @@ import styles from '../styles/Home.module.css';
 import { useAuth } from '../components/AuthWrapper'; // Import useAuth
 
 const Home = () => {
-  const { user, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
+  const { authUser, userProfile, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
 
   return (
     <div>
@@ -16,7 +16,7 @@ const Home = () => {
           <h1>BSA | Tennis Consulting</h1>
         </div>
         <div className={styles.rightTitle}>
-          {user ? (
+          {authUser ? (
             <button onClick={handleSignOut}>Sign Out</button>
           ) : (
             <button>Sign In</button>
