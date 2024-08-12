@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+.dashTilesContainer {
+    display: flex;
+    width: 85vw;
+    padding-top: 1.5vw;
+    box-sizing: border-box;
+}
+
+.matchInfoContainer {
+    border: 0.13vw solid #DEDEDE;
+    border-radius: 1vw;
+    font-family: 'DM Sans', sans-serif;
+    width: calc(25% - 0.47vw);
+    margin: 0 0.5vw;
+    padding: 0.8vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.containerTitle {
+    font-size: 1vw;
+    font-weight: 350;
+    padding-bottom: 0.4vw;
+    text-align: left;
+}
+
+.playerInfo {
+    display: flex;
+    align-items: center;
+    font-size: 1.3vw;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.4vw;
+}
+
+.playerInfoName {
+    padding-left: 0.8vw;
+    display: flex;
+    align-items: center;
+    font-size: 1.3vw;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.playerInfoScore {
+    display: flex;
+    font-size: 1.3vw;
+    font-weight: 600;
+    margin-left: auto;
+    letter-spacing: 0.4vw;
+}
+
+.playerSchoolImgcontainerhome,
+.playerSchoolImgcontainer {
+    max-width: 2.7vw;
+    height: 1.8vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-right: 0.8vw;
+}
+
+
+

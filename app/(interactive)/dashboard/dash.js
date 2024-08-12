@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './Dashboard.module.css';
+import DashboardTile from '../../components/DashboardTile';
 
 const matchData = [
   { date: '04/07/2024', opponent: 'Texas', result: 'W (4-1)', matches: [
@@ -60,13 +61,20 @@ const Dashboard = () => {
           </div>
           <div className={styles.matchDetails}>
             {match.matches.map((m, idx) => (
-              <div key={idx} className={styles.matchCard}>
-                <div className={styles.type}>{m.type}</div>
-                <div className={styles.player1}>{m.player1}</div>
-                <div className={styles.score}>{m.score}</div>
-                <div className={styles.player2}>{m.player2}</div>
-                <div className={styles.opponentScore}>{m.opponentScore}</div>
-              </div>
+              <DashboardTile
+                key={idx}
+                matchName={`${match.opponent} ${match.date}`}
+                clientTeam="UCLA"
+                opponentTeam={match.opponent}
+                matchDetails={m.type}
+                player1Name={m.player1}
+                player2Name={m.player2}
+                player1FinalScores={m.score.split(" ").map((s) => ({ score: parseInt(s) }))}
+                player2FinalScores={m.opponentScore.split(" ").map((s) => ({ score: parseInt(s) }))}
+                player1TieScores={[]}
+                player2TieScores={[]}
+                isUnfinished={false}
+              />
             ))}
           </div>
         </div>
