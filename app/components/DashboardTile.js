@@ -42,7 +42,7 @@ const DashboardTile = ({
         <div className={styles.containerTitle}>Final Score</div>
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImgcontainerhome}>
-            <img src={'ucla.png'} alt={`${clientTeam} logo`} />
+            <img src={clientLogo} alt={`${clientTeam} logo`} />
           </div>
           <div className={styles.playerInfoName} style={{ opacity: isUnfinished || !calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
             {player1Name} {isUnfinished && "(UF)"}
@@ -64,7 +64,7 @@ const DashboardTile = ({
         </div>
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImgcontainer}>
-            <img src={'texas.png'} alt={`${opponentTeam} logo`} />
+            <img src={opponentLogo} alt={`${opponentTeam} logo`} />
           </div>
           <div className={styles.playerInfoName} style={{ opacity: calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
             {player2Name}
