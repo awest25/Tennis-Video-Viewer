@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 .container {
   padding: 20px;
-  font-family: Arial, sans-serif;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .header {
@@ -10,7 +12,7 @@
 
 .header h1 {
   font-size: 24px;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .header h2 {
@@ -35,7 +37,7 @@
   white-space: nowrap;
 }
 
-.matchSection {
+.Section {
   margin-bottom: 20px;
 }
 
@@ -54,6 +56,11 @@
   color: #2774AE;
 }
 
+.matchTypeHeader h4 {
+  margin: 10px 0 0 0;
+  font-weight: normal;
+} 
+
 .matchDetails {
   display: flex;
   flex-wrap: wrap;
@@ -62,7 +69,6 @@
 .matchCard {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 10px;
   margin: 5px;
   flex: 1 0 300px;
   background-color: #fff;
