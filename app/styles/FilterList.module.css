@@ -3,121 +3,108 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     box-sizing: border-box;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 0.5vw;
+    margin-bottom: 1vw;
     background-color: #ffffff;
     border: 1px solid #eaeaea;
-    border-radius: 5px;
+    border-radius: 10px;
+    font-size: 1.2vw;
 }
 
 .activeFilterList {
     padding: 0;
     list-style-type: none;
     margin: 0;
+    border-radius: 0.3vw;
     overflow-y: scroll;
-    max-height: 65px; 
+    max-height: 5vw;
     display: flex;
     flex-wrap: wrap;
 }
 
 .activeFilterItem {
-    background-color: #f7f7f7; /* Slightly lighter to distinguish from hover state */
+    background-color: #fafafa; /* Slightly lighter to distinguish from hover state */
     color: #333;
-    border: 1px solid #ccc; /* Subtle border color */
-    border-radius: 4px;
-    padding: 8px 16px;
-    margin: 8px;
+    border: 1px solid #eaeaea; /* Subtle border color */
+    border-radius: 0.25vw;
+    padding: 0.625vw 2.5vw;
+    margin: 0.5vw;
     cursor: pointer;
+    font-size: 1.3vw;
     transition: all 0.2s ease-in-out; /* Smooth transition for all properties */
 }
 
 .activeFilterItem:hover {
     background-color: #e2e2e2; /* Darker on hover for better feedback */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow */
+    box-shadow: 0 1.6vw 3.2vw rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow */
 }
 
-/* Style for an active or selected filter item */
 .activeFilterItem.active {
     background-color: #d1eaff; /* A light blue to indicate active status */
     color: #0056b3; /* A darker blue to match */
     border-color: #0056b3; /* Same dark blue for the border */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Consistent with hover state */
-}
-
-.availableFilterItem {
-    padding: 8px 10px; /* Adjusted padding for consistency */
-    margin: 4px 0; /* Adjusted margin for better layout */
-    background-color: #f9f9f9; /* Slightly different background to distinguish from active items */
-    border-radius: 4px; /* Consistent rounded corners */
-    border: 1px solid #eaeaea; /* Subtle border */
-    list-style-type: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.availableFilterItem:hover {
-    background-color: #f0f0f0; /* A touch darker to indicate hover state */
-}
-
-.availableFilterSubitem {
-    list-style-type: none;
-    padding-left: 20px; /* Indent subitems for hierarchy */
+    box-shadow: 0 0.8vw 1.6vw rgba(0, 0, 0, 0.1); /* Consistent with hover state */
 }
 
 .availableFilterList {
-    padding: 0;
-    list-style-type: none;
-    margin: 8px 0; /* Consistent with other margins */
+    padding-left: 1vw; /* override default padding left of a ul*/
+    padding-right: 1vw;
+    margin: 0;
 }
 
-.availableFilterSubitemList {
-    padding-left: 20px; /* Indent subitems for hierarchy */
+.availableFilterItem {
+    padding: 0.8vw 1vw; /* Adjusted padding for consistency */
+    margin: 0.4vw 0; /* Adjusted margin for better layout */
+    background-color: #f9f9f9; /* Slightly different background to distinguish from active items */
+    border-radius: 0.8vw; /* Consistent rounded corners */
+    border: 0.2vw solid #eaeaea; /* Subtle border */
     list-style-type: none;
+    cursor: pointer;
+    font-size: 1.2vw;
+    transition: background-color 0.2s ease-in-out;
+    background-color: #f0f0f0; /* A touch darker to indicate hover state */
 }
 
 .filterValuesList {
     padding: 0;
     list-style-type: none;
+    font-size: 1.2vw;
 }
 
 .filterValueItem {
     background-color: #f8f8f8; /* Light grey background for each item */
     color: #333; /* Dark grey text color for contrast */
-    padding: 6px 12px; /* Padding inside each item */
-    margin: 2px 0; /* Margin between items */
-    border-radius: 4px; /* Rounded corners for the items */
+    padding: 0.6vw 1.2vw; /* Padding inside each item */
+    margin: 0.2vw 0; /* Margin between items */
+    border-radius: 0.4vw; /* Rounded corners for the items */
     cursor: pointer; /* Cursor changes to pointer to indicate clickability */
     transition: background-color 0.2s ease-in-out; /* Smooth transition for hover effect */
     display: flex;
+    font-size: 1.2vw;
     justify-content: space-between;
 }
 
 .filterValueItem:hover {
     background-color: #e0e0e0; /* Slightly darker grey background on hover */
-    /* Optional: Add a shadow or change the font weight to indicate hover state */
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    /* font-weight: 500; */
 }
 
-/* If you have an active state to indicate a selected filter value */
 .filterValueItem.active {
     background-color: #d0e0f0; /* Different background color for active state */
     color: #104070; /* Darker color for the text */
     font-weight: bold; /* Make the active item text bold */
-    /* Optionally, add a left border to highlight the active state */
-    border-left: 4px solid #007bff; /* Blue border for active item */
-    padding-left: 8px; /* Adjust padding to accommodate the border */
+    border-left: 0.4vw solid #007bff; /* Blue border for active item */
+    padding-left: 0.8vw; /* Adjust padding to accommodate the border */
 }
 
 .optionsList {
-    /* font-size: small; */
     padding: 0;
     list-style-type: none;
     margin: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    font-size: 1.1vw;
+    padding: 1vw;
 
 }

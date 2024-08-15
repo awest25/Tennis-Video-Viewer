@@ -1,55 +1,64 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { useRouter, usePathname } from 'next/navigation'
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../services/initializeFirebase.js';
+import { useRouter, usePathname } from 'next/navigation';
+import { useMatchData } from './MatchDataProvider'; // Assuming the hook is located in the context folder
 import styles from '../styles/SearchDropdown.module.css';
+import { useAuth } from './AuthWrapper.js';
 
-const SearchDropdown = () => {
+const extractDateFromName = (name) => {
+  const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
+  const matchResult = name.match(dateRegex);
+
+  if (!matchResult) return null;
+
+  const [month, day, year] = matchResult.slice(1).map(Number);
+  const fullYear = year < 50 ? 2000 + year : 1900 + year;
+
+  return new Date(fullYear, month - 1, day);
+};
+
+const formatMatches = (matches) =>
+  matches
+    .map((match) => ({
+      value: match.id,
+      label: match.name,
+      date: extractDateFromName(match.name),
+    }))
+    .sort((a, b) => (b.date && a.date ? b.date - a.date : 1)); // Sort by date descending
+
+const SearchDropdown = ({ authorization }) => {
+  const { matches, error } = useMatchData(); // Using the custom hook to access match data
   const [dropdownData, setDropdownData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null); // State to keep track of the selected option
-
+  const [selectedOption, setSelectedOption] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
-  const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
+  const videoId = pathname.split('/').pop();
 
   useEffect(() => {
-    const fetchMatches = async () => {
-      const querySnapshot = await getDocs(collection(db, 'matches'));
-      const matches = querySnapshot.docs
-        .filter((doc) => doc.data().published)
-        .map((doc) => {
-          const data = doc.data();
-          return {
-            value: doc.id, // Use 'value' to adhere to react-select convention
-            label: data.name
-          };
-        });
-      setDropdownData(matches);
-            
-      // Find the selected match based on the URL and set it as selected
-      if (videoId) {
-        const selectedMatch = matches.find(match => match.value === videoId);
-        setSelectedOption(selectedMatch);
-      }
-    };
+    if (matches?.length) {
+      const sortedMatches = formatMatches(matches);
+      setDropdownData(sortedMatches);
 
-    fetchMatches();
-  }, [videoId]); // Depend on the matchId URL parameter
+      const selectedMatch = sortedMatches.find((match) => match.value === videoId);
+      setSelectedOption(selectedMatch || null);
+    }
+  }, [matches, videoId]);
 
-  const handleDropdownItemClick = async (option) => {
-    setSelectedOption(option); // Update the selected option state
-    await router.push('/matches/' + option.value);
+  const handleDropdownItemClick = (option) => {
+    setSelectedOption(option);
+    router.push(`/matches/${option.value}`);
   };
+
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <Select
         placeholder="Search for a tennis match..."
         onChange={handleDropdownItemClick}
-        value={selectedOption} // Set the selected option based on the URL
+        value={selectedOption}
         options={dropdownData}
         components={{
           NoOptionsMessage: () => (
@@ -60,6 +69,6 @@ const SearchDropdown = () => {
       />
     </div>
   );
-}
+};
 
 export default SearchDropdown;

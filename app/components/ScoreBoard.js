@@ -45,7 +45,7 @@ const ScoreBoard = ({ playData,
                           position: "absolute",
                           fontSize: "0.6em",
                           top: "0.1em",
-                          right: "0.25em",
+                          right: "0em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -61,7 +61,7 @@ const ScoreBoard = ({ playData,
             {/* Current Set */}
             <td>{player1GameScore}</td>
             <td className={styles.pointScore}>{pointScore ? player1PointScore : player1TiebreakScore}
-            {player1Name === serverName && <span>     &bull;</span>}</td>
+              {player1Name === serverName && <span>     &bull;</span>}</td>
           </tr>
           <tr>
             <td className={styles.highlight}>{player2Name}</td>
@@ -77,7 +77,7 @@ const ScoreBoard = ({ playData,
                           position: "absolute",
                           fontSize: "0.6em",
                           top: "0.1em",
-                          right: "0.25em",
+                          right: "0em",
                           letterSpacing: "1px",
                         }}
                       >
@@ -93,7 +93,7 @@ const ScoreBoard = ({ playData,
             {/* Current Set */}
             <td>{player2GameScore}</td>
             <td className={styles.pointScore}>{pointScore ? player2PointScore : player2TiebreakScore}
-            {player2Name === serverName && <span>     &bull;</span>}</td>
+              {player2Name === serverName && <span>     &bull;</span>}</td>
           </tr>
         </tbody>
       </table>
