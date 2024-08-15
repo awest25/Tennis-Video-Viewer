@@ -1,23 +1,19 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 
-import filterListStyles from '../../../styles/FilterList.module.css'
+import filterListStyles from '../../../styles/FilterList.module.css';
 import styles from '../../../styles/Match.module.css';
 import VideoPlayer from '../../../components/VideoPlayer';
 import FilterList from '../../../components/FilterList';
 import PointsList from '../../../components/PointsList';
 import ScoreBoard from '../../../components/ScoreBoard';
 import MatchTiles from '@/app/components/MatchTiles';
-import { AuthProvider } from '@/app/components/AuthWrapper';
+import { useMatchData } from '@/app/components/MatchDataProvider';
 import extractSetScores from '@/app/services/extractSetScores';
 import ExtendedList from '../../../components/ExtendedList';
-
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../services/initializeFirebase';
-import transformData from '../../../services/transformData';
-import nameMap from '../../../services/nameMap';
+import nameMap from '@/app/services/nameMap';
 
 const MatchPage = () => {
   const [matchData, setMatchData] = useState();
@@ -33,9 +29,20 @@ const MatchPage = () => {
   const tableRef = useRef(null);
   const iframeRef = useRef(null);
 
-  const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
-  const pathname = usePathname()
+  const { matches, updateMatch } = useMatchData();
+  const pathname = usePathname();
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1);
+
+  useEffect(() => {
+    const selectedMatch = matches.find(match => match.id === docId);
+    if (selectedMatch) {
+      setMatchData(selectedMatch);
+
+      // Set initial bookmarks
+      const initialBookmarks = selectedMatch.points.filter(point => point.bookmarked);
+      setBookmarks(initialBookmarks);
+    }
+  }, [matches, docId]);
 
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
@@ -50,49 +57,16 @@ const MatchPage = () => {
       }
       return p;
     });
-    setMatchData({
-      ...matchData,
-      points: updatedPoints,
-    });
-    // update state to show frontend (instead of waiting for DB doc update + fetch)
-    setBookmarks(updatedPoints.filter(p => p.bookmarked === true))
+
+    setMatchData(prev => ({ ...prev, points: updatedPoints }));
+    setBookmarks(updatedPoints.filter(p => p.bookmarked));
+
     try {
-      const documentRef = doc(db, 'matches', docId);
-      const documentSnapshot = await getDoc(documentRef);
-      const transformedData = transformData(documentSnapshot.data());
-      const points = transformedData.points;
-
-      const updatedDatabasePoints = points.map(p => {
-        if (p.Name === point.Name) {
-          return { ...p, bookmarked: !p.bookmarked };
-        }
-        return p;
-      });
-      await updateDoc(documentRef, { points: updatedDatabasePoints });
+      await updateMatch(docId, { points: updatedPoints });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error updating bookmarks:', error);
     }
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const documentRef = doc(db, 'matches', docId);
-        const documentSnapshot = await getDoc(documentRef);
-        const transformedData = transformData(documentSnapshot.data());
-        setMatchData(transformedData)
-
-        // bookmarked can be null
-        const initialBookmarks = transformedData.points.filter(point => point.bookmarked !== undefined && point.bookmarked === true)
-        console.log("initial bookmarks: " + initialBookmarks)
-        setBookmarks(initialBookmarks)
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [docId]);
+  };
 
   useEffect(() => {
     if (matchData) {
@@ -169,10 +143,10 @@ const MatchPage = () => {
     }
   }
 
+  const matchSetScores = matchData ? extractSetScores(matchData.points) : {};
+
   return (
-    <AuthProvider>
     <div className={styles.container}>
-      {/* Main Content Area */}
       {matchData && (
         <>
           <MatchTiles matchName={matchData.name} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} matchDetails={matchData.matchDetails} {...matchSetScores} />
@@ -182,14 +156,12 @@ const MatchPage = () => {
             </div>
           </div>
           <div className={styles.mainContent}>
-            {/* Video Player */}
             <div className={styles.videoPlayer}>
               <div ref={iframeRef}>
                 <VideoPlayer id='player' videoId={matchData.videoId} setVideoObject={setVideoObject} onReady={addBorderRadius} />
               </div>
             </div>
             <div className={styles.sidebar}>
-              {/* Filter List */}
               <div className={filterListStyles.activeFilterListContainer}>
                 Active Filters:
                 <ul className={filterListStyles.activeFilterList}>
@@ -203,11 +175,8 @@ const MatchPage = () => {
               <button onClick={() => setTab(0)} className={tab === 0 ? styles.toggle_buttonb_active : styles.toggle_buttonb_inactive}>Filters</button>
               <button onClick={() => setTab(1)} className={tab === 1 ? styles.toggle_button_neutral_active : styles.toggle_button_neutral_inactive}>Points</button>
               <button onClick={() => setTab(2)} className={tab === 2 ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Bookmarks</button>
-              {/* List Holders */}
-              {/* Filter List */}
               {tab === 0 && 
                 <div className={styles.sidebox}>
-                  {/* Radio Options */}
                   <div className={filterListStyles.optionsList}>
                     <div>
                       <input
@@ -252,30 +221,27 @@ const MatchPage = () => {
                 </div>}
               {tab === 1 &&
                 <div className={styles.sidebox}>
-                  {/* Points List */}
                   <div className={styles.sidecontent}>
                     <PointsList pointsData={returnFilteredPoints()} onPointSelect={handleJumpToTime} onBookmark={handleBookmark} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
-                    <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
+                    <button className={styles.viewDetailedListButton} onClick={scrollToDetailedList}>View Detailed List</button>
                   </div>
                 </div>}
               {tab === 2 &&
                 <div className={styles.sidebox}>
-                  {/* Bookmark List */}
                   <div className={styles.sidecontent}>
                     <PointsList pointsData={bookmarks} onPointSelect={handleJumpToTime} onBookmark={handleBookmark} clientTeam={matchData.clientTeam} opponentTeam={matchData.opponentTeam} />
                   </div>
                   <div style={{ padding: '0.5vw', paddingLeft: '5vw' }}>
-                    <button className={styles.viewDetailedListButton} onClick={() => scrollToDetailedList()}>View Detailed List</button>
+                    <button className={styles.viewDetailedListButton} onClick={scrollToDetailedList}>View Detailed List</button>
                   </div>
-                  </div>}
-                  {/* Score display */}
-                  <div className="scoreboard">
-                    <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
-                  </div>
-                </div>
+                </div>}
+              <div className="scoreboard">
+                <ScoreBoard names={matchData.name} playData={playingPoint} {...matchSetScores} />
+              </div>
             </div>
+          </div>
           <div className={styles.toggle}>
             <button onClick={() => setShowPDF(true)} className={showPDF ? styles.toggle_buttonb_inactive : styles.toggle_buttonb_active}>Key Stats & Visuals</button>
             <button onClick={() => setShowPDF(false)} className={showPDF ? styles.toggle_buttona_active : styles.toggle_buttona_inactive}>Points</button>
@@ -289,28 +255,7 @@ const MatchPage = () => {
           </div>
         </>
       )}
-
-      <style jsx>{`
-        main {
-          padding-top: 1rem;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .searchDropdown {
-          margin-bottom: 1rem;
-          width: 80%;
-        }
-        
-        .listHolder {
-          display: flex;
-          gap: 10px;
-        }
-      `}</style>
     </div>
-    </AuthProvider>
   );
 };
 

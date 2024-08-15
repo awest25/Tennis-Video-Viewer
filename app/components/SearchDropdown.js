@@ -1,100 +1,74 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { useRouter, usePathname } from 'next/navigation';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../services/initializeFirebase.js';
+import { useMatchData } from './MatchDataProvider'; // Assuming the hook is located in the context folder
 import styles from '../styles/SearchDropdown.module.css';
-import { AuthProvider, useAuth } from './AuthWrapper.js';
+import { useAuth } from './AuthWrapper.js';
+
+const extractDateFromName = (name) => {
+  const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
+  const matchResult = name.match(dateRegex);
+
+  if (!matchResult) return null;
+
+  const [month, day, year] = matchResult.slice(1).map(Number);
+  const fullYear = year < 50 ? 2000 + year : 1900 + year;
+
+  return new Date(fullYear, month - 1, day);
+};
+
+const formatMatches = (matches) =>
+  matches
+    .map((match) => ({
+      value: match.id,
+      label: match.name,
+      date: extractDateFromName(match.name),
+    }))
+    .sort((a, b) => (b.date && a.date ? b.date - a.date : 1)); // Sort by date descending
 
 const SearchDropdown = ({ authorization }) => {
+  const { matches, error } = useMatchData(); // Using the custom hook to access match data
   const [dropdownData, setDropdownData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null); // State to keep track of the selected option
+  const [selectedOption, setSelectedOption] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
-  const videoId = pathname.substring(pathname.lastIndexOf('/') + 1);
-  const { authUser, userProfile, handleSignOut } = useAuth();
-  
+  const videoId = pathname.split('/').pop();
+
   useEffect(() => {
-    const fetchMatches = async () => {
-      if (userProfile && userProfile.collections) {
-        const matches = [];
+    if (matches?.length) {
+      const sortedMatches = formatMatches(matches);
+      setDropdownData(sortedMatches);
 
-        for (const col of userProfile.collections) {
-          const colRef = collection(db, col);
-          const q = query(colRef, where('published', '==', true));
-          const querySnapshot = await getDocs(q);
+      const selectedMatch = sortedMatches.find((match) => match.value === videoId);
+      setSelectedOption(selectedMatch || null);
+    }
+  }, [matches, videoId]);
 
-          querySnapshot.docs.forEach((doc) => {
-            const data = doc.data();
-            const name = data.name;
-            const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
-            const match = name.match(dateRegex);
-
-            let extractedDate = null;
-            if (match) {
-              const month = parseInt(match[1], 10);
-              const day = parseInt(match[2], 10);
-              const year = parseInt(match[3], 10);
-
-              // Assuming year 2000 is the base, adjust if needed
-              const fullYear = year < 50 ? 2000 + year : 1900 + year;
-
-              extractedDate = new Date(fullYear, month - 1, day);
-            }
-
-            matches.push({
-              value: doc.id,
-              label: name,
-              date: extractedDate,
-            });
-          });
-        }
-
-        const sortedMatches = matches.sort((a, b) => {
-          if (!a.date || !b.date) return 1; // no date is last
-          return b.date - a.date; // Sort by date
-        });
-
-        setDropdownData(sortedMatches);
-
-        // Find the selected match based on the URL and set it as selected
-        if (videoId) {
-          const selectedMatch = sortedMatches.find((match) => match.value === videoId);
-          setSelectedOption(selectedMatch);
-        } else {
-          setSelectedOption(null);
-        }
-      }
-    };
-
-    fetchMatches();
-  }, [videoId, userProfile]);
-
-  const handleDropdownItemClick = async (option) => {
-    setSelectedOption(option); // Update the selected option state
-    router.push('/matches/' + option.value);
+  const handleDropdownItemClick = (option) => {
+    setSelectedOption(option);
+    router.push(`/matches/${option.value}`);
   };
 
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
-    <AuthProvider>
-      <div>
-        <Select
-          placeholder="Search for a tennis match..."
-          onChange={handleDropdownItemClick}
-          value={selectedOption} // Set the selected option based on the URL
-          options={dropdownData}
-          components={{
-            NoOptionsMessage: () => (
-              <div className={styles.loader}></div>
-            ),
-          }}
-          className={styles.searchDropdown}
-        />
-      </div>
-    </AuthProvider>
+    <div>
+      <Select
+        placeholder="Search for a tennis match..."
+        onChange={handleDropdownItemClick}
+        value={selectedOption}
+        options={dropdownData}
+        components={{
+          NoOptionsMessage: () => (
+            <div className={styles.loader}></div>
+          ),
+        }}
+        className={styles.searchDropdown}
+      />
+    </div>
   );
-}
+};
 
 export default SearchDropdown;

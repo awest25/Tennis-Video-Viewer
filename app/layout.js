@@ -2,6 +2,7 @@
 // import Toolbar from "./components/Toolbar"
 import Footer from "./components/Footer"
 import { AuthProvider } from "./components/AuthWrapper";
+import { MatchDataProvider } from "./components/MatchDataProvider";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
         {/* <Toolbar/> */}
         <div style={{width:'100%'}}>
         <AuthProvider>
-        {children}
+          <MatchDataProvider>
+            {children}
+          </MatchDataProvider>
         </AuthProvider>
         </div>
         <Footer/>

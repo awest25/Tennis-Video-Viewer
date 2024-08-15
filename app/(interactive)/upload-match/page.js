@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
-import { uploadMatch } from '../../services/upload.js';
+import { useMatchData } from '../../components/MatchDataProvider.js'; // Use the custom hook
 import getTeams from '@/app/services/getTeams.js';
 import styles from '../../styles/Upload.module.css';
 
@@ -40,6 +40,11 @@ const initialSchema = {
   title: "Upload Match",
   type: "object",
   properties: {
+    collection: {
+      type: "string",
+      title: "Collection",
+      enum: []
+    },
     clientTeam: {
       type: "string",
       title: "Client Team",
@@ -169,7 +174,7 @@ const initialSchema = {
       format: "data-url"
     }
   },
-  required: ["clientTeam", "clientPlayer", "opponentTeam", "matchScore", "date"]
+  required: ["collection", "clientTeam", "clientPlayer", "opponentTeam", "matchScore", "date"]
 };
 
 const uiSchema = {
@@ -210,16 +215,25 @@ const uiSchema = {
 export { initialSchema, uiSchema };
 
 export default function UploadMatchForm() {
+  const { createMatch } = useMatchData(); // Use the createMatch hook
   const [schema, setSchema] = useState(initialSchema);
   const [teams, setTeams] = useState([]);
+  const [collections, setCollections] = useState([]);
 
   useEffect(() => {
-    const fetchTeams = async () => {
+    const fetchCollectionsAndTeams = async () => {
       try {
         const allTeams = await getTeams();
         setTeams(allTeams);
         const teamNames = allTeams.map(team => team.name);
-        // TODO: warning this methood of deep copy is lossy if the schema is more complex
+
+        // Assuming userProfile.collections contains the collection names
+        const { userProfile } = useAuth();
+        const userCollections = userProfile?.collections || [];
+
+        setCollections(userCollections);
+
+        // Update schema with team and collection names
         setSchema(prevSchema => ({
           ...prevSchema,
           properties: {
@@ -231,6 +245,10 @@ export default function UploadMatchForm() {
             opponentTeam: {
               ...prevSchema.properties.opponentTeam,
               enum: teamNames
+            },
+            collection: {
+              ...prevSchema.properties.collection,
+              enum: userCollections
             }
           }
         }));
@@ -239,7 +257,7 @@ export default function UploadMatchForm() {
       }
     };
 
-    fetchTeams();    
+    fetchCollectionsAndTeams();    
   }, []);
 
   const handleChange = ({ formData }) => {
@@ -315,10 +333,24 @@ export default function UploadMatchForm() {
         surface: formData.surface
       }
       const sets = parseMatchScore(formData.matchScore);
-      await uploadMatch(sets, formData.videoID, pointsJson, formData.pdfFile, teams, players, formData.date, formData.singlesDoubles === 'Singles', matchDetails);
-      alert('done!')
+
+      // Use the createMatch hook to upload the match
+      await createMatch(formData.collection, {
+        sets,
+        videoId: formData.videoID,
+        pointsJson,
+        pdfFile: formData.pdfFile,
+        teams,
+        players,
+        matchDate: formData.date,
+        singles: formData.singlesDoubles === 'Singles',
+        matchDetails
+      });
+
+      alert('Match uploaded successfully!');
     } catch (error) {
       console.error("Error uploading match:", error);
+      alert(`Error uploading match: ${error.message}`);
     }
   };
 
