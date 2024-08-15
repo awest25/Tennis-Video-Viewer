@@ -15,7 +15,8 @@ const DashboardTile = ({
   player1Name, player2Name, 
   player1FinalScores, player2FinalScores,
   player1TieScores, player2TieScores,
-  isUnfinished
+  isUnfinished,
+  isTagged
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
@@ -39,7 +40,10 @@ const DashboardTile = ({
   return (
     <div className={styles.dashTilesContainer}>
       <div className={styles.matchInfoContainer}>
-        <div className={styles.containerTitle}>Final Score</div>
+        <div className={styles.containerHeader}>
+          <div className={styles.containerTitle}>Final Score</div>
+          {isTagged && <div className={styles.taggedBadge}>Tagged</div>}
+        </div>
         <div className={styles.playerInfo}>
           <div className={styles.playerSchoolImgcontainerhome}>
             <img src={clientLogo} alt={`${clientTeam} logo`} />

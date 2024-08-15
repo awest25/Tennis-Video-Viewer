@@ -6,18 +6,16 @@ import DashboardTile from '../../components/DashboardTile';
 
 const matchData = [
   { date: '04/07/2024', opponent: 'Texas (W)', result: 'W (4-1)', matches: [
-    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' },
-    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' },
-    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' },
-    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' }
+    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '5 3', isTagged: true},
+    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3', isTagged: true}
   ]},
   { date: '04/05/2024', opponent: 'Texas (W)', result: 'W (4-1)', matches: [
-    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' },
-    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' }
+    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3', isTagged: false},
+    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3', isTagged: true}
   ]},
   { date: '04/02/2024', opponent: 'Texas (W)', result: 'L (3-4)', matches: [
-    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' },
-    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3' }
+    { type: 'Singles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3', isTagged: true},
+    { type: 'Doubles', player1: 'Kimmi Hance', player2: 'Malaika Rapolu', score: '6 6', opponentScore: '4 3', isTagged: false}
   ]}
 ];
 
@@ -38,7 +36,7 @@ const Dashboard = () => {
       {matchData.map((match, index) => (
         <div key={index} className={styles.matchSection}>
           <div className={styles.matchHeader}>
-            <h3>{`UCLA vs ${match.opponent} - ${match.result}`}</h3>
+            <h3>{`UCLA (W) vs ${match.opponent} - ${match.result}`}</h3>
             <span className={styles.date}>{match.date}</span>
           </div>
           
@@ -58,6 +56,7 @@ const Dashboard = () => {
                 player1TieScores={[]}
                 player2TieScores={[]}
                 isUnfinished={false}
+                isTagged={m.isTagged}
               />
             ))}
           </div>
@@ -79,6 +78,7 @@ const Dashboard = () => {
                 player1TieScores={[]}
                 player2TieScores={[]}
                 isUnfinished={false}
+                isTagged={m.isTagged}
               />
             ))}
           </div>
