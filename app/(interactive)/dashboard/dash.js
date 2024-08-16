@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
 import { useRouter, usePathname } from 'next/navigation';
 import { useMatchData } from '../../components/MatchDataProvider';
 import styles from './Dashboard.module.css';
@@ -56,7 +55,7 @@ const formatMatches = (matches) =>
 const Dashboard = () => {
   // const { matches, error } = useMatchData(); // Using the custom hook to access match data
   const matches = matchData; // using hardcoded JSON objects
-  
+  const router = useRouter();
   const formattedMatches = formatMatches(matchData);
   const [logos, setLogos] = useState({}); // Store logos for each opponent team
   
@@ -91,6 +90,10 @@ const Dashboard = () => {
 
     fetchLogos();
   }, [formattedMatches]);
+
+  const handleTileClick = (videoId) => {
+    router.push(`/matches/${videoId}`);
+  };
 
   return (
     <div className={styles.container}>
@@ -129,28 +132,33 @@ const Dashboard = () => {
                   <div className={styles.matchTypeHeader}><h4>Singles</h4></div>
                   <div className={styles.matchTileContainer}>
                     {singlesMatches.map((match, idx) => (
-                      <DashboardTile
-                        key={idx}
-                        matchName={`${match.opponent} ${match.date}`}
-                        clientTeam={match.clientTeam}
-                        opponentTeam={match.opponentTeam}
-                        player1Name={match.clientPlayer}
-                        player2Name={match.opponentPlayer}
-                        player1FinalScores={Object.values(match.matchScore).map(set => ({
-                          score: set ? set.clientGames : null
-                        }))}
-                        player2FinalScores={Object.values(match.matchScore).map(set => ({
-                          score: set ? set.opponentGames : null
-                        }))}
-                        player1TieScores={Object.values(match.matchScore).map(set =>
-                          set ? set.clientTiebreak : null
-                        )}
-                        player2TieScores={Object.values(match.matchScore).map(set =>
-                          set ? set.opponentTiebreak : null
-                        )}
-                        isUnfinished={false}
-                        isTagged={match.isTagged}
-                      />
+                      <div
+                      key={idx}
+                      className={styles.tileWrapper}
+                      onClick={() => handleTileClick(match.videoID)}>
+                        <DashboardTile
+                          key={idx}
+                          matchName={`${match.opponent} ${match.date}`}
+                          clientTeam={match.clientTeam}
+                          opponentTeam={match.opponentTeam}
+                          player1Name={match.clientPlayer}
+                          player2Name={match.opponentPlayer}
+                          player1FinalScores={Object.values(match.matchScore).map(set => ({
+                            score: set ? set.clientGames : null
+                          }))}
+                          player2FinalScores={Object.values(match.matchScore).map(set => ({
+                            score: set ? set.opponentGames : null
+                          }))}
+                          player1TieScores={Object.values(match.matchScore).map(set =>
+                            set ? set.clientTiebreak : null
+                          )}
+                          player2TieScores={Object.values(match.matchScore).map(set =>
+                            set ? set.opponentTiebreak : null
+                          )}
+                          isUnfinished={false}
+                          isTagged={match.isTagged}
+                        />
+                      </div>
                     ))}
                   </div>
                 </>
@@ -162,28 +170,33 @@ const Dashboard = () => {
                   <div className={styles.matchTypeHeader}><h4>Doubles</h4></div>
                   <div className={styles.matchTileContainer}>
                     {doublesMatches.map((match, idx) => (
-                      <DashboardTile
-                        key={idx}
-                        matchName={`${match.opponent} ${match.date}`}
-                        clientTeam="UCLA (M)"
-                        opponentTeam={match.opponentTeam}
-                        player1Name={match.clientPlayer}
-                        player2Name={match.opponentPlayer}
-                        player1FinalScores={Object.values(match.matchScore).map(set => ({
-                          score: set ? set.clientGames : null
-                        }))}
-                        player2FinalScores={Object.values(match.matchScore).map(set => ({
-                          score: set ? set.opponentGames : null
-                        }))}
-                        player1TieScores={Object.values(match.matchScore).map(set =>
-                          set ? set.clientTiebreak : null
-                        )}
-                        player2TieScores={Object.values(match.matchScore).map(set =>
-                          set ? set.opponentTiebreak : null
-                        )}
-                        isUnfinished={false}
-                        isTagged={match.isTagged}
-                      />
+                      <div
+                      key={idx}
+                      className={styles.tileWrapper}
+                      onClick={() => handleTileClick(match.id)}>
+                        <DashboardTile
+                          key={idx}
+                          matchName={`${match.opponent} ${match.date}`}
+                          clientTeam={match.clientTeam}
+                          opponentTeam={match.opponentTeam}
+                          player1Name={match.clientPlayer}
+                          player2Name={match.opponentPlayer}
+                          player1FinalScores={Object.values(match.matchScore).map(set => ({
+                            score: set ? set.clientGames : null
+                          }))}
+                          player2FinalScores={Object.values(match.matchScore).map(set => ({
+                            score: set ? set.opponentGames : null
+                          }))}
+                          player1TieScores={Object.values(match.matchScore).map(set =>
+                            set ? set.clientTiebreak : null
+                          )}
+                          player2TieScores={Object.values(match.matchScore).map(set =>
+                            set ? set.opponentTiebreak : null
+                          )}
+                          isUnfinished={false}
+                          isTagged={match.isTagged}
+                        />
+                      </div>
                     ))}
                   </div>
                 </>
