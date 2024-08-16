@@ -7,83 +7,120 @@
 
 .header {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .header h1 {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 25px;
+  font-weight: 550;
+  margin-bottom: 60px;
 }
 
 .header h2 {
-  font-size: 36px;
-  font-weight: bold;
+  font-size: 60px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .carousel {
   display: flex;
   overflow-x: auto;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   padding: 10px 0;
+  border-top: 1px solid #DEDEDE;
+  border-bottom: 1px solid #DEDEDE;
 }
 
 .card {
-  min-width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
-  margin-right: 10px;
-  background-color: #f9f9f9;
-  white-space: nowrap;
-}
-
-.Section {
-  margin-bottom: 20px;
-}
-
-.matchSection h3 {
-  font-size: 24px;
-  color: #2774AE;
-  font-weight: bold;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  border: 1px solid #DEDEDE;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.cardContent {
+  display: flex;
   align-items: center;
 }
 
-.matchSection .date {
-  font-size: 18px;
-  font-weight: bold;
-  color: #2774AE;
+.logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  margin-right: 8px;
 }
 
+.matchDate {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.matchSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.matchContainer {
+  max-width: 68%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.matchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.matchTileContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  gap: 10px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.matchSection h3 {
+  font-size: 28px;
+  color: #2774AE;
+  font-weight: 550;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
+
+.matchSection .date {
+  font-size: 20px;
+  font-weight: 550;
+  color: #2774AE;
+  margin-bottom: 0;
+  margin-left: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
 .matchTypeHeader h4 {
+  font-size: 20px;
   margin: 10px 0 0 0;
   font-weight: normal;
 } 
-
-.matchDetails {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.matchCard {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin: 5px;
-  flex: 1 0 300px;
-  background-color: #fff;
-}
-
-.type {
-  font-weight: bold;
-}
-
-.player1, .player2 {
-  display: block;
-  font-size: 16px;
-}
-
-.score, .opponentScore {
-  display: block;
-  font-size: 14px;
-}
