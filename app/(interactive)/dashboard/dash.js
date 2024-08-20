@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useMatchData } from '../../components/MatchDataProvider';
 import styles from './Dashboard.module.css';
-import DashboardTile from '../../components/DashboardTile';
+import DashTileContainer from '../../components/DashTileContainer';
 import getTeams from '@/app/services/getTeams.js';
-
 // Import sample data to test data fetching
 import matchData from './sampleData';
 
+// Extract date from match name
 const extractDateFromName = (name) => {
   const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
   const matchResult = name.match(dateRegex);
@@ -22,34 +22,36 @@ const extractDateFromName = (name) => {
   return new Date(fullYear, month - 1, day);
 };
 
-const formatDateForCarousel = (date) => {
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const year = String(date.getFullYear()).slice(-2);
-  return `${month}/${day}/${year}`;
-};
-
-const formatDateToMMDDYYYY = (date) => {
+// Format date based on type
+export const formatDate = (date, formatType) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
+
+  switch (formatType) {
+    case 'MM/DD/YY':
+      return `${month}/${day}/${String(year).slice(-2)}`;
+    case 'MM/DD/YYYY':
+      return `${month}/${day}/${year}`;
+    default:
+      throw new Error(`Unknown format type: ${formatType}`);
+  }
 };
 
+// Format matches in order of recency
 const formatMatches = (matches) =>
   matches
     .filter((match) => match.clientPlayer && match.opponentPlayer)
     .map((match) => {
       const date = extractDateFromName(match.date);
-      const formattedDate = date ? formatDateToMMDDYYYY(date) : null;
-
       return {
         ...match,
         date: date,
-        formattedDate: formattedDate,
+        formattedDate: date ? formatDate(date, 'MM/DD/YYYY') : null,
       };
     })
     .sort((a, b) => (b.date && a.date ? b.date - a.date : 1));
+
 
 
 const Dashboard = () => {
@@ -59,6 +61,7 @@ const Dashboard = () => {
   const formattedMatches = formatMatches(matchData);
   const [logos, setLogos] = useState({}); // Store logos for each opponent team
   
+  // Group matches by date
   const matchesByDate = formattedMatches.reduce((acc, match) => {
     const matchDate = match.formattedDate;
     if (matchDate && !acc[matchDate]) {
@@ -70,6 +73,7 @@ const Dashboard = () => {
     return acc;
   }, {});
 
+  // Fetch logos for teams
   useEffect(() => {
     const fetchLogos = async () => {
       try {
@@ -87,7 +91,6 @@ const Dashboard = () => {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchLogos();
   }, [formattedMatches]);
 
@@ -107,12 +110,11 @@ const Dashboard = () => {
           <div key={index} className={styles.card}>
             <div className={styles.cardContent}>
               <img src={logos[matchesByDate[date][0].opponentTeam]} alt="Team Logo" className={styles.logo} />
-              <span className={styles.matchDate}>{formatDateForCarousel(new Date(date))}</span>
+              <span className={styles.matchDate}>{formatDate(new Date(date), 'MM/DD/YY')}</span>
             </div>
           </div>
         ))}
       </div>
-
 
       {Object.keys(matchesByDate).map((date, index) => {
         const singlesMatches = matchesByDate[date].filter(match => match.singlesDoubles === 'Singles');
@@ -125,82 +127,8 @@ const Dashboard = () => {
                 <h3>{`${matchesByDate[date][0].clientTeam} vs ${matchesByDate[date][0].opponentTeam}`}</h3>
                 <span className={styles.date}>{date}</span>
               </div>
-
-              {/* Singles Matches */}
-              {singlesMatches.length > 0 && (
-                <>
-                  <div className={styles.matchTypeHeader}><h4>Singles</h4></div>
-                  <div className={styles.matchTileContainer}>
-                    {singlesMatches.map((match, idx) => (
-                      <div
-                      key={idx}
-                      className={styles.tileWrapper}
-                      onClick={() => handleTileClick(match.videoID)}>
-                        <DashboardTile
-                          key={idx}
-                          matchName={`${match.opponent} ${match.date}`}
-                          clientTeam={match.clientTeam}
-                          opponentTeam={match.opponentTeam}
-                          player1Name={match.clientPlayer}
-                          player2Name={match.opponentPlayer}
-                          player1FinalScores={Object.values(match.matchScore).map(set => ({
-                            score: set ? set.clientGames : null
-                          }))}
-                          player2FinalScores={Object.values(match.matchScore).map(set => ({
-                            score: set ? set.opponentGames : null
-                          }))}
-                          player1TieScores={Object.values(match.matchScore).map(set =>
-                            set ? set.clientTiebreak : null
-                          )}
-                          player2TieScores={Object.values(match.matchScore).map(set =>
-                            set ? set.opponentTiebreak : null
-                          )}
-                          isUnfinished={false}
-                          isTagged={match.isTagged}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Doubles Matches */}
-              {doublesMatches.length > 0 && (
-                <>
-                  <div className={styles.matchTypeHeader}><h4>Doubles</h4></div>
-                  <div className={styles.matchTileContainer}>
-                    {doublesMatches.map((match, idx) => (
-                      <div
-                      key={idx}
-                      className={styles.tileWrapper}
-                      onClick={() => handleTileClick(match.id)}>
-                        <DashboardTile
-                          key={idx}
-                          matchName={`${match.opponent} ${match.date}`}
-                          clientTeam={match.clientTeam}
-                          opponentTeam={match.opponentTeam}
-                          player1Name={match.clientPlayer}
-                          player2Name={match.opponentPlayer}
-                          player1FinalScores={Object.values(match.matchScore).map(set => ({
-                            score: set ? set.clientGames : null
-                          }))}
-                          player2FinalScores={Object.values(match.matchScore).map(set => ({
-                            score: set ? set.opponentGames : null
-                          }))}
-                          player1TieScores={Object.values(match.matchScore).map(set =>
-                            set ? set.clientTiebreak : null
-                          )}
-                          player2TieScores={Object.values(match.matchScore).map(set =>
-                            set ? set.opponentTiebreak : null
-                          )}
-                          isUnfinished={false}
-                          isTagged={match.isTagged}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
+              <DashTileContainer matches={singlesMatches} matchType="Singles" onTileClick={handleTileClick} />
+              <DashTileContainer matches={doublesMatches} matchType="Doubles" onTileClick={handleTileClick} />
             </div>
           </div>
         );
