@@ -7,6 +7,7 @@ import styles from '../../../styles/TagMatch.module.css';
 import { usePathname } from 'next/navigation';
 import { useMatchData } from '@/app/components/MatchDataProvider';
 import TennisCourtSVG from '@/app/components/TennisCourtSVG';
+import { validateTable } from '@/app/services/taggingValidator';
 
 export default function TagMatch() {
   const pathname = usePathname();
@@ -22,6 +23,7 @@ export default function TagMatch() {
   const [isPublished, setIsPublished] = useState(false); // TODO: implement this functionality (only show published matches)
   const [matchMetadata, setMatchMetadata] = useState({});
   const [initialLoad, setInitialLoad] = useState(true); // Flag to control initial data load
+  const [errors, setErrors] = useState([]);
 
   const [popUp, setPopUp] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -178,6 +180,8 @@ export default function TagMatch() {
       // After sorting, find the index of the new row
       const newIndex = updatedTable.findIndex(row => row.pointStartTime === newTimestamp);
 
+      setErrors(validateTable(updatedTable, {...matchMetadata, activeRowIndex: newIndex}));
+
       // Update the current row index state
       return { rows: updatedTable, activeRowIndex: newIndex };
     });
@@ -189,6 +193,9 @@ export default function TagMatch() {
       // Filter out the row to delete and sort the table
       const updatedTable = oldTableState.rows.filter((_, index) => index !== rowIndex);
       const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
+      
+      setErrors(validateTable(updatedTable, {...matchMetadata, activeRowIndex: newIndex}));
+
       return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
     });
     pullAndPushRows(tableState.rows, rowToDeleteTimestamp); // TODO: Delete this line?
@@ -319,6 +326,9 @@ export default function TagMatch() {
         const oldActiveRowTimestamp = oldTableState.rows[oldIndex]?.pointStartTime;
         const newIndex = updatedTable.findIndex(row => row.pointStartTime === oldActiveRowTimestamp);
 
+
+        setErrors(validateTable(updatedTable, {...matchMetadata, activeRowIndex: newIndex}));
+
         // Return the merged result
         return { rows: updatedTable, activeRowIndex: newIndex };
       });
@@ -360,6 +370,8 @@ export default function TagMatch() {
     setTableState(oldTableState => {
       return { ...oldTableState, activeRowIndex: lastState.activeRowIndex };
     });
+
+    setErrors(validateTable(lastState.table, {...matchMetadata, activeRowIndex: lastState.activeRowIndex}));
 
     // Remove the last state from the history
     setTaggerHistory(taggerHistory.slice(0, -1));
@@ -405,6 +417,17 @@ export default function TagMatch() {
     console.log("xInches: " + xInches + " yInches: " + yInches);
     return { x: xInches, y: yInches };
   };
+
+  function getErrors(rowIndex, columnName) {
+    const cellErrors = errors.filter(error =>
+      error.cells.some(([errorRow, errorCol]) => 
+        (errorRow === rowIndex || errorRow === null) && 
+        (errorCol === columnName || errorCol === null)
+      )
+    );
+  
+    return cellErrors.length > 0 ? cellErrors : null;
+  }  
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -488,20 +511,26 @@ export default function TagMatch() {
                   <i className="fa fa-trash" aria-hidden="true">X</i>
                 </button>
               </td>
-              {columnNames.map((columnName, colIndex) => (
-                <td key={colIndex}>
-                  <input
-                    type="text"
-                    value={row[columnName] || ''}
-                    onChange={(event) => {
-                      saveToHistory(); // Save the current state to history first
-                      changeRowValue(rowIndex, columnName, event.target.value); // Then handle the change
-                    }}
-                    // If the current row is the one being edited, highlight it
-                    style={{ backgroundColor: tableState.activeRowIndex === rowIndex ? 'yellow' : 'white' }}
-                  />
-                </td>
-              ))}
+              {columnNames.map((columnName, colIndex) => {
+                const cellErrors = getErrors(rowIndex, columnName);
+                const errorDescriptions = cellErrors ? cellErrors.map(error => error.description).join(', ') : '';
+
+                return (
+                  <td key={colIndex}>
+                    <input
+                      type="text"
+                      value={row[columnName] || ''}
+                      onChange={(event) => {
+                        saveToHistory(); // Save the current state to history first
+                        changeRowValue(rowIndex, columnName, event.target.value); // Then handle the change
+                      }}
+                      // If the current row is the one being edited, highlight it
+                      style={{ backgroundColor: cellErrors ? 'lightcoral' : (tableState.activeRowIndex === rowIndex ? 'yellow' : 'white') }}
+                      title={errorDescriptions} // Show error descriptions on hover
+                    />
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
