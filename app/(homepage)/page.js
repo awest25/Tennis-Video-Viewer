@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import SearchDropdown from '../components/SearchDropdown';
-import Dashboard from '../(interactive)/dashboard/dash.js';
+import Dashboard from '../components/Dashboard.js';
 import styles from '../styles/Home.module.css';
 import { useAuth } from '../components/AuthWrapper'; // Import useAuth
 

@@ -2,12 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useMatchData } from '../../components/MatchDataProvider';
-import styles from './Dashboard.module.css';
-import DashTileContainer from '../../components/DashTileContainer';
+import { useMatchData } from './MatchDataProvider';
+import styles from '../styles/Dashboard.module.css';
+import DashTileContainer from './DashTileContainer';
 import getTeams from '@/app/services/getTeams.js';
+import RosterList from './RosterList.js';
 // Import sample data to test data fetching
-import matchData from './sampleData';
+import matchData from '../(interactive)/dashboard/sampleData';
 
 // Extract date from match name
 const extractDateFromName = (name) => {
@@ -116,23 +117,32 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {Object.keys(matchesByDate).map((date, index) => {
-        const singlesMatches = matchesByDate[date].filter(match => match.singlesDoubles === 'Singles');
-        const doublesMatches = matchesByDate[date].filter(match => match.singlesDoubles === 'Doubles');
+      <div className={styles.mainContent}>
+        <div className={styles.matchesSection}>
+          {Object.keys(matchesByDate).map((date, index) => {
+            const singlesMatches = matchesByDate[date].filter(match => match.singlesDoubles === 'Singles');
+            const doublesMatches = matchesByDate[date].filter(match => match.singlesDoubles === 'Doubles');
 
-        return (
-          <div key={index} className={styles.matchSection}>
-            <div className={styles.matchContainer}>
-              <div className={styles.matchHeader}>
-                <h3>{`${matchesByDate[date][0].clientTeam} vs ${matchesByDate[date][0].opponentTeam}`}</h3>
-                <span className={styles.date}>{date}</span>
+            return (
+              <div key={index} className={styles.matchSection}>
+                <div className={styles.matchContainer}>
+                  <div className={styles.matchHeader}>
+                    <h3>{`${matchesByDate[date][0].clientTeam} vs ${matchesByDate[date][0].opponentTeam}`}</h3>
+                    <span className={styles.date}>{date}</span>
+                  </div>
+                  <DashTileContainer matches={singlesMatches} matchType="Singles" onTileClick={handleTileClick} />
+                  <DashTileContainer matches={doublesMatches} matchType="Doubles" onTileClick={handleTileClick} />
+                </div>
               </div>
-              <DashTileContainer matches={singlesMatches} matchType="Singles" onTileClick={handleTileClick} />
-              <DashTileContainer matches={doublesMatches} matchType="Doubles" onTileClick={handleTileClick} />
-            </div>
-          </div>
-        );
-      })}
+            );
+          })}
+        </div>
+
+        <div className={styles.rosterContainer}>
+          <RosterList />
+        </div>
+        
+      </div>
     </div>
   );
 }

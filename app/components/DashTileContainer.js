@@ -1,6 +1,6 @@
 import React from 'react';
 import DashboardTile from './DashboardTile';
-import styles from '../(interactive)/dashboard/Dashboard.module.css';
+import styles from '../styles/Dashboard.module.css';
 
 const DashTileContainer = ({ matches, matchType, onTileClick }) => {
     return (
