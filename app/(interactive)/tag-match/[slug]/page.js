@@ -194,7 +194,7 @@ export default function TagMatch() {
       const updatedTable = oldTableState.rows.filter((_, index) => index !== rowIndex);
       const newActiveRowIndex = rowIndex === oldTableState.activeRowIndex ? oldTableState.activeRowIndex - 1 : oldTableState.activeRowIndex;
       
-      setErrors(validateTable(updatedTable, {...matchMetadata, activeRowIndex: newIndex}));
+      setErrors(validateTable(updatedTable, {...matchMetadata, activeRowIndex: undefined}));
 
       return { rows: updatedTable, activeRowIndex: newActiveRowIndex };
     });
