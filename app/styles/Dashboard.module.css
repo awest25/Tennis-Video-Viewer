@@ -22,6 +22,11 @@
   margin-bottom: 20px;
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+}
+
 .carousel {
   display: flex;
   overflow-x: auto;
@@ -134,3 +139,14 @@
   margin: 10px 0 0 0;
   font-weight: normal;
 } 
+
+.placeholderContainer {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.searchIcon {
+  margin-right: 8px;
+}
