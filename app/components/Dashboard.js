@@ -8,7 +8,7 @@ import DashTileContainer from "./DashTileContainer";
 import getTeams from "@/app/services/getTeams.js";
 import RosterList from "./RosterList.js";
 import Select from "react-select";
-import FuzzySearch from "./fuzzySearch";
+import FuzzySearch from "./FuzzySearch";
 import SearchPlaceholder from "./SearchPlaceholder";
 import { SelectStyles } from "./SelectStyles";
 // Import sample data to test data fetching
