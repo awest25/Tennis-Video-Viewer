@@ -31,3 +31,12 @@ yarn-error.log*
 
 # Firebase cache
 .firebase/
+
+# service account key credentials
+/credentials
+
+# virtual environment
+/app/functions/venv
+
+# python cache
+__pycache__/
