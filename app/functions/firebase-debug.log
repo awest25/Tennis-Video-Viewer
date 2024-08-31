@@ -1,0 +1,279 @@
+[debug] [2024-08-31T01:04:21.206Z] ----------------------------------------------------------------------
+[debug] [2024-08-31T01:04:21.208Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\sacaa\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2024-08-31T01:04:21.208Z] CLI Version:   13.16.0
+[debug] [2024-08-31T01:04:21.208Z] Platform:      win32
+[debug] [2024-08-31T01:04:21.208Z] Node Version:  v20.13.1
+[debug] [2024-08-31T01:04:21.208Z] Time:          Fri Aug 30 2024 18:04:21 GMT-0700 (Pacific Daylight Time)
+[debug] [2024-08-31T01:04:21.208Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-08-31T01:04:21.257Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-08-31T01:04:21.257Z] > authorizing via signed-in user (uclatennisconsulting@gmail.com)
+[debug] [2024-08-31T01:04:21.257Z] [iam] checking project match-viewing-dashboard for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2024-08-31T01:04:21.259Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/match-viewing-dashboard:testIamPermissions [none]
+[debug] [2024-08-31T01:04:21.259Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/match-viewing-dashboard:testIamPermissions x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:21.259Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/match-viewing-dashboard:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-08-31T01:04:21.463Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/match-viewing-dashboard:testIamPermissions 200
+[debug] [2024-08-31T01:04:21.463Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/match-viewing-dashboard:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2024-08-31T01:04:21.464Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/match-viewing-dashboard/serviceAccounts/match-viewing-dashboard@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2024-08-31T01:04:21.464Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/match-viewing-dashboard/serviceAccounts/match-viewing-dashboard@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2024-08-31T01:04:21.673Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/match-viewing-dashboard/serviceAccounts/match-viewing-dashboard@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2024-08-31T01:04:21.674Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/match-viewing-dashboard/serviceAccounts/match-viewing-dashboard@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'match-viewing-dashboard'...
+[info] 
+[info] i  deploying functions 
+[debug] [2024-08-31T01:04:21.679Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard [none]
+[debug] [2024-08-31T01:04:22.118Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard 200
+[debug] [2024-08-31T01:04:22.118Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard {"projectId":"match-viewing-dashboard","projectNumber":"276222404565","displayName":"Match Viewing Dashboard","name":"projects/match-viewing-dashboard","resources":{"hostingSite":"match-viewing-dashboard","storageBucket":"match-viewing-dashboard.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_31c62a53-1462-4b93-a707-3b67ba3025eb"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2024-08-31T01:04:22.120Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudfunctions.googleapis.com [none]
+[debug] [2024-08-31T01:04:22.120Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:22.121Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/runtimeconfig.googleapis.com [none]
+[debug] [2024-08-31T01:04:22.122Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:22.123Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudbuild.googleapis.com [none]
+[debug] [2024-08-31T01:04:22.124Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudbuild.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:22.126Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/artifactregistry.googleapis.com [none]
+[debug] [2024-08-31T01:04:22.127Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/artifactregistry.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:22.668Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudbuild.googleapis.com 200
+[debug] [2024-08-31T01:04:22.669Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudbuild.googleapis.com [omitted]
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:22.671Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudfunctions.googleapis.com 200
+[debug] [2024-08-31T01:04:22.671Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:22.673Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/artifactregistry.googleapis.com 200
+[debug] [2024-08-31T01:04:22.673Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:22.690Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/runtimeconfig.googleapis.com 200
+[debug] [2024-08-31T01:04:22.691Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2024-08-31T01:04:22.691Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard/adminSdkConfig [none]
+[debug] [2024-08-31T01:04:23.126Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard/adminSdkConfig 200
+[debug] [2024-08-31T01:04:23.126Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard/adminSdkConfig {"projectId":"match-viewing-dashboard","storageBucket":"match-viewing-dashboard.appspot.com","locationId":"us-central"}
+[debug] [2024-08-31T01:04:23.127Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/match-viewing-dashboard/configs [none]
+[debug] [2024-08-31T01:04:24.407Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/match-viewing-dashboard/configs 200
+[debug] [2024-08-31T01:04:24.407Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/match-viewing-dashboard/configs {}
+[debug] [2024-08-31T01:04:24.409Z] Customer code is not Node
+[debug] [2024-08-31T01:04:24.409Z] Validating python source
+[debug] [2024-08-31T01:04:24.409Z] Building python source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2024-08-31T01:04:24.411Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-08-31T01:04:24.416Z] Running command with virtualenv: command="C:\Users\sacaa\Documents\SchoolWork\ClubWork\Tennis-Video-Viewer\app\functions\venv\Scripts\activate.bat", args=["","&&","python.exe","-c","\"import firebase_functions; import os; print(os.path.dirname(firebase_functions.__file__))\""]
+[debug] [2024-08-31T01:04:24.642Z] stdout: C:\Users\sacaa\Documents\SchoolWork\ClubWork\Tennis-Video-Viewer\app\functions\venv\Lib\site-packages\firebase_functions
+
+[debug] [2024-08-31T01:04:24.653Z] Running admin server with args: ["python.exe","\"C:\\Users\\sacaa\\Documents\\SchoolWork\\ClubWork\\Tennis-Video-Viewer\\app\\functions\\venv\\Lib\\site-packages\\firebase_functions\\private\\serving.py\""] and env: {"FIREBASE_CONFIG":"{\"projectId\":\"match-viewing-dashboard\",\"storageBucket\":\"match-viewing-dashboard.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"match-viewing-dashboard","GOOGLE_CLOUD_QUOTA_PROJECT":"match-viewing-dashboard","ADMIN_PORT":"8081"} in C:\Users\sacaa\Documents\SchoolWork\ClubWork\Tennis-Video-Viewer\app\functions
+[debug] [2024-08-31T01:04:24.653Z] Running command with virtualenv: command="C:\Users\sacaa\Documents\SchoolWork\ClubWork\Tennis-Video-Viewer\app\functions\venv\Scripts\activate.bat", args=["","&&","python.exe","\"C:\\Users\\sacaa\\Documents\\SchoolWork\\ClubWork\\Tennis-Video-Viewer\\app\\functions\\venv\\Lib\\site-packages\\firebase_functions\\private\\serving.py\""]
+[info]  * Serving Flask app 'serving'
+ * Debug mode: off
+
+[error] WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:8081
+Press CTRL+C to quit
+
+[error] 127.0.0.1 - - [30/Aug/2024 18:04:25] "GET /__/functions.yaml HTTP/1.1" 200 -
+
+[debug] [2024-08-31T01:04:25.929Z] Got response from /__/functions.yaml endpoints:
+  process_shots:
+    availableMemoryMb: null
+    concurrency: null
+    entryPoint: process_shots
+    eventTrigger:
+      eventFilterPathPatterns:
+        document: Test/{documentId}
+      eventFilters:
+        database: (default)
+        namespace: (default)
+      eventType: google.cloud.firestore.document.v1.created
+      retry: false
+    ingressSettings: null
+    labels: {}
+    maxInstances: null
+    minInstances: null
+    platform: gcfv2
+    secretEnvironmentVariables: []
+    serviceAccountEmail: null
+    timeoutSeconds: null
+params: []
+requiredAPIs: []
+specVersion: v1alpha1
+
+[error] 127.0.0.1 - - [30/Aug/2024 18:04:25] "GET /__/quitquitquit HTTP/1.1" 200 -
+
+[info] i  functions: preparing app/functions directory for uploading... 
+[info] i  functions: packaged C:\Users\sacaa\Documents\SchoolWork\ClubWork\Tennis-Video-Viewer\app\functions (40.49 MB) for uploading 
+[debug] [2024-08-31T01:04:30.742Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/match-viewing-dashboard/locations/-/functions [none]
+[debug] [2024-08-31T01:04:32.362Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/match-viewing-dashboard/locations/-/functions 200
+[debug] [2024-08-31T01:04:32.362Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/match-viewing-dashboard/locations/-/functions {}
+[debug] [2024-08-31T01:04:32.365Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/-/functions filter=environment%3D%22GEN_2%22
+[debug] [2024-08-31T01:04:32.983Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/-/functions 200
+[debug] [2024-08-31T01:04:32.983Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/-/functions {"functions":[{"name":"projects/match-viewing-dashboard/locations/us-central1/functions/ssrmatchviewingdashboar","buildConfig":{"build":"projects/276222404565/locations/us-central1/builds/ae2ba79f-9e5c-4ac1-8507-2a4e9bd6251d","runtime":"nodejs20","entryPoint":"ssrmatchviewingdashboar","source":{"storageSource":{"bucket":"gcf-v2-sources-276222404565-us-central1","object":"ssrmatchviewingdashboar/function-source.zip","generation":"1719987691678621"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""},"dockerRepository":"projects/match-viewing-dashboard/locations/us-central1/repositories/gcf-artifacts","sourceProvenance":{"resolvedStorageSource":{"bucket":"gcf-v2-sources-276222404565-us-central1","object":"ssrmatchviewingdashboar/function-source.zip","generation":"1719987691678621"}},"dockerRegistry":"ARTIFACT_REGISTRY"},"serviceConfig":{"service":"projects/match-viewing-dashboard/locations/us-central1/services/ssrmatchviewingdashboar","timeoutSeconds":60,"environmentVariables":{"VERCEL_URL":"match-viewing-dashboard.web.app","__FIREBASE_FRAMEWORKS_ENTRY__":"next.js","__FIREBASE_DEFAULTS__":"{\"config\":{\"projectId\":\"match-viewing-dashboard\",\"appId\":\"1:276222404565:web:d295bf29156c4bb4a73f5c\",\"storageBucket\":\"match-viewing-dashboard.appspot.com\",\"locationId\":\"us-central\",\"apiKey\":\"AIzaSyBOvEiiwKE_Q_aTWdyOpTIDmYmbPHA9KOg\",\"authDomain\":\"match-viewing-dashboard.firebaseapp.com\",\"messagingSenderId\":\"276222404565\"},\"_authTokenSyncURL\":\"/__session\"}","FIREBASE_CONFIG":"{\"projectId\":\"match-viewing-dashboard\",\"storageBucket\":\"match-viewing-dashboard.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"match-viewing-dashboard","EVENTARC_CLOUD_EVENT_SOURCE":"projects/match-viewing-dashboard/locations/us-central1/services/ssrmatchviewingdashboar","FUNCTION_TARGET":"ssrmatchviewingdashboar","LOG_EXECUTION_ID":"true"},"maxInstanceCount":100,"ingressSettings":"ALLOW_ALL","uri":"https://ssrmatchviewingdashboar-liij3rgnoa-uc.a.run.app","serviceAccountEmail":"276222404565-compute@developer.gserviceaccount.com","availableMemory":"256Mi","allTrafficOnLatestRevision":true,"revision":"ssrmatchviewingdashboar-00084-soq","maxInstanceRequestConcurrency":80,"availableCpu":"1"},"state":"ACTIVE","updateTime":"2024-07-03T06:24:09.985150580Z","labels":{"deployment-tool":"cli-firebase","firebase-functions-codebase":"firebase-frameworks-match-viewing-dashboard","firebase-functions-hash":"af6c8ace4274d1745efe218fbfc67aff1bd46539"},"environment":"GEN_2","url":"https://us-central1-match-viewing-dashboard.cloudfunctions.net/ssrmatchviewingdashboar","createTime":"2024-03-13T06:46:18.412500518Z"}]}
+[debug] [2024-08-31T01:04:32.984Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/match-viewing-dashboard/databases/(default) [none]
+[debug] [2024-08-31T01:04:34.460Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/match-viewing-dashboard/databases/(default) 200
+[debug] [2024-08-31T01:04:34.460Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/match-viewing-dashboard/databases/(default) {"name":"projects/match-viewing-dashboard/databases/(default)","uid":"4e89ae52-ed99-47e9-a065-e4d173f7905b","createTime":"2023-12-11T22:42:38.104442Z","updateTime":"2023-12-11T22:42:38.104442Z","locationId":"nam5","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2024-08-31T00:04:35.080251Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"s","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","etag":"II6LqdSEnogDMPnlwoap4IUD"}
+[info] i  functions: ensuring required API run.googleapis.com is enabled... 
+[info] i  functions: ensuring required API eventarc.googleapis.com is enabled... 
+[info] i  functions: ensuring required API pubsub.googleapis.com is enabled... 
+[info] i  functions: ensuring required API storage.googleapis.com is enabled... 
+[debug] [2024-08-31T01:04:34.463Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/run.googleapis.com [none]
+[debug] [2024-08-31T01:04:34.463Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/run.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:34.465Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/eventarc.googleapis.com [none]
+[debug] [2024-08-31T01:04:34.465Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/eventarc.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:34.466Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/pubsub.googleapis.com [none]
+[debug] [2024-08-31T01:04:34.466Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/pubsub.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:34.467Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/storage.googleapis.com [none]
+[debug] [2024-08-31T01:04:34.467Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/storage.googleapis.com x-goog-quota-user=projects/match-viewing-dashboard
+[debug] [2024-08-31T01:04:34.880Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/eventarc.googleapis.com 200
+[debug] [2024-08-31T01:04:34.880Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/eventarc.googleapis.com [omitted]
+[info] +  functions: required API eventarc.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:34.888Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/storage.googleapis.com 200
+[debug] [2024-08-31T01:04:34.888Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/storage.googleapis.com [omitted]
+[info] +  functions: required API storage.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:34.894Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/pubsub.googleapis.com 200
+[debug] [2024-08-31T01:04:34.895Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/pubsub.googleapis.com [omitted]
+[info] +  functions: required API pubsub.googleapis.com is enabled 
+[debug] [2024-08-31T01:04:34.897Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/run.googleapis.com 200
+[debug] [2024-08-31T01:04:34.897Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/match-viewing-dashboard/services/run.googleapis.com [omitted]
+[info] +  functions: required API run.googleapis.com is enabled 
+[info] i  functions: generating the service identity for pubsub.googleapis.com... 
+[info] i  functions: generating the service identity for eventarc.googleapis.com... 
+[debug] [2024-08-31T01:04:34.900Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/pubsub.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-08-31T01:04:34.902Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/eventarc.googleapis.com:generateServiceIdentity [none]
+[debug] [2024-08-31T01:04:35.133Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/pubsub.googleapis.com:generateServiceIdentity 200
+[debug] [2024-08-31T01:04:35.134Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/pubsub.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com","uniqueId":"106367681363678765382"}}
+[debug] [2024-08-31T01:04:35.192Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/eventarc.googleapis.com:generateServiceIdentity 200
+[debug] [2024-08-31T01:04:35.192Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1beta1/projects/276222404565/services/eventarc.googleapis.com:generateServiceIdentity {"name":"operations/finished.DONE_OPERATION","done":true,"response":{"@type":"type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity","email":"service-276222404565@gcp-sa-eventarc.iam.gserviceaccount.com","uniqueId":"106668743715372561483"}}
+[debug] [2024-08-31T01:04:35.193Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:getIamPolicy [none]
+[debug] [2024-08-31T01:04:35.596Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:getIamPolicy 200
+[debug] [2024-08-31T01:04:35.596Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:getIamPolicy {"version":1,"etag":"BwYgr1pLHj0=","bindings":[{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:276222404565@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.developer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-276222404565@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-276222404565@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com","serviceAccount:match-viewing-dashboard@appspot.gserviceaccount.com","user:jains642@g.ucla.edu"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-276222404565@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com","serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebasehosting.admin","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.system","members":["serviceAccount:service-276222404565@firebase-rules.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountUser","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:uclatennisconsulting@gmail.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-276222404565@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/run.viewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/serviceusage.apiKeysViewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]}]}
+[debug] [2024-08-31T01:04:35.596Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:setIamPolicy [none]
+[debug] [2024-08-31T01:04:35.596Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:setIamPolicy {"policy":{"version":1,"etag":"BwYgr1pLHj0=","bindings":[{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:276222404565@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.developer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-276222404565@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-276222404565@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com","serviceAccount:match-viewing-dashboard@appspot.gserviceaccount.com","user:jains642@g.ucla.edu"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-276222404565@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com","serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebasehosting.admin","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.system","members":["serviceAccount:service-276222404565@firebase-rules.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com","serviceAccount:service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountUser","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:uclatennisconsulting@gmail.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-276222404565@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/run.viewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/serviceusage.apiKeysViewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/run.invoker","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com"]},{"role":"roles/eventarc.eventReceiver","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2024-08-31T01:04:36.536Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:setIamPolicy 200
+[debug] [2024-08-31T01:04:36.536Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/276222404565:setIamPolicy {"version":1,"etag":"BwYg8Eqpmko=","bindings":[{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:276222404565@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.developer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-276222404565@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-276222404565@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com","serviceAccount:match-viewing-dashboard@appspot.gserviceaccount.com","user:jains642@g.ucla.edu"]},{"role":"roles/eventarc.eventReceiver","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:firebase-service-account@firebase-sa-management.iam.gserviceaccount.com","serviceAccount:service-276222404565@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com","serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebasehosting.admin","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.system","members":["serviceAccount:service-276222404565@firebase-rules.iam.gserviceaccount.com"]},{"role":"roles/firebasestorage.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firebasestorage.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com","serviceAccount:service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountUser","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:uclatennisconsulting@gmail.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-276222404565@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.invoker","members":["serviceAccount:276222404565-compute@developer.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-276222404565@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/run.viewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/serviceusage.apiKeysViewer","members":["serviceAccount:github-action-725358387@match-viewing-dashboard.iam.gserviceaccount.com"]},{"role":"roles/storage.admin","members":["serviceAccount:firebase-adminsdk-aq6ab@match-viewing-dashboard.iam.gserviceaccount.com"]}]}
+[debug] [2024-08-31T01:04:36.537Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard [none]
+[debug] [2024-08-31T01:04:36.822Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard 200
+[debug] [2024-08-31T01:04:36.822Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/match-viewing-dashboard {"projectId":"match-viewing-dashboard","projectNumber":"276222404565","displayName":"Match Viewing Dashboard","name":"projects/match-viewing-dashboard","resources":{"hostingSite":"match-viewing-dashboard","storageBucket":"match-viewing-dashboard.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_31c62a53-1462-4b93-a707-3b67ba3025eb"}
+[debug] [2024-08-31T01:04:36.825Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2024-08-31T01:04:37.207Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2024-08-31T01:04:37.207Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/gcf-v2-uploads-276222404565-us-central1/26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip?GoogleAccessId=service-276222404565@gcf-admin-robot.iam.gserviceaccount.com&Expires=1725068077&Signature=eNwdBnqSNjTx6UvdtTYjuIsFWm6ycBdJwPxJap0g8DiKtKYTUe0uTJu3E%2FJDFG3j2EMPUeT47t00gK%2FY1dIo69X8ECt6lzfDVogDVSytyY7n75%2BSLrZepJYTo16Tyr%2BqtCkBBXv1YeWOtKM0HmWkvJe4JrGHi2%2FtPzB9XXcKeHnL%2FLEntU23Ynw2FCcvlhBVFWWN0h7PfbOsiA1W2vXZjUrmoLjWUnnClcUhOriFEVsd1t5tbhOslqe2vCBZt910Oq%2FZ2MaArwUDbOCoaeq2MU2K6Fx2mzRA6%2FyFaraDePyvOaJZSSc439eh%2BCRVJ72szsw1Po7JWZFc3CtSah4XGQ%3D%3D","storageSource":{"bucket":"gcf-v2-uploads-276222404565-us-central1","object":"26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip"}}
+[debug] [2024-08-31T01:04:37.209Z] >>> [apiv2][query] PUT https://storage.googleapis.com/gcf-v2-uploads-276222404565-us-central1/26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip GoogleAccessId=service-276222404565%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1725068077&Signature=eNwdBnqSNjTx6UvdtTYjuIsFWm6ycBdJwPxJap0g8DiKtKYTUe0uTJu3E%2FJDFG3j2EMPUeT47t00gK%2FY1dIo69X8ECt6lzfDVogDVSytyY7n75%2BSLrZepJYTo16Tyr%2BqtCkBBXv1YeWOtKM0HmWkvJe4JrGHi2%2FtPzB9XXcKeHnL%2FLEntU23Ynw2FCcvlhBVFWWN0h7PfbOsiA1W2vXZjUrmoLjWUnnClcUhOriFEVsd1t5tbhOslqe2vCBZt910Oq%2FZ2MaArwUDbOCoaeq2MU2K6Fx2mzRA6%2FyFaraDePyvOaJZSSc439eh%2BCRVJ72szsw1Po7JWZFc3CtSah4XGQ%3D%3D
+[debug] [2024-08-31T01:04:37.209Z] >>> [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-276222404565-us-central1/26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip [stream]
+[debug] [2024-08-31T01:04:53.438Z] <<< [apiv2][status] PUT https://storage.googleapis.com/gcf-v2-uploads-276222404565-us-central1/26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip 200
+[debug] [2024-08-31T01:04:53.438Z] <<< [apiv2][body] PUT https://storage.googleapis.com/gcf-v2-uploads-276222404565-us-central1/26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip [omitted]
+[info] +  functions: app/functions folder uploaded successfully 
+[info] i  functions: creating Python 3.12 (2nd Gen) function process_shots(us-central1)... 
+[debug] [2024-08-31T01:04:53.444Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions functionId=process_shots
+[debug] [2024-08-31T01:04:53.444Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions {"name":"projects/match-viewing-dashboard/locations/us-central1/functions/process_shots","buildConfig":{"runtime":"python312","entryPoint":"process_shots","source":{"storageSource":{"bucket":"gcf-v2-uploads-276222404565-us-central1","object":"26ac9d9d-df0d-43aa-9746-45f3a3a9b797.zip"}},"environmentVariables":{"GOOGLE_NODE_RUN_SCRIPTS":""}},"serviceConfig":{"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"match-viewing-dashboard\",\"storageBucket\":\"match-viewing-dashboard.appspot.com\",\"locationId\":\"us-central\"}","GCLOUD_PROJECT":"match-viewing-dashboard","EVENTARC_CLOUD_EVENT_SOURCE":"projects/match-viewing-dashboard/locations/us-central1/services/process_shots","FUNCTION_SIGNATURE_TYPE":"cloudevent","FUNCTION_TARGET":"process_shots"},"secretEnvironmentVariables":[],"ingressSettings":null,"timeoutSeconds":null,"serviceAccountEmail":null,"availableMemory":"256Mi","minInstanceCount":null,"maxInstanceCount":null,"maxInstanceRequestConcurrency":80,"availableCpu":"1"},"labels":{"deployment-tool":"cli-firebase","firebase-functions-hash":"d2e381e6bd37daf5e4e08a9d09fe70b521b5a77c"},"eventTrigger":{"eventType":"google.cloud.firestore.document.v1.created","retryPolicy":"RETRY_POLICY_DO_NOT_RETRY","eventFilters":[{"attribute":"database","value":"(default)"},{"attribute":"namespace","value":"(default)"},{"attribute":"document","value":"Test/{documentId}","operator":"match-path-pattern"}],"triggerRegion":"nam5"}}
+[debug] [2024-08-31T01:05:09.806Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions 400
+[debug] [2024-08-31T01:05:09.807Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v2/projects/match-viewing-dashboard/locations/us-central1/functions {"error":{"code":400,"message":"Validation failed for trigger projects/match-viewing-dashboard/locations/nam5/triggers/process-shots-036655: Invalid resource state for \"\": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.","status":"FAILED_PRECONDITION"}}
+[warn] !  functions: HTTP Error: 400, Validation failed for trigger projects/match-viewing-dashboard/locations/nam5/triggers/process-shots-036655: Invalid resource state for "": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role. 
+[warn] !  functions: Since this is your first time using 2nd gen functions, we need a little bit longer to finish setting everything up. Retry the deployment in a few minutes. 
+[warn] !  functions:  failed to create function projects/match-viewing-dashboard/locations/us-central1/functions/process_shots 
+[error] Failed to create function projects/match-viewing-dashboard/locations/us-central1/functions/process_shots
+[debug] [2024-08-31T01:05:09.834Z] Total Function Deployment time: 16381
+[debug] [2024-08-31T01:05:09.834Z] 1 Functions Deployed
+[debug] [2024-08-31T01:05:09.834Z] 1 Functions Errored
+[debug] [2024-08-31T01:05:09.835Z] 0 Function Deployments Aborted
+[debug] [2024-08-31T01:05:09.835Z] Average Function Deployment time: 16379
+[info] 
+[info] Functions deploy had errors with the following functions:
+	process_shots(us-central1)
+[info] i  functions: cleaning up build files... 
+[debug] [2024-08-31T01:05:09.955Z] >>> [apiv2][query] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/match-viewing-dashboard/locations/us-central1/repositories/gcf-artifacts/packages/process__shots [none]
+[debug] [2024-08-31T01:05:09.959Z] >>> [apiv2][query] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list [none]
+[debug] [2024-08-31T01:05:11.335Z] <<< [apiv2][status] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list 404
+[debug] [2024-08-31T01:05:11.335Z] <<< [apiv2][body] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-08-31T01:05:11.336Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[debug] [2024-08-31T01:05:11.348Z] >>> [apiv2][query] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list [none]
+[debug] [2024-08-31T01:05:11.399Z] <<< [apiv2][status] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/match-viewing-dashboard/locations/us-central1/repositories/gcf-artifacts/packages/process__shots 404
+[debug] [2024-08-31T01:05:11.399Z] <<< [apiv2][body] DELETE https://artifactregistry.googleapis.com/v1beta2/projects/match-viewing-dashboard/locations/us-central1/repositories/gcf-artifacts/packages/process__shots {"error":{"code":404,"message":"Package \"projects/match-viewing-dashboard/locations/us-central1/repositories/gcf-artifacts/packages/process__shots\" was not found.","status":"NOT_FOUND"}}
+[debug] [2024-08-31T01:05:11.516Z] <<< [apiv2][status] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list 404
+[debug] [2024-08-31T01:05:11.516Z] <<< [apiv2][body] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-08-31T01:05:11.517Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[debug] [2024-08-31T01:05:11.631Z] >>> [apiv2][query] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list [none]
+[debug] [2024-08-31T01:05:11.779Z] <<< [apiv2][status] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list 404
+[debug] [2024-08-31T01:05:11.780Z] <<< [apiv2][body] GET https://us.gcr.io/v2/match-viewing-dashboard/gcf/us-central1/tags/list {"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}]}
+[debug] [2024-08-31T01:05:11.780Z] Failed docker command with error  HTTP Error: 404, Not Found {"name":"FirebaseError","children":[],"context":{"body":{"errors":[{"code":"NAME_UNKNOWN","message":"Repository \"us.gcr.io\" not found"}],"error":{"message":"Not Found"}},"response":{"statusCode":404}},"exit":1,"message":"HTTP Error: 404, Not Found","status":404}
+[warn] !  functions: Unhandled error cleaning up build images. This could result in a small monthly bill if not corrected. You can attempt to delete these images by redeploying or you can delete them manually at https://console.cloud.google.com/gcr/images/match-viewing-dashboard/us/gcf 
+[debug] [2024-08-31T01:05:11.782Z] Functions deploy failed.
+[debug] [2024-08-31T01:05:11.782Z] {
+  "endpoint": {
+    "id": "process_shots",
+    "project": "match-viewing-dashboard",
+    "region": "us-central1",
+    "entryPoint": "process_shots",
+    "platform": "gcfv2",
+    "runtime": "python312",
+    "eventTrigger": {
+      "eventType": "google.cloud.firestore.document.v1.created",
+      "retry": false,
+      "eventFilters": {
+        "database": "(default)",
+        "namespace": "(default)"
+      },
+      "eventFilterPathPatterns": {
+        "document": "Test/{documentId}"
+      },
+      "region": "nam5"
+    },
+    "labels": {
+      "deployment-tool": "cli-firebase"
+    },
+    "secretEnvironmentVariables": [],
+    "ingressSettings": null,
+    "availableMemoryMb": null,
+    "serviceAccount": null,
+    "timeoutSeconds": null,
+    "maxInstances": null,
+    "minInstances": null,
+    "concurrency": 80,
+    "environmentVariables": {
+      "FIREBASE_CONFIG": "{\"projectId\":\"match-viewing-dashboard\",\"storageBucket\":\"match-viewing-dashboard.appspot.com\",\"locationId\":\"us-central\"}",
+      "GCLOUD_PROJECT": "match-viewing-dashboard",
+      "EVENTARC_CLOUD_EVENT_SOURCE": "projects/match-viewing-dashboard/locations/us-central1/services/process_shots"
+    },
+    "codebase": "default",
+    "cpu": 1,
+    "targetedByOnly": false,
+    "hash": "d2e381e6bd37daf5e4e08a9d09fe70b521b5a77c"
+  },
+  "op": "create",
+  "original": {
+    "name": "FirebaseError",
+    "children": [],
+    "context": {
+      "function": "projects/match-viewing-dashboard/locations/us-central1/functions/process_shots"
+    },
+    "exit": 1,
+    "message": "Failed to create function projects/match-viewing-dashboard/locations/us-central1/functions/process_shots",
+    "original": {
+      "name": "FirebaseError",
+      "children": [],
+      "context": {
+        "body": {
+          "error": {
+            "code": 400,
+            "message": "Validation failed for trigger projects/match-viewing-dashboard/locations/nam5/triggers/process-shots-036655: Invalid resource state for \"\": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.",
+            "status": "FAILED_PRECONDITION"
+          }
+        },
+        "response": {
+          "statusCode": 400
+        }
+      },
+      "exit": 1,
+      "message": "HTTP Error: 400, Validation failed for trigger projects/match-viewing-dashboard/locations/nam5/triggers/process-shots-036655: Invalid resource state for \"\": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.",
+      "status": 400
+    },
+    "status": 400,
+    "code": 400
+  }
+}
+[debug] [2024-08-31T01:05:11.826Z] Error: Failed to create function process_shots in region us-central1
+    at C:\Users\sacaa\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:294:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Fabricator.createV2Function (C:\Users\sacaa\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:278:30)
+    at async Fabricator.createEndpoint (C:\Users\sacaa\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:137:13)
+    at async handle (C:\Users\sacaa\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\release\fabricator.js:89:17)
+[error] 
+[error] Error: There was an error deploying functions
