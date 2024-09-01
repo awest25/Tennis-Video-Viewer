@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useMatchData } from './MatchDataProvider';
+import { useDatabase } from './DatabaseProvider';
 import styles from '../styles/Dashboard.module.css';
 import DashTileContainer from './DashTileContainer';
 import getTeams from '@/app/services/getTeams.js';
@@ -60,7 +61,7 @@ const Dashboard = () => {
   const matches = matchData; // using hardcoded JSON objects
   const router = useRouter();
   const formattedMatches = formatMatches(matchData);
-  const [logos, setLogos] = useState({}); // Store logos for each opponent team
+  const { logos } = useDatabase();
   
   // Group matches by date
   const matchesByDate = formattedMatches.reduce((acc, match) => {
@@ -73,27 +74,6 @@ const Dashboard = () => {
     }
     return acc;
   }, {});
-
-  // Fetch logos for teams
-  useEffect(() => {
-    const fetchLogos = async () => {
-      try {
-        const allTeams = await getTeams();
-        const logosMap = {};
-        formattedMatches.forEach(match => {
-          const opponentTeam = match.opponentTeam;
-          const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam)?.logoUrl;
-          if (opponentLogoURL) {
-            logosMap[opponentTeam] = opponentLogoURL;
-          }
-        });
-        setLogos(logosMap); // Set the state with the map of team logos
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchLogos();
-  }, [formattedMatches]);
 
   const handleTileClick = (videoId) => {
     router.push(`/matches/${videoId}`);
@@ -110,7 +90,11 @@ const Dashboard = () => {
         {Object.keys(matchesByDate).map((date, index) => (
           <div key={index} className={styles.card}>
             <div className={styles.cardContent}>
-              <img src={logos[matchesByDate[date][0].opponentTeam]} alt="Team Logo" className={styles.logo} />
+              <img 
+                src={logos.find((team) => team.name === matchesByDate[date][0].opponentTeam)?.logoUrl}
+                alt="Team Logo" 
+                className={styles.logo} 
+              />
               <span className={styles.matchDate}>{formatDate(new Date(date), 'MM/DD/YY')}</span>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/DashboardTile.module.css";
 import getTeams from '@/app/services/getTeams.js';
+import { useDatabase } from './DatabaseProvider'; // Import the custom hook
 
 // Calculate winner of match
 const calculateWinner = (player1, player2) => {
@@ -20,22 +21,16 @@ const DashboardTile = ({
 }) => {
   const [clientLogo, setClientLogo] = useState('');
   const [opponentLogo, setOpponentLogo] = useState('');
+  const { logos, loading } = useDatabase();
 
   useEffect(() => {
-    const fetchLogos = async () => {
-      try {
-        const allTeams = await getTeams();
-        const clientLogoURL = allTeams.find((team) => team.name === clientTeam).logoUrl;
-        const opponentLogoURL = allTeams.find((team) => team.name === opponentTeam).logoUrl;
-        setClientLogo(clientLogoURL);
-        setOpponentLogo(opponentLogoURL);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchLogos();
-  }, [clientTeam, opponentTeam]);
+    if (!loading && logos.length > 0) { 
+      const clientTeamLogo = logos.find((team) => team.name === clientTeam)?.logoUrl || '';
+      const opponentTeamLogo = logos.find((team) => team.name === opponentTeam)?.logoUrl || '';
+      setClientLogo(clientTeamLogo);
+      setOpponentLogo(opponentTeamLogo);
+    }
+  }, [clientTeam, opponentTeam, logos, loading]);
 
   return (
     <div className={styles.dashTilesContainer}>
