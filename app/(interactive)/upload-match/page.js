@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
-import { useMatchData } from '../../components/MatchDataProvider.js'; // Use the custom hook
+import { useMatchData } from '../../components/MatchDataProvider.js';
+import { useAuth } from '../../components/AuthWrapper.js';
 import getTeams from '@/app/services/getTeams.js';
 import styles from '../../styles/Upload.module.css';
 
@@ -220,6 +221,8 @@ export default function UploadMatchForm() {
   const [teams, setTeams] = useState([]);
   const [collections, setCollections] = useState([]);
 
+  const { userProfile } = useAuth();
+
   useEffect(() => {
     const fetchCollectionsAndTeams = async () => {
       try {
@@ -228,7 +231,6 @@ export default function UploadMatchForm() {
         const teamNames = allTeams.map(team => team.name);
 
         // Assuming userProfile.collections contains the collection names
-        const { userProfile } = useAuth();
         const userCollections = userProfile?.collections || [];
 
         setCollections(userCollections);
@@ -360,6 +362,7 @@ export default function UploadMatchForm() {
         <h1 className={styles.title}>Upload Match</h1>
         <h3>Make sure you add the player in &apos;Upload Team&apos; before this!</h3>
         <Form
+          key={JSON.stringify(schema)}
           schema={schema}
           uiSchema={uiSchema}
           onChange={handleChange}
@@ -368,5 +371,5 @@ export default function UploadMatchForm() {
         />
       </div>
     </div>
-  );
+  );  
 }
