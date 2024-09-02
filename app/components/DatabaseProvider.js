@@ -32,7 +32,7 @@ export const DatabaseProvider = ({ children }) => {
     try {
       const teams = await getTeams()
       const logosMap = teams.reduce((acc, team) => {
-        acc[team.name] = `${team.logoUrl}?v=1.0.0` // Add cache-busting versioning
+        acc[team.name] = team.logoUrl
         return acc
       }, {})
 
