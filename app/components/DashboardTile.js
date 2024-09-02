@@ -1,36 +1,42 @@
-import React, { useEffect, useState } from "react";
-import styles from "../styles/DashboardTile.module.css";
-import getTeams from '@/app/services/getTeams.js';
-import { useDatabase } from './DatabaseProvider'; // Import the custom hook
+import React, { useEffect, useState } from 'react'
+import styles from '../styles/DashboardTile.module.css'
+import { useDatabase } from './DatabaseProvider'
 
 // Calculate winner of match
 const calculateWinner = (player1, player2) => {
-  const player1Total = player1.reduce((total, current) => !isNaN(current.score) ? total + current.score : total, 0);
-  const player2Total = player2.reduce((total, current) => !isNaN(current.score) ? total + current.score : total, 0);
-  return player1Total > player2Total;
-};
+  const player1Total = player1.reduce(
+    (total, current) => (!isNaN(current.score) ? total + current.score : total),
+    0
+  )
+  const player2Total = player2.reduce(
+    (total, current) => (!isNaN(current.score) ? total + current.score : total),
+    0
+  )
+  return player1Total > player2Total
+}
 
 const DashboardTile = ({
   clientTeam,
   opponentTeam,
-  player1Name, player2Name, 
-  player1FinalScores, player2FinalScores,
-  player1TieScores, player2TieScores,
+  player1Name,
+  player2Name,
+  player1FinalScores,
+  player2FinalScores,
+  player1TieScores,
+  player2TieScores,
   isUnfinished,
   isTagged
 }) => {
-  const [clientLogo, setClientLogo] = useState('');
-  const [opponentLogo, setOpponentLogo] = useState('');
-  const { logos, loading } = useDatabase();
+  const [clientLogo, setClientLogo] = useState('')
+  const [opponentLogo, setOpponentLogo] = useState('')
+  const { logos, loading } = useDatabase()
 
   useEffect(() => {
-    if (!loading && logos.length > 0) { 
-      const clientTeamLogo = logos.find((team) => team.name === clientTeam)?.logoUrl || '';
-      const opponentTeamLogo = logos.find((team) => team.name === opponentTeam)?.logoUrl || '';
-      setClientLogo(clientTeamLogo);
-      setOpponentLogo(opponentTeamLogo);
-    }
-  }, [clientTeam, opponentTeam, logos, loading]);
+    const clientTeamLogo = logos[clientTeam]
+    const opponentTeamLogo = logos[opponentTeam]
+    setClientLogo(clientTeamLogo)
+    setOpponentLogo(opponentTeamLogo)
+  }, [clientTeam, opponentTeam, logos])
 
   return (
     <div className={styles.dashTilesContainer}>
@@ -43,21 +49,48 @@ const DashboardTile = ({
           <div className={styles.playerSchoolImgcontainerhome}>
             <img src={clientLogo} alt={`${clientTeam} logo`} />
           </div>
-          <div className={styles.playerInfoName} style={{ opacity: isUnfinished || !calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
-            {player1Name} {isUnfinished && "(UF)"}
+          <div
+            className={styles.playerInfoName}
+            style={{
+              opacity:
+                isUnfinished ||
+                !calculateWinner(player1FinalScores, player2FinalScores)
+                  ? '40%'
+                  : '100%'
+            }}
+          >
+            {player1Name} {isUnfinished && '(UF)'}
           </div>
-          <div className={styles.playerInfoScore} style={{ opacity: isUnfinished || !calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
-            {player1FinalScores.map((score, index) =>
-              !isNaN(score.score) && (
-                <div key={index} style={{ position: "relative" }}>
-                  {score.score}
-                  {player1TieScores[index] && (
-                    <sup style={{ position: "absolute", fontSize: "0.6em", top: "-0.3em", left: "0.9em", letterSpacing: "1vw" }}>
-                      {player1TieScores[index]}
-                    </sup>
-                  )}
-                </div>
-              )
+          <div
+            className={styles.playerInfoScore}
+            style={{
+              opacity:
+                isUnfinished ||
+                !calculateWinner(player1FinalScores, player2FinalScores)
+                  ? '40%'
+                  : '100%'
+            }}
+          >
+            {player1FinalScores.map(
+              (score, index) =>
+                !isNaN(score.score) && (
+                  <div key={index} style={{ position: 'relative' }}>
+                    {score.score}
+                    {player1TieScores[index] && (
+                      <sup
+                        style={{
+                          position: 'absolute',
+                          fontSize: '0.6em',
+                          top: '-0.3em',
+                          left: '0.9em',
+                          letterSpacing: '1vw'
+                        }}
+                      >
+                        {player1TieScores[index]}
+                      </sup>
+                    )}
+                  </div>
+                )
             )}
           </div>
         </div>
@@ -65,27 +98,50 @@ const DashboardTile = ({
           <div className={styles.playerSchoolImgcontainer}>
             <img src={opponentLogo} alt={`${opponentTeam} logo`} />
           </div>
-          <div className={styles.playerInfoName} style={{ opacity: calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
+          <div
+            className={styles.playerInfoName}
+            style={{
+              opacity: calculateWinner(player1FinalScores, player2FinalScores)
+                ? '40%'
+                : '100%'
+            }}
+          >
             {player2Name}
           </div>
-          <div className={styles.playerInfoScore} style={{ opacity: calculateWinner(player1FinalScores, player2FinalScores) ? "40%" : "100%" }}>
-            {player2FinalScores.map((score, index) =>
-              !isNaN(score.score) && (
-                <div key={index} style={{ position: "relative" }}>
-                  {score.score}
-                  {player2TieScores[index] && (
-                    <sup style={{ position: "absolute", fontSize: "0.6em", top: "-0.3em", left: "0.9em", letterSpacing: "1vw" }}>
-                      {player2TieScores[index]}
-                    </sup>
-                  )}
-                </div>
-              )
+          <div
+            className={styles.playerInfoScore}
+            style={{
+              opacity: calculateWinner(player1FinalScores, player2FinalScores)
+                ? '40%'
+                : '100%'
+            }}
+          >
+            {player2FinalScores.map(
+              (score, index) =>
+                !isNaN(score.score) && (
+                  <div key={index} style={{ position: 'relative' }}>
+                    {score.score}
+                    {player2TieScores[index] && (
+                      <sup
+                        style={{
+                          position: 'absolute',
+                          fontSize: '0.6em',
+                          top: '-0.3em',
+                          left: '0.9em',
+                          letterSpacing: '1vw'
+                        }}
+                      >
+                        {player2TieScores[index]}
+                      </sup>
+                    )}
+                  </div>
+                )
             )}
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DashboardTile;
+export default DashboardTile
