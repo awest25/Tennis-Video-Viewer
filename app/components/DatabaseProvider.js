@@ -19,12 +19,20 @@ export const DatabaseProvider = ({ children }) => {
   const [error, setError] = useState(null)
 
   const fetchLogos = useCallback(async () => {
+    const storedLogos = localStorage.getItem('teamLogos')
+    if (storedLogos) {
+      setLogos(JSON.parse(storedLogos))
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     setError(null)
+
     try {
       const teams = await getTeams()
       const logosMap = teams.reduce((acc, team) => {
-        acc[team.name] = team.logoUrl
+        acc[team.name] = `${team.logoUrl}?v=1.0.0` // Add cache-busting versioning
         return acc
       }, {})
 
@@ -56,7 +64,5 @@ export const useDatabase = () => {
     throw new Error('useDatabase must be used within a DatabaseProvider')
   }
 
-  const { logos, loading, error } = context
-
-  return { logos, loading, error }
+  return context
 }

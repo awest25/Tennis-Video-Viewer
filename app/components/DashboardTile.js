@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import styles from '../styles/DashboardTile.module.css'
 import { useDatabase } from './DatabaseProvider'
 
@@ -27,19 +28,23 @@ const DashboardTile = ({
   isUnfinished,
   isTagged
 }) => {
-  const [clientLogo, setClientLogo] = useState('')
-  const [opponentLogo, setOpponentLogo] = useState('')
   const { logos, loading } = useDatabase()
+  const [clientLogo, setClientLogo] = useState(null)
+  const [opponentLogo, setOpponentLogo] = useState(null)
 
   useEffect(() => {
-    const clientTeamLogo = logos[clientTeam]
-    const opponentTeamLogo = logos[opponentTeam]
-    setClientLogo(clientTeamLogo)
-    setOpponentLogo(opponentTeamLogo)
+    setClientLogo(logos[clientTeam])
+    setOpponentLogo(logos[opponentTeam])
   }, [clientTeam, opponentTeam, logos])
 
   return (
     <div className={styles.dashTilesContainer}>
+      <Helmet>
+        {/* Preload the logos */}
+        {clientLogo && <link rel="preload" href={clientLogo} as="image" />}
+        {opponentLogo && <link rel="preload" href={opponentLogo} as="image" />}
+      </Helmet>
+
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerHeader}>
           <div className={styles.containerTitle}>Final Score</div>
