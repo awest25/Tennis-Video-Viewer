@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import VideoPlayer from '../../../components/VideoPlayer';
-import { getTaggerButtonData, columnNames } from '../../../services/taggerButtonData.js';
+import { getTaggerButtonData, columnNames } from '../../../services/taggerButtonDataAd.js';
 import styles from '../../../styles/TagMatch.module.css';
 // import { useRouter } from 'next/router';
 import { usePathname } from 'next/navigation'
