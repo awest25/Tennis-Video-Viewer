@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
 import styles from '../styles/DashboardTile.module.css'
 import { useDatabase } from './DatabaseProvider'
 
@@ -39,12 +38,6 @@ const DashboardTile = ({
 
   return (
     <div className={styles.dashTilesContainer}>
-      <Helmet>
-        {/* Preload the logos */}
-        {clientLogo && <link rel="preload" href={clientLogo} as="image" />}
-        {opponentLogo && <link rel="preload" href={opponentLogo} as="image" />}
-      </Helmet>
-
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerHeader}>
           <div className={styles.containerTitle}>Final Score</div>
