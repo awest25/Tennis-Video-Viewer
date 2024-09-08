@@ -3,6 +3,7 @@
 import Footer from "./components/Footer"
 import { AuthProvider } from "./components/AuthWrapper";
 import { MatchDataProvider } from "./components/MatchDataProvider";
+import { DatabaseProvider } from "./components/DatabaseProvider";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({ children }) {
         <div style={{width:'100%'}}>
         <AuthProvider>
           <MatchDataProvider>
-            {children}
+            <DatabaseProvider>
+              {children}
+            </DatabaseProvider>
           </MatchDataProvider>
         </AuthProvider>
         </div>
