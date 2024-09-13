@@ -72,8 +72,26 @@ const Dashboard = () => {
     return acc
   }, {})
 
+  // State to manage which dates' matches are being shown
+  const [selectedDates, setSelectedDates] = useState([
+    Object.keys(matchesByDate)[0]
+  ])
+
+  // Ensure that selected matches are sorted by recency after every selection
+  const sortedSelectedDates = [...selectedDates].sort(
+    (a, b) => new Date(b) - new Date(a)
+  )
+
   const handleTileClick = (videoId) => {
     router.push(`/matches/${videoId}`)
+  }
+
+  const handleCarouselClick = (date) => {
+    setSelectedDates((prevDates) =>
+      prevDates.includes(date)
+        ? prevDates.filter((d) => d !== date)
+        : [...prevDates, date]
+    )
   }
 
   return (
@@ -85,7 +103,11 @@ const Dashboard = () => {
 
       <div className={styles.carousel}>
         {Object.keys(matchesByDate).map((date, index) => (
-          <div key={index} className={styles.card}>
+          <div
+            key={index}
+            className={`${styles.card} ${selectedDates.includes(date) ? styles.active : ''}`}
+            onClick={() => handleCarouselClick(date)}
+          >
             <div className={styles.cardContent}>
               <img
                 src={logos[matchesByDate[date][0].opponentTeam]}
@@ -102,35 +124,31 @@ const Dashboard = () => {
 
       <div className={styles.mainContent}>
         <div className={styles.matchesSection}>
-          {Object.keys(matchesByDate).map((date, index) => {
-            const singlesMatches = matchesByDate[date].filter(
-              (match) => match.singlesDoubles === 'Singles'
-            )
-            const doublesMatches = matchesByDate[date].filter(
-              (match) => match.singlesDoubles === 'Doubles'
-            )
-
-            return (
-              <div key={index} className={styles.matchSection}>
+          {sortedSelectedDates.length > 0 &&
+            sortedSelectedDates.map((selectedDate) => (
+              <div key={selectedDate} className={styles.matchSection}>
                 <div className={styles.matchContainer}>
                   <div className={styles.matchHeader}>
-                    <h3>{`${matchesByDate[date][0].clientTeam} vs ${matchesByDate[date][0].opponentTeam}`}</h3>
-                    <span className={styles.date}>{date}</span>
+                    <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
+                    <span className={styles.date}>{selectedDate}</span>
                   </div>
                   <DashTileContainer
-                    matches={singlesMatches}
+                    matches={matchesByDate[selectedDate].filter(
+                      (match) => match.singlesDoubles === 'Singles'
+                    )}
                     matchType="Singles"
                     onTileClick={handleTileClick}
                   />
                   <DashTileContainer
-                    matches={doublesMatches}
+                    matches={matchesByDate[selectedDate].filter(
+                      (match) => match.singlesDoubles === 'Doubles'
+                    )}
                     matchType="Doubles"
                     onTileClick={handleTileClick}
                   />
                 </div>
               </div>
-            )
-          })}
+            ))}
         </div>
 
         <div className={styles.rosterContainer}>

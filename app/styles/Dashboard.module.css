@@ -2,6 +2,9 @@
 
 .container {
   padding: 20px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
   font-family: 'DM Sans', sans-serif;
 }
 
@@ -27,8 +30,8 @@
   overflow-x: auto;
   margin-bottom: 30px;
   padding: 10px 0;
-  border-top: 1px solid #DEDEDE;
-  border-bottom: 1px solid #DEDEDE;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
 }
 
 .mainContent {
@@ -47,25 +50,6 @@
   font-family: 'DM Sans', sans-serif;
   position: relative;
   top: -25px;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 100px;
-  border: 1px solid #DEDEDE;
-  border-radius: 20px;
-  padding: 8px 15px;
-  margin-right: 10px;
-  background-color: #ffffff;
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.cardContent {
-  display: flex;
-  align-items: center;
 }
 
 .logo {
@@ -109,7 +93,7 @@
 
 .matchSection h3 {
   font-size: 28px;
-  color: #2774AE;
+  color: #2774ae;
   font-weight: 550;
   margin: 0;
   white-space: nowrap;
@@ -121,16 +105,66 @@
 .matchSection .date {
   font-size: 20px;
   font-weight: 550;
-  color: #2774AE;
+  color: #2774ae;
   margin-bottom: 0;
   margin-left: 10px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-
 .matchTypeHeader h4 {
   font-size: 20px;
   margin: 10px 0 0 0;
   font-weight: normal;
-} 
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+  border: 1px solid #dedede;
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    border 0.3s;
+  cursor: pointer;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+}
+
+.card:hover {
+  background-color: #f7f7f7;
+}
+
+.active {
+  background-color: #2774ae;
+  color: #ffffff;
+  border: 1px solid #2774ae;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    color 0.3s;
+}
+
+.active .matchDate {
+  color: #ffffff;
+}
+
+.active:hover {
+  color: #000000;
+}
+
+.active:hover .matchDate {
+  color: #000000;
+}
