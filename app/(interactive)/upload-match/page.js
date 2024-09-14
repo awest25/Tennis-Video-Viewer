@@ -7,36 +7,7 @@ import { useMatchData } from "../../components/MatchDataProvider.js";
 import { useAuth } from "../../components/AuthWrapper.js";
 import getTeams from "@/app/services/getTeams.js";
 import styles from "../../styles/Upload.module.css";
-import { initialSchema, uiSchema } from "@/app/services/uploadMatchSchemas.js";
-
-// const parseMatchScore = (matchScore) => {
-//   const sets = matchScore.split(" ");
-//   const transformedSets = [];
-
-//   sets.forEach(set => {
-//     const games = set.split("-");
-//     const clientGamesWon = parseInt(games[0]);
-//     const opponentGamesWon = parseInt(games[1]);
-//     let clientTiebreakPointsWon = null;
-//     let opponentTiebreakPointsWon = null;
-
-//     if (set.includes("(")) {
-//       const tiebreak = set.match(/\(([^)]+)\)/)[1].split("-");
-//       clientTiebreakPointsWon = parseInt(tiebreak[0]);
-//       opponentTiebreakPointsWon = parseInt(tiebreak[1]);
-//     }
-
-//     transformedSets.push({
-//       set_number: transformedSets.length + 1,
-//       clientGamesWon: clientGamesWon,
-//       opponentGamesWon: opponentGamesWon,
-//       clientTiebreakPointsWon: clientTiebreakPointsWon,
-//       opponentTiebreakPointsWon: opponentTiebreakPointsWon
-//     });
-//   });
-
-//   return transformedSets;
-// }
+import { initialSchema, uiSchema } from "@/app/services/matchSchemas.js";
 
 export default function UploadMatchForm() {
   const { createMatch } = useMatchData(); // Use the createMatch hook
@@ -208,6 +179,13 @@ export default function UploadMatchForm() {
         matchDetails,
         searchableProperties,
         version: "v1", // Current version for new matches added
+        name: `${players.client.firstName} ${players.client.lastName} ${
+          teams.clientTeam
+        } vs. ${players.opponent.firstName} ${players.opponent.lastName} ${
+          teams.opponentTeam
+        } ${formData.date.split("-")[1]}/${
+          formData.date.split("-")[2]
+        }/${formData.date.split("-")[0].slice(2)}`,
       });
 
       alert("Match uploaded successfully!");
