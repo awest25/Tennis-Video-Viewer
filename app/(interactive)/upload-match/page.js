@@ -179,11 +179,14 @@ export default function UploadMatchForm() {
         matchDetails,
         searchableProperties,
         version: "v1", // Current version for new matches added
-        name: `${players.client.firstName} ${players.client.lastName} ${
-          teams.clientTeam
-        } vs. ${players.opponent.firstName} ${players.opponent.lastName} ${
-          teams.opponentTeam
-        } ${formData.date.split("-")[1]}/${
+        name: `${players.client.firstName} ${
+          players.client.lastName
+        } ${teams.clientTeam.replace(/\s?\(M\)|\s?\(W\)/g, "")} vs. ${
+          players.opponent.firstName
+        } ${players.opponent.lastName} ${teams.opponentTeam.replace(
+          /\s?\(M\)|\s?\(W\)/g,
+          ""
+        )} ${formData.date.split("-")[1]}/${
           formData.date.split("-")[2]
         }/${formData.date.split("-")[0].slice(2)}`,
       });
