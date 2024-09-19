@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useMatchData } from './MatchDataProvider'
 import { useDatabase } from './DatabaseProvider'
 import styles from '../styles/Dashboard.module.css'
@@ -47,7 +47,7 @@ const formatMatches = (matches) =>
       const date = extractDateFromName(match.date)
       return {
         ...match,
-        date: date,
+        date,
         formattedDate: date ? formatDate(date, 'MM/DD/YYYY') : null
       }
     })
@@ -72,10 +72,26 @@ const Dashboard = () => {
     return acc
   }, {})
 
+  // Function to find the closest past date to today
+  const getClosestPastDate = () => {
+    const today = new Date()
+    const pastDates = Object.keys(matchesByDate)
+      .map((date) => new Date(date))
+      .filter((date) => date <= today)
+      .sort((a, b) => today - a)
+
+    return pastDates.length > 0 ? formatDate(pastDates[0], 'MM/DD/YYYY') : null
+  }
+
   // State to manage which dates' matches are being shown
-  const [selectedDates, setSelectedDates] = useState([
-    Object.keys(matchesByDate)[0]
-  ])
+  const [selectedDates, setSelectedDates] = useState([])
+
+  useEffect(() => {
+    const closestDate = getClosestPastDate()
+    if (closestDate) {
+      setSelectedDates([closestDate])
+    }
+  }, [])
 
   // Ensure that selected matches are sorted by recency after every selection
   const sortedSelectedDates = [...selectedDates].sort(
@@ -124,31 +140,33 @@ const Dashboard = () => {
 
       <div className={styles.mainContent}>
         <div className={styles.matchesSection}>
-          {sortedSelectedDates.length > 0 &&
-            sortedSelectedDates.map((selectedDate) => (
-              <div key={selectedDate} className={styles.matchSection}>
-                <div className={styles.matchContainer}>
-                  <div className={styles.matchHeader}>
-                    <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
-                    <span className={styles.date}>{selectedDate}</span>
-                  </div>
-                  <DashTileContainer
-                    matches={matchesByDate[selectedDate].filter(
-                      (match) => match.singlesDoubles === 'Singles'
-                    )}
-                    matchType="Singles"
-                    onTileClick={handleTileClick}
-                  />
-                  <DashTileContainer
-                    matches={matchesByDate[selectedDate].filter(
-                      (match) => match.singlesDoubles === 'Doubles'
-                    )}
-                    matchType="Doubles"
-                    onTileClick={handleTileClick}
-                  />
+          {(sortedSelectedDates.length > 0
+            ? sortedSelectedDates
+            : Object.keys(matchesByDate)
+          ).map((selectedDate) => (
+            <div key={selectedDate} className={styles.matchSection}>
+              <div className={styles.matchContainer}>
+                <div className={styles.matchHeader}>
+                  <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
+                  <span className={styles.date}>{selectedDate}</span>
                 </div>
+                <DashTileContainer
+                  matches={matchesByDate[selectedDate].filter(
+                    (match) => match.singlesDoubles === 'Singles'
+                  )}
+                  matchType="Singles"
+                  onTileClick={handleTileClick}
+                />
+                <DashTileContainer
+                  matches={matchesByDate[selectedDate].filter(
+                    (match) => match.singlesDoubles === 'Doubles'
+                  )}
+                  matchType="Doubles"
+                  onTileClick={handleTileClick}
+                />
               </div>
-            ))}
+            </div>
+          ))}
         </div>
 
         <div className={styles.rosterContainer}>

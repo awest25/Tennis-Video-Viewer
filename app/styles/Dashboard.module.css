@@ -162,9 +162,10 @@
 }
 
 .active:hover {
-  color: #000000;
+  background-color: #3b87c1;
+  color: #ffffff;
 }
 
 .active:hover .matchDate {
-  color: #000000;
+  color: #ffffff;
 }
