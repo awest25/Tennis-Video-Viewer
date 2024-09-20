@@ -3,9 +3,10 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { useMatchData } from './MatchDataProvider'
+import { useDatabase } from './DatabaseProvider'
 import styles from '../styles/Dashboard.module.css'
 import DashTileContainer from './DashTileContainer'
-import getTeams from '@/app/services/getTeams.js'
+
 import RosterList from './RosterList.js'
 import Select from 'react-select'
 import FuzzySearch from './FuzzySearch'
@@ -29,9 +30,6 @@ const extractDateFromName = (name) => {
 
 // Format date based on type
 export const formatDate = (date, formatType) => {
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   const year = date.getFullYear()
@@ -70,6 +68,7 @@ const Dashboard = () => {
   const router = useRouter()
   const formattedMatches = formatMatches(matchData)
   const { logos } = useDatabase()
+  const [searchTerm, setSearchTerm] = useState('')
 
   // Group matches by date
   const matchesByDate = formattedMatches.reduce((acc, match) => {
@@ -84,7 +83,7 @@ const Dashboard = () => {
   }, {})
 
   // Function to find the closest past date to today
-  const getClosestPastDate = () => {
+  const getMostRecentMatch = () => {
     const today = new Date()
     const pastDates = Object.keys(matchesByDate)
       .map((date) => new Date(date))
@@ -98,7 +97,7 @@ const Dashboard = () => {
   const [selectedDates, setSelectedDates] = useState([])
 
   useEffect(() => {
-    const closestDate = getClosestPastDate()
+    const closestDate = getMostRecentMatch()
     if (closestDate) {
       setSelectedDates([closestDate])
     }
@@ -111,6 +110,42 @@ const Dashboard = () => {
 
   const handleTileClick = (videoId) => {
     router.push(`/matches/${videoId}`)
+  }
+
+  // Fuzzy Search Method
+  const filteredMatches = useMemo(() => {
+    if (!searchTerm) return []
+    const result = formattedMatches.reduce((acc, match) => {
+      // Define the fields and their properties to search
+      const fieldsToSearch = [
+        { property: 'clientTeam', value: String(match.clientTeam) },
+        { property: 'clientPlayer', value: String(match.clientPlayer) },
+        { property: 'opponentTeam', value: String(match.opponentTeam) },
+        { property: 'opponentPlayer', value: String(match.opponentPlayer) },
+        { property: 'date', value: match.date ? String(match.date) : '' },
+        { property: 'singlesDoubles', value: String(match.singlesDoubles) },
+        { property: 'videoID', value: String(match.videoID) }
+      ]
+      // Find matched fields
+      const matchedFields = fieldsToSearch.filter(({ value }) =>
+        FuzzySearch(searchTerm, value)
+      )
+      if (matchedFields.length > 0) {
+        acc.push({
+          match,
+          matchedProperties: matchedFields.map(({ property, value }) => ({
+            property,
+            value
+          }))
+        })
+      }
+      return acc
+    }, [])
+    return result // returns array of matches from fuzzy search
+  }, [searchTerm, formattedMatches])
+
+  const handleSearch = (inputValue) => {
+    setSearchTerm(inputValue)
   }
 
   const handleCarouselClick = (date) => {
@@ -164,33 +199,32 @@ const Dashboard = () => {
 
       <div className={styles.mainContent}>
         <div className={styles.matchesSection}>
-          {(sortedSelectedDates.length > 0
-            ? sortedSelectedDates
-            : Object.keys(matchesByDate)
-          ).map((selectedDate) => (
-            <div key={selectedDate} className={styles.matchSection}>
-              <div className={styles.matchContainer}>
-                <div className={styles.matchHeader}>
-                  <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
-                  <span className={styles.date}>{selectedDate}</span>
+          {sortedSelectedDates.length > 0
+            ? sortedSelectedDates.map((selectedDate) => (
+                <div key={selectedDate} className={styles.matchSection}>
+                  <div className={styles.matchContainer}>
+                    <div className={styles.matchHeader}>
+                      <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
+                      <span className={styles.date}>{selectedDate}</span>
+                    </div>
+                    <DashTileContainer
+                      matches={matchesByDate[selectedDate].filter(
+                        (match) => match.singlesDoubles === 'Singles'
+                      )}
+                      matchType="Singles"
+                      onTileClick={handleTileClick}
+                    />
+                    <DashTileContainer
+                      matches={matchesByDate[selectedDate].filter(
+                        (match) => match.singlesDoubles === 'Doubles'
+                      )}
+                      matchType="Doubles"
+                      onTileClick={handleTileClick}
+                    />
+                  </div>
                 </div>
-                <DashTileContainer
-                  matches={matchesByDate[selectedDate].filter(
-                    (match) => match.singlesDoubles === 'Singles'
-                  )}
-                  matchType="Singles"
-                  onTileClick={handleTileClick}
-                />
-                <DashTileContainer
-                  matches={matchesByDate[selectedDate].filter(
-                    (match) => match.singlesDoubles === 'Doubles'
-                  )}
-                  matchType="Doubles"
-                  onTileClick={handleTileClick}
-                />
-              </div>
-            </div>
-          ))}
+              ))
+            : null}
         </div>
 
         <div className={styles.rosterContainer}>

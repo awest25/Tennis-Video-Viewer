@@ -6,6 +6,7 @@
   padding-left: 40px;
   padding-right: 40px;
   font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
 }
 
 .header {
@@ -129,7 +130,7 @@
   min-width: 100px;
   border: 1px solid #dedede;
   border-radius: 20px;
-  padding: 8px 15px;
+  padding: 6px 15px;
   margin-right: 10px;
   background-color: #ffffff;
   white-space: nowrap;
@@ -172,4 +173,17 @@
 
 .active:hover .matchDate {
   color: #ffffff;
+}
+
+.placeholderContainer {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.searchIcon {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
 }
