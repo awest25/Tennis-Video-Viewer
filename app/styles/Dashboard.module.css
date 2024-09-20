@@ -25,6 +25,11 @@
   margin-bottom: 20px;
 }
 
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+}
+
 .carousel {
   display: flex;
   overflow-x: auto;
@@ -115,7 +120,6 @@
 .matchTypeHeader h4 {
   font-size: 20px;
   margin: 10px 0 0 0;
-  font-weight: normal;
 }
 
 .card {

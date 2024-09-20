@@ -1,12 +1,16 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useState, useMemo } from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import { useMatchData } from './MatchDataProvider'
-import { useDatabase } from './DatabaseProvider'
 import styles from '../styles/Dashboard.module.css'
 import DashTileContainer from './DashTileContainer'
+import getTeams from '@/app/services/getTeams.js'
 import RosterList from './RosterList.js'
+import Select from 'react-select'
+import FuzzySearch from './FuzzySearch'
+import SearchPlaceholder from './SearchPlaceholder'
+import { SelectStyles } from './SelectStyles'
 // Import sample data to test data fetching
 import matchData from '../(interactive)/dashboard/sampleData'
 
@@ -28,8 +32,15 @@ export const formatDate = (date, formatType) => {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const year = date.getFullYear()
 
   switch (formatType) {
+    case 'MM/DD/YY':
+      return `${month}/${day}/${String(year).slice(-2)}`
+    case 'MM/DD/YYYY':
+      return `${month}/${day}/${year}`
     case 'MM/DD/YY':
       return `${month}/${day}/${String(year).slice(-2)}`
     case 'MM/DD/YYYY':
@@ -114,7 +125,20 @@ const Dashboard = () => {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1>BSA | Tennis Consulting</h1>
-        <h2>Dashboard</h2>
+        <div className={styles.headerContent}>
+          <h2>Dashboard</h2>
+          <Select
+            placeholder={<SearchPlaceholder />}
+            components={{
+              DropdownIndicator: () => null, // This removes the dropdown arrow
+              IndicatorSeparator: () => null, // This removes the separator next to the arrow
+              Menu: () => null // This removes the default menu when a search is preformed
+            }}
+            styles={SelectStyles}
+            options={filteredMatches} // Use filtered matches as options
+            onInputChange={handleSearch}
+          />
+        </div>
       </header>
 
       <div className={styles.carousel}>
