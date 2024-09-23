@@ -31,15 +31,6 @@
   justify-content: space-between;
 }
 
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  margin-bottom: 30px;
-  padding: 10px 0;
-  border-top: 1px solid #dedede;
-  border-bottom: 1px solid #dedede;
-}
-
 .mainContent {
   display: flex;
   justify-content: space-between;
@@ -56,19 +47,6 @@
   font-family: 'DM Sans', sans-serif;
   position: relative;
   top: -25px;
-}
-
-.logo {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  margin-right: 8px;
-}
-
-.matchDate {
-  font-size: 15px;
-  font-weight: 500;
-  color: #000000;
 }
 
 .matchSection {
@@ -123,14 +101,34 @@
   margin: 10px 0 0 0;
 }
 
+/* Carousel of cards (match filtering) */
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* hide scrollbar */
+}
+
 .card {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-width: 100px;
+  min-width: 125px;
   border: 1px solid #dedede;
   border-radius: 20px;
-  padding: 6px 15px;
+  padding: 6px 10px;
+  min-width: 100px; /* Reduce min-width for narrower cards */
+  max-width: 150px; /* Set max-width to prevent them from growing too wide */
+  flex-shrink: 0; /* Prevent shrinking beyond min-width */
   margin-right: 10px;
   background-color: #ffffff;
   white-space: nowrap;
@@ -145,6 +143,21 @@
 .cardContent {
   display: flex;
   align-items: center;
+}
+
+.logo {
+  width: 27.5px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  margin-right: 5px;
+}
+
+.matchDate {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+  margin-right: 0px;
 }
 
 .card:hover {
@@ -174,6 +187,8 @@
 .active:hover .matchDate {
   color: #ffffff;
 }
+
+/* Search Bar */
 
 .placeholderContainer {
   display: flex;

@@ -30,19 +30,19 @@ const extractDateFromName = (name) => {
 
 // Format date based on type
 export const formatDate = (date, formatType) => {
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1)
+  const day = String(date.getDate())
   const year = date.getFullYear()
 
   switch (formatType) {
-    case 'MM/DD/YY':
+    case 'M/D/YY':
       return `${month}/${day}/${String(year).slice(-2)}`
-    case 'MM/DD/YYYY':
+    case 'M/D/YYYY':
       return `${month}/${day}/${year}`
     case 'MM/DD/YY':
-      return `${month}/${day}/${String(year).slice(-2)}`
+      return `${month.padStart(2, '0')}/${day}/${String(year).slice(-2)}`
     case 'MM/DD/YYYY':
-      return `${month}/${day}/${year}`
+      return `${month.padStart(2, '0')}/${day}/${year}`
     default:
       throw new Error(`Unknown format type: ${formatType}`)
   }
@@ -190,7 +190,7 @@ const Dashboard = () => {
                 className={styles.logo}
               />
               <span className={styles.matchDate}>
-                {formatDate(new Date(date), 'MM/DD/YY')}
+                {formatDate(new Date(date), 'M/D/YY')}
               </span>
             </div>
           </div>
@@ -205,7 +205,9 @@ const Dashboard = () => {
                   <div className={styles.matchContainer}>
                     <div className={styles.matchHeader}>
                       <h3>{`${matchesByDate[selectedDate][0].clientTeam} vs ${matchesByDate[selectedDate][0].opponentTeam}`}</h3>
-                      <span className={styles.date}>{selectedDate}</span>
+                      <span className={styles.date}>
+                        {formatDate(new Date(selectedDate), 'M/D/YYYY')}
+                      </span>
                     </div>
                     <DashTileContainer
                       matches={matchesByDate[selectedDate].filter(

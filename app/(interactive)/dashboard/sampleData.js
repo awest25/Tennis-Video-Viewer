@@ -568,11 +568,11 @@ const matchData = [
       set3: null
     }
   },
-  // Vs. Texas A&M
+  // Vs. Ohio State
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -597,7 +597,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -622,7 +622,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -647,7 +647,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -672,7 +672,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -697,7 +697,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Texas A&M (M)',
+    opponentTeam: 'Ohio State (M)',
     opponentPlayer: 'Andy Murray',
     date: '2/6/24',
     isTagged: false,
@@ -719,11 +719,11 @@ const matchData = [
       set3: null
     }
   },
-  // Vs. San Diego State
+  // Vs. USC
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -748,7 +748,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -773,7 +773,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -798,7 +798,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -823,7 +823,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -848,7 +848,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'San Diego State (M)',
+    opponentTeam: 'USC (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/25/24',
     isTagged: false,
@@ -870,11 +870,11 @@ const matchData = [
       set3: null
     }
   },
-  // Vs. LSU
+  // Vs. UC Irvine
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -899,7 +899,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -924,7 +924,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -949,7 +949,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -974,7 +974,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -999,7 +999,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'LSU (M)',
+    opponentTeam: 'UCI (M)',
     opponentPlayer: 'Andy Murray',
     date: '1/19/24',
     isTagged: false,
@@ -1172,11 +1172,11 @@ const matchData = [
       set3: null
     }
   },
-  // Vs. Washington
+  // Vs. Arizona
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: true,
@@ -1201,7 +1201,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: true,
@@ -1226,7 +1226,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1251,7 +1251,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1276,7 +1276,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'Hance/Wagle',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1301,7 +1301,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1326,7 +1326,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1351,7 +1351,7 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
     isTagged: false,
@@ -1376,9 +1376,339 @@ const matchData = [
   {
     clientTeam: 'UCLA (M)',
     clientPlayer: 'CJ Gimena',
-    opponentTeam: 'Washington (M)',
+    opponentTeam: 'Arizona (M)',
     opponentPlayer: 'Roger Federer',
     date: '1/5/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  // Vs. Duke
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: true,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: true,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'Hance/Wagle',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Singles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Duke (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/2/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  // Vs. Ole Miss
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Ole Miss (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/3/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  // Vs. Washington State
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Washington State (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/1/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  // Vs. Washington State
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Washington State (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/1/24',
+    isTagged: false,
+    singlesDoubles: 'Doubles',
+    videoID: 'Z6F1Amn51528fzmVlHlV',
+    matchScore: {
+      set1: {
+        clientGames: 6,
+        opponentGames: 4,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set2: {
+        clientGames: 6,
+        opponentGames: 3,
+        clientTiebreak: null,
+        opponentTiebreak: null
+      },
+      set3: null
+    }
+  },
+  // Vs. Rice
+  {
+    clientTeam: 'UCLA (M)',
+    clientPlayer: 'CJ Gimena',
+    opponentTeam: 'Rice (M)',
+    opponentPlayer: 'Roger Federer',
+    date: '1/4/24',
     isTagged: false,
     singlesDoubles: 'Doubles',
     videoID: 'Z6F1Amn51528fzmVlHlV',
