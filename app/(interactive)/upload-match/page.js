@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback} from "react";
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { useMatchData } from "../../components/MatchDataProvider.js";
@@ -57,47 +57,45 @@ export default function UploadMatchForm() {
     fetchCollectionsAndTeams();
   }, []);
 
-  const handleChange = ({ formData }) => {
-    setFormData(formData); // Prevents form reset after selecting team
-    let clientPlayers = [];
-    let opponentPlayers = [];
-
-    if (formData.clientTeam) {
-      const selectedClientTeam = teams.find(
-        (team) => team.name === formData.clientTeam
-      );
-      if (selectedClientTeam) {
-        clientPlayers = selectedClientTeam.players?.map(
+  const getPlayersForTeam = useCallback(
+    (teamName) => {
+      const selectedTeam = teams.find((team) => team.name === teamName);
+      return (
+        selectedTeam?.players?.map(
           (player) => `${player.firstName} ${player.lastName}`
-        );
-      }
-    }
-
-    if (formData.opponentTeam) {
-      const selectedOpponentTeam = teams.find(
-        (team) => team.name === formData.opponentTeam
+        ) || []
       );
-      if (selectedOpponentTeam) {
-        opponentPlayers = selectedOpponentTeam.players?.map(
-          (player) => `${player.firstName} ${player.lastName}`
-        );
-      }
-    }
+    },
+    [teams]
+  );
 
-    setSchema((prevSchema) => ({
-      ...prevSchema,
-      properties: {
-        ...prevSchema.properties,
-        clientPlayer: {
-          ...prevSchema.properties.clientPlayer,
-          enum: clientPlayers,
+  const updatePlayerOptions = useCallback(
+    (formData) => {
+      const clientPlayers = getPlayersForTeam(formData.clientTeam);
+      const opponentPlayers = getPlayersForTeam(formData.opponentTeam);
+
+      setSchema((prevSchema) => ({
+        ...prevSchema,
+        properties: {
+          ...prevSchema.properties,
+          clientPlayer: {
+            ...prevSchema.properties.clientPlayer,
+            enum: clientPlayers,
+          },
+          opponentPlayer: {
+            ...prevSchema.properties.opponentPlayer,
+            enum: opponentPlayers,
+          },
         },
-        opponentPlayer: {
-          ...prevSchema.properties.opponentPlayer,
-          enum: opponentPlayers,
-        },
-      },
-    }));
+      }));
+    },
+
+    [getPlayersForTeam]
+  );
+
+  const handleChange = ({ formData: newFormData }) => {
+    setFormData(newFormData);
+    updatePlayerOptions(newFormData);
   };
 
   const handleSubmit = async ({ formData }) => {
@@ -179,16 +177,6 @@ export default function UploadMatchForm() {
         matchDetails,
         searchableProperties,
         version: "v1", // Current version for new matches added
-        name: `${players.client.firstName} ${
-          players.client.lastName
-        } ${teams.clientTeam.replace(/\s?\(M\)|\s?\(W\)/g, "")} vs. ${
-          players.opponent.firstName
-        } ${players.opponent.lastName} ${teams.opponentTeam.replace(
-          /\s?\(M\)|\s?\(W\)/g,
-          ""
-        )} ${formData.date.split("-")[1]}/${
-          formData.date.split("-")[2]
-        }/${formData.date.split("-")[0].slice(2)}`,
       });
 
       alert("Match uploaded successfully!");
