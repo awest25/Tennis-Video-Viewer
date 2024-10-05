@@ -73,7 +73,9 @@ export default function MatchList() {
               <li>
                 <span>{match.name}<button onClick={() => handleDelete(match.id)}>Delete</button></span>
                 <span><button onClick={() => handleDownload(match.id)}>Download JSON</button></span>
-                <Link href={`/tag-match/${match.id}`}><button>Tag Match</button></Link>
+                <br/>
+                <Link href={`/tag-match/${match.id}`}><button>Tag Match - Full</button></Link>
+                <Link href={`/timestamp-tagger?videoId=${match.videoId}`}><button>Tag Match - Timestamp</button></Link>
                 <br/>
                 <input onChange={(e) => setNewName(e.target.value)}/>
                 <button onClick={() => handleRename(match.id)}>Rename</button>
