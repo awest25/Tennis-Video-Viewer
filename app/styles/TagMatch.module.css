@@ -29,7 +29,7 @@
     top: 33%;
     left: 80%;
     transform: translateX(-50%);
-    
+    overflow-y: auto;
 }
 
 .courtImage {
