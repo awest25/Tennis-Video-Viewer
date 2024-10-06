@@ -38,6 +38,7 @@ var player1SetScore = 0;
 var player2SetScore = 0;
 var player1GameScore = 0;
 var player2GameScore = 0;
+var isAce = false;
 
 function updateScore(shotInRally, isWinner, serverName) {
   if ((shotInRally % 2 == 0) &
@@ -130,7 +131,16 @@ isWinner == '1') {
     }
   }
 }
-function chooseSide() {
+function chooseSide({ tiebreak = false } = {}) {
+  if (tiebreak) {
+    if ((serverScore + returnerScore) % 2 == 0) {
+      return "Deuce";
+    }
+    else
+    {
+      return "Ad";
+    }
+  }
   if (serverScore == 40 || returnerScore == 40) {
     if ((serverScore + returnerScore) % 2 == 0) {
       return "Ad";
@@ -229,16 +239,6 @@ function updateTiebreakScore(shotInRally, isWinner, serverName) {
     }
   }
 }
-function chooseTiebreakSide() {
-  if ((serverScore + returnerScore) % 2 == 0) {
-    return "Deuce";
-  }
-  else
-  {
-    return "Ad";
-  }
-
-}
 // function endPoint() {
 //     if (serverScore == 40 && returnerScore == 40) {
 //         setCurrentPage('PointScore');
@@ -255,48 +255,50 @@ function chooseTiebreakSide() {
 //     setCurrentPage('FirstServe');  
 //     }
 // }
-export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) => ({
+export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, toggledValues) => ({
     
-  'ServerName': [
-    {
-      label: 'Player1',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', 'Player1');
-        setCurrentPage('ServerSide')
-      }
-    },
-    {
-      label: 'Player2',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', 'Player2');
-        setCurrentPage('ServerSide')
-      }
-    },
-  ],
-  'ServerNameTiebreak': [
-    {
-      label: 'Player1',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', 'Player1');
-        setCurrentPage('ServerSideTiebreak')
-      }
-    },
-    {
-      label: 'Player2',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', 'Player2');
-        setCurrentPage('ServerSideTiebreak')
-      }
-    },
-  ],
+  // 'ServerName': [
+  //   {
+  //     label: 'Player1',
+  //     action: () => {
+  //       addNewRow();
+  //       updateActiveRow('serverName', 'Player1');
+  //       setCurrentPage('ServerSide')
+  //     }
+  //   },
+  //   {
+  //     label: 'Player2',
+  //     action: () => {
+  //       addNewRow();
+  //       updateActiveRow('serverName', 'Player2');
+  //       setCurrentPage('ServerSide')
+  //     }
+  //   },
+  // ],
+  // 'ServerNameTiebreak': [
+  //   {
+  //     label: 'Player1',
+  //     action: () => {
+  //       addNewRow();
+  //       updateActiveRow('serverName', 'Player1');
+  //       setCurrentPage('ServerSideTiebreak')
+  //     }
+  //   },
+  //   {
+  //     label: 'Player2',
+  //     action: () => {
+  //       addNewRow();
+  //       updateActiveRow('serverName', 'Player2');
+  //       setCurrentPage('ServerSideTiebreak')
+  //     }
+  //   },
+  // ],
   'ServerSide': [
     {
       label: 'NearSide',
       action: () => {
+        addNewRow();
+        updateActiveRow('serverName', toggledValues['serverName']);
         updateActiveRow('serverFarNear', 'Near');
         updateActiveRow('pointScore', serverScore + '-' + returnerScore);
         updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
@@ -311,6 +313,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
     {
       label: 'FarSide',
       action: () => {
+        addNewRow();
+        updateActiveRow('serverName', toggledValues['serverName']);
         updateActiveRow('serverFarNear', 'Far');
         updateActiveRow('pointScore', serverScore + '-' + returnerScore);
         updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
@@ -332,7 +336,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
         updateActiveRow('setScore', data.table[data.activeRowIndex - 1]['setScore']);
         updateActiveRow('isPointStart', 1);
         updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseTiebreakSide());
+        updateActiveRow('side', chooseSide({ tiebreak: true }));
         setCurrentPage('FirstServe');
       }
     },
@@ -345,7 +349,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
         updateActiveRow('setScore', data.table[data.activeRowIndex - 1]['setScore']);
         updateActiveRow('isPointStart', 1);
         updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseTiebreakSide());
+        updateActiveRow('side', chooseSide({ tiebreak: true }));
         setCurrentPage('FirstServe');
       }
     },
@@ -382,21 +386,40 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
     {
       label: 'Ace',
       action: () => {
-        updateActiveRow('isAce', '1');
-        updateActiveRow('isPointEnd', '1');
-        updateActiveRow('isWinner', '1');
-        //setCurrentPage('PointScore')
+        isAce = true;
       }
     },
     {
       courtImage: 'serve',
       label: 'Select First Serve Position',
       action: (data) => {
+        // newly added vars for coordinate checking
+        const serverName = toggledValues['serverName'];
+        const serverFarNear = toggledValues['serverFarNear'];
+        const serverSide = chooseSide({ tiebreak: toggledValues['tiebreak'] });
+        // serverName
+        addNewRow();
+        updateActiveRow('serverName', serverName);
+        // serverSide
+        updateActiveRow('serverFarNear', serverFarNear);
+        updateActiveRow('pointScore', serverScore + '-' + returnerScore);
+        updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
+        updateActiveRow('setScore', player1SetScore + '-' + player2SetScore);
+        updateActiveRow('isPointStart', 1);
+        updateActiveRow('shotInRally', 1);
+        updateActiveRow('side', serverSide);
+        // check Ace after adding new row
+        if (isAce) {
+          updateActiveRow('isAce', '1');
+          updateActiveRow('isPointEnd', '1');
+          updateActiveRow('isWinner', '1');
+        }
+        // First Serve Actions
         updateActiveRow('firstServeXCoord', data.x);
-        updateActiveRow('firstServeYCoord', data.y);  
+        updateActiveRow('firstServeYCoord', data.y);
         // Depending on coordinates, fill location of serve, etc...
-        if (data.table[data.activeRowIndex]['serverFarNear'] == 'Near') {
-          if ((data.table[data.activeRowIndex])['side'] == 'Deuce') // split by side
+        if (serverFarNear == 'Near') {
+          if (serverSide == 'Deuce') // split by side
           {
             // Assuming coordinate range of x: 0-(-157), y: 0-245
             if (data.x >= -157 & data.x < -101)
@@ -405,8 +428,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce == '1') {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -451,8 +474,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -497,8 +520,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -559,8 +582,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -605,8 +628,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -651,8 +674,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y >= 10 & data.y <= 245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -702,7 +725,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
         // FAR SIDE
         else
         {
-          if ((data.table[data.activeRowIndex])['side'] == 'Ad') // split by side
+          if (serverSide == 'Ad') // split by side
           {
             // Assuming coordinate range of x: 0-(-157), y: 0-245
             if (data.x >= -157 & data.x < -105)
@@ -711,8 +734,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -757,8 +780,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -803,8 +826,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -865,8 +888,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -911,8 +934,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -957,8 +980,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
               if (data.y <= -10 & data.y >= -245)
               {
                 updateActiveRow('firstServeIn', '1');
-                if (data.table[data.activeRowIndex]['isAce'] == '1') {
-                  ace(data.table[data.activeRowIndex]['serverName']);
+                if (isAce) {
+                  ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
                     setCurrentPage('ServerName');
                   }
@@ -1012,6 +1035,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage) 
             }   
           }  
         }
+        // reset Ace var
+        isAce = false;
       }
     },
   ],
