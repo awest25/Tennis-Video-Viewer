@@ -8,6 +8,7 @@ import { useAuth } from "../../components/AuthWrapper.js";
 import getTeams from "@/app/services/getTeams.js";
 import styles from "../../styles/Upload.module.css";
 import { initialSchema, uiSchema } from "@/app/services/matchSchemas.js";
+import { searchableProperties } from "@/app/services/searchableProperties.js";
 
 export default function UploadMatchForm() {
   const { createMatch } = useMatchData(); // Use the createMatch hook
@@ -92,7 +93,6 @@ export default function UploadMatchForm() {
 
     [getPlayersForTeam]
   );
-
   const handleChange = ({ formData: newFormData }) => {
     setFormData(newFormData);
     updatePlayerOptions(newFormData);
@@ -145,23 +145,6 @@ export default function UploadMatchForm() {
         formData.matchScore.set1,
         formData.matchScore.set2,
         ...(formData.matchScore.set3 ? formData.matchScore.set3 : []),
-      ];
-
-      //Searchable properties
-      const searchableProperties = [
-        "clientTeam",
-        "clientPlayer",
-        "opponentTeam",
-        "opponentPlayer",
-        "date",
-        "division",
-        "event",
-        "lineup",
-        "matchVenue",
-        "round",
-        "court",
-        "surface",
-        "singlesDoubles",
       ];
 
       // Use the createMatch hook to upload the match
