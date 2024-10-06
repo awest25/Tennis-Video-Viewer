@@ -22,9 +22,12 @@ export default function TagMatch() {
   const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
   const [isPublished, setIsPublished] = useState(false); // Customers can only see Published matches
   const [matchMetadata, setMatchMetadata] = useState({});
+  const [serverName, setServerName] = useState("Player1");
+  const [serverFarNear, setServerFarNear] = useState("Near");
+  const [tiebreak, setTiebreak] = useState(false);
 
   const [popUp, setPopUp] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   // currently impossible to determine exact YouTube FPS: 24-60 FPS
   const FRAMERATE = 30;
 
@@ -326,11 +329,12 @@ export default function TagMatch() {
   };
 
   // This pulls the button data from the taggerButtonData.js file
-  const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage, {
-    "serverName": "Player1",
-    "serverFarNear": "Near",
-    "tiebreak": true
-  });
+  const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage,
+    {
+      serverName,
+      serverFarNear,
+      tiebreak
+    });
 
   const handleImageClick = (event) => {
     console.log("event: ", event);
@@ -374,7 +378,7 @@ export default function TagMatch() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', gap: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', width: '48vw', height: '36vw'}}>
           <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
           <button onClick={handleDownload}>Download CSV</button>
@@ -418,7 +422,28 @@ export default function TagMatch() {
             );
           })}
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <p>Current Server: {serverName}</p>
+            <button onClick={() => {
+              setServerName((prevName) => (prevName === "Player1" ? "Player2" : "Player1"));
+            }}>Toggle Server</button>
+          </div>
+
+          <div>
+            <p>Current Side: {serverFarNear}</p>
+            <button onClick={() => {
+              setServerFarNear((prevSide) => (prevSide === "Far" ? "Near" : "Far"));
+            }}>Toggle Side</button>
+          </div>
+
+          <div>
+            <p>Tiebreak: {tiebreak.toString()}</p>
+            <button onClick={() => {
+              setTiebreak(!tiebreak);
+            }}>Toggle Tiebreak</button>
+          </div>
+
           {isVisible && popUp.length > 0 && (
             <div className={styles.popUp}>
               <h2 style={{ fontSize: '20px' }}>Altered Rows:</h2>
