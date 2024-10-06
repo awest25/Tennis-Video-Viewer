@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useEffect, useState, useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -12,48 +12,48 @@ import { searchableProperties } from "@/app/services/searchableProperties.js";
 import SearchIcon from "@/public/search";
 import searchStyle from "../styles/Dashboard.module.css";
 // Import sample data to test data fetching
-import matchData from "../(interactive)/dashboard/sampleData";
+import matchData from '../(interactive)/dashboard/sampleData'
 
 // Extract date from match name
 const extractDateFromName = (name) => {
-  const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/;
-  const matchResult = name.match(dateRegex);
+  const dateRegex = /(\d{1,2})\/(\d{1,2})\/(\d{2})/
+  const matchResult = name.match(dateRegex)
 
-  if (!matchResult) return null;
+  if (!matchResult) return null
 
-  const [month, day, year] = matchResult.slice(1).map(Number);
-  const fullYear = year < 50 ? 2000 + year : 1900 + year;
+  const [month, day, year] = matchResult.slice(1).map(Number)
+  const fullYear = year < 50 ? 2000 + year : 1900 + year
 
-  return new Date(fullYear, month - 1, day);
-};
+  return new Date(fullYear, month - 1, day)
+}
 
 // Format date based on type
 export const formatDate = (date, formatType) => {
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const year = date.getFullYear()
 
   switch (formatType) {
-    case "MM/DD/YY":
-      return `${month}/${day}/${String(year).slice(-2)}`;
-    case "MM/DD/YYYY":
-      return `${month}/${day}/${year}`;
+    case 'MM/DD/YY':
+      return `${month}/${day}/${String(year).slice(-2)}`
+    case 'MM/DD/YYYY':
+      return `${month}/${day}/${year}`
     default:
-      throw new Error(`Unknown format type: ${formatType}`);
+      throw new Error(`Unknown format type: ${formatType}`)
   }
-};
+}
 
 // Format matches in order of recency
 const formatMatches = (matches) =>
   matches
     .filter((match) => match.clientPlayer && match.opponentPlayer)
     .map((match) => {
-      const date = extractDateFromName(match.date);
+      const date = extractDateFromName(match.date)
       return {
         ...match,
         date: date,
-        formattedDate: date ? formatDate(date, "MM/DD/YYYY") : null,
-      };
+        formattedDate: date ? formatDate(date, 'MM/DD/YYYY') : null
+      }
     })
     .sort((a, b) => (b.date && a.date ? b.date - a.date : 1));
 
@@ -79,12 +79,12 @@ const Dashboard = () => {
 
   // Group matches by date
   const matchesByDate = formattedMatches.reduce((acc, match) => {
-    const matchDate = match.formattedDate;
+    const matchDate = match.formattedDate
     if (matchDate && !acc[matchDate]) {
-      acc[matchDate] = [];
+      acc[matchDate] = []
     }
     if (matchDate) {
-      acc[matchDate].push(match);
+      acc[matchDate].push(match)
     }
     return acc;
   }, {});
@@ -178,7 +178,7 @@ const Dashboard = () => {
                 className={styles.logo}
               />
               <span className={styles.matchDate}>
-                {formatDate(new Date(date), "MM/DD/YY")}
+                {formatDate(new Date(date), 'MM/DD/YY')}
               </span>
             </div>
           </div>
