@@ -256,104 +256,6 @@ function updateTiebreakScore(shotInRally, isWinner, serverName) {
 //     }
 // }
 export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, toggledValues) => ({
-    
-  // 'ServerName': [
-  //   {
-  //     label: 'Player1',
-  //     action: () => {
-  //       addNewRow();
-  //       updateActiveRow('serverName', 'Player1');
-  //       setCurrentPage('ServerSide')
-  //     }
-  //   },
-  //   {
-  //     label: 'Player2',
-  //     action: () => {
-  //       addNewRow();
-  //       updateActiveRow('serverName', 'Player2');
-  //       setCurrentPage('ServerSide')
-  //     }
-  //   },
-  // ],
-  // 'ServerNameTiebreak': [
-  //   {
-  //     label: 'Player1',
-  //     action: () => {
-  //       addNewRow();
-  //       updateActiveRow('serverName', 'Player1');
-  //       setCurrentPage('ServerSideTiebreak')
-  //     }
-  //   },
-  //   {
-  //     label: 'Player2',
-  //     action: () => {
-  //       addNewRow();
-  //       updateActiveRow('serverName', 'Player2');
-  //       setCurrentPage('ServerSideTiebreak')
-  //     }
-  //   },
-  // ],
-  'ServerSide': [
-    {
-      label: 'NearSide',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', toggledValues['serverName']);
-        updateActiveRow('serverFarNear', 'Near');
-        updateActiveRow('pointScore', serverScore + '-' + returnerScore);
-        updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
-        updateActiveRow('setScore', player1SetScore + '-' + player2SetScore);
-        updateActiveRow('isPointStart', 1);
-        updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseSide());
-        setCurrentPage('FirstServe');
-        //setCurrentPage('PointScore')
-      }
-    },
-    {
-      label: 'FarSide',
-      action: () => {
-        addNewRow();
-        updateActiveRow('serverName', toggledValues['serverName']);
-        updateActiveRow('serverFarNear', 'Far');
-        updateActiveRow('pointScore', serverScore + '-' + returnerScore);
-        updateActiveRow('gameScore', player1GameScore + '-' + player2GameScore);
-        updateActiveRow('setScore', player1SetScore + '-' + player2SetScore);
-        updateActiveRow('isPointStart', 1);
-        updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseSide());
-        setCurrentPage('FirstServe');
-        // setCurrentPage('PointScore')
-      }
-    },
-  ],
-  'ServerSideTiebreak': [
-    {
-      label: 'NearSide',
-      action: (data) => {
-        updateActiveRow('pointScore', serverScore + '-' + returnerScore);
-        updateActiveRow('gameScore', data.table[data.activeRowIndex - 1]['gameScore']);
-        updateActiveRow('setScore', data.table[data.activeRowIndex - 1]['setScore']);
-        updateActiveRow('isPointStart', 1);
-        updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseSide({ tiebreak: true }));
-        setCurrentPage('FirstServe');
-      }
-    },
-    {
-      label: 'FarSide',
-      action: (data) => {
-        updateActiveRow('serverName', data.table[data.activeRowIndex - 1]['serverName']);
-        updateActiveRow('pointScore', serverScore + '-' + returnerScore);
-        updateActiveRow('gameScore', data.table[data.activeRowIndex - 1]['gameScore']);
-        updateActiveRow('setScore', data.table[data.activeRowIndex - 1]['setScore']);
-        updateActiveRow('isPointStart', 1);
-        updateActiveRow('shotInRally', 1);
-        updateActiveRow('side', chooseSide({ tiebreak: true }));
-        setCurrentPage('FirstServe');
-      }
-    },
-  ],
   'PointScore': [
     {
       label: '40-40 (Ad Side)',
@@ -431,7 +333,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce == '1') {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -477,7 +379,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -523,7 +425,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -585,7 +487,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -631,7 +533,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -677,7 +579,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -737,7 +639,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -783,7 +685,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -829,7 +731,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -891,7 +793,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -937,7 +839,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -983,7 +885,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 if (isAce) {
                   ace(serverName);
                   if (serverScore == 0 && returnerScore == 0) {
-                    setCurrentPage('ServerName');
+                    setCurrentPage('FirstServe');
                   }
                   else {
                     addNewRow();
@@ -1068,7 +970,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1116,7 +1018,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1164,7 +1066,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1212,7 +1114,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               updateActiveRow('isPointEnd', '1');
               doubleFault(data.table[data.activeRowIndex]['serverName']);
               if (serverScore == 0 && returnerScore == 0) {
-                setCurrentPage('ServerName');
+                setCurrentPage('FirstServe');
               }
               else {
                 addNewRow();
@@ -1262,7 +1164,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1309,7 +1211,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('secondServeIn', '0');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1356,7 +1258,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('secondServeIn', '0');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1403,7 +1305,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               }
               doubleFault(data.table[data.activeRowIndex]['serverName']);
               if (serverScore == 0 && returnerScore == 0) {
-                setCurrentPage('ServerName');
+                setCurrentPage('FirstServe');
               }
               else {
                 addNewRow();
@@ -1458,7 +1360,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1506,7 +1408,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1554,7 +1456,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1602,7 +1504,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               updateActiveRow('isPointEnd', '1');
               doubleFault(data.table[data.activeRowIndex]['serverName']);
               if (serverScore == 0 && returnerScore == 0) {
-                setCurrentPage('ServerName');
+                setCurrentPage('FirstServe');
               }
               else {
                 addNewRow();
@@ -1652,7 +1554,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1700,7 +1602,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1748,7 +1650,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('isPointEnd', '1');
                 doubleFault(data.table[data.activeRowIndex]['serverName']);
                 if (serverScore == 0 && returnerScore == 0) {
-                  setCurrentPage('ServerName');
+                  setCurrentPage('FirstServe');
                 }
                 else {
                   addNewRow();
@@ -1796,7 +1698,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               updateActiveRow('isPointEnd', '1');
               doubleFault(data.table[data.activeRowIndex]['serverName']);
               if (serverScore == 0 && returnerScore == 0) {
-                setCurrentPage('ServerName');
+                setCurrentPage('FirstServe');
               }
               else {
                 addNewRow();
@@ -2048,7 +1950,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               player2GameScore = 0;
               serverScore = 0;
               returnerScore = 0;
-              setCurrentPage('ServerName');
+              setCurrentPage('FirstServe');
             }
             else if (returnerScore >= 7 && (returnerScore - serverScore) >= 2 ) {
               player1SetScore += 1;
@@ -2056,7 +1958,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
               player2GameScore = 0;
               returnerScore = 0;
               serverScore = 0;
-              setCurrentPage('ServerName');
+              setCurrentPage('FirstServe');
             }
             else {
               if ((serverScore + returnerScore) % 2 == 1) { // need to switch scores cuz server switches
@@ -2064,7 +1966,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 serverScore = returnerScore;
                 returnerScore = tempServeScore;
               }
-              setCurrentPage('ServerName');
+              setCurrentPage('FirstServe');
             }
           }   
           else {
@@ -2086,7 +1988,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                   player1GameScore = 0;
                 }                
               }
-              setCurrentPage('ServerName');
+              setCurrentPage('FirstServe');
             }
             else {
               addNewRow();
