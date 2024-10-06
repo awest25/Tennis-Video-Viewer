@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoPlayer from '../../../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../../../services/taggerButtonData.js';
 import styles from '../../../styles/TagMatch.module.css';
