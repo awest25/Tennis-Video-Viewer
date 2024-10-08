@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoPlayer from '../../../components/VideoPlayer';
 import { getTaggerButtonData, columnNames } from '../../../services/taggerButtonData.js';
 import styles from '../../../styles/TagMatch.module.css';
@@ -18,29 +18,31 @@ export default function TagMatch() {
   const [videoObject, setVideoObject] = useState(null);
   const [videoId, setVideoId] = useState('');
   const [tableState, setTableState] = useState({ rows: [], activeRowIndex: null });
-  const [currentPage, setCurrentPage] = useState('ServerName'); // TODO: the default should continue from what was filled in last
+  const [currentPage, setCurrentPage] = useState('PointScore'); // TODO: the default should continue from what was filled in last
   const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
-  const [isPublished, setIsPublished] = useState(false); // TODO: impliment this functionality (only show published matches)
+  const [isPublished, setIsPublished] = useState(false); // Customers can only see Published matches
   const [matchMetadata, setMatchMetadata] = useState({});
+  const [serverName, setServerName] = useState("Player1");
+  const [serverFarNear, setServerFarNear] = useState("Near");
+  const [tiebreak, setTiebreak] = useState(false);
 
   const [popUp, setPopUp] = useState([]);
-  const [isVisible, setIsVisible] = useState(false);
-  const [displayPopUp, setDisplayPopUp] = useState(false);
-  const popUpTimerId = useRef(null);
-  const popUpRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(true);
   // currently impossible to determine exact YouTube FPS: 24-60 FPS
   const FRAMERATE = 30;
 
   useEffect(() => {
-    console.log("line 23");
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [videoObject, videoId, tableState.rows, currentPage]) // TODO: the buttons should be in a different component
+
+  useEffect(() => {
     getMatchInfo(matchId).then((matchDocument) => {
       setVideoId(matchDocument.videoId);
 
-      if (matchDocument.published) {
-        setIsPublished(true);
-      } else {
-        setIsPublished(false);
-      }
+      setIsPublished(matchDocument.published);
 
       if (matchDocument.points) {
         setTableState(oldTableState => {
@@ -59,14 +61,8 @@ export default function TagMatch() {
     });
   }, [matchId]);
 
-  const handleVideoIdChange = (event) => {
-    setVideoId(event.target.value);
-  };
-
   const handleKeyDown = (event) => {
-    if (!videoObject) {
-      return;
-    }
+    if (!videoObject) return;
 
     const keyActions = {
       " ": () => {
@@ -119,6 +115,10 @@ export default function TagMatch() {
     });
   };
 
+  const getVideoTimestamp = () => {
+    return Math.round(videoObject.getCurrentTime() * 1000);
+  }
+
   const convertToCSV = (data) => {
     const headers = Object.keys(data[0]);
     const rows = data.map(obj =>
@@ -144,13 +144,6 @@ export default function TagMatch() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [videoObject, videoId, tableState.rows, currentPage]) // TODO: the buttons should be in a different component
 
   const updateActiveRow = (key, value) => {
     setPopUp(popUp => {
@@ -211,11 +204,6 @@ export default function TagMatch() {
     pullAndPushRows(tableState.rows, rowToDeleteTimestamp);
   }
 
-
-  const getVideoTimestamp = () => {
-    return Math.round(videoObject.getCurrentTime() * 1000);
-  }
-
   const saveToHistory = () => {
     setTaggerHistory(taggerHistory => {
       // Add the new state to the history
@@ -230,44 +218,6 @@ export default function TagMatch() {
       return updatedHistory;
     });
   }
-  const showPopUp = () => {
-    if (displayPopUp) {
-      if (popUpTimerId.current) {
-        clearTimeout(popUpTimerId.current);
-      }
-      setIsVisible(true);
-      popUpTimerId.current = setTimeout(() => {
-        setPopUp(prevState => ({ ...prevState, isVisible: false }));
-      }, 3000);
-    }
-    else {
-      setIsVisible(false)
-    }
-  };
-  //Change Font Size Based On Text Size
-  useEffect(() => {
-    const adjustFontSize = () => {
-      const popUpDiv = popUpRef.current;
-      if (!popUpDiv) return;
-      let currentFontSize = 16;
-      popUpDiv.style.fontSize = `${currentFontSize}px`;
-      while (popUpDiv.scrollHeight > popUpDiv.offsetHeight && currentFontSize > 8) {
-        currentFontSize--;
-        popUpDiv.style.fontSize = `${currentFontSize}px`;
-      }
-    };
-    adjustFontSize();
-  }, [popUp]); // Rerun when popUp changes
-
-  const revealPopUp = async () => {
-    setDisplayPopUp(current => !current);  // Toggle the state
-  }
-  useEffect(() => {
-    if (displayPopUp) {
-      showPopUp();  // Call showPopUp only after displayPopUp has changed
-    }
-  }, [displayPopUp]);
-
 
   const pullAndPushRows = async (rowState, rowToDeleteTimestamp = null) => {
     try {
@@ -336,7 +286,7 @@ export default function TagMatch() {
     }
   };
 
-  // Toggle the publushed state of the match
+  // Toggle the published state of the match
   const togglePublish = async () => {
     pullAndPushRows(tableState.rows, null);
     try {
@@ -379,7 +329,12 @@ export default function TagMatch() {
   };
 
   // This pulls the button data from the taggerButtonData.js file
-  const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage);
+  const buttonData = getTaggerButtonData(updateActiveRow, addNewRowAndSync, setCurrentPage,
+    {
+      serverName,
+      serverFarNear,
+      tiebreak
+    });
 
   const handleImageClick = (event) => {
     console.log("event: ", event);
@@ -423,18 +378,14 @@ export default function TagMatch() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', gap: '1rem' }}>
         <div style={{ display: 'flex', flexDirection: 'column', width: '48vw', height: '36vw'}}>
           <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
-          {/* temporary means to select video (should it be a form?) */}
-          <label>Input YouTube Code: </label>
-          <input type="text" value={videoId} onChange={handleVideoIdChange} />
-
           <button onClick={handleDownload}>Download CSV</button>
           <button onClick={handleCopy}>Copy Columns</button>
           <button onClick={undoLastAction}>Undo</button>
           <button onClick={togglePublish}>{isPublished ? "Unpublish" : "Publish"}</button>
-          <button onClick={revealPopUp}>{displayPopUp ? "Hide Last Command" : "Show Last Commmand"}</button>
+          <button onClick={() => setIsVisible(!isVisible)}>{isVisible ? "Hide Last Command" : "Show Last Commmand"}</button>
         </div>
         <div>
           <p>{currentPage}</p>
@@ -454,7 +405,6 @@ export default function TagMatch() {
                   data.activeRowIndex = tableState.activeRowIndex;
                   data.videoTimestamp = getVideoTimestamp();
                   button.action(data);
-                  showPopUp();
                 }} />
               </div>
             ) : (
@@ -466,16 +416,36 @@ export default function TagMatch() {
                 data.activeRowIndex = tableState.activeRowIndex;
                 data.videoTimestamp = getVideoTimestamp();
                 button.action(data);
-                showPopUp();
               }}>
                 {button.label}
               </button>
             );
           })}
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div>
+            <p>Current Server: {serverName}</p>
+            <button onClick={() => {
+              setServerName((prevName) => (prevName === "Player1" ? "Player2" : "Player1"));
+            }}>Toggle Server</button>
+          </div>
+
+          <div>
+            <p>Current Side: {serverFarNear}</p>
+            <button onClick={() => {
+              setServerFarNear((prevSide) => (prevSide === "Far" ? "Near" : "Far"));
+            }}>Toggle Side</button>
+          </div>
+
+          <div>
+            <p>Tiebreak: {tiebreak.toString()}</p>
+            <button onClick={() => {
+              setTiebreak(!tiebreak);
+            }}>Toggle Tiebreak</button>
+          </div>
+
           {isVisible && popUp.length > 0 && (
-            <div className={styles.popUp} ref={popUpRef}>
+            <div className={styles.popUp}>
               <h2 style={{ fontSize: '20px' }}>Altered Rows:</h2>
               {popUp.map((message, index) => (
                 <p key={index}>{message}</p>
