@@ -18,7 +18,7 @@ export default function TagMatch() {
   const [videoObject, setVideoObject] = useState(null);
   const [videoId, setVideoId] = useState('');
   const [tableState, setTableState] = useState({ rows: [], activeRowIndex: null });
-  const [currentPage, setCurrentPage] = useState('FirstServe'); // TODO: the default should continue from what was filled in last
+  const [currentPage, setCurrentPage] = useState('PointScore'); // TODO: the default should continue from what was filled in last
   const [taggerHistory, setTaggerHistory] = useState([]); // Array to hold the history of states
   const [isPublished, setIsPublished] = useState(false); // Customers can only see Published matches
   const [matchMetadata, setMatchMetadata] = useState({});
