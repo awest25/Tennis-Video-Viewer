@@ -40,148 +40,150 @@ var player1GameScore = 0;
 var player2GameScore = 0;
 var isAce = false;
 
-function updateScore(shotInRally, isWinner, serverName) {
-  if ((shotInRally % 2 == 0) &
-    isWinner == '1') {
-    if (returnerScore == 40) {
-      if (serverName == 'Player1') {
-        player2GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0;
-      }
-      else
-      {
-        player1GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0; 
-      }
+console.log(returnerScore, player1SetScore, player2SetScore, player1GameScore, player2GameScore)
 
-    }
-    else if (returnerScore != 30) {
-      returnerScore += 15;
-    }
-    else {
-      returnerScore += 10;
-    }
-  }
-  else if (shotInRally % 2 == 0) {
-    if (serverScore == 40) {
-      if (serverName == 'Player1') {
-        serverScore = 0;
-        returnerScore = 0;
-        player1GameScore += 1;
-      }
-      else
-      {
-        player2GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0; 
-      }
-    }
-    else if (serverScore != 30) {
-      serverScore += 15;
-    }
-    else    {
-      serverScore += 10;
-    }
+// function updateScore(shotInRally, isWinner, serverName) {
+//   if ((shotInRally % 2 == 0) &
+//     isWinner == '1') {
+//     if (returnerScore == 40) {
+//       if (serverName == 'Player1') {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0;
+//       }
+//       else
+//       {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+
+//     }
+//     else if (returnerScore != 30) {
+//       returnerScore += 15;
+//     }
+//     else {
+//       returnerScore += 10;
+//     }
+//   }
+//   else if (shotInRally % 2 == 0) {
+//     if (serverScore == 40) {
+//       if (serverName == 'Player1') {
+//         serverScore = 0;
+//         returnerScore = 0;
+//         player1GameScore += 1;
+//       }
+//       else
+//       {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+//     }
+//     else if (serverScore != 30) {
+//       serverScore += 15;
+//     }
+//     else    {
+//       serverScore += 10;
+//     }
                             
-  }
-  else if (shotInRally % 2 == 1 &
-isWinner == '1') {
-    if (serverScore == 40) {
-      if (serverName == 'Player1') {
-        player1GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0;
-      }
-      else
-      {
-        player2GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0; 
-      }
-    }
-    else if (serverScore != 30) {
-      serverScore += 15;
-    }
-    else  {
-      serverScore += 10;
-    }
-  }
-  else {
-    if (returnerScore == 40) {
-      if (serverName == 'Player1') {
-        serverScore = 0;
-        returnerScore = 0;
-        player2GameScore += 1;
-      }
-      else
-      {
-        player1GameScore += 1;
-        serverScore = 0;
-        returnerScore = 0; 
-      }
+//   }
+//   else if (shotInRally % 2 == 1 &
+// isWinner == '1') {
+//     if (serverScore == 40) {
+//       if (serverName == 'Player1') {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0;
+//       }
+//       else
+//       {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+//     }
+//     else if (serverScore != 30) {
+//       serverScore += 15;
+//     }
+//     else  {
+//       serverScore += 10;
+//     }
+//   }
+//   else {
+//     if (returnerScore == 40) {
+//       if (serverName == 'Player1') {
+//         serverScore = 0;
+//         returnerScore = 0;
+//         player2GameScore += 1;
+//       }
+//       else
+//       {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
 
-    }
-    else if (returnerScore != 30) {
-      returnerScore += 15;
-    }
-    else {
-      returnerScore += 10;
-    }
-  }
-}
-function chooseSide({ tiebreak = false } = {}) {
-  if (tiebreak) {
-    if ((serverScore + returnerScore) % 2 == 0) {
-      return "Deuce";
-    }
-    else
-    {
-      return "Ad";
-    }
-  }
-  if (serverScore == 40 || returnerScore == 40) {
-    if ((serverScore + returnerScore) % 2 == 0) {
-      return "Ad";
-    }
-    else
-    {
-      return "Deuce";
-    }
-  }
-  else {
-    if ((serverScore + returnerScore) % 2 == 0) {
-      return "Deuce";
-    }
-    else
-    {
-      return "Ad";
-    } 
-  }
+//     }
+//     else if (returnerScore != 30) {
+//       returnerScore += 15;
+//     }
+//     else {
+//       returnerScore += 10;
+//     }
+//   }
+// }
+// function chooseSide({ tiebreak = false } = {}) {
+//   if (tiebreak) {
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Deuce";
+//     }
+//     else
+//     {
+//       return "Ad";
+//     }
+//   }
+//   if (serverScore == 40 || returnerScore == 40) {
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Ad";
+//     }
+//     else
+//     {
+//       return "Deuce";
+//     }
+//   }
+//   else {
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Deuce";
+//     }
+//     else
+//     {
+//       return "Ad";
+//     } 
+//   }
     
-}
-function doubleFault(serverName) {
-  if (returnerScore < 30) {
-    returnerScore += 15;
-  }
-  else if (returnerScore < 40) {
-    returnerScore += 10;
-  }
-  else {
-    if (serverName == 'Player1') {
-      player2GameScore += 1;
-      serverScore = 0;
-      returnerScore = 0;
-    }
-    else
-    {
-      player1GameScore += 1;
-      serverScore = 0;
-      returnerScore = 0; 
-    } 
-  }
-}
+// }
+// function doubleFault(serverName) {
+//   if (returnerScore < 30) {
+//     returnerScore += 15;
+//   }
+//   else if (returnerScore < 40) {
+//     returnerScore += 10;
+//   }
+//   else {
+//     if (serverName == 'Player1') {
+//       player2GameScore += 1;
+//       serverScore = 0;
+//       returnerScore = 0;
+//     }
+//     else
+//     {
+//       player1GameScore += 1;
+//       serverScore = 0;
+//       returnerScore = 0; 
+//     } 
+//   }
+// }
 function ace(serverName) {
   if (serverScore < 30) {
     serverScore += 15;
@@ -203,42 +205,42 @@ function ace(serverName) {
     }
   }
 } 
-function updateTiebreakScore(shotInRally, isWinner, serverName) {
-  if ((shotInRally % 2 == 0) &
-    isWinner == '1') {
-    if (serverName == 'Player1') {
-      returnerScore += 1;
-    }
-    else {
-      serverScore += 1;
-    }
-  }
-  else if ((shotInRally % 2 == 0)) {
-    if (serverName == 'Player1') {
-      serverScore += 1;
-    }
-    else {
-      returnerScore += 1;
-    }
-  }
-  else if ((shotInRally % 2 == 1) & 
-    isWinner == '1') {
-    if (serverName == 'Player1') {
-      serverScore += 1;
-    }
-    else {
-      returnerScore += 1;
-    }
-  }
-  else  {
-    if (serverName == 'Player1') {
-      returnerScore += 1;
-    }
-    else {
-      serverScore += 1;
-    }
-  }
-}
+// function updateTiebreakScore(shotInRally, isWinner, serverName) {
+//   if ((shotInRally % 2 == 0) &
+//     isWinner == '1') {
+//     if (serverName == 'Player1') {
+//       returnerScore += 1;
+//     }
+//     else {
+//       serverScore += 1;
+//     }
+//   }
+//   else if ((shotInRally % 2 == 0)) {
+//     if (serverName == 'Player1') {
+//       serverScore += 1;
+//     }
+//     else {
+//       returnerScore += 1;
+//     }
+//   }
+//   else if ((shotInRally % 2 == 1) & 
+//     isWinner == '1') {
+//     if (serverName == 'Player1') {
+//       serverScore += 1;
+//     }
+//     else {
+//       returnerScore += 1;
+//     }
+//   }
+//   else  {
+//     if (serverName == 'Player1') {
+//       returnerScore += 1;
+//     }
+//     else {
+//       serverScore += 1;
+//     }
+//   }
+// }
 
 export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, toggledValues) => ({
   'PointScore': [
@@ -483,7 +485,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
         updateActiveRow('serverName', serverName);
         // serverSide
         updateActiveRow('serverFarNear', serverFarNear);
-       // updateActiveRow('side', serverSide);
+        // updateActiveRow('side', serverSide);
         // check Ace after adding new row
         if (isAce) {
           updateActiveRow('isAce', '1');
@@ -527,7 +529,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('firstServeIn', '1');
                 if (isAce) {
                   setCurrentPage('PointScore');
-                 }
+                }
                 else {
                   setCurrentPage('GroundstrokeContact');
                 }
@@ -546,7 +548,7 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                 updateActiveRow('firstServeIn', '1');
                 if (isAce) {
                   setCurrentPage('PointScore');
-                 }
+                }
                 else {
                   setCurrentPage('GroundstrokeContact');
                 }
@@ -835,8 +837,8 @@ export const getTaggerButtonData = (updateActiveRow, addNewRow, setCurrentPage, 
                   setCurrentPage('PointScore');
                 }
                 else {
-                setCurrentPage('GroundstrokeContact');
-              }
+                  setCurrentPage('GroundstrokeContact');
+                }
               }
               else
               {
