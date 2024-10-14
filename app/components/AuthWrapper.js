@@ -1,44 +1,46 @@
 'use client'
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../services/initializeFirebase';
-import { getUserProfile } from '../services/userInfo';
-import SignIn from './SignIn';
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { auth } from '../services/initializeFirebase'
+import { getUserProfile } from '../services/userInfo'
+import SignIn from './SignIn'
 
-const AuthContext = createContext();
+const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [authUser, setAuthUser] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [authUser, setAuthUser] = useState(null)
+  const [userProfile, setUserProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setAuthUser(user);
+      setAuthUser(user)
       if (user) {
-        const userProfile = await getUserProfile(user.uid);
-        setUserProfile(userProfile);
+        const userProfile = await getUserProfile(user.uid)
+        setUserProfile(userProfile)
       } else {
-        setUserProfile(null);
+        setUserProfile(null)
       }
-      setLoading(false);
-    });
+      setLoading(false)
+    })
 
-    return () => unsubscribe();
-  }, []);
+    return () => unsubscribe()
+  }, [])
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   const handleSignOut = () => {
-    signOut(auth).then(() => {
-      setAuthUser(null);
-      setUserProfile(null);
-    }).catch((error) => {
-      console.error('Error signing out:', error);
-    });
-  };
+    signOut(auth)
+      .then(() => {
+        setAuthUser(null)
+        setUserProfile(null)
+      })
+      .catch((error) => {
+        console.error('Error signing out:', error)
+      })
+  }
 
   return (
     <div style={{ width: '100%' }}>
@@ -46,7 +48,7 @@ export const AuthProvider = ({ children }) => {
         {authUser ? children : <SignIn />}
       </AuthContext.Provider>
     </div>
-  );
-};
+  )
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)

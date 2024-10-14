@@ -325,7 +325,7 @@ export default function TagMatch() {
             )
         )
 
-        let updatedTable = [...currentTableWithOutdatedRemoved, ...uniqueRows]
+        const updatedTable = [...currentTableWithOutdatedRemoved, ...uniqueRows]
 
         // Sort the table by 'pointStartTime'
         updatedTable.sort((a, b) => a.pointStartTime - b.pointStartTime)
@@ -470,49 +470,51 @@ export default function TagMatch() {
         </div>
         <div>
           <p>{currentPage}</p>
-          {buttonData[currentPage].map((button, index) => {
-            return button.courtImage ? (
-              <div key={index}>
-                <p>{button.label}</p>
-                <TennisCourtSVG
-                  className={styles.courtImage}
-                  courtType={button.courtImage}
-                  handleImageClick={(event) => {
+          <div className={styles.buttonDataControl}>
+            {buttonData[currentPage].map((button, index) => {
+              return button.courtImage ? (
+                <div key={index}>
+                  <p>{button.label}</p>
+                  <TennisCourtSVG
+                    className={styles.courtImage}
+                    courtType={button.courtImage}
+                    handleImageClick={(event) => {
+                      setPopUp([])
+                      saveToHistory()
+                      const { x, y } = handleImageClick(event)
+                      const data = {
+                        ...matchMetadata,
+                        x,
+                        y,
+                        table: tableState.rows,
+                        activeRowIndex: tableState.activeRowIndex,
+                        videoTimestamp: getVideoTimestamp()
+                      }
+                      button.action(data)
+                    }}
+                  />
+                </div>
+              ) : (
+                <button
+                  className={styles.customButton}
+                  key={index}
+                  onClick={() => {
                     setPopUp([])
                     saveToHistory()
-                    const { x, y } = handleImageClick(event)
                     const data = {
                       ...matchMetadata,
-                      x,
-                      y,
                       table: tableState.rows,
                       activeRowIndex: tableState.activeRowIndex,
                       videoTimestamp: getVideoTimestamp()
                     }
                     button.action(data)
                   }}
-                />
-              </div>
-            ) : (
-              <button
-                className={styles.customButton}
-                key={index}
-                onClick={() => {
-                  setPopUp([])
-                  saveToHistory()
-                  const data = {
-                    ...matchMetadata,
-                    table: tableState.rows,
-                    activeRowIndex: tableState.activeRowIndex,
-                    videoTimestamp: getVideoTimestamp()
-                  }
-                  button.action(data)
-                }}
-              >
-                {button.label}
-              </button>
-            )
-          })}
+                >
+                  {button.label}
+                </button>
+              )
+            })}
+          </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div>

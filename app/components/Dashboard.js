@@ -56,7 +56,7 @@ const formatMatches = (matches) =>
       const date = extractDateFromName(match.date)
       return {
         ...match,
-        date: date,
+        date,
         formattedDate: date ? formatDate(date, 'MM/DD/YYYY') : null
       }
     })
@@ -75,7 +75,7 @@ const groupMatchesByTeams = (matches) => {
 }
 
 const Dashboard = () => {
-  //const { matches, error } = useMatchData(); // Using the custom hook to access match data
+  // const { matches, error } = useMatchData(); // Using the custom hook to access match data
   const matches = matchData // using hardcoded JSON objects
   const router = useRouter()
   const formattedMatches = formatMatches(matchData)

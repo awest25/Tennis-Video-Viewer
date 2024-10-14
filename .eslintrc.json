@@ -10,7 +10,7 @@
   ],
   "plugins": ["prettier"],
   "rules": {
-    "indent": ["error", 2],
+    "indent": ["warn", 2],
     "prettier/prettier": ["error"]
   },
   "settings": {
