@@ -36,7 +36,9 @@ const DashboardTile = ({
     setOpponentLogo(logos[opponentTeam])
   }, [clientTeam, opponentTeam, logos])
 
-  return (
+  return loading ? (
+    <p>Loading ...</p>
+  ) : (
     <div className={styles.dashTilesContainer}>
       <div className={styles.matchInfoContainer}>
         <div className={styles.containerHeader}>

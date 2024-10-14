@@ -87,7 +87,7 @@ export const MatchDataProvider = ({ children }) => {
         setMatches((prevMatches) => [...prevMatches, newMatch])
 
         const colRef = collection(db, collectionName)
-        const docRef = await addDoc(colRef, newMatchData)
+        await addDoc(colRef, newMatchData)
 
         await fetchMatches()
       } catch (err) {

@@ -1,16 +1,16 @@
 // app/(homepage)/page.js (Home Component)
 'use client'
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
+// import Link from 'next/link'
 import Dashboard from '../components/Dashboard.js'
-import styles from '../styles/Home.module.css'
-import { useAuth } from '../components/AuthWrapper' // Import useAuth
+// import styles from '../styles/Home.module.css'
+// import { useAuth } from '../components/AuthWrapper' // Import useAuth
 
 const Home = () => {
-  const { authUser, userProfile, handleSignOut } = useAuth() // Use useAuth hook to get the user and sign-out function
+  // const { authUser, userProfile, handleSignOut } = useAuth() // Use useAuth hook to get the user and sign-out function
 
   return (
-  /*
+    /*
     <div>
       <div className={styles.titleBar}>
         <div className={styles.leftTitle}>

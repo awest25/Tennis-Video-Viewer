@@ -13,8 +13,8 @@ const ExtendedList = ({
   onPointSelect,
   iframe
 }) => {
-  const [client_logo, setClientLogo] = useState('')
-  const [opponent_logo, setOpponentLogo] = useState('')
+  const [clientLogo, setClientLogo] = useState('')
+  const [opponentLogo, setOpponentLogo] = useState('')
 
   useEffect(() => {
     const fetchLogos = async () => {
@@ -35,8 +35,26 @@ const ExtendedList = ({
 
     fetchLogos()
   })
-  const keys = ["", "serverName", "setScore", "gameScore", "pointScore", "pointWonBy", "lastShotResult", "rallyCount"];
-  const keys_headers = ["Server", "", "Set Score", "Game Score", "Point", "Point Winner", "Last Shot Type", "Shot Count", ""];
+  const keys = [
+    '',
+    'serverName',
+    'setScore',
+    'gameScore',
+    'pointScore',
+    'pointWonBy',
+    'lastShotResult',
+    'rallyCount'
+  ]
+  const keysHeaders = [
+    'Server',
+    '',
+    'Set Score',
+    'Game Score',
+    'Point',
+    'Point Winner',
+    'Last Shot Type',
+    'Shot Count',
+    ''
   ]
 
   const Scroll = (point) => {
@@ -52,7 +70,7 @@ const ExtendedList = ({
       <table className={styles.table}>
         <thead>
           <tr className={styles.TR}>
-            {keys_headers.map((key, index) => (
+            {keysHeaders.map((key, index) => (
               <th className={styles.TH} key={index}>
                 {key}
               </th>
@@ -67,9 +85,9 @@ const ExtendedList = ({
                   {cellIndex === 0 ? (
                     <img
                       src={
-                        item['player1Name'] === item['serverName']
-                          ? client_logo
-                          : opponent_logo
+                        item.player1Name === item.serverName
+                          ? clientLogo
+                          : opponentLogo
                       }
                       className={styles.IMG}
                     />
@@ -83,7 +101,7 @@ const ExtendedList = ({
                             <DoubleFault />
                           )}
                           <span style={{ marginLeft: '4px' }}>
-                            {item['lastShotResult']}
+                            {item.lastShotResult}
                           </span>
                         </>
                       ) : (

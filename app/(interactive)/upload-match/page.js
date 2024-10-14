@@ -19,6 +19,7 @@ export default function UploadMatchForm() {
 
   const { userProfile } = useAuth()
 
+  console.log(collections)
   useEffect(() => {
     const fetchCollectionsAndTeams = async () => {
       try {

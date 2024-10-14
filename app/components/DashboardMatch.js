@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import MatchTiles from './MatchTiles'
 import extractSetScores from '@/app/services/extractSetScores'
 import styles from '../styles/DashboardMatch.module.css' // Import the CSS module

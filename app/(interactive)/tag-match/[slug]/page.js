@@ -62,10 +62,6 @@ export default function TagMatch() {
     sortTable()
   }, [tableState.rows])
 
-  const handleVideoIdChange = (event) => {
-    setVideoId(event.target.value)
-  }
-
   const handleKeyDown = (event) => {
     if (!videoObject) return
 

@@ -1,17 +1,16 @@
 'use client'
 
 import React, { useEffect, useState, useMemo } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import { useMatchData } from './MatchDataProvider'
+import { useRouter } from 'next/navigation'
+// import { useMatchData } from './MatchDataProvider'
 import { useDatabase } from './DatabaseProvider'
 import styles from '../styles/Dashboard.module.css'
 import DashTileContainer from './DashTileContainer'
-import getTeams from '@/app/services/getTeams.js'
+// import getTeams from '@/app/services/getTeams.js'
 import RosterList from './RosterList.js'
 import Fuse from 'fuse.js'
 import { searchableProperties } from '@/app/services/searchableProperties.js'
 import SearchIcon from '@/public/search'
-import searchStyle from '../styles/Dashboard.module.css'
 // Import sample data to test data fetching
 import matchData from '../(interactive)/dashboard/sampleData'
 
@@ -161,7 +160,7 @@ const Dashboard = () => {
           <div className={styles.searchContainer}>
             <div className={styles.clearContainer}>
               <div className={styles.searchWrapper}>
-                {searchTerm.length == 0 && (
+                {searchTerm.length === 0 && (
                   <SearchIcon className={styles.searchIcon} />
                 )}
                 <input
@@ -207,6 +206,9 @@ const Dashboard = () => {
 
       <div className={styles.mainContent}>
         <div className={styles.matchesSection}>
+          {/* TODO: Tony integrate filter/cache changes with new search
+          take out filler console logs which were used for linting */}
+          {console.log(matches, sortedSelectedDates)}
           {searchTerm ? (
             // Render filtered matches grouped by teams
             Object.keys(filteredMatches).length > 0 ? (
