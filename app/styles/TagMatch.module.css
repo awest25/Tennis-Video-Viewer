@@ -25,11 +25,11 @@
     margin-bottom: 5px;
     width: 300px;
     height: 240px;
-    position: fixed;
-    top: 33%;
-    left: 80%;
-    transform: translateX(-50%);
-    
+    /* position: fixed; */
+    /* top: 33%;
+    left: 80%; */
+    /* transform: translateX(-50%); */
+    overflow-y: auto;
 }
 
 .courtImage {

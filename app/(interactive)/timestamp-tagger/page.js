@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'next/navigation'
 import VideoPlayer from '../../components/VideoPlayer';
 import styles from '../../styles/Tagging.module.css';
 
@@ -83,7 +84,13 @@ export default function TagMatch() {
   const [curTimeStart, setCurTimeStart] = useState(0);
   const FRAMERATE = 30;
   const inputRef = useRef(null);
-  
+
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    setVideoId(searchParams.get('videoId'))
+  }, []);  
+
   const handleVideoIdChange = (event) => {
     setVideoId(event.target.value);
   };
@@ -214,13 +221,13 @@ export default function TagMatch() {
 
   return (
     <div className={styles.container}>
-      <label>Enter YouTube Code: </label>
-      <input type="text" value={videoId} onChange={handleVideoIdChange} ref={inputRef} />
       <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '28vw'}}>
         <div style={{ display: 'flex', flexDirection: 'column'}}>
           <div style={{width: '42vw'}}>
             <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
           </div>
+          <label>Enter YouTube Code: </label>
+          <input type="text" value={videoId} onChange={handleVideoIdChange} ref={inputRef} />
           <button onClick={handleDownload}>Download JSON</button>
           <button onClick={handleCopyColumns}>Copy Columns</button>
         </div>
