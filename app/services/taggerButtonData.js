@@ -40,6 +40,7 @@ let player1GameScore = 0
 let player2GameScore = 0
 let isAce = false
 
+<<<<<<< HEAD
 console.log(returnerScore, player1GameScore, player2GameScore)
 
 // function updateScore(shotInRally, isWinner, serverName) {
@@ -106,11 +107,104 @@ console.log(returnerScore, player1GameScore, player2GameScore)
 //       returnerScore += 15
 //     } else {
 //       returnerScore += 10
+=======
+console.log(returnerScore, player1SetScore, player2SetScore, player1GameScore, player2GameScore)
+
+// function updateScore(shotInRally, isWinner, serverName) {
+//   if ((shotInRally % 2 == 0) &
+//     isWinner == '1') {
+//     if (returnerScore == 40) {
+//       if (serverName == 'Player1') {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0;
+//       }
+//       else
+//       {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+
+//     }
+//     else if (returnerScore != 30) {
+//       returnerScore += 15;
+//     }
+//     else {
+//       returnerScore += 10;
+//     }
+//   }
+//   else if (shotInRally % 2 == 0) {
+//     if (serverScore == 40) {
+//       if (serverName == 'Player1') {
+//         serverScore = 0;
+//         returnerScore = 0;
+//         player1GameScore += 1;
+//       }
+//       else
+//       {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+//     }
+//     else if (serverScore != 30) {
+//       serverScore += 15;
+//     }
+//     else    {
+//       serverScore += 10;
+//     }
+                            
+//   }
+//   else if (shotInRally % 2 == 1 &
+// isWinner == '1') {
+//     if (serverScore == 40) {
+//       if (serverName == 'Player1') {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0;
+//       }
+//       else
+//       {
+//         player2GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+//     }
+//     else if (serverScore != 30) {
+//       serverScore += 15;
+//     }
+//     else  {
+//       serverScore += 10;
+//     }
+//   }
+//   else {
+//     if (returnerScore == 40) {
+//       if (serverName == 'Player1') {
+//         serverScore = 0;
+//         returnerScore = 0;
+//         player2GameScore += 1;
+//       }
+//       else
+//       {
+//         player1GameScore += 1;
+//         serverScore = 0;
+//         returnerScore = 0; 
+//       }
+
+//     }
+//     else if (returnerScore != 30) {
+//       returnerScore += 15;
+//     }
+//     else {
+//       returnerScore += 10;
+>>>>>>> main
 //     }
 //   }
 // }
 // function chooseSide({ tiebreak = false } = {}) {
 //   if (tiebreak) {
+<<<<<<< HEAD
 //     if ((serverScore + returnerScore) % 2 === 0) {
 //       return 'Deuce'
 //     } else {
@@ -146,10 +240,60 @@ console.log(returnerScore, player1GameScore, player2GameScore)
 //       serverScore = 0
 //       returnerScore = 0
 //     }
+=======
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Deuce";
+//     }
+//     else
+//     {
+//       return "Ad";
+//     }
+//   }
+//   if (serverScore == 40 || returnerScore == 40) {
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Ad";
+//     }
+//     else
+//     {
+//       return "Deuce";
+//     }
+//   }
+//   else {
+//     if ((serverScore + returnerScore) % 2 == 0) {
+//       return "Deuce";
+//     }
+//     else
+//     {
+//       return "Ad";
+//     } 
+//   }
+    
+// }
+// function doubleFault(serverName) {
+//   if (returnerScore < 30) {
+//     returnerScore += 15;
+//   }
+//   else if (returnerScore < 40) {
+//     returnerScore += 10;
+//   }
+//   else {
+//     if (serverName == 'Player1') {
+//       player2GameScore += 1;
+//       serverScore = 0;
+//       returnerScore = 0;
+//     }
+//     else
+//     {
+//       player1GameScore += 1;
+//       serverScore = 0;
+//       returnerScore = 0; 
+//     } 
+>>>>>>> main
 //   }
 // }
 function ace(serverName) {
   if (serverScore < 30) {
+<<<<<<< HEAD
     serverScore += 15
   } else if (serverScore < 40) {
     serverScore += 10
@@ -189,6 +333,60 @@ function ace(serverName) {
 //       returnerScore += 1
 //     } else {
 //       serverScore += 1
+=======
+    serverScore += 15;
+  }
+  else if (serverScore < 40) {
+    serverScore += 10;
+  }
+  else {
+    if (serverName == 'Player1') {
+      player1GameScore += 1;
+      serverScore = 0;
+      returnerScore = 0;
+    }
+    else
+    {
+      player2GameScore += 1;
+      serverScore = 0;
+      returnerScore = 0;
+    }
+  }
+} 
+// function updateTiebreakScore(shotInRally, isWinner, serverName) {
+//   if ((shotInRally % 2 == 0) &
+//     isWinner == '1') {
+//     if (serverName == 'Player1') {
+//       returnerScore += 1;
+//     }
+//     else {
+//       serverScore += 1;
+//     }
+//   }
+//   else if ((shotInRally % 2 == 0)) {
+//     if (serverName == 'Player1') {
+//       serverScore += 1;
+//     }
+//     else {
+//       returnerScore += 1;
+//     }
+//   }
+//   else if ((shotInRally % 2 == 1) & 
+//     isWinner == '1') {
+//     if (serverName == 'Player1') {
+//       serverScore += 1;
+//     }
+//     else {
+//       returnerScore += 1;
+//     }
+//   }
+//   else  {
+//     if (serverName == 'Player1') {
+//       returnerScore += 1;
+//     }
+//     else {
+//       serverScore += 1;
+>>>>>>> main
 //     }
 //   }
 // }
@@ -529,7 +727,11 @@ export const getTaggerButtonData = (
         // serverName
         updateActiveRow('serverName', serverName)
         // serverSide
+<<<<<<< HEAD
         updateActiveRow('serverFarNear', serverFarNear)
+=======
+        updateActiveRow('serverFarNear', serverFarNear);
+>>>>>>> main
         // updateActiveRow('side', serverSide);
         // check Ace after adding new row
         if (isAce) {
@@ -565,9 +767,16 @@ export const getTaggerButtonData = (
               if ((data.y >= 10) & (data.y <= 245)) {
                 updateActiveRow('firstServeIn', '1')
                 if (isAce) {
+<<<<<<< HEAD
                   setCurrentPage('PointScore')
                 } else {
                   setCurrentPage('GroundstrokeContact')
+=======
+                  setCurrentPage('PointScore');
+                }
+                else {
+                  setCurrentPage('GroundstrokeContact');
+>>>>>>> main
                 }
               } else {
                 updateActiveRow('firstServeIn', '0')
@@ -578,9 +787,16 @@ export const getTaggerButtonData = (
               if ((data.y >= 10) & (data.y <= 245)) {
                 updateActiveRow('firstServeIn', '1')
                 if (isAce) {
+<<<<<<< HEAD
                   setCurrentPage('PointScore')
                 } else {
                   setCurrentPage('GroundstrokeContact')
+=======
+                  setCurrentPage('PointScore');
+                }
+                else {
+                  setCurrentPage('GroundstrokeContact');
+>>>>>>> main
                 }
               } else {
                 updateActiveRow('firstServeIn', '0')
@@ -792,6 +1008,7 @@ export const getTaggerButtonData = (
                 } else {
                   setCurrentPage('GroundstrokeContact')
                 }
+<<<<<<< HEAD
               } else {
                 updateActiveRow('secondServeIn', '0')
                 updateActiveRow('isPointEnd', '1')
@@ -806,6 +1023,28 @@ export const getTaggerButtonData = (
                   setCurrentPage('PointScore')
                 } else {
                   setCurrentPage('GroundstrokeContact')
+=======
+                else {
+                  setCurrentPage('GroundstrokeContact');
+                }
+              }
+              else
+              {
+                updateActiveRow('secondServeIn', '0');
+                updateActiveRow('isPointEnd', '1');
+                updateActiveRow('pointEndTime', data.videoTimestamp + 10);
+                setCurrentPage('PointScore');
+              }
+            }
+            else if (data.x >= -101 & data.x <= -54)
+            {
+              updateActiveRow('secondServeZone', 'Body');
+              if (data.y >= 10 & data.y <= 245)
+              {
+                updateActiveRow('secondServeIn', '1');
+                if (isAce == '1') {
+                  setCurrentPage('PointScore');
+>>>>>>> main
                 }
               } else {
                 updateActiveRow('secondServeIn', '0')
