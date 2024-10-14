@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation'
 import VideoPlayer from '../../components/VideoPlayer';
 import styles from '../../styles/Tagging.module.css';
@@ -220,121 +220,123 @@ export default function TagMatch() {
   }, [videoObject]);
 
   return (
-    <div className={styles.container}>
-      <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '28vw'}}>
-        <div style={{ display: 'flex', flexDirection: 'column'}}>
-          <div style={{width: '42vw'}}>
-            <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className={styles.container}>
+        <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '28vw'}}>
+          <div style={{ display: 'flex', flexDirection: 'column'}}>
+            <div style={{width: '42vw'}}>
+              <VideoPlayer videoId={videoId} setVideoObject={setVideoObject} />
+            </div>
+            <label>Enter YouTube Code: </label>
+            <input type="text" value={videoId} onChange={handleVideoIdChange} ref={inputRef} />
+            <button onClick={handleDownload}>Download JSON</button>
+            <button onClick={handleCopyColumns}>Copy Columns</button>
           </div>
-          <label>Enter YouTube Code: </label>
-          <input type="text" value={videoId} onChange={handleVideoIdChange} ref={inputRef} />
-          <button onClick={handleDownload}>Download JSON</button>
-          <button onClick={handleCopyColumns}>Copy Columns</button>
+          <div>
+            <table className={styles.table}>
+              <tbody>
+                <tr>
+                  <td colSpan="2">Current Time: {timerValue}ms</td>
+                </tr>
+                <tr>
+                  <td>Jump to: </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="number"
+                      placeholder="Milliseconds"
+                      value={timerValue}
+                      onChange={(event) => handleMillisecondsChange(event.target.value)}
+                      style={{ marginRight: '10px' }}
+                    />
+                  </td>
+                  <td>ms</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input
+                      type="number"
+                      placeholder="Minutes"
+                      value={Math.floor(timerValue / 60000)}
+                      onChange={(event) => {
+                        const minutes = parseFloat(event.target.value);
+                        const seconds = (timerValue % 60000) / 1000;
+                        handleMinutesSecondsChange(minutes, seconds);
+                      }}
+                      style={{ marginRight: '10px' }}
+                    />
+                  </td>
+                  <td>minutes</td>
+                  <td>
+                    <input
+                      type="number"
+                      placeholder="Seconds"
+                      value={Math.round((timerValue % 60000) / 1000)}
+                      onChange={(event) => {
+                        const seconds = parseFloat(event.target.value);
+                        const minutes = Math.floor(timerValue / 60000);
+                        handleMinutesSecondsChange(minutes, seconds);
+                      }}
+                    />
+                  </td>
+                  <td>seconds</td>
+                </tr>
+              </tbody>
+            </table>
+            <KeybindingsTable />
+          </div>
         </div>
-        <div>
-          <table className={styles.table}>
-            <tbody>
-              <tr>
-                <td colSpan="2">Current Time: {timerValue}ms</td>
-              </tr>
-              <tr>
-                <td>Jump to: </td>
-              </tr>
-              <tr>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="Milliseconds"
-                    value={timerValue}
-                    onChange={(event) => handleMillisecondsChange(event.target.value)}
-                    style={{ marginRight: '10px' }}
-                  />
-                </td>
-                <td>ms</td>
-              </tr>
-              <tr>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="Minutes"
-                    value={Math.floor(timerValue / 60000)}
-                    onChange={(event) => {
-                      const minutes = parseFloat(event.target.value);
-                      const seconds = (timerValue % 60000) / 1000;
-                      handleMinutesSecondsChange(minutes, seconds);
-                    }}
-                    style={{ marginRight: '10px' }}
-                  />
-                </td>
-                <td>minutes</td>
-                <td>
-                  <input
-                    type="number"
-                    placeholder="Seconds"
-                    value={Math.round((timerValue % 60000) / 1000)}
-                    onChange={(event) => {
-                      const seconds = parseFloat(event.target.value);
-                      const minutes = Math.floor(timerValue / 60000);
-                      handleMinutesSecondsChange(minutes, seconds);
-                    }}
-                  />
-                </td>
-                <td>seconds</td>
-              </tr>
-            </tbody>
-          </table>
-          <KeybindingsTable />
-        </div>
-      </div>
 
-      <hr />
-      <table>
-        <thead>
-          <tr>
-            <th>Index</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Point Winner</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colSpan="4">Current Timestamp</td>
-          </tr>
-          {timeList.length !== 0 && timeList.map((pair, index) => {
-            if (curTimeStart === pair[0]) {
-              return (
-                <TagTable
-                  key={index}
-                  pair={timeList[index]}
-                  index={index}
-                  handleStartTimeChange={handleStartTimeChange}
-                  handleEndTimeChange={handleEndTimeChange}
-                  handlePlayerWonChange={handlePlayerWonChange}
-                  handleRemoveTime={handleRemoveTime}
-                />
-              );
-            } else return null;
-          })}
-        </tbody>
-        <tbody>
-          <tr>
-            <td colSpan="4">All Timestamps</td>
-          </tr>
-          {timeList.map((pair, index) => (
-            <TagTable
-              key={index}
-              pair={pair}
-              index={index}
-              handleStartTimeChange={handleStartTimeChange}
-              handleEndTimeChange={handleEndTimeChange}
-              handlePlayerWonChange={handlePlayerWonChange}
-              handleRemoveTime={handleRemoveTime}
-            />
-          ))}
-        </tbody>
-      </table>
-    </div>
+        <hr />
+        <table>
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Point Winner</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan="4">Current Timestamp</td>
+            </tr>
+            {timeList.length !== 0 && timeList.map((pair, index) => {
+              if (curTimeStart === pair[0]) {
+                return (
+                  <TagTable
+                    key={index}
+                    pair={timeList[index]}
+                    index={index}
+                    handleStartTimeChange={handleStartTimeChange}
+                    handleEndTimeChange={handleEndTimeChange}
+                    handlePlayerWonChange={handlePlayerWonChange}
+                    handleRemoveTime={handleRemoveTime}
+                  />
+                );
+              } else return null;
+            })}
+          </tbody>
+          <tbody>
+            <tr>
+              <td colSpan="4">All Timestamps</td>
+            </tr>
+            {timeList.map((pair, index) => (
+              <TagTable
+                key={index}
+                pair={pair}
+                index={index}
+                handleStartTimeChange={handleStartTimeChange}
+                handleEndTimeChange={handleEndTimeChange}
+                handlePlayerWonChange={handlePlayerWonChange}
+                handleRemoveTime={handleRemoveTime}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Suspense>
   );
 }
