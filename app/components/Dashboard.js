@@ -183,6 +183,7 @@ const Dashboard = () => {
           </div>
         </div>
       </header>
+
       <div className={styles.carousel}>
         {Object.keys(matchesByDate).map((date, index) => (
           <div
@@ -250,8 +251,8 @@ const Dashboard = () => {
               </div>
             )
           ) : (
-            // Original rendering logic for non-searched matches
-            Object.keys(matchesByDate).map((date, index) => {
+            // Render filtered matches selected from carousel
+            sortedSelectedDates.map((date, index) => {
               const singlesMatches = matchesByDate[date].filter(
                 (match) => match.singlesDoubles === 'Singles'
               )
