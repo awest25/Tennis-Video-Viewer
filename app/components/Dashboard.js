@@ -249,7 +249,7 @@ const Dashboard = () => {
               </div>
             )
           ) : (
-            // Render matches from the selected set of dates
+            // Render filtered matches selected from carousel
             sortedSelectedDates.map((date, index) => {
               const singlesMatches = matchesByDate[date].filter(
                 (match) => match.singlesDoubles === 'Singles'
