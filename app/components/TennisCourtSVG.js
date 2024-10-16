@@ -1,8 +1,14 @@
-import React from 'react';
+import React from 'react'
 
 const TennisCourtSVG = ({ handleImageClick, courtType }) => {
   return (
-    <svg onClick={handleImageClick} width="600" height="1080" viewBox="0 0 600 1080" style={{ border: '4px solid red', width: 'auto', height: '30rem' }}>
+    <svg
+      onClick={handleImageClick}
+      width="600"
+      height="1080"
+      viewBox="0 0 600 1080"
+      style={{ border: '4px solid red', width: 'auto', height: '30rem' }}
+    >
       {/* Background */}
       <rect x="0" y="540" width="600" height="540" fill="lightgray" />
       <rect x="0" y="0" width="600" height="540" fill="lightgray" />
@@ -23,7 +29,7 @@ const TennisCourtSVG = ({ handleImageClick, courtType }) => {
 
       {/* Optional service sections top half */}
       {/* Optional service sections bottom half */}
-      {(courtType === 'serve') && (
+      {courtType === 'serve' && (
         <>
           <rect x="165" y="330" width="45" height="210" fill="lightblue" />
           <rect x="210" y="330" width="45" height="210" fill="lightblue" />
@@ -42,29 +48,135 @@ const TennisCourtSVG = ({ handleImageClick, courtType }) => {
       )}
 
       {/* T lines and center lines */}
-      <line x1="165" y1="330" x2="435" y2="330" stroke="white" strokeWidth="2" />
-      <line x1="165" y1="750" x2="435" y2="750" stroke="white" strokeWidth="2" />
-      <line x1="300" y1="330" x2="300" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="300" y1="540" x2="300" y2="750" stroke="white" strokeWidth="2" />
+      <line
+        x1="165"
+        y1="330"
+        x2="435"
+        y2="330"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="165"
+        y1="750"
+        x2="435"
+        y2="750"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="300"
+        y1="330"
+        x2="300"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="300"
+        y1="540"
+        x2="300"
+        y2="750"
+        stroke="white"
+        strokeWidth="2"
+      />
 
       {/* Alley lines */}
-      <line x1="165" y1="150" x2="165" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="435" y1="150" x2="435" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="165" y1="540" x2="165" y2="930" stroke="white" strokeWidth="2" />
-      <line x1="435" y1="540" x2="435" y2="930" stroke="white" strokeWidth="2" />
+      <line
+        x1="165"
+        y1="150"
+        x2="165"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="435"
+        y1="150"
+        x2="435"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="165"
+        y1="540"
+        x2="165"
+        y2="930"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="435"
+        y1="540"
+        x2="435"
+        y2="930"
+        stroke="white"
+        strokeWidth="2"
+      />
 
       {/* Outside alley lines */}
-      <line x1="120" y1="150" x2="120" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="480" y1="150" x2="480" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="120" y1="930" x2="120" y2="540" stroke="white" strokeWidth="2" />
-      <line x1="480" y1="930" x2="480" y2="540" stroke="white" strokeWidth="2" />
+      <line
+        x1="120"
+        y1="150"
+        x2="120"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="480"
+        y1="150"
+        x2="480"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="120"
+        y1="930"
+        x2="120"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="480"
+        y1="930"
+        x2="480"
+        y2="540"
+        stroke="white"
+        strokeWidth="2"
+      />
 
       {/* Top and Bottom lines */}
-      <line x1="120" y1="150" x2="480" y2="150" stroke="white" strokeWidth="2" />
-      <line x1="120" y1="930" x2="480" y2="930" stroke="white" strokeWidth="2" />
+      <line
+        x1="120"
+        y1="150"
+        x2="480"
+        y2="150"
+        stroke="white"
+        strokeWidth="2"
+      />
+      <line
+        x1="120"
+        y1="930"
+        x2="480"
+        y2="930"
+        stroke="white"
+        strokeWidth="2"
+      />
 
       {/* Net Line */}
-      <line className="gray-hoverable" x1="90" y1="540" x2="510" y2="540" stroke="black" strokeWidth="4" />
+      <line
+        className="gray-hoverable"
+        x1="90"
+        y1="540"
+        x2="510"
+        y2="540"
+        stroke="black"
+        strokeWidth="4"
+      />
 
       <style>
         {`
@@ -73,11 +185,10 @@ const TennisCourtSVG = ({ handleImageClick, courtType }) => {
         `}
       </style>
     </svg>
-  );
+  )
 }
 
-export default TennisCourtSVG;
-
+export default TennisCourtSVG
 
 /*
  *  HTML version

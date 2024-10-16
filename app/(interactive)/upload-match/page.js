@@ -1,97 +1,192 @@
 'use client'
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { uploadMatch } from '../../services/upload.js';
-import getTeams from '@/app/services/getTeams.js';
-
+import React, { useState, useEffect, useCallback } from 'react'
+import Form from '@rjsf/core'
+import validator from '@rjsf/validator-ajv8'
+import { useMatchData } from '../../components/MatchDataProvider.js'
+import { useAuth } from '../../components/AuthWrapper.js'
+import getTeams from '@/app/services/getTeams.js'
 import styles from '../../styles/Upload.module.css'
+import { initialSchema, uiSchema } from '@/app/services/matchSchemas.js'
+import { searchableProperties } from '@/app/services/searchableProperties.js'
 
-export default function UploadVideo() {
-  const [matchName, setMatchName] = useState('');
-  const [videoId, setVideoId] = useState('');
-  const [jsonFile, setJsonFile] = useState(null);
-  const [pdfFile, setPdfFile] = useState(null);
-  const [clientTeam, setClientTeam] = useState('Arizona State (M)');
-  const [opponentTeam, setOpponentTeam] = useState('Arizona State (M)');
-  const [teams, setTeams] = useState([]);
+export default function UploadMatchForm() {
+  const { createMatch } = useMatchData() // Use the createMatch hook
+  const [schema, setSchema] = useState(initialSchema)
+  const [teams, setTeams] = useState([])
+  const [collections, setCollections] = useState([])
+  const [formData, setFormData] = useState({})
 
+  const { userProfile } = useAuth()
+
+  console.log(collections)
   useEffect(() => {
-    const fetchTeams = async () => {
+    const fetchCollectionsAndTeams = async () => {
       try {
-        const allTeams = await getTeams();
-        setTeams(allTeams);
+        const allTeams = await getTeams()
+        setTeams(allTeams)
+        const teamNames = allTeams.map((team) => team.name)
+
+        // Assuming userProfile.collections contains the collection names
+        const userCollections = userProfile?.collections || []
+
+        setCollections(userCollections)
+
+        // Update schema with team and collection names
+        setSchema((prevSchema) => ({
+          ...prevSchema,
+          properties: {
+            ...prevSchema.properties,
+            clientTeam: {
+              ...prevSchema.properties.clientTeam,
+              enum: teamNames
+            },
+            opponentTeam: {
+              ...prevSchema.properties.opponentTeam,
+              enum: teamNames
+            },
+            collection: {
+              ...prevSchema.properties.collection,
+              enum: userCollections
+            }
+          }
+        }))
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
-    };
-
-    fetchTeams();
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!matchName || !videoId || !clientTeam || !opponentTeam) {
-      console.error("Please fill in all fields.");
-      return;
     }
-    
+
+    fetchCollectionsAndTeams()
+  }, [])
+
+  const getPlayersForTeam = useCallback(
+    (teamName) => {
+      const selectedTeam = teams.find((team) => team.name === teamName)
+      return (
+        selectedTeam?.players?.map(
+          (player) => `${player.firstName} ${player.lastName}`
+        ) || []
+      )
+    },
+    [teams]
+  )
+
+  const updatePlayerOptions = useCallback(
+    (formData) => {
+      const clientPlayers = getPlayersForTeam(formData.clientTeam)
+      const opponentPlayers = getPlayersForTeam(formData.opponentTeam)
+
+      setSchema((prevSchema) => ({
+        ...prevSchema,
+        properties: {
+          ...prevSchema.properties,
+          clientPlayer: {
+            ...prevSchema.properties.clientPlayer,
+            enum: clientPlayers
+          },
+          opponentPlayer: {
+            ...prevSchema.properties.opponentPlayer,
+            enum: opponentPlayers
+          }
+        }
+      }))
+    },
+
+    [getPlayersForTeam]
+  )
+  const handleChange = ({ formData: newFormData }) => {
+    setFormData(newFormData)
+    updatePlayerOptions(newFormData)
+  }
+
+  const handleSubmit = async ({ formData }) => {
     try {
-      const pointsJson = jsonFile? JSON.parse(await jsonFile.text()) : [];
-      console.log(pointsJson)
+      const pointsJson = formData.jsonFile
+        ? JSON.parse(atob(formData.jsonFile.split(',')[1]))
+        : []
       if (pointsJson.length === 0) {
-        const result = confirm("You're currently uploading an UNTAGGED match. Proceed?");
-        if (!result) throw new Error("Upload cancelled by user.");
+        const result = confirm(
+          "You're currently uploading an UNTAGGED match. Proceed?"
+        )
+        if (!result) throw new Error('Upload cancelled by user.')
       }
-      await uploadMatch(matchName, videoId, pointsJson, pdfFile, clientTeam, opponentTeam);
-      alert('done!')
-    } catch (error) {
-      console.error("Error uploading match:", error);
-    }
-  };
+      const teams = {
+        clientTeam: formData.clientTeam,
+        opponentTeam: formData.opponentTeam
+      }
+      const players = {
+        client: {
+          firstName: formData.clientPlayer.split(' ')[0],
+          lastName: formData.clientPlayer.split(' ')[1],
+          UTR: formData.clientUTR
+        },
+        opponent: {
+          firstName: formData.opponentPlayer.split(' ')[0],
+          lastName: formData.opponentPlayer.split(' ')[1],
+          UTR: formData.opponentUTR
+        }
+      }
+      const weather = {
+        temperature: formData.temperature,
+        cloudy: formData.weather.includes('Cloudy'),
+        windy: formData.weather.includes('Windy')
+      }
+      const matchDetails = {
+        weather,
+        division: formData.division,
+        event: formData.event,
+        lineup: formData.lineup,
+        matchVenue: formData.matchVenue,
+        round: formData.round,
+        indoor: formData.court === 'Indoor',
+        surface: formData.surface
+      }
+      // const sets = parseMatchScore(formData.matchScore);
+      const sets = [
+        formData.matchScore.set1,
+        formData.matchScore.set2,
+        ...(formData.matchScore.set3 ? formData.matchScore.set3 : [])
+      ]
 
-  const teamOptions = useMemo(() => {
-    return teams.map((option, index) => (
-      <option key={index} value={option.name}>{option.name}</option>
-    ));
-  }, [teams]);
+      // Use the createMatch hook to upload the match
+      await createMatch(formData.collection, {
+        sets,
+        videoId: formData.videoID,
+        pointsJson,
+        pdfFile: formData.pdfFile,
+        teams,
+        players,
+        matchDate: formData.date,
+        singles: formData.singlesDoubles === 'Singles',
+        matchDetails,
+        searchableProperties,
+        version: 'v1' // Current version for new matches added
+      })
+
+      alert('Match uploaded successfully!')
+    } catch (error) {
+      console.error('Error uploading match:', error)
+      alert(`Error uploading match: ${error.message}`)
+    }
+  }
 
   return (
     <div className={styles.container}>
       <div>
         <h1 className={styles.title}>Upload Match</h1>
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <label>
-            Match Name: 
-            <input type="text" value={matchName} onChange={(e) => setMatchName(e.target.value)} />
-          </label>
-          <label>
-            Video ID: 
-            <input type="text" value={videoId} onChange={(e) => setVideoId(e.target.value)} />
-          </label>
-          <label>
-            Client Team: 
-            <select id="search" onChange={(e) => setClientTeam(e.target.value)}>
-              {teamOptions}
-            </select>
-          </label>
-          <label>
-            Opponent Team: 
-            <select id="search" onChange={(e) => setOpponentTeam(e.target.value)}>
-              {teamOptions}
-            </select>
-          </label>
-          <label>
-            JSON File: 
-            <input type="file" accept=".json" onChange={(e) => setJsonFile(e.target.files[0])} />
-          </label>
-          <label>
-            PDF File: 
-            <input type="file" accept="application/pdf" onChange={(e) => setPdfFile(e.target.files[0])} />
-          </label>
-          <button type="submit">Upload</button>
-        </form>
+        <h3>
+          Make sure you add the player in &apos;Upload Team&apos; before this!
+        </h3>
+        <Form
+          key={JSON.stringify(schema)}
+          schema={schema}
+          uiSchema={uiSchema}
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          validator={validator}
+        />
       </div>
     </div>
-  );
+  )
 }
