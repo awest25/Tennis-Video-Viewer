@@ -1,5 +1,11 @@
 'use client'
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo
+} from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '../services/initializeFirebase'
 import { getUserProfile } from '../services/userInfo'
@@ -27,6 +33,8 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe()
   }, [])
 
+  const memoizedUserProfile = useMemo(() => userProfile, [userProfile])
+
   if (loading) {
     return <div>Loading...</div>
   }
@@ -44,7 +52,9 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <div style={{ width: '100%' }}>
-      <AuthContext.Provider value={{ authUser, userProfile, handleSignOut }}>
+      <AuthContext.Provider
+        value={{ authUser, userProfile: memoizedUserProfile, handleSignOut }}
+      >
         {authUser ? children : <SignIn />}
       </AuthContext.Provider>
     </div>
