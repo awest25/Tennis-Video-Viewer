@@ -154,7 +154,12 @@ const Dashboard = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>BSA | Tennis Consulting</h1>
+        <div className={styles.titleBar}>
+          <h1>BSA | Tennis Consulting</h1>
+          <div className={styles.buttonBox}>
+            <button>Sign Out</button>
+          </div>
+        </div>
         <div className={styles.headerContent}>
           <h2>Dashboard</h2>
           <div className={styles.searchContainer}>
