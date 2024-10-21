@@ -1,8 +1,6 @@
-// components/FilterList.js
-
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router' // Assuming Next.js for routing
 import styles from '../styles/FilterList.module.css'
-// This file renammes columns to more human-readable names
 import nameMap from '../services/nameMap.js'
 
 const FilterList = ({
@@ -12,7 +10,42 @@ const FilterList = ({
   showPercent,
   showCount
 }) => {
-  // only keep relevant keys
+  const router = useRouter()
+
+  // Function to update URL with filters
+  const updateUrlWithFilters = (filters) => {
+    const searchParams = new URLSearchParams()
+
+    filters.forEach(([key, value]) => {
+      searchParams.append(key, value)
+    })
+
+    router.replace(
+      { pathname: router.pathname, query: searchParams.toString() },
+      undefined,
+      { shallow: true }
+    )
+  }
+
+  // Parse filters from URL when the component mounts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const initialFilters = []
+
+    urlParams.forEach((value, key) => {
+      initialFilters.push([key, value])
+    })
+
+    if (initialFilters.length > 0) {
+      setFilterList(initialFilters)
+    }
+  }, [setFilterList])
+
+  // Update URL whenever the filterList changes
+  useEffect(() => {
+    updateUrlWithFilters(filterList)
+  }, [filterList])
+
   const keys = Object.keys(nameMap).filter(
     (key) =>
       pointsData &&
@@ -22,17 +55,14 @@ const FilterList = ({
   )
   const uniqueValues = {}
 
-  // Iterate through filtered keys and populate uniqueValues
   keys.forEach((key) => {
     uniqueValues[key] = [
       ...new Set(pointsData.map((point) => point[key]))
     ].sort()
   })
 
-  // State for the open key
   const [openKey, setOpenKey] = useState(null)
 
-  // Effect to reset open key when pointsData changes
   useEffect(() => {
     setOpenKey(null)
   }, [pointsData])
@@ -61,31 +91,25 @@ const FilterList = ({
     setFilterList(updatedFilterList)
   }
 
-  // Counts points for each filter
   const countFilteredPointsForValue = (key, value) => {
     return pointsData.filter((point) => point[key] === value).length
   }
 
   const countFilteredPointsTotal = (key) => {
     return pointsData.reduce((total, point) => {
-      // Check if the value attribute is not an empty string
       if (point[key] !== '' && point[key] !== null) {
-        return total + 1 // Add 1 to the total if this point has a value specific to this category (key)
+        return total + 1
       }
-      // Otherwise, just return the current total without adding anything
       return total
     }, 0)
   }
 
-  // Function to determine if the value is an active filter
   const isActiveFilter = (key, value) => {
     return filterList.some(
       ([filterKey, filterValue]) => filterKey === key && filterValue === value
     )
   }
 
-  // Sort the filterList array in alphabetical order
-  // const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
   return (
     <>
       <div>
@@ -103,7 +127,6 @@ const FilterList = ({
                     className={styles.filterValuesList}
                     style={{ display: openKey === key ? 'block' : 'none' }}
                   >
-                    {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map(
                       (value) =>
                         value !== '' &&
@@ -118,7 +141,7 @@ const FilterList = ({
                                 : ''
                             }}
                             onClick={(e) => {
-                              e.stopPropagation() // Prevent the click from toggling the open key
+                              e.stopPropagation()
                               if (isActiveFilter(key, value)) {
                                 removeFilter(key, value)
                               } else {
@@ -127,31 +150,20 @@ const FilterList = ({
                             }}
                           >
                             <li>{value}</li>
-                            {/* Point Percentage */}
-
-                            {/* {console.log(value)}  */}
                             {showPercent && value && (
-                              // make a sum
                               <li>
                                 {Math.round(
                                   (countFilteredPointsForValue(key, value) /
-                                    Math.round(
-                                      countFilteredPointsTotal(key, value)
-                                    )) /* ERROR IS HERE */ *
+                                    Math.round(countFilteredPointsTotal(key))) *
                                     100
                                 )}
                                 %
                               </li>
                             )}
-                            {/* Point Count */}
                             {showCount && value && (
                               <li>
                                 {countFilteredPointsForValue(key, value)} /{' '}
-                                {
-                                  Math.round(
-                                    countFilteredPointsTotal(key, value)
-                                  ) /* ERROR IS HERE */
-                                }
+                                {Math.round(countFilteredPointsTotal(key))}
                               </li>
                             )}
                           </div>
@@ -161,9 +173,6 @@ const FilterList = ({
                 </li>
               </div>
             )
-            // } else {
-            //   return null; // Skip rendering if key is not in the map
-            // }
           })}
         </ul>
       </div>
