@@ -1,8 +1,6 @@
-// components/FilterList.js
-
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/FilterList.module.css'
-// This file renammes columns to more human-readable names
+// This file renames columns to more human-readable names
 import nameMap from '../services/nameMap.js'
 
 const FilterList = ({
@@ -10,13 +8,22 @@ const FilterList = ({
   filterList,
   setFilterList,
   showPercent,
-  showCount
+  showCount,
+  selectedPlayer, // New state for selected player
+  setSelectedPlayer // New state setter for selected player
 }) => {
+  // Function to filter pointsData based on the selected player
+  const filterPointsByPlayer = (points, player) => {
+    return points.filter((point) => point[`player${player}Name`] !== null)
+  }
+
+  const playerFilteredData = filterPointsByPlayer(pointsData, selectedPlayer)
+
   // only keep relevant keys
   const keys = Object.keys(nameMap).filter(
     (key) =>
-      pointsData &&
-      pointsData.some((point) =>
+      playerFilteredData &&
+      playerFilteredData.some((point) =>
         Object.prototype.hasOwnProperty.call(point, key)
       )
   )
@@ -25,7 +32,7 @@ const FilterList = ({
   // Iterate through filtered keys and populate uniqueValues
   keys.forEach((key) => {
     uniqueValues[key] = [
-      ...new Set(pointsData.map((point) => point[key]))
+      ...new Set(playerFilteredData.map((point) => point[key]))
     ].sort()
   })
 
@@ -53,6 +60,7 @@ const FilterList = ({
       setFilterList([...filterList, [key, value]])
     }
   }
+
   const removeFilter = (key, value) => {
     const updatedFilterList = filterList.filter(
       ([filterKey, filterValue]) =>
@@ -63,11 +71,11 @@ const FilterList = ({
 
   // Counts points for each filter
   const countFilteredPointsForValue = (key, value) => {
-    return pointsData.filter((point) => point[key] === value).length
+    return playerFilteredData.filter((point) => point[key] === value).length
   }
 
   const countFilteredPointsTotal = (key) => {
-    return pointsData.reduce((total, point) => {
+    return playerFilteredData.reduce((total, point) => {
       // Check if the value attribute is not an empty string
       if (point[key] !== '' && point[key] !== null) {
         return total + 1 // Add 1 to the total if this point has a value specific to this category (key)
@@ -84,10 +92,24 @@ const FilterList = ({
     )
   }
 
-  // Sort the filterList array in alphabetical order
-  // const sortedFilterList = filterList.sort((a, b) => a[0].localeCompare(b[0]));
+  // Render the player selection buttons
   return (
     <>
+      <div className={styles.playerSelection}>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg"
+          alt="Player 1"
+          onClick={() => setSelectedPlayer(1)}
+          className={selectedPlayer === 1 ? styles.activePlayer : ''}
+        />
+        <img
+          src=" https://ittavern.com/images/blog/url-explained.png"
+          alt="Player 2"
+          onClick={() => setSelectedPlayer(2)}
+          className={selectedPlayer === 2 ? styles.activePlayer : ''}
+        />
+      </div>
+
       <div>
         <ul className={styles.availableFilterList}>
           {keys.map((key) => {
@@ -103,7 +125,6 @@ const FilterList = ({
                     className={styles.filterValuesList}
                     style={{ display: openKey === key ? 'block' : 'none' }}
                   >
-                    {/* { console.log(uniqueValues)} */}
                     {uniqueValues[key].map(
                       (value) =>
                         value !== '' &&
@@ -128,16 +149,11 @@ const FilterList = ({
                           >
                             <li>{value}</li>
                             {/* Point Percentage */}
-
-                            {/* {console.log(value)}  */}
                             {showPercent && value && (
-                              // make a sum
                               <li>
                                 {Math.round(
                                   (countFilteredPointsForValue(key, value) /
-                                    Math.round(
-                                      countFilteredPointsTotal(key, value)
-                                    )) /* ERROR IS HERE */ *
+                                    countFilteredPointsTotal(key)) *
                                     100
                                 )}
                                 %
@@ -147,11 +163,7 @@ const FilterList = ({
                             {showCount && value && (
                               <li>
                                 {countFilteredPointsForValue(key, value)} /{' '}
-                                {
-                                  Math.round(
-                                    countFilteredPointsTotal(key, value)
-                                  ) /* ERROR IS HERE */
-                                }
+                                {countFilteredPointsTotal(key)}
                               </li>
                             )}
                           </div>
@@ -161,9 +173,6 @@ const FilterList = ({
                 </li>
               </div>
             )
-            // } else {
-            //   return null; // Skip rendering if key is not in the map
-            // }
           })}
         </ul>
       </div>
@@ -171,4 +180,4 @@ const FilterList = ({
   )
 }
 
-export default FilterList
+export default FilterList // components/FilterList.js

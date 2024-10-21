@@ -26,6 +26,7 @@ const MatchPage = () => {
   const [tab, setTab] = useState(1)
   const [bookmarks, setBookmarks] = useState([])
   const [triggerScroll, setTriggerScroll] = useState(false)
+  const [selectedPlayer, setSelectedPlayer] = useState(1)
   const tableRef = useRef(null)
   const iframeRef = useRef(null)
 
@@ -267,13 +268,16 @@ const MatchPage = () => {
                       <label htmlFor="countRadio">Show Count</label>
                     </div>
                   </div>
-                  <div className={styles.sidecontent}>
+                  <div className={styles.sidebar}>
+                    {/* Pass selectedPlayer to FilterList */}
                     <FilterList
                       pointsData={matchData.points}
                       filterList={filterList}
                       setFilterList={setFilterList}
                       showPercent={showPercent}
                       showCount={showCount}
+                      selectedPlayer={selectedPlayer}
+                      setSelectedPlayer={setSelectedPlayer}
                     />
                   </div>
                 </div>
