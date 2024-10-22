@@ -5,6 +5,7 @@ import styles from '../styles/FilterList.module.css'
 // This file renammes columns to more human-readable names
 import nameMap from '../services/nameMap.js'
 
+// need to add functionality such that the
 const FilterList = ({
   pointsData,
   filterList,
@@ -32,10 +33,48 @@ const FilterList = ({
   // State for the open key
   const [openKey, setOpenKey] = useState(null)
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const initialFilters = []
+
+    urlParams.forEach((value, key) => {
+      initialFilters.push([key, value])
+    })
+
+    if (initialFilters.length > 0) {
+      setFilterList(initialFilters)
+    }
+  }, [setFilterList])
+
   // Effect to reset open key when pointsData changes
   useEffect(() => {
     setOpenKey(null)
   }, [pointsData])
+
+  useEffect(() => {
+    updateUrlWithFilters(filterList)
+  }, [filterList])
+
+  const updateUrlWithFilters = (filterList) => {
+    const urlParams = new URLSearchParams(window.location.search)
+
+    // Clear the current URL parameters to avoid duplicating filters
+    urlParams.forEach((_, key) => {
+      urlParams.delete(key)
+    })
+
+    // Append each filter to the URL params, allowing multiple values for the same key
+    filterList.forEach(([key, value]) => {
+      urlParams.append(key, value)
+    })
+
+    // Update the URL with the new query string
+    window.history.pushState(
+      {},
+      '',
+      `${window.location.pathname}?${urlParams.toString()}`
+    )
+  }
 
   const toggleOpen = (key) => {
     if (openKey === key) {
