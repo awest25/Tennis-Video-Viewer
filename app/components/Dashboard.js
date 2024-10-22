@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 // import { useMatchData } from './MatchDataProvider'
-import { useDatabase } from './DatabaseProvider'
+import { useData } from './DataProvider'
 import styles from '../styles/Dashboard.module.css'
 import DashTileContainer from './DashTileContainer'
 // import getTeams from '@/app/services/getTeams.js'
@@ -78,7 +78,7 @@ const Dashboard = () => {
   const matches = matchData // using hardcoded JSON objects
   const router = useRouter()
   const formattedMatches = formatMatches(matchData)
-  const { logos } = useDatabase()
+  const { logos } = useData()
   const [searchTerm, setSearchTerm] = useState('')
 
   // Group matches by date

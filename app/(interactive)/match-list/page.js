@@ -2,10 +2,10 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { useMatchData } from '../../components/MatchDataProvider' // Assuming the hook is located in the context folder
+import { useData } from '../../components/DataProvider' // Assuming the hook is located in the context folder
 
 export default function MatchList() {
-  const { matches, updateMatch, refresh } = useMatchData()
+  const { matches, updateMatch, refresh } = useData()
   const [newName, setNewName] = useState('')
 
   const handleDelete = async (id) => {
