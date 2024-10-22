@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { usePathname } from 'next/navigation'
 
 import filterListStyles from '../../../styles/FilterList.module.css'
@@ -18,6 +18,7 @@ import nameMap from '@/app/services/nameMap'
 const MatchPage = () => {
   const [matchData, setMatchData] = useState()
   const [filterList, setFilterList] = useState([])
+  const [filteredPoints, setFilteredPoints] = useState([])
   const [videoObject, setVideoObject] = useState(null)
   const [showPercent, setShowPercent] = useState(false)
   const [showCount, setShowCount] = useState(false)
@@ -33,6 +34,7 @@ const MatchPage = () => {
   const pathname = usePathname()
   const docId = pathname.substring(pathname.lastIndexOf('/') + 1)
 
+  // Fetch the selected match on mount
   useEffect(() => {
     const selectedMatch = matches.find((match) => match.id === docId)
     if (selectedMatch) {
@@ -45,6 +47,38 @@ const MatchPage = () => {
       setBookmarks(initialBookmarks)
     }
   }, [matches, docId])
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialFilters = [];
+  
+    // Extract filter values from the URL
+    urlParams.forEach((value, key) => {
+      initialFilters.push([key, value]);
+    });
+  
+    if (initialFilters.length > 0) {
+      setFilterList(initialFilters);
+    }
+  }, [setFilterList]);
+  
+  // Another useEffect to update the URL when filterList changes
+  useEffect(() => {
+    const urlParams = new URLSearchParams();
+  
+    // Add each filter from filterList to the URL
+    filterList.forEach(([key, value]) => {
+      urlParams.append(key, value);
+    });
+  
+    // Update the URL with the new query string
+    window.history.replaceState(
+      {},
+      '',
+      `${window.location.pathname}?${urlParams.toString()}`
+    );
+  }, [filterList]);
+  
 
   const handleJumpToTime = (time) => {
     if (videoObject && videoObject.seekTo) {
@@ -70,45 +104,19 @@ const MatchPage = () => {
     }
   }
 
+  // Update the filtered points whenever filterList or matchData changes
   useEffect(() => {
     if (matchData) {
-      const points = returnFilteredPoints()
-      const sortedPoints = [...points].sort((a, b) => b.Position - a.Position)
-
-      const updateScoreboardWithTime = (time) => {
-        const currentPoint = sortedPoints.find(
-          (point) => point.Position <= time
-        )
-        if (currentPoint) {
-          setPlayingPoint(currentPoint)
-        }
-      }
-
-      const intervalId = setInterval(() => {
-        if (videoObject && videoObject.getCurrentTime) {
-          const currentTime = videoObject.getCurrentTime() * 1000
-          updateScoreboardWithTime(currentTime)
-        }
-      }, 200)
-
-      return () => clearInterval(intervalId)
+      const points = returnFilteredPoints(matchData.points, filterList)
+      setFilteredPoints(points)
     }
-  }, [videoObject, matchData])
+  }, [filterList, matchData])
 
-  useEffect(() => {
-    if (triggerScroll && !showPDF) {
-      if (tableRef.current) {
-        tableRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
-      setTriggerScroll(false)
-    }
-  }, [triggerScroll, showPDF])
-
-  const returnFilteredPoints = () => {
-    let filteredPoints = matchData.points
+  const returnFilteredPoints = (points, filters) => {
+    let filteredPoints = points
     const filterMap = new Map()
 
-    filterList.forEach((filter) => {
+    filters.forEach((filter) => {
       const [key, value] = filter
       if (filterMap.has(key)) {
         filterMap.get(key).push(value)
@@ -282,7 +290,7 @@ const MatchPage = () => {
                 <div className={styles.sidebox}>
                   <div className={styles.sidecontent}>
                     <PointsList
-                      pointsData={returnFilteredPoints()}
+                      pointsData={filteredPoints}
                       onPointSelect={handleJumpToTime}
                       onBookmark={handleBookmark}
                       clientTeam={matchData.clientTeam}
@@ -360,7 +368,7 @@ const MatchPage = () => {
             ) : (
               <div ref={tableRef} className={styles.ExtendedList}>
                 <ExtendedList
-                  pointsData={returnFilteredPoints()}
+                  pointsData={filteredPoints}
                   clientTeam={matchData.clientTeam}
                   opponentTeam={matchData.opponentTeam}
                   onPointSelect={handleJumpToTime}
