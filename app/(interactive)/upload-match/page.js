@@ -160,6 +160,7 @@ export default function UploadMatchForm() {
         matchDetails,
         searchableProperties,
         version: "v1", // Current version for new matches added
+        published: true
       });
 
       alert("Match uploaded successfully!");
