@@ -80,7 +80,7 @@ const SignInPage = () => {
               {/* add contact details */}
               <p>To demo this page, use:</p>
               <ul>Username: demo</ul>
-              <ul>Password: demo</ul>
+              <ul>Password: demo123</ul>
             </div>
           </div>
         </form>
