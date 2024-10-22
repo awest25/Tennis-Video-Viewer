@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
 const SearchIcon = (props) => (
   <svg
-    width={props.width || "16"} // Default width if not provided
-    height={props.height || "16"} // Default height if not provided
+    width={props.width || '16'} // Default width if not provided
+    height={props.height || '16'} // Default height if not provided
     viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -24,6 +24,6 @@ const SearchIcon = (props) => (
       strokeLinejoin="round"
     />
   </svg>
-);
+)
 
-export default SearchIcon;
+export default SearchIcon

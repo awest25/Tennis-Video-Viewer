@@ -1,35 +1,36 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect, useCallback} from "react";
-import Form from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
-import { useMatchData } from "../../components/MatchDataProvider.js";
-import { useAuth } from "../../components/AuthWrapper.js";
-import getTeams from "@/app/services/getTeams.js";
-import styles from "../../styles/Upload.module.css";
-import { initialSchema, uiSchema } from "@/app/services/matchSchemas.js";
-import { searchableProperties } from "@/app/services/searchableProperties.js";
+import React, { useState, useEffect, useCallback } from 'react'
+import Form from '@rjsf/core'
+import validator from '@rjsf/validator-ajv8'
+import { useMatchData } from '../../components/MatchDataProvider.js'
+import { useAuth } from '../../components/AuthWrapper.js'
+import getTeams from '@/app/services/getTeams.js'
+import styles from '../../styles/Upload.module.css'
+import { initialSchema, uiSchema } from '@/app/services/matchSchemas.js'
+import { searchableProperties } from '@/app/services/searchableProperties.js'
 
 export default function UploadMatchForm() {
-  const { createMatch } = useMatchData(); // Use the createMatch hook
-  const [schema, setSchema] = useState(initialSchema);
-  const [teams, setTeams] = useState([]);
-  const [collections, setCollections] = useState([]);
-  const [formData, setFormData] = useState({});
+  const { createMatch } = useMatchData() // Use the createMatch hook
+  const [schema, setSchema] = useState(initialSchema)
+  const [teams, setTeams] = useState([])
+  const [collections, setCollections] = useState([])
+  const [formData, setFormData] = useState({})
 
-  const { userProfile } = useAuth();
+  const { userProfile } = useAuth()
 
+  console.log(collections)
   useEffect(() => {
     const fetchCollectionsAndTeams = async () => {
       try {
-        const allTeams = await getTeams();
-        setTeams(allTeams);
-        const teamNames = allTeams.map((team) => team.name);
+        const allTeams = await getTeams()
+        setTeams(allTeams)
+        const teamNames = allTeams.map((team) => team.name)
 
         // Assuming userProfile.collections contains the collection names
-        const userCollections = userProfile?.collections || [];
+        const userCollections = userProfile?.collections || []
 
-        setCollections(userCollections);
+        setCollections(userCollections)
 
         // Update schema with team and collection names
         setSchema((prevSchema) => ({
@@ -38,42 +39,42 @@ export default function UploadMatchForm() {
             ...prevSchema.properties,
             clientTeam: {
               ...prevSchema.properties.clientTeam,
-              enum: teamNames,
+              enum: teamNames
             },
             opponentTeam: {
               ...prevSchema.properties.opponentTeam,
-              enum: teamNames,
+              enum: teamNames
             },
             collection: {
               ...prevSchema.properties.collection,
-              enum: userCollections,
-            },
-          },
-        }));
+              enum: userCollections
+            }
+          }
+        }))
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error)
       }
-    };
+    }
 
-    fetchCollectionsAndTeams();
-  }, []);
+    fetchCollectionsAndTeams()
+  }, [])
 
   const getPlayersForTeam = useCallback(
     (teamName) => {
-      const selectedTeam = teams.find((team) => team.name === teamName);
+      const selectedTeam = teams.find((team) => team.name === teamName)
       return (
         selectedTeam?.players?.map(
           (player) => `${player.firstName} ${player.lastName}`
         ) || []
-      );
+      )
     },
     [teams]
-  );
+  )
 
   const updatePlayerOptions = useCallback(
     (formData) => {
-      const clientPlayers = getPlayersForTeam(formData.clientTeam);
-      const opponentPlayers = getPlayersForTeam(formData.opponentTeam);
+      const clientPlayers = getPlayersForTeam(formData.clientTeam)
+      const opponentPlayers = getPlayersForTeam(formData.opponentTeam)
 
       setSchema((prevSchema) => ({
         ...prevSchema,
@@ -81,55 +82,55 @@ export default function UploadMatchForm() {
           ...prevSchema.properties,
           clientPlayer: {
             ...prevSchema.properties.clientPlayer,
-            enum: clientPlayers,
+            enum: clientPlayers
           },
           opponentPlayer: {
             ...prevSchema.properties.opponentPlayer,
-            enum: opponentPlayers,
-          },
-        },
-      }));
+            enum: opponentPlayers
+          }
+        }
+      }))
     },
 
     [getPlayersForTeam]
-  );
+  )
   const handleChange = ({ formData: newFormData }) => {
-    setFormData(newFormData);
-    updatePlayerOptions(newFormData);
-  };
+    setFormData(newFormData)
+    updatePlayerOptions(newFormData)
+  }
 
   const handleSubmit = async ({ formData }) => {
     try {
       const pointsJson = formData.jsonFile
-        ? JSON.parse(atob(formData.jsonFile.split(",")[1]))
-        : [];
+        ? JSON.parse(atob(formData.jsonFile.split(',')[1]))
+        : []
       if (pointsJson.length === 0) {
         const result = confirm(
           "You're currently uploading an UNTAGGED match. Proceed?"
-        );
-        if (!result) throw new Error("Upload cancelled by user.");
+        )
+        if (!result) throw new Error('Upload cancelled by user.')
       }
       const teams = {
         clientTeam: formData.clientTeam,
-        opponentTeam: formData.opponentTeam,
-      };
+        opponentTeam: formData.opponentTeam
+      }
       const players = {
         client: {
-          firstName: formData.clientPlayer.split(" ")[0],
-          lastName: formData.clientPlayer.split(" ")[1],
-          UTR: formData.clientUTR,
+          firstName: formData.clientPlayer.split(' ')[0],
+          lastName: formData.clientPlayer.split(' ')[1],
+          UTR: formData.clientUTR
         },
         opponent: {
-          firstName: formData.opponentPlayer.split(" ")[0],
-          lastName: formData.opponentPlayer.split(" ")[1],
-          UTR: formData.opponentUTR,
-        },
-      };
+          firstName: formData.opponentPlayer.split(' ')[0],
+          lastName: formData.opponentPlayer.split(' ')[1],
+          UTR: formData.opponentUTR
+        }
+      }
       const weather = {
         temperature: formData.temperature,
-        cloudy: formData.weather.includes("Cloudy"),
-        windy: formData.weather.includes("Windy"),
-      };
+        cloudy: formData.weather.includes('Cloudy'),
+        windy: formData.weather.includes('Windy')
+      }
       const matchDetails = {
         weather,
         division: formData.division,
@@ -137,15 +138,15 @@ export default function UploadMatchForm() {
         lineup: formData.lineup,
         matchVenue: formData.matchVenue,
         round: formData.round,
-        indoor: formData.court === "Indoor",
-        surface: formData.surface,
-      };
+        indoor: formData.court === 'Indoor',
+        surface: formData.surface
+      }
       // const sets = parseMatchScore(formData.matchScore);
       const sets = [
         formData.matchScore.set1,
         formData.matchScore.set2,
-        ...(formData.matchScore.set3 ? formData.matchScore.set3 : []),
-      ];
+        ...(formData.matchScore.set3 ? formData.matchScore.set3 : [])
+      ]
 
       // Use the createMatch hook to upload the match
       await createMatch(formData.collection, {
@@ -156,19 +157,19 @@ export default function UploadMatchForm() {
         teams,
         players,
         matchDate: formData.date,
-        singles: formData.singlesDoubles === "Singles",
+        singles: formData.singlesDoubles === 'Singles',
         matchDetails,
         searchableProperties,
         version: "v1", // Current version for new matches added
         published: true
       });
 
-      alert("Match uploaded successfully!");
+      alert('Match uploaded successfully!')
     } catch (error) {
-      console.error("Error uploading match:", error);
-      alert(`Error uploading match: ${error.message}`);
+      console.error('Error uploading match:', error)
+      alert(`Error uploading match: ${error.message}`)
     }
-  };
+  }
 
   return (
     <div className={styles.container}>
@@ -188,5 +189,5 @@ export default function UploadMatchForm() {
         />
       </div>
     </div>
-  );
+  )
 }

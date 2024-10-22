@@ -1,19 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from 'react'
 
-import styles from "../styles/Roster.module.css";
-const RosterTile = ({firstName, lastName, playerPhoto}) => {
-
-  const [playerClicked, setPlayerClicked] = useState(false);
+import styles from '../styles/Roster.module.css'
+const RosterTile = ({ firstName, lastName, playerPhoto }) => {
+  const [playerClicked, setPlayerClicked] = useState(false)
 
   const handleClick = () => {
-    setPlayerClicked(!playerClicked);
+    setPlayerClicked(!playerClicked)
   }
 
   return (
     <div className={styles.playerContainer}>
-      <div 
-        className={styles.infoContainer} 
-        style={{ backgroundColor: playerClicked ? "#F1F9FF" : "#FFFFFF" }} 
+      <div
+        className={styles.infoContainer}
+        style={{ backgroundColor: playerClicked ? '#F1F9FF' : '#FFFFFF' }}
         onClick={handleClick} // Handle click event
       >
         <img className={styles.playerImage} src={playerPhoto} alt="" />
@@ -22,7 +21,7 @@ const RosterTile = ({firstName, lastName, playerPhoto}) => {
             {firstName} {lastName}
           </div>
         </div>
-      </div>  
+      </div>
     </div>
   )
 }

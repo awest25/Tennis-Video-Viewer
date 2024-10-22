@@ -1,30 +1,33 @@
 // components/SignIn.js
-import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import styles from '../styles/SignIn.module.css';
-import { useAuth } from './AuthWrapper';
+import React, { useState } from 'react'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import styles from '../styles/SignIn.module.css'
+import { useAuth } from './AuthWrapper'
 
 const SignInPage = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const [error, setError] = useState(null);
-  const { authUser, userProfile, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
+  const [credentials, setCredentials] = useState({ username: '', password: '' })
+  const [error, setError] = useState(null)
+  const { authUser, userProfile, handleSignOut } = useAuth() // Use useAuth hook to get the user and sign-out function
+
+  console.log(error)
+  console.log(userProfile)
 
   const handleSignIn = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      const auth = getAuth();
-      const email = `${credentials.username}@ucla.edu`; // Append @ucla.edu to the username
-      await signInWithEmailAndPassword(auth, email, credentials.password);
+      const auth = getAuth()
+      const email = `${credentials.username}@ucla.edu` // Append @ucla.edu to the username
+      await signInWithEmailAndPassword(auth, email, credentials.password)
     } catch (error) {
-      setError(error.message);
-      console.log(error.message);
+      setError(error.message)
+      console.log(error.message)
     }
-  };
+  }
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials({ ...credentials, [name]: value });
-  };
+    const { name, value } = e.target
+    setCredentials({ ...credentials, [name]: value })
+  }
 
   return (
     <div>
@@ -43,9 +46,7 @@ const SignInPage = () => {
       <div className={styles.container}>
         <form onSubmit={handleSignIn}>
           <div className={styles.card}>
-            <img>
-            {/* Add logo if needed */}
-            </img>
+            <img>{/* Add logo if needed */}</img>
             <h2>Sign in to your account</h2>
             <div>
               <input
@@ -66,23 +67,26 @@ const SignInPage = () => {
               />
             </div>
             <button type="submit">Sign In</button>
-            <div style={{color:'grey', fontSize:'0.7rem'}}>
-            <p>
-              Need Help?{' '}
-              <a href="mailto:uclatennisconsulting@gmail.com" style={{ color: 'inherit', textDecoration: 'underline' }}>
-                <b>Contact Us</b>
-              </a>
-            </p>
+            <div style={{ color: 'grey', fontSize: '0.7rem' }}>
+              <p>
+                Need Help?{' '}
+                <a
+                  href="mailto:uclatennisconsulting@gmail.com"
+                  style={{ color: 'inherit', textDecoration: 'underline' }}
+                >
+                  <b>Contact Us</b>
+                </a>
+              </p>
               {/* add contact details */}
               <p>To demo this page, use:</p>
               <ul>Username: demo</ul>
-              <ul>Password: demo</ul>
+              <ul>Password: demo123</ul>
             </div>
           </div>
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SignInPage;
+export default SignInPage

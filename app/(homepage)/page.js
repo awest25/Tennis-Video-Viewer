@@ -1,16 +1,16 @@
 // app/(homepage)/page.js (Home Component)
-'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Dashboard from '../components/Dashboard.js';
-import styles from '../styles/Home.module.css';
-import { useAuth } from '../components/AuthWrapper'; // Import useAuth
+'use client'
+import React from 'react'
+// import Link from 'next/link'
+import Dashboard from '../components/Dashboard.js'
+// import styles from '../styles/Home.module.css'
+// import { useAuth } from '../components/AuthWrapper' // Import useAuth
 
 const Home = () => {
-  const { authUser, userProfile, handleSignOut } = useAuth(); // Use useAuth hook to get the user and sign-out function
+  // const { authUser, userProfile, handleSignOut } = useAuth() // Use useAuth hook to get the user and sign-out function
 
   return (
-   /*
+    /*
     <div>
       <div className={styles.titleBar}>
         <div className={styles.leftTitle}>
@@ -27,12 +27,12 @@ const Home = () => {
       <div className={styles.container}>
         <h1 className={styles.title}>Match Viewer</h1>
 
-        {/* Search Dropdown */ /*} 
+        {/* Search Dropdown */ /* } 
         <div className="searchDropdown">
           <SearchDropdown />
         </div>
 
-        {/* Other Links */ /*}
+        {/* Other Links */ /* }
         <div className={styles.actionsContainer}>
           <p>Or get started by:</p>
           <ul>
@@ -49,8 +49,8 @@ const Home = () => {
         </div>
       </div>
     </div> */
-    <Dashboard/>
-  );
-};
+    <Dashboard />
+  )
+}
 
-export default Home;
+export default Home

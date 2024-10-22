@@ -2,7 +2,11 @@
 
 .container {
   padding: 20px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
   font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
 }
 
 .header {
@@ -13,7 +17,6 @@
 .header h1 {
   font-size: 25px;
   font-weight: 550;
-  margin-bottom: 60px;
 }
 
 .header h2 {
@@ -25,15 +28,6 @@
 .headerContent {
   display: flex;
   justify-content: space-between;
-}
-
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  margin-bottom: 30px;
-  padding: 10px 0;
-  border-top: 1px solid #DEDEDE;
-  border-bottom: 1px solid #DEDEDE;
 }
 
 .mainContent {
@@ -52,38 +46,6 @@
   font-family: 'DM Sans', sans-serif;
   position: relative;
   top: -25px;
-}
-
-.card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 100px;
-  border: 1px solid #DEDEDE;
-  border-radius: 20px;
-  padding: 8px 15px;
-  margin-right: 10px;
-  background-color: #ffffff;
-  white-space: nowrap;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.cardContent {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  margin-right: 8px;
-}
-
-.matchDate {
-  font-size: 15px;
-  font-weight: 500;
-  color: #000000;
 }
 
 .matchSection {
@@ -114,7 +76,7 @@
 
 .matchSection h3 {
   font-size: 28px;
-  color: #2774AE;
+  color: #2774ae;
   font-weight: 550;
   margin: 0;
   white-space: nowrap;
@@ -126,19 +88,106 @@
 .matchSection .date {
   font-size: 20px;
   font-weight: 550;
-  color: #2774AE;
+  color: #2774ae;
   margin-bottom: 0;
   margin-left: 10px;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-
 .matchTypeHeader h4 {
   font-size: 20px;
   margin: 10px 0 0 0;
-  font-weight: normal;
-} 
+}
+
+/* Carousel of cards (match filtering) */
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none; /* hide scrollbar */
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  min-width: 125px;
+  border: 1px solid #dedede;
+  border-radius: 20px;
+  padding: 6px 10px;
+  min-width: 100px; /* Reduce min-width for narrower cards */
+  max-width: 150px; /* Set max-width to prevent them from growing too wide */
+  flex-shrink: 0; /* Prevent shrinking beyond min-width */
+  margin-right: 10px;
+  background-color: #ffffff;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    border 0.3s;
+  cursor: pointer;
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 27.5px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  margin-right: 5px;
+}
+
+.matchDate {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
+  margin-right: 0px;
+}
+
+.card:hover {
+  background-color: #f7f7f7;
+}
+
+.active {
+  background-color: #2774ae;
+  color: #ffffff;
+  border: 1px solid #2774ae;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    color 0.3s;
+}
+
+.active .matchDate {
+  color: #ffffff;
+}
+
+.active:hover {
+  background-color: #3b87c1;
+  color: #ffffff;
+}
+
+.active:hover .matchDate {
+  color: #ffffff;
+}
+
+/* Search Bar */
 
 .placeholderContainer {
   display: flex;
@@ -148,7 +197,9 @@
 }
 
 .searchIcon {
+  display: inline-block;
   margin-right: 8px;
+  vertical-align: middle;
 }
 
 /* search bar styles */
@@ -156,21 +207,21 @@
 /* Dashboard.module.css */
 
 .searchContainer {
-  position: relative; 
-  width: 25vw; 
+  position: relative;
+  width: 25vw;
   margin-top: 70px;
 }
 
 .searchInput {
-  width: 100%; 
-  height: 40px; 
-  padding: 22px 22px; 
-  padding-left: 40px; 
-  border: 1px solid #EDEDED; 
-  border-radius: 16px; 
-  font-family: "DM Sans", sans-serif; 
-  font-size: 16px; 
-  color: black; 
+  width: 100%;
+  height: 40px;
+  padding: 22px 22px;
+  padding-left: 40px;
+  border: 1px solid #ededed;
+  border-radius: 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: black;
 }
 
 /* Style for the icon */
@@ -186,27 +237,26 @@
 
 /* Optional: Placeholder styling */
 .searchInput::placeholder {
-  color: black; 
-  opacity: 1; 
+  color: black;
+  opacity: 1;
 }
 
 .clearButton {
   margin-left: 10px;
   background-color: transparent;
-  border: 1px solid #EDEDED;
+  border: 1px solid #ededed;
   border-radius: 16px;
   color: black;
   cursor: pointer;
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
 }
 
-.clearContainer { 
+.clearContainer {
   display: flex;
-
 }
 
-.matchName { 
+.matchName {
   list-style-type: none;
 }
 

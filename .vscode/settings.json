@@ -1,9 +1,10 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true, // Auto-fix ESLint issues on save
+    "source.fixAll.eslint": true // Specific to ESLint
+  },
   "prettier.requireConfig": true,
   "eslint.format.enable": true,
   "eslint.validate": [
