@@ -348,7 +348,7 @@ const MatchPage = () => {
                   : styles.toggle_buttona_inactive
               }
             >
-              Points
+              Points Played
             </button>
             {showPDF ? (
               <iframe
