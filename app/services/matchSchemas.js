@@ -29,7 +29,6 @@ const initialSchema = {
     opponentPlayer: {
       type: 'string',
       title: 'Opponent Player',
-      enum: []
     },
     opponentUTR: {
       type: 'string',

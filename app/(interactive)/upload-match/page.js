@@ -74,7 +74,6 @@ export default function UploadMatchForm() {
   const updatePlayerOptions = useCallback(
     (formData) => {
       const clientPlayers = getPlayersForTeam(formData.clientTeam)
-      const opponentPlayers = getPlayersForTeam(formData.opponentTeam)
 
       setSchema((prevSchema) => ({
         ...prevSchema,
@@ -84,10 +83,6 @@ export default function UploadMatchForm() {
             ...prevSchema.properties.clientPlayer,
             enum: clientPlayers
           },
-          opponentPlayer: {
-            ...prevSchema.properties.opponentPlayer,
-            enum: opponentPlayers
-          }
         }
       }))
     },
