@@ -28,7 +28,7 @@ const initialSchema = {
     },
     opponentPlayer: {
       type: 'string',
-      title: 'Opponent Player',
+      title: 'Opponent Player'
     },
     opponentUTR: {
       type: 'string',
@@ -159,7 +159,8 @@ const initialSchema = {
     'clientPlayer',
     'opponentTeam',
     'matchScore',
-    'date'
+    'date',
+    'videoID'
   ]
 }
 

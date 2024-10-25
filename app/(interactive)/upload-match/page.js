@@ -82,7 +82,7 @@ export default function UploadMatchForm() {
           clientPlayer: {
             ...prevSchema.properties.clientPlayer,
             enum: clientPlayers
-          },
+          }
         }
       }))
     },
@@ -123,8 +123,8 @@ export default function UploadMatchForm() {
       }
       const weather = {
         temperature: formData.temperature,
-        cloudy: formData.weather.includes('Cloudy'),
-        windy: formData.weather.includes('Windy')
+        cloudy: formData.weather ? formData.weather.includes('Cloudy') : '',
+        windy: formData.weather ? formData.weather.includes('Windy') : ''
       }
       const matchDetails = {
         weather,
@@ -155,9 +155,9 @@ export default function UploadMatchForm() {
         singles: formData.singlesDoubles === 'Singles',
         matchDetails,
         searchableProperties,
-        version: "v1", // Current version for new matches added
+        version: 'v1', // Current version for new matches added
         published: true
-      });
+      })
 
       alert('Match uploaded successfully!')
     } catch (error) {
